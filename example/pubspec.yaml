@@ -1,0 +1,24 @@
+name: breaking_bapp
+description: Sample app for the Infinite Scroll Pagination package.
+
+version: 1.0.0
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: 0.12.0+4
+  rxdart: ^0.24.1
+  cached_network_image: ^2.2.0+1
+  cupertino_icons: ^0.1.3
+  infinite_scroll_pagination:
+    path: ../
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true

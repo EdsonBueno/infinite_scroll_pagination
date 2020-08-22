@@ -1,0 +1,16 @@
+name: infinite_scroll_pagination
+description: Load and display pages of items as the user scrolls down your screen.
+version: 1.0.0
+author: Edson Bueno
+homepage: https://github.com/EdsonBueno/infinite_scroll_pagination
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
