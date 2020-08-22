@@ -1,8 +1,8 @@
 <p align="center">
-	<img src="https://github.com/EdsonBueno/testing/blob/master/docs/assets/logo.png" height="130" alt="Infinite Scroll Pagination Logo" />
+	<img src="https://raw.githubusercontent.com/EdsonBueno/infinite_scroll_pagination/master/docs/assets/logo.png" height="130" alt="Infinite Scroll Pagination Logo" />
 </p>
 <p align="center">
-	<a href="https://pub.dev/packages/infinite_scroll_pagination”><img src="https://img.shields.io/pub/v/infinite_scroll_pagination.svg" alt="Pub.dev Badge"></a>
+	<a href="https://pub.dev/packages/infinite_scroll_pagination"><img src="https://img.shields.io/pub/v/infinite_scroll_pagination.svg" alt="Pub.dev Badge"></a>
 	<a href="https://github.com/EdsonBueno/infinite_scroll_pagination/actions"><img src="https://github.com/EdsonBueno/infinite_scroll_pagination/workflows/build/badge.svg" alt="GitHub Build Badge"></a>
 	<a href="https://gitter.im/infinite_scroll_pagination/community"><img src="https://badges.gitter.im/infinite_scroll_pagination/community.svg" alt="Gitter Badge"></a>
 	<a href="https://github.com/tenhobi/effective_dart"><img src="https://img.shields.io/badge/style-effective_dart-40c4ff.svg" alt="Effective Dart Badge"></a>
@@ -18,7 +18,7 @@ Unopinionated, extensible and highly customizable package to help you lazily loa
 
 Inspired by the ergonomics of the Flutter API itself.
 
-<img src="https://github.com/EdsonBueno/testing/blob/master/docs/assets/demo.gif" alt="Example Project" />
+<img src="https://raw.githubusercontent.com/EdsonBueno/infinite_scroll_pagination/master/docs/assets/demo.gif" alt="Example Project" />
 
 ## Usage
 
@@ -82,7 +82,7 @@ For more usage examples, please take a look at our [cookbook](https://pub.dev/pa
 ## How It Works
 
 Everything lies around the [PagedDataSource](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedDataSource-class.html) class. You're expected to subclass it and provide your own implementation for [fetchItems](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedDataSource/fetchItems.html). You can do whatever you want in there, from directly calling a remote API to sending an event to a BLoC. Once you have your items *or* an error, you have two options:
-1. Manually change the values of [itemList](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedDataSource/itemList.html), [error](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedDataSource/error.html), [nextKey](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedDataSource/nextKey.html) and then call [notifyListeners](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedDataSource/notifyListeners.html).
+1. Manually change the values of [itemList](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedDataSource/itemList.html), [error](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedDataSource/error.html), [nextPageKey](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedDataSource/nextPageKey.html) and then call [notifyListeners](https://api.flutter.dev/flutter/foundation/ChangeNotifier/notifyListeners.html).
 2. Use one of the convenience functions to do the above for you: [notifyError](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedDataSource/notifyError.html),
 [notifyNewPage](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedDataSource/notifyNewPage.html) or [notifyChange](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedDataSource/notifyChange.html). The last one sets the value of all three properties at once.
 
@@ -91,7 +91,7 @@ Then, provide an instance of your  [PagedDataSource](https://pub.dev/documentati
 ## API Overview
 
 <p align="center">
-	<img src="https://github.com/EdsonBueno/testing/blob/master/docs/assets/api-diagram.png" alt="API Diagram" />
+	<img src="https://raw.githubusercontent.com/EdsonBueno/infinite_scroll_pagination/master/docs/assets/api-diagram.png" alt="API Diagram" />
 </p>
 
 ## Motivation
@@ -108,4 +108,4 @@ If you're facing a problem using this package, run through the items below and s
 
 - When you successfully fetched your first page, did you remember to initialize your [itemList](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedDataSource/itemList.html) with an empty array before trying to add new items to it? Keep in mind that [itemList](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedDataSource/itemList.html) initial value is `null`.
 - Did you specify the generic types for the package's classes you're using? For example: `PagedListView<int, CharacterSummary>`.
-- If you've changed the values of [itemList](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedDataSource/itemList.html), [error](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedDataSource/error.html) and/or [nextKey](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedDataSource/nextKey.html) by yourself, did you remember to call [notifyListeners](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedDataSource/notifyListeners.html) afterward?
+- If you've changed the values of [itemList](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedDataSource/itemList.html), [error](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedDataSource/error.html) and/or [nextPageKey](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedDataSource/nextPageKey.html) by yourself, did you remember to call [notifyListeners](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedDataSource/notifyListeners.html) afterward?

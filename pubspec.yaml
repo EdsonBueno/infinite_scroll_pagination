@@ -1,7 +1,6 @@
 name: infinite_scroll_pagination
 description: Load and display pages of items as the user scrolls down your screen.
-version: 1.0.0
-author: Edson Bueno
+version: 1.0.0+2
 homepage: https://github.com/EdsonBueno/infinite_scroll_pagination
 
 environment:
