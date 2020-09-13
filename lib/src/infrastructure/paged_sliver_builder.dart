@@ -118,9 +118,21 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
 
   int get _itemCount => _dataSource.itemCount;
 
+  bool get _hasNextPage => _dataSource.hasNextPage;
+
   dynamic get _error => _dataSource.error;
 
   PageKeyType get _nextKey => _dataSource.nextPageKey;
+
+  bool get _isListingWithLoading => _dataSource.isListingWithLoading;
+
+  bool get _isListingCompleted => _dataSource.isListingCompleted;
+
+  bool get _isLoadingFirstPage => _dataSource.isLoadingFirstPage;
+
+  bool get _isListingWithError => _dataSource.isListingWithError;
+
+  bool get _isListEmpty => _dataSource.isListEmpty;
 
   /// The index that triggered the last page request.
   ///
@@ -225,26 +237,4 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
           },
         ),
       );
-
-  bool get _isListingWithLoading => _isListingInProgress && !_hasError;
-
-  bool get _isListingCompleted => _hasItems && !_hasNextPage;
-
-  bool get _isLoadingFirstPage => _itemCount == null && !_hasError;
-
-  bool get _isListingWithError => _isListingInProgress && _hasError;
-
-  bool get _hasItems => _itemCount != null && _itemCount > 0;
-
-  bool get _isListEmpty => _itemCount != null && _itemCount == 0;
-
-  bool get _hasError => _error != null;
-
-  bool get _isListingInProgress => _hasItems && _hasNextPage;
-
-  bool get _hasNextPage => _nextKey != null;
-}
-
-extension on PagedDataSource {
-  int get itemCount => itemList?.length;
 }

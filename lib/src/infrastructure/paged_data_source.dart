@@ -96,4 +96,24 @@ abstract class PagedDataSource<PageKeyType, ItemType> extends ChangeNotifier {
     this.error = error;
     notifyListeners();
   }
+
+  bool get _hasItems => itemCount != null && itemCount > 0;
+
+  int get itemCount => itemList?.length;
+
+  bool get _hasError => error != null;
+
+  bool get _isListingInProgress => _hasItems && hasNextPage;
+
+  bool get hasNextPage => nextPageKey != null;
+
+  bool get isListingWithLoading => _isListingInProgress && !_hasError;
+
+  bool get isListingCompleted => _hasItems && !hasNextPage;
+
+  bool get isLoadingFirstPage => itemCount == null && !_hasError;
+
+  bool get isListingWithError => _isListingInProgress && _hasError;
+
+  bool get isListEmpty => itemCount != null && itemCount == 0;
 }
