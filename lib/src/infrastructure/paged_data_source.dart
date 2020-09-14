@@ -44,10 +44,44 @@ abstract class PagedDataSource<PageKeyType, ItemType> extends ChangeNotifier {
   /// convenience functions: [notifyChange], [notifyNewPage] or [notifyError].
   void fetchItems(PageKeyType pageKey);
 
+  /// All items loaded so far. Initially `null`.
   List<ItemType> itemList;
+
+  /// The current error, if any.
   dynamic error;
+
+  /// The key for the next page in the API.
   PageKeyType nextPageKey;
+
+  /// The key for the first page in the API.
   final PageKeyType firstPageKey;
+
+  bool get _hasItems => itemCount != null && itemCount > 0;
+
+  /// The loaded items count.
+  int get itemCount => itemList?.length;
+
+  bool get _hasError => error != null;
+
+  bool get _isListingInProgress => _hasItems && hasNextPage;
+
+  /// Tells whether there's a next page to fetch.
+  bool get hasNextPage => nextPageKey != null;
+
+  /// Tells if the list is in progress, with a progress indicator at the bottom.
+  bool get isListingWithLoading => _isListingInProgress && !_hasError;
+
+  /// Tells if the listing is completed.
+  bool get isListingCompleted => _hasItems && !hasNextPage;
+
+  /// Tells if we're still loading the first page.
+  bool get isLoadingFirstPage => itemCount == null && !_hasError;
+
+  /// Tells if an error occurred fetching a subsequent page.
+  bool get isListingWithError => _isListingInProgress && _hasError;
+
+  /// Tells if the listing is empty.
+  bool get isListEmpty => itemCount != null && itemCount == 0;
 
   /// Resets `this` to its initial state and fetches the initial key again.
   void refresh() {
@@ -96,24 +130,4 @@ abstract class PagedDataSource<PageKeyType, ItemType> extends ChangeNotifier {
     this.error = error;
     notifyListeners();
   }
-
-  bool get _hasItems => itemCount != null && itemCount > 0;
-
-  int get itemCount => itemList?.length;
-
-  bool get _hasError => error != null;
-
-  bool get _isListingInProgress => _hasItems && hasNextPage;
-
-  bool get hasNextPage => nextPageKey != null;
-
-  bool get isListingWithLoading => _isListingInProgress && !_hasError;
-
-  bool get isListingCompleted => _hasItems && !hasNextPage;
-
-  bool get isLoadingFirstPage => itemCount == null && !_hasError;
-
-  bool get isListingWithError => _isListingInProgress && _hasError;
-
-  bool get isListEmpty => itemCount != null && itemCount == 0;
 }
