@@ -45,11 +45,11 @@ class PagedStateChangeListener extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ListenableListener(
         listenable: dataSource,
-        listener: _callListenerByState,
+        listener: _callListenerByStatus,
         child: child,
       );
 
-  void _callListenerByState() {
+  void _callListenerByStatus() {
     if (dataSource.isListingWithLoading) {
       onListingWithLoading?.call();
       return;

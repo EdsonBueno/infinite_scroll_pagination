@@ -18,6 +18,7 @@ class _CharacterListScreenState extends State<CharacterListScreen> {
         appBar: AppBar(
           title: const Text('Characters'),
         ),
+        resizeToAvoidBottomInset: false,
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _currentBarIndex,
           items: const [

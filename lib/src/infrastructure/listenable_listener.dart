@@ -33,6 +33,7 @@ class _ListenableListenerState extends State<ListenableListener> {
   void initState() {
     super.initState();
     _listenable.addListener(_handleChange);
+    _handleChange();
   }
 
   @override
