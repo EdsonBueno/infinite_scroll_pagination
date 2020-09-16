@@ -18,7 +18,7 @@ class _CharacterSliverListState extends State<CharacterSliverList> {
   @override
   Widget build(BuildContext context) => PagedStateChangeListener(
         dataSource: _dataSource,
-        onListingWithError: () {
+        onSubsequentPageError: () {
           Scaffold.of(context).showSnackBar(
             const SnackBar(
               content: Text('Something went wrong while fetching a new page.'),

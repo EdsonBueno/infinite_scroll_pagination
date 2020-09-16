@@ -73,18 +73,20 @@ For more usage examples, please take a look at our [cookbook](https://pub.dev/pa
 
 - **Layout-agnostic**: Out-of-the-box widgets equivalent to [GridView](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedGridView-class.html), [SliverGrid](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedSliverGrid-class.html), [ListView](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedListView-class.html) and [SliverList](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedSliverList-class.html) – including `.separated` constructors. Not enough? You can [easily create a custom layout](https://pub.dev/packages/infinite_scroll_pagination/example#custom-layout).
 
-- **API-agnostic**: By letting you in complete charge of your API calls, **Infinite Scroll Pagination** works with any pagination strategy.
+- **API-agnostic**: By letting you in complete charge of your API calls, **Infinite Scroll Pagination** works with any [pagination strategy](https://nordicapis.com/everything-you-need-to-know-about-api-pagination/).
 
 - **Highly customizable**: You can change everything. Provide your own progress, error and empty list indicators. Too lazy to change? The defaults will cover you.
 
 - **Extensible**: Seamless integration with [pull-to-refresh](https://pub.dev/packages/infinite_scroll_pagination/example#pull-to-refresh), [searching, filtering and sorting](https://pub.dev/packages/infinite_scroll_pagination/example#searchingfilteringsorting).
+
+- **Listen to status changes**: In addition to displaying widgets indicating your status, such as progress and error indicators, you can also use a listener to display dialogs/snackbars/toasts or execute any other action on status changes.
 
 ## How It Works
 
 Everything lies around the [PagedDataSource](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedDataSource-class.html) class. You're expected to subclass it and provide your own implementation for [fetchItems](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedDataSource/fetchItems.html). You can do whatever you want in there, from directly calling a remote API to sending an event to a BLoC. Once you have your items *or* an error, you have two options:
 1. Manually change the values of [itemList](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedDataSource/itemList.html), [error](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedDataSource/error.html), [nextKey](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedDataSource/nextKey.html) and then call [notifyListeners](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedDataSource/notifyListeners.html).
 2. Use one of the convenience functions to do the above for you: [notifyError](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedDataSource/notifyError.html),
-[notifyNewPage](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedDataSource/notifyNewPage.html) or [notifyChange](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedDataSource/notifyChange.html). The last one sets the value of all three properties at once.
+[notifyNewPage](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedDataSource/notifyNewPage.html) or [notifyChange](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedDataSource/notifyChange.html).
 
 Then, provide an instance of your  [PagedDataSource](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedDataSource-class.html) subclass along with an instance of a [PagedChildBuilderDelegate](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedChildBuilderDelegate-class.html) to one of our paged widgets and you're done.
 
@@ -100,7 +102,7 @@ Flutter indeed [makes our job way easier](https://flutter.dev/docs/resources/ins
 
 [ListView.builder](https://api.flutter.dev/flutter/widgets/ListView/ListView.builder.html) *builds* your items on demand, but it doesn't help you with fetching them or displaying status indicators.
 
-Your listing has many possible states: first page loading, first page error, subsequent page loadings, subsequent page errors, empty list and completed list. **Infinite Scroll Pagination** takes care of orchestrating between them, rendering each one and pinging you when more data is needed.
+Your listing has many possible statuses: first page loading, first page error, subsequent page loadings, subsequent page errors, empty list and completed list. **Infinite Scroll Pagination** takes care of orchestrating between them, rendering each one and letting you know when more data is needed.
 
 ## Troubleshooting
 

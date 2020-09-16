@@ -124,13 +124,13 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
 
   PageKeyType get _nextKey => _dataSource.nextPageKey;
 
-  bool get _isListingWithLoading => _dataSource.isListingWithLoading;
+  bool get _isListingInProgress => _dataSource.isListingInProgress;
 
   bool get _isListingCompleted => _dataSource.isListingCompleted;
 
   bool get _isLoadingFirstPage => _dataSource.isLoadingFirstPage;
 
-  bool get _isListingWithError => _dataSource.isListingWithError;
+  bool get _hasSubsequentPageError => _dataSource.hasSubsequentPageError;
 
   bool get _isListEmpty => _dataSource.isListEmpty;
 
@@ -185,7 +185,7 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
         sliver: AnimatedBuilder(
           animation: _dataSource,
           builder: (context, _) {
-            if (_isListingWithLoading) {
+            if (_isListingInProgress) {
               return widget.loadingListingBuilder(
                 context,
                 _buildListItemWidget,
@@ -208,7 +208,7 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
               );
             }
 
-            if (_isListingWithError) {
+            if (_hasSubsequentPageError) {
               return widget.errorListingBuilder(
                 context,
                 _buildListItemWidget,

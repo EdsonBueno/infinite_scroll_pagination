@@ -159,6 +159,31 @@ Widget build(BuildContext context) =>
     );
 ```
 
+## Listening to Status Changes
+If you need to execute some action when the list status changes, such as displaying a dialog/snackbar/toast, use [PagedStateChangeListener](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedStateChangeListener-class.html). For example:
+
+```dart
+@override
+Widget build(BuildContext context) => PagedStateChangeListener(
+      dataSource: _dataSource,
+      onSubsequentPageError: () {
+       Scaffold.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Something went wrong while fetching a new page.'),
+          ),
+        );
+      },
+      child: PagedListView<int, CharacterSummary>(
+        dataSource: _dataSource,
+        builderDelegate: PagedChildBuilderDelegate<CharacterSummary>(
+          itemBuilder: (context, item, index) => CharacterListItem(
+            character: item,
+          ),
+        ),
+      ),
+    );
+```
+
 ## Custom Layout
 In case [PagedListView](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedListView-class.html), [PagedSliverList](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedSliverList-class.html), [PagedGridView](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedGridView-class.html) and [PagedSliverGrid](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedSliverGrid-class.html) doesn't work for you, you should create a new sliver layout.
 

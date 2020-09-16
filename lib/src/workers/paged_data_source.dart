@@ -63,13 +63,13 @@ abstract class PagedDataSource<PageKeyType, ItemType> extends ChangeNotifier {
 
   bool get _hasError => error != null;
 
-  bool get _isListingInProgress => _hasItems && hasNextPage;
+  bool get _isListingUnfinished => _hasItems && hasNextPage;
 
   /// Tells whether there's a next page to fetch.
   bool get hasNextPage => nextPageKey != null;
 
   /// Tells if the list is in progress, with a progress indicator at the bottom.
-  bool get isListingWithLoading => _isListingInProgress && !_hasError;
+  bool get isListingInProgress => _isListingUnfinished && !_hasError;
 
   /// Tells if the listing is completed.
   bool get isListingCompleted => _hasItems && !hasNextPage;
@@ -78,7 +78,7 @@ abstract class PagedDataSource<PageKeyType, ItemType> extends ChangeNotifier {
   bool get isLoadingFirstPage => itemCount == null && !_hasError;
 
   /// Tells if an error occurred fetching a subsequent page.
-  bool get isListingWithError => _isListingInProgress && _hasError;
+  bool get hasSubsequentPageError => _isListingUnfinished && _hasError;
 
   /// Tells if the listing is empty.
   bool get isListEmpty => itemCount != null && itemCount == 0;

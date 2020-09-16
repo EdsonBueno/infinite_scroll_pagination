@@ -7,10 +7,10 @@ class PagedStateChangeListener extends StatelessWidget {
   const PagedStateChangeListener({
     @required this.dataSource,
     @required this.child,
-    this.onListingWithLoading,
+    this.onListingInProgress,
     this.onLoadingFirstPage,
     this.onListingCompleted,
-    this.onListingWithError,
+    this.onSubsequentPageError,
     this.onNoItemsFound,
     this.onFirstPageError,
     Key key,
@@ -22,7 +22,7 @@ class PagedStateChangeListener extends StatelessWidget {
   final PagedDataSource dataSource;
 
   /// Called when the listing is with a progress indicator at the bottom.
-  final VoidCallback onListingWithLoading;
+  final VoidCallback onListingInProgress;
 
   /// Called when the [dataSource] is loading the first page.
   final VoidCallback onLoadingFirstPage;
@@ -31,7 +31,7 @@ class PagedStateChangeListener extends StatelessWidget {
   final VoidCallback onListingCompleted;
 
   /// Called when the [dataSource] fails fetching a subsequent page.
-  final VoidCallback onListingWithError;
+  final VoidCallback onSubsequentPageError;
 
   /// Called when the listing has no items and no errors.
   final VoidCallback onNoItemsFound;
@@ -50,8 +50,8 @@ class PagedStateChangeListener extends StatelessWidget {
       );
 
   void _callListenerByStatus() {
-    if (dataSource.isListingWithLoading) {
-      onListingWithLoading?.call();
+    if (dataSource.isListingInProgress) {
+      onListingInProgress?.call();
       return;
     }
 
@@ -65,8 +65,8 @@ class PagedStateChangeListener extends StatelessWidget {
       return;
     }
 
-    if (dataSource.isListingWithError) {
-      onListingWithError?.call();
+    if (dataSource.hasSubsequentPageError) {
+      onSubsequentPageError?.call();
       return;
     }
 
