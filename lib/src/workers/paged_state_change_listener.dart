@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:infinite_scroll_pagination/src/infrastructure/listenable_listener.dart';
+import 'package:infinite_scroll_pagination/src/utils/listenable_listener.dart';
 
 /// Listens to state changes on a given [PagedDataSource].
 class PagedStateChangeListener extends StatelessWidget {
