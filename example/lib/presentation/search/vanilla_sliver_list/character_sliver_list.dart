@@ -16,20 +16,30 @@ class _CharacterSliverListState extends State<CharacterSliverList> {
       CharacterSliverListDataSource();
 
   @override
-  Widget build(BuildContext context) => CustomScrollView(
-        slivers: <Widget>[
-          CharacterSearchInputSliver(
-            onChanged: _dataSource.updateSearchTerm,
-          ),
-          PagedSliverList<int, CharacterSummary>(
-            dataSource: _dataSource,
-            builderDelegate: PagedChildBuilderDelegate<CharacterSummary>(
-              itemBuilder: (context, item, index) => CharacterListItem(
-                character: item,
+  Widget build(BuildContext context) => PagedStateChangeListener(
+        dataSource: _dataSource,
+        onListingWithError: () {
+          Scaffold.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Something went wrong while fetching a new page.'),
+            ),
+          );
+        },
+        child: CustomScrollView(
+          slivers: <Widget>[
+            CharacterSearchInputSliver(
+              onChanged: _dataSource.updateSearchTerm,
+            ),
+            PagedSliverList<int, CharacterSummary>(
+              dataSource: _dataSource,
+              builderDelegate: PagedChildBuilderDelegate<CharacterSummary>(
+                itemBuilder: (context, item, index) => CharacterListItem(
+                  character: item,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       );
 
   @override

@@ -27,11 +27,11 @@ class _CharacterListScreenState extends State<CharacterListScreen> {
               icon: Icon(Icons.refresh),
             ),
             BottomNavigationBarItem(
-              title: Text('Search'),
+              title: Text('Search/Listener'),
               icon: Icon(Icons.search),
             ),
             BottomNavigationBarItem(
-              title: Text('BLoC/Grid Search'),
+              title: Text('BLoC/Grid/Search'),
               icon: Icon(Icons.grid_on),
             )
           ],
