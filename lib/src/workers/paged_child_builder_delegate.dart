@@ -1,12 +1,12 @@
 import 'package:flutter/widgets.dart';
 
-typedef ItemWidgetBuilder<ItemType> = Function(
+typedef ItemWidgetBuilder<ItemType> = Widget Function(
   BuildContext context,
   ItemType item,
   int index,
 );
 
-typedef ErrorIndicatorWidgetBuilder = Function(
+typedef ErrorIndicatorWidgetBuilder = Widget Function(
   BuildContext context,
   dynamic error,
   VoidCallback retry,

@@ -2,6 +2,11 @@ import 'package:flutter/widgets.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:infinite_scroll_pagination/src/utils/listenable_listener.dart';
 
+typedef ErrorListener = void Function(
+  dynamic error,
+  VoidCallback retry,
+);
+
 /// Listens to state changes on a given [PagedDataSource].
 class PagedStateChangeListener extends StatelessWidget {
   const PagedStateChangeListener({
@@ -31,13 +36,13 @@ class PagedStateChangeListener extends StatelessWidget {
   final VoidCallback onListingCompleted;
 
   /// Called when the [dataSource] fails fetching a subsequent page.
-  final VoidCallback onSubsequentPageError;
+  final ErrorListener onSubsequentPageError;
 
   /// Called when the listing has no items and no errors.
   final VoidCallback onNoItemsFound;
 
   /// Called when an error occurred fetching the first page.
-  final VoidCallback onFirstPageError;
+  final ErrorListener onFirstPageError;
 
   /// The widget below this widget in the tree.
   final Widget child;
@@ -66,14 +71,20 @@ class PagedStateChangeListener extends StatelessWidget {
     }
 
     if (dataSource.hasSubsequentPageError) {
-      onSubsequentPageError?.call();
+      onSubsequentPageError?.call(
+        dataSource.error,
+        dataSource.retryLastRequest,
+      );
       return;
     }
 
     if (dataSource.isListEmpty) {
       onNoItemsFound?.call();
     } else {
-      onFirstPageError?.call();
+      onFirstPageError?.call(
+        dataSource.error,
+        dataSource.retryLastRequest,
+      );
     }
   }
 }
