@@ -44,16 +44,21 @@ abstract class PagedDataSource<PageKeyType, ItemType> extends ChangeNotifier {
   /// convenience functions: [notifyChange], [notifyNewPage] or [notifyError].
   void fetchItems(PageKeyType pageKey);
 
-  /// All items loaded so far. Initially `null`.
+  /// List of currently loaded items. Initially `null`.
   List<ItemType> itemList;
 
-  /// The current error, if any.
+  /// Holds the current error, if any. Initially `null`.
   dynamic error;
 
-  /// The key for the next page in the API.
+  /// The key for the next page to be fetched.
+  ///
+  /// Initialized with the same value as [firstPageKey], received in the
+  /// constructor.
   PageKeyType nextPageKey;
 
-  /// The key for the first page in the API.
+  /// The key for the first page to be fetched.
+  ///
+  /// Needed for being able to reset state.
   final PageKeyType firstPageKey;
 
   bool get _hasItems => itemCount != null && itemCount > 0;
