@@ -7,7 +7,7 @@ typedef ErrorListener = void Function(
   VoidCallback retry,
 );
 
-/// Listens to state changes on a given [PagedDataSource].
+/// Provides hooks for state changes on a given [PagedDataSource].
 class PagedStateChangeListener extends StatelessWidget {
   const PagedStateChangeListener({
     @required this.dataSource,
