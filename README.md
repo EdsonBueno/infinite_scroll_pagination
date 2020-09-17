@@ -79,7 +79,7 @@ For more usage examples, please take a look at our [cookbook](https://pub.dev/pa
 
 - **Extensible**: Seamless integration with [pull-to-refresh](https://pub.dev/packages/infinite_scroll_pagination/example#pull-to-refresh), [searching, filtering and sorting](https://pub.dev/packages/infinite_scroll_pagination/example#searchingfilteringsorting).
 
-- **Listen to status changes**: In addition to displaying widgets indicating your status, such as progress and error indicators, you can also use a listener to display dialogs/snackbars/toasts or execute any other action on status changes.
+- **Listen to state changes**: In addition to displaying widgets indicating the current status, such as progress and error indicators, you can also [use a listener](https://pub.dev/packages/infinite_scroll_pagination/example#listening-to-state-changes) to display dialogs/snackbars/toasts or execute any other action.
 
 ## How It Works
 

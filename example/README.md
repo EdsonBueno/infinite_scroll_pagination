@@ -159,8 +159,9 @@ Widget build(BuildContext context) =>
     );
 ```
 
-## Listening to Status Changes
-If you need to execute some action when the list status changes, such as displaying a dialog/snackbar/toast, use [PagedStateChangeListener](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedStateChangeListener-class.html). For example:
+## Listening to State Changes
+
+If you need to execute some action when the list state changes, such as displaying a dialog/snackbar/toast, or sending a custom event to a BLoC or so, use [PagedStateChangeListener](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedStateChangeListener-class.html). For example:
 
 ```dart
 @override
