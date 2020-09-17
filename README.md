@@ -1,5 +1,5 @@
 <p align="center">
-	<img src="https://raw.githubusercontent.com/EdsonBueno/infinite_scroll_pagination/master/docs/assets/logo.png" style="max-width:100%;max-height: 130px;" alt="Infinite Scroll Pagination Logo" />
+	<img src="https://raw.githubusercontent.com/EdsonBueno/infinite_scroll_pagination/master/docs/assets/logo.png" height="130" alt="Infinite Scroll Pagination Logo" />
 </p>
 <p align="center">
 	<a href="https://pub.dev/packages/infinite_scroll_pagination"><img src="https://img.shields.io/pub/v/infinite_scroll_pagination.svg" alt="Pub.dev Badge"></a>
