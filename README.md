@@ -79,7 +79,7 @@ For more usage examples, please take a look at our [cookbook](https://pub.dev/pa
 
 - **Extensible**: Seamless integration with [pull-to-refresh](https://pub.dev/packages/infinite_scroll_pagination/example#pull-to-refresh), [searching, filtering and sorting](https://pub.dev/packages/infinite_scroll_pagination/example#searchingfilteringsorting).
 
-- **Listen to state changes**: In addition to displaying widgets indicating the current status, such as progress and error indicators, you can also [use a listener](https://pub.dev/packages/infinite_scroll_pagination/example#listening-to-state-changes) to display dialogs/snackbars/toasts or execute any other action.
+- **Listen to state changes**: In addition to displaying widgets that indicate the current status, such as progress and error indicators, you can also [use a listener](https://pub.dev/packages/infinite_scroll_pagination/example#listening-to-state-changes) to display dialogs/snackbars/toasts or execute any other action.
 
 ## How It Works
 
@@ -102,7 +102,7 @@ Flutter indeed [makes our job way easier](https://flutter.dev/docs/resources/ins
 
 [ListView.builder](https://api.flutter.dev/flutter/widgets/ListView/ListView.builder.html) *builds* your items on demand, but it doesn't help you with fetching them or displaying status indicators.
 
-Your listing has many possible statuses: first page loading, first page error, subsequent page loadings, subsequent page errors, empty list and completed list. **Infinite Scroll Pagination** takes care of orchestrating between them, rendering each one and letting you know when more data is needed.
+Your listing has many possible statuses: first page loading, first page error, subsequent page loading, subsequent page error, empty list and completed list. **Infinite Scroll Pagination** takes care of orchestrating between them, rendering each one and letting you know when more data is needed.
 
 ## Troubleshooting
 

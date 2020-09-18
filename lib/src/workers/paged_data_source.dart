@@ -79,7 +79,7 @@ abstract class PagedDataSource<PageKeyType, ItemType> extends ChangeNotifier {
   /// Tells if the listing is completed.
   bool get isListingCompleted => _hasItems && !hasNextPage;
 
-  /// Tells if we're still loading the first page.
+  /// Tells if this data source is still waiting for the first page.
   bool get isLoadingFirstPage => itemCount == null && !_hasError;
 
   /// Tells if an error occurred fetching a subsequent page.

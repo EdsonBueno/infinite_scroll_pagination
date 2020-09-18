@@ -26,10 +26,10 @@ class PagedStateChangeListener extends StatelessWidget {
   /// The data source to be listened.
   final PagedDataSource dataSource;
 
-  /// Called when the listing is with a progress indicator at the bottom.
+  /// Called when the listing has a progress indicator at the bottom.
   final VoidCallback onListingInProgress;
 
-  /// Called when the [dataSource] is loading the first page.
+  /// Called when the [dataSource] is waiting for the first page.
   final VoidCallback onLoadingFirstPage;
 
   /// Called when the listing has fetched all items.
