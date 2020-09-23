@@ -204,6 +204,7 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
             if (_isLoadingFirstPage) {
               _lastFetchTriggerIndex = null;
               return SliverFillRemaining(
+                hasScrollBody: false,
                 child: _firstPageProgressIndicatorBuilder(context),
               );
             }
@@ -223,10 +224,12 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
 
             if (_isListEmpty) {
               return SliverFillRemaining(
+                hasScrollBody: false,
                 child: _noItemsFoundIndicatorBuilder(context),
               );
             } else {
               return SliverFillRemaining(
+                hasScrollBody: false,
                 child: _firstPageErrorIndicatorBuilder(
                   context,
                   _error,
