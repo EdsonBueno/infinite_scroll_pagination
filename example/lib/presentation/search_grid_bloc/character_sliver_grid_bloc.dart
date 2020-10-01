@@ -17,6 +17,8 @@ class CharacterSliverGridBloc {
         .addTo(_subscriptions);
   }
 
+  static const _pageSize = 20;
+
   final _subscriptions = CompositeSubscription();
 
   final _onNewListingStateController =
@@ -46,13 +48,12 @@ class CharacterSliverGridBloc {
   Stream<CharacterListingState> _fetchCharacterSummaryList(int pageKey) async* {
     final lastListingState = _onNewListingStateController.value;
     try {
-      const pageSize = 20;
       final newItems = await RemoteApi.getCharacterList(
         pageKey,
-        pageSize,
+        _pageSize,
         searchTerm: searchInputValue,
       );
-      final isLastPage = newItems.length < pageSize;
+      final isLastPage = newItems.length < _pageSize;
       final nextPageKey = isLastPage ? null : pageKey + newItems.length;
       yield CharacterListingState(
         error: null,

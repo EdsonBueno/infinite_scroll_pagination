@@ -11,12 +11,36 @@ class CharacterListView extends StatefulWidget {
 }
 
 class _CharacterListViewState extends State<CharacterListView> {
-  final CharacterListViewDataSource _dataSource = CharacterListViewDataSource();
+  static const _pageSize = 20;
+
+  final PagingController<int, CharacterSummary> _pagingController =
+      PagingController(firstPageKey: 0);
 
   @override
-  Widget build(BuildContext context) => 
-      PagedListView<int, CharacterSummary>(
-        dataSource: _dataSource,
+  void initState() {
+    _pagingController.addPageRequestListener((pageKey) {
+      _fetchPage(pageKey);
+    });
+    super.initState();
+  }
+
+  void _fetchPage(int pageKey) {
+    RemoteApi.getCharacterList(pageKey, _pageSize).then((newItems) {
+      final isLastPage = newItems.length < _pageSize;
+      if (isLastPage) {
+        _pagingController.appendLastPage(newItems);
+      } else {
+        final nextPageKey = pageKey + newItems.length;
+        _pagingController.appendNewPage(newItems, nextPageKey);
+      }
+    }).catchError((error) {
+      _pagingController.error = error;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) => PagedListView(
+        pagingController: _pagingController,
         builderDelegate: PagedChildBuilderDelegate<CharacterSummary>(
           itemBuilder: (context, item, index) => CharacterListItem(
             character: item,
@@ -26,23 +50,8 @@ class _CharacterListViewState extends State<CharacterListView> {
 
   @override
   void dispose() {
-    _dataSource.dispose();
+    _pagingController.dispose();
     super.dispose();
-  }
-}
-
-class CharacterListViewDataSource
-    extends PagedDataSource<int, CharacterSummary> {
-  CharacterListViewDataSource() : super(0);
-  static const _pageSize = 20;
-
-  @override
-  void fetchItems(int pageKey) {
-    RemoteApi.getCharacterList(pageKey, _pageSize).then((newItems) {
-      final hasFinished = newItems.length < _pageSize;
-      final nextPageKey =  hasFinished ? null : pageKey + newItems.length;
-      notifyNewPage(newItems, nextPageKey);
-    }).catchError(notifyError);
   }
 }
 ```
@@ -51,7 +60,7 @@ class CharacterListViewDataSource
 ```dart
 @override
 Widget build(BuildContext context) => PagedListView<int, CharacterSummary>.separated(
-  dataSource: _dataSource,
+  pagingController: _pagingController,
   builderDelegate: PagedChildBuilderDelegate<CharacterSummary>(
     itemBuilder: (context, item, index) => CharacterListItem(
         character: item,
@@ -73,10 +82,10 @@ Widget build(BuildContext context) =>
     CustomScrollView(
       slivers: <Widget>[
         CharacterSearchInputSliver(
-          onChanged: _dataSource.updateSearchTerm,
+          onChanged: _updateSearchTerm,
         ),
         PagedSliverList<int, CharacterSummary>(
-          dataSource: _dataSource,
+          pagingController: _pagingController,
           builderDelegate: PagedChildBuilderDelegate<CharacterSummary>(
             itemBuilder: (context, item, index) => CharacterListItem(
               character: item,

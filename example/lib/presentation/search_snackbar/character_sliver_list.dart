@@ -12,9 +12,13 @@ class CharacterSliverList extends StatefulWidget {
 }
 
 class _CharacterSliverListState extends State<CharacterSliverList> {
+  static const _pageSize = 17;
+
   final PagingController _pagingController =
       PagingController<int, CharacterSummary>(firstPageKey: 0);
+
   Object _activeCallbackIdentity;
+
   String _searchTerm;
 
   @override
@@ -46,11 +50,10 @@ class _CharacterSliverListState extends State<CharacterSliverList> {
     final callbackIdentity = Object();
 
     _activeCallbackIdentity = callbackIdentity;
-    const pageSize = 17;
-    RemoteApi.getCharacterList(pageKey, pageSize, searchTerm: _searchTerm)
+    RemoteApi.getCharacterList(pageKey, _pageSize, searchTerm: _searchTerm)
         .then((newItems) {
       if (callbackIdentity == _activeCallbackIdentity) {
-        final isLastPage = newItems.length < pageSize;
+        final isLastPage = newItems.length < _pageSize;
         if (isLastPage) {
           _pagingController.appendLastPage(newItems);
         } else {

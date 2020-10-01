@@ -11,6 +11,8 @@ class CharacterListView extends StatefulWidget {
 }
 
 class _CharacterListViewState extends State<CharacterListView> {
+  static const _pageSize = 20;
+
   final PagingController<int, CharacterSummary> _pagingController =
       PagingController(firstPageKey: 0);
   Object _activeCallbackIdentity;
@@ -28,10 +30,9 @@ class _CharacterListViewState extends State<CharacterListView> {
 
     _activeCallbackIdentity = callbackIdentity;
 
-    const pageSize = 20;
-    RemoteApi.getCharacterList(pageKey, pageSize).then((newItems) {
+    RemoteApi.getCharacterList(pageKey, _pageSize).then((newItems) {
       if (callbackIdentity == _activeCallbackIdentity) {
-        final isLastPage = newItems.length < pageSize;
+        final isLastPage = newItems.length < _pageSize;
         if (isLastPage) {
           _pagingController.appendLastPage(newItems);
         } else {
