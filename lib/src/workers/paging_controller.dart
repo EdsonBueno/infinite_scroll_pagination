@@ -31,6 +31,12 @@ class PagingController<PageKeyType, ItemType>
   /// Needed for being able to reset state.
   final PageKeyType firstPageKey;
 
+  /// The loaded items count.
+  int get itemCount => itemList?.length;
+
+  /// Tells whether there's a next page to fetch.
+  bool get hasNextPage => nextPageKey != null;
+
   ObserverList<PagingStatusListener> _statusListeners =
       ObserverList<PagingStatusListener>();
   ObserverList<PageRequestListener> _pageRequestListeners =
@@ -40,24 +46,26 @@ class PagingController<PageKeyType, ItemType>
 
   dynamic get error => value.error;
   set error(dynamic newError) {
-    value = value.copyWith(
+    value = PagingState(
       error: newError,
+      itemList: itemList,
+      nextPageKey: nextPageKey,
     );
   }
 
   PageKeyType get nextPageKey => value.nextPageKey;
 
-  void addNewPage(List<ItemType> newItems, PageKeyType nextPageKey) {
+  void appendNewPage(List<ItemType> newItems, PageKeyType nextPageKey) {
     final previousItems = value.itemList ?? [];
     final itemList = previousItems + newItems;
-    value = value.copyWith(
+    value = PagingState(
       itemList: itemList,
       error: null,
       nextPageKey: nextPageKey,
     );
   }
 
-  void addLastPage(List<ItemType> newItems) => addNewPage(newItems, null);
+  void appendLastPage(List<ItemType> newItems) => appendNewPage(newItems, null);
 
   /// Erases the current error so that we're back to loading state and retries
   /// the latest request.
@@ -67,7 +75,7 @@ class PagingController<PageKeyType, ItemType>
   }
 
   /// Resets `this` to its initial state and fetches the initial key again.
-  void reset() {
+  void refresh() {
     value = PagingState<PageKeyType, ItemType>(
       nextPageKey: firstPageKey,
       error: null,

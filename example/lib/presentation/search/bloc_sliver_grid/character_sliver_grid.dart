@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:breaking_bapp/character_summary.dart';
 import 'package:breaking_bapp/presentation/character_grid_item.dart';
 import 'package:breaking_bapp/presentation/search/bloc_sliver_grid/character_sliver_grid_bloc.dart';
-import 'package:breaking_bapp/presentation/search/bloc_sliver_grid/character_sliver_grid_data_source.dart';
 import 'package:breaking_bapp/presentation/search/character_search_input_sliver.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -16,14 +15,15 @@ class CharacterSliverGrid extends StatefulWidget {
 
 class _CharacterSliverGridState extends State<CharacterSliverGrid> {
   final CharacterSliverGridBloc _bloc = CharacterSliverGridBloc();
-  CharacterSliverGridDataSource _dataSource;
+  final PagingController<int, CharacterSummary> _pagingController =
+      PagingController(firstPageKey: 0);
   StreamSubscription _blocListingStateSubscription;
 
   @override
   void initState() {
-    _dataSource = CharacterSliverGridDataSource(
-      onPageRequested: _bloc.onPageRequestSink.add,
-    );
+    _pagingController.addPageRequestListener((pageKey) {
+      _bloc.onPageRequestSink.add(pageKey);
+    });
 
     // We could have used StreamBuilder, but that would unnecessarily recreate
     // the entire [PagedSliverGrid] every time the state changes.
@@ -31,10 +31,10 @@ class _CharacterSliverGridState extends State<CharacterSliverGrid> {
     // _dataSource is more efficient.
     _blocListingStateSubscription =
         _bloc.onNewListingState.listen((listingState) {
-      _dataSource.notifyChange(
-        listingState.itemList,
-        listingState.error,
-        listingState.nextPageKey,
+      _pagingController.value = PagingState(
+        nextPageKey: listingState.nextPageKey,
+        error: listingState.error,
+        itemList: listingState.itemList,
       );
     });
     super.initState();
@@ -47,7 +47,7 @@ class _CharacterSliverGridState extends State<CharacterSliverGrid> {
             onChanged: _bloc.onSearchInputChangedSink.add,
           ),
           PagedSliverGrid<int, CharacterSummary>(
-            dataSource: _dataSource,
+            pagingController: _pagingController,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               childAspectRatio: 100 / 150,
               crossAxisSpacing: 10,
@@ -65,7 +65,7 @@ class _CharacterSliverGridState extends State<CharacterSliverGrid> {
 
   @override
   void dispose() {
-    _dataSource.dispose();
+    _pagingController.dispose();
     _blocListingStateSubscription.cancel();
     super.dispose();
   }

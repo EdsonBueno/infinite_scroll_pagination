@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:infinite_scroll_pagination/src/core/paging_state.dart';
+import 'package:infinite_scroll_pagination/src/core/paging_status.dart';
 import 'package:infinite_scroll_pagination/src/ui/default_indicators/empty_list_indicator.dart';
 import 'package:infinite_scroll_pagination/src/ui/default_indicators/first_page_error_indicator.dart';
 import 'package:infinite_scroll_pagination/src/ui/default_indicators/first_page_progress_indicator.dart';
 import 'package:infinite_scroll_pagination/src/ui/default_indicators/new_page_error_indicator.dart';
 import 'package:infinite_scroll_pagination/src/ui/default_indicators/new_page_progress_indicator.dart';
-import 'package:infinite_scroll_pagination/src/workers/paged_data_source.dart';
+import 'package:infinite_scroll_pagination/src/workers/paging_controller.dart';
 
 typedef CompletedListingBuilder = Widget Function(
   BuildContext context,
@@ -40,14 +42,13 @@ typedef LoadingListingBuilder = Widget Function(
 /// [PagedGridView] and [PagedListView].
 class PagedSliverBuilder<PageKeyType, ItemType> extends StatefulWidget {
   const PagedSliverBuilder({
-    @required this.dataSource,
+    @required this.pagingController,
     @required this.builderDelegate,
     @required this.loadingListingBuilder,
     @required this.errorListingBuilder,
     @required this.completedListingBuilder,
-    this.invisibleItemsThreshold,
     Key key,
-  })  : assert(dataSource != null),
+  })  : assert(pagingController != null),
         assert(builderDelegate != null),
         assert(loadingListingBuilder != null),
         assert(errorListingBuilder != null),
@@ -62,13 +63,10 @@ class PagedSliverBuilder<PageKeyType, ItemType> extends StatefulWidget {
   /// This object should generally have a lifetime longer than the
   /// widgets itself; it should be reused each time a paged widget
   /// constructor is called.
-  final PagedDataSource<PageKeyType, ItemType> dataSource;
+  final PagingController<PageKeyType, ItemType> pagingController;
 
   /// The delegate for building UI pieces of scrolling paged listings.
   final PagedChildBuilderDelegate<ItemType> builderDelegate;
-
-  /// The number of items before the end of the list that triggers a new fetch.
-  final int invisibleItemsThreshold;
 
   /// The builder for an in-progress listing.
   final LoadingListingBuilder loadingListingBuilder;
@@ -86,7 +84,9 @@ class PagedSliverBuilder<PageKeyType, ItemType> extends StatefulWidget {
 
 class _PagedSliverBuilderState<PageKeyType, ItemType>
     extends State<PagedSliverBuilder<PageKeyType, ItemType>> {
-  PagedDataSource<PageKeyType, ItemType> get _dataSource => widget.dataSource;
+  PagingController<PageKeyType, ItemType> get _pagingController =>
+      widget.pagingController;
+
   PagedChildBuilderDelegate<ItemType> get _builderDelegate =>
       widget.builderDelegate;
 
@@ -114,38 +114,95 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
       _builderDelegate.noItemsFoundIndicatorBuilder ??
       (_) => EmptyListIndicator();
 
-  int get _invisibleItemsThreshold => widget.invisibleItemsThreshold ?? 3;
+  int get _invisibleItemsThreshold =>
+      _pagingController.invisibleItemsThreshold ?? 3;
 
-  int get _itemCount => _dataSource.itemCount;
+  int get _itemCount => _pagingController.itemCount;
 
-  bool get _hasNextPage => _dataSource.hasNextPage;
+  bool get _hasNextPage => _pagingController.hasNextPage;
 
-  dynamic get _error => _dataSource.error;
+  dynamic get _error => _pagingController.error;
 
-  PageKeyType get _nextKey => _dataSource.nextPageKey;
-
-  bool get _isListingInProgress => _dataSource.isListingInProgress;
-
-  bool get _isListingCompleted => _dataSource.isListingCompleted;
-
-  bool get _isLoadingFirstPage => _dataSource.isLoadingFirstPage;
-
-  bool get _hasSubsequentPageError => _dataSource.hasSubsequentPageError;
-
-  bool get _isListEmpty => _dataSource.isListEmpty;
+  PageKeyType get _nextKey => _pagingController.nextPageKey;
 
   /// The index that triggered the last page request.
   ///
   /// Used to avoid duplicate requests on rebuilds.
   int _lastFetchTriggerIndex;
 
-  /// Connects the [_dataSource] with the [_builderDelegate] in order to create
+  @override
+  void initState() {
+    _requestNextPage(0);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) =>
+      // The SliverPadding is used to avoid changing the topmost item inside a
+      // CustomScrollView.
+      // https://github.com/flutter/flutter/issues/55170
+      SliverPadding(
+        padding: const EdgeInsets.all(0),
+        sliver: ValueListenableBuilder<PagingState<PageKeyType, ItemType>>(
+          valueListenable: _pagingController,
+          builder: (context, pagingState, _) {
+            switch (pagingState.status) {
+              case PagingStatus.ongoing:
+                return widget.loadingListingBuilder(
+                  context,
+                  _buildListItemWidget,
+                  _itemCount,
+                  _newPageProgressIndicatorBuilder,
+                );
+              case PagingStatus.completed:
+                return widget.completedListingBuilder(
+                  context,
+                  _buildListItemWidget,
+                  _itemCount,
+                );
+              case PagingStatus.loadingFirstPage:
+                _lastFetchTriggerIndex = null;
+                return SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: _firstPageProgressIndicatorBuilder(context),
+                );
+              case PagingStatus.subsequentPageError:
+                return widget.errorListingBuilder(
+                  context,
+                  _buildListItemWidget,
+                  _itemCount,
+                  (context) => _newPageErrorIndicatorBuilder(
+                    context,
+                    _error,
+                    _pagingController.retryLastRequest,
+                  ),
+                );
+              case PagingStatus.empty:
+                return SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: _noItemsFoundIndicatorBuilder(context),
+                );
+              default:
+                return SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: _firstPageErrorIndicatorBuilder(
+                    context,
+                    _error,
+                    _pagingController.retryLastRequest,
+                  ),
+                );
+            }
+          },
+        ),
+      );
+
+  /// Connects the [_pagingController] with the [_builderDelegate] in order to create
   /// a list item widget and request new items if needed.
   Widget _buildListItemWidget(
     BuildContext context,
     int index,
   ) {
-    final item = _dataSource.itemList[index];
+    final item = _pagingController.itemList[index];
 
     final newFetchTriggerIndex = _itemCount - _invisibleItemsThreshold;
 
@@ -172,72 +229,6 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
   /// Requests a new page from the data source.
   void _requestNextPage(int triggerIndex) {
     _lastFetchTriggerIndex = triggerIndex;
-    _dataSource.fetchItems(_nextKey);
+    _pagingController.notifyPageRequestListeners(_nextKey);
   }
-
-  @override
-  Widget build(BuildContext context) =>
-      // The SliverPadding is used to avoid changing the topmost item inside a
-      // CustomScrollView.
-      // https://github.com/flutter/flutter/issues/55170
-      SliverPadding(
-        padding: const EdgeInsets.all(0),
-        sliver: AnimatedBuilder(
-          animation: _dataSource,
-          builder: (context, _) {
-            if (_isListingInProgress) {
-              return widget.loadingListingBuilder(
-                context,
-                _buildListItemWidget,
-                _itemCount,
-                _newPageProgressIndicatorBuilder,
-              );
-            }
-            if (_isListingCompleted) {
-              return widget.completedListingBuilder(
-                context,
-                _buildListItemWidget,
-                _itemCount,
-              );
-            }
-
-            if (_isLoadingFirstPage) {
-              _lastFetchTriggerIndex = null;
-              return SliverFillRemaining(
-                hasScrollBody: false,
-                child: _firstPageProgressIndicatorBuilder(context),
-              );
-            }
-
-            if (_hasSubsequentPageError) {
-              return widget.errorListingBuilder(
-                context,
-                _buildListItemWidget,
-                _itemCount,
-                (context) => _newPageErrorIndicatorBuilder(
-                  context,
-                  _error,
-                  _dataSource.retryLastRequest,
-                ),
-              );
-            }
-
-            if (_isListEmpty) {
-              return SliverFillRemaining(
-                hasScrollBody: false,
-                child: _noItemsFoundIndicatorBuilder(context),
-              );
-            } else {
-              return SliverFillRemaining(
-                hasScrollBody: false,
-                child: _firstPageErrorIndicatorBuilder(
-                  context,
-                  _error,
-                  _dataSource.retryLastRequest,
-                ),
-              );
-            }
-          },
-        ),
-      );
 }

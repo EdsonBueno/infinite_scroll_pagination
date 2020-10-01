@@ -17,18 +17,6 @@ class PagingState<PageKeyType, ItemType> {
 
   final PageKeyType nextPageKey;
 
-  /// Creates a copy of this value but with the given fields replaced with the new values.
-  PagingState copyWith({
-    PageKeyType nextPageKey,
-    List<ItemType> itemList,
-    dynamic error,
-  }) =>
-      PagingState(
-        nextPageKey: nextPageKey ?? this.nextPageKey,
-        itemList: itemList ?? this.itemList,
-        error: error ?? this.error,
-      );
-
   @override
   String toString() => '${objectRuntimeType(this, 'PagingState')}'
       '(nextPageKey: \u2524$nextPageKey\u251C, '

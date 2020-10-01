@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:infinite_scroll_pagination/src/ui/paged_sliver_builder.dart';
 import 'package:infinite_scroll_pagination/src/ui/paged_sliver_grid.dart';
 import 'package:infinite_scroll_pagination/src/workers/paged_child_builder_delegate.dart';
-import 'package:infinite_scroll_pagination/src/workers/paged_data_source.dart';
+import 'package:infinite_scroll_pagination/src/workers/paging_controller.dart';
 
 /// Paged [GridView] with progress and error indicators displayed as the last
 /// item.
@@ -11,12 +11,11 @@ import 'package:infinite_scroll_pagination/src/workers/paged_data_source.dart';
 /// used without the need for a [CustomScrollView]. Similar to a [GridView].
 class PagedGridView<PageKeyType, ItemType> extends BoxScrollView {
   const PagedGridView({
-    @required this.dataSource,
+    @required this.pagingController,
     @required this.builderDelegate,
     @required this.gridDelegate,
-    this.invisibleItemsThreshold,
     // Corresponds to [ScrollView.controller].
-    ScrollController controller,
+    ScrollController scrollController,
     // Corresponds to [ScrollView.scrollDirection].
     Axis scrollDirection = Axis.vertical,
     // Corresponds to [ScrollView.reverse].
@@ -35,14 +34,14 @@ class PagedGridView<PageKeyType, ItemType> extends BoxScrollView {
     // Corresponds to [ScrollView.cacheExtent].
     double cacheExtent,
     Key key,
-  })  : assert(dataSource != null),
+  })  : assert(pagingController != null),
         assert(builderDelegate != null),
         assert(gridDelegate != null),
         super(
           key: key,
           scrollDirection: scrollDirection,
           reverse: reverse,
-          controller: controller,
+          controller: scrollController,
           primary: primary,
           physics: physics,
           shrinkWrap: shrinkWrap,
@@ -50,11 +49,8 @@ class PagedGridView<PageKeyType, ItemType> extends BoxScrollView {
           cacheExtent: cacheExtent,
         );
 
-  /// Corresponds to [PagedSliverBuilder.dataSource].
-  final PagedDataSource<PageKeyType, ItemType> dataSource;
-
-  /// Corresponds to [PagedSliverBuilder.invisibleItemsThreshold].
-  final int invisibleItemsThreshold;
+  /// Corresponds to [PagedSliverBuilder.pagingController].
+  final PagingController<PageKeyType, ItemType> pagingController;
 
   /// Corresponds to [PagedSliverBuilder.builderDelegate].
   final PagedChildBuilderDelegate<ItemType> builderDelegate;
@@ -75,9 +71,8 @@ class PagedGridView<PageKeyType, ItemType> extends BoxScrollView {
   Widget buildChildLayout(BuildContext context) =>
       PagedSliverGrid<PageKeyType, ItemType>(
         builderDelegate: builderDelegate,
-        dataSource: dataSource,
+        pagingController: pagingController,
         gridDelegate: gridDelegate,
-        invisibleItemsThreshold: invisibleItemsThreshold,
         addAutomaticKeepAlives: addAutomaticKeepAlives,
         addRepaintBoundaries: addRepaintBoundaries,
         addSemanticIndexes: addSemanticIndexes,

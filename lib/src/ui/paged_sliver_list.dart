@@ -4,7 +4,7 @@ import 'package:infinite_scroll_pagination/src/ui/paged_list_view.dart';
 import 'package:infinite_scroll_pagination/src/ui/paged_sliver_builder.dart';
 import 'package:infinite_scroll_pagination/src/utils/appended_sliver_child_builder_delegate.dart';
 import 'package:infinite_scroll_pagination/src/workers/paged_child_builder_delegate.dart';
-import 'package:infinite_scroll_pagination/src/workers/paged_data_source.dart';
+import 'package:infinite_scroll_pagination/src/workers/paging_controller.dart';
 
 /// Paged [SliverList] with progress and error indicators displayed as the last
 /// item.
@@ -17,9 +17,8 @@ import 'package:infinite_scroll_pagination/src/workers/paged_data_source.dart';
 /// to add some widgets preceding or following your paged list.
 class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
   const PagedSliverList({
-    @required this.dataSource,
+    @required this.pagingController,
     @required this.builderDelegate,
-    this.invisibleItemsThreshold,
     this.addAutomaticKeepAlives = true,
     this.addRepaintBoundaries = true,
     this.addSemanticIndexes = true,
@@ -27,31 +26,27 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
     this.semanticIndexCallback,
     Key key,
   })  : separatorBuilder = null,
-        assert(dataSource != null),
+        assert(pagingController != null),
         assert(builderDelegate != null),
         super(key: key);
 
   const PagedSliverList.separated({
-    @required this.dataSource,
+    @required this.pagingController,
     @required this.builderDelegate,
     @required this.separatorBuilder,
-    this.invisibleItemsThreshold,
     this.addAutomaticKeepAlives = true,
     this.addRepaintBoundaries = true,
     this.addSemanticIndexes = true,
     this.itemExtent,
     this.semanticIndexCallback,
     Key key,
-  })  : assert(dataSource != null),
+  })  : assert(pagingController != null),
         assert(builderDelegate != null),
         assert(separatorBuilder != null),
         super(key: key);
 
-  /// Corresponds to [PagedSliverBuilder.dataSource].
-  final PagedDataSource<PageKeyType, ItemType> dataSource;
-
-  /// Corresponds to [PagedSliverBuilder.invisibleItemsThreshold].
-  final int invisibleItemsThreshold;
+  /// Corresponds to [PagedSliverBuilder.pagingController].
+  final PagingController<PageKeyType, ItemType> pagingController;
 
   /// Corresponds to [PagedSliverBuilder.builderDelegate].
   final PagedChildBuilderDelegate<ItemType> builderDelegate;
@@ -77,9 +72,8 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
       PagedSliverBuilder<PageKeyType, ItemType>(
-        dataSource: dataSource,
+        pagingController: pagingController,
         builderDelegate: builderDelegate,
-        invisibleItemsThreshold: invisibleItemsThreshold,
         completedListingBuilder: (
           context,
           itemBuilder,
