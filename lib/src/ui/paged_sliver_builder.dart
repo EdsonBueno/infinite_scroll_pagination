@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:infinite_scroll_pagination/src/core/paging_state.dart';
-import 'package:infinite_scroll_pagination/src/core/paging_status.dart';
+import 'package:infinite_scroll_pagination/src/model/paging_state.dart';
+import 'package:infinite_scroll_pagination/src/model/paging_status.dart';
 import 'package:infinite_scroll_pagination/src/ui/default_indicators/empty_list_indicator.dart';
 import 'package:infinite_scroll_pagination/src/ui/default_indicators/first_page_error_indicator.dart';
 import 'package:infinite_scroll_pagination/src/ui/default_indicators/first_page_progress_indicator.dart';

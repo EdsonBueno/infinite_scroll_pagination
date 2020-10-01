@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:infinite_scroll_pagination/src/core/paging_state.dart';
-import 'package:infinite_scroll_pagination/src/core/paging_status.dart';
+import 'package:infinite_scroll_pagination/src/model/paging_state.dart';
+import 'package:infinite_scroll_pagination/src/model/paging_status.dart';
 
 typedef PageRequestListener<PageKeyType> = void Function(
   PageKeyType pageKey,
@@ -16,12 +16,15 @@ class PagingController<PageKeyType, ItemType>
   PagingController({
     @required this.firstPageKey,
     this.invisibleItemsThreshold,
-  })  : assert(
-          firstPageKey != null,
-        ),
-        super(
+  }) : super(
           PagingState<PageKeyType, ItemType>(nextPageKey: firstPageKey),
         );
+
+  ObserverList<PagingStatusListener> _statusListeners =
+      ObserverList<PagingStatusListener>();
+
+  ObserverList<PageRequestListener<PageKeyType>> _pageRequestListeners =
+      ObserverList<PageRequestListener<PageKeyType>>();
 
   /// The number of items before the end of the list that triggers a new fetch.
   final int invisibleItemsThreshold;
@@ -37,16 +40,11 @@ class PagingController<PageKeyType, ItemType>
   /// Tells whether there's a next page to fetch.
   bool get hasNextPage => nextPageKey != null;
 
-  ObserverList<PagingStatusListener> _statusListeners =
-      ObserverList<PagingStatusListener>();
-  ObserverList<PageRequestListener> _pageRequestListeners =
-      ObserverList<PageRequestListener>();
-
   List<ItemType> get itemList => value.itemList;
 
   dynamic get error => value.error;
   set error(dynamic newError) {
-    value = PagingState(
+    value = PagingState<PageKeyType, ItemType>(
       error: newError,
       itemList: itemList,
       nextPageKey: nextPageKey,
@@ -58,7 +56,7 @@ class PagingController<PageKeyType, ItemType>
   void appendNewPage(List<ItemType> newItems, PageKeyType nextPageKey) {
     final previousItems = value.itemList ?? [];
     final itemList = previousItems + newItems;
-    value = PagingState(
+    value = PagingState<PageKeyType, ItemType>(
       itemList: itemList,
       error: null,
       nextPageKey: nextPageKey,
@@ -95,29 +93,30 @@ class PagingController<PageKeyType, ItemType>
 
   void notifyStatusListeners(PagingStatus status) {
     final localListeners = List<PagingStatusListener>.from(_statusListeners);
-    for (final listener in localListeners) {
+    localListeners.forEach((listener) {
       if (_statusListeners.contains(listener)) {
         listener(status);
       }
-    }
+    });
   }
 
-  void addPageRequestListener(PageRequestListener listener) {
+  void addPageRequestListener(PageRequestListener<PageKeyType> listener) {
     _pageRequestListeners.add(listener);
   }
 
-  void removePageRequestListener(PageRequestListener listener) {
+  void removePageRequestListener(PageRequestListener<PageKeyType> listener) {
     _pageRequestListeners.remove(listener);
   }
 
   void notifyPageRequestListeners(PageKeyType pageKey) {
     final localListeners =
-        List<PageRequestListener>.from(_pageRequestListeners);
-    for (final listener in localListeners) {
+        List<PageRequestListener<PageKeyType>>.from(_pageRequestListeners);
+
+    localListeners.forEach((listener) {
       if (_pageRequestListeners.contains(listener)) {
         listener(pageKey);
       }
-    }
+    });
   }
 
   @override

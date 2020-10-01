@@ -12,7 +12,10 @@ class CharacterListView extends StatefulWidget {
 
 class _CharacterListViewState extends State<CharacterListView> {
   final PagingController<int, CharacterSummary> _pagingController =
-      PagingController(firstPageKey: 0);
+      PagingController(
+    firstPageKey: 0,
+    invisibleItemsThreshold: 5,
+  );
   Object _activeCallbackIdentity;
 
   @override

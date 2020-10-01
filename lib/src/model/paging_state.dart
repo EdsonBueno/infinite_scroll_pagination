@@ -1,46 +1,19 @@
-import 'dart:ui';
-
 import 'package:flutter/foundation.dart';
-import 'package:infinite_scroll_pagination/src/core/paging_status.dart';
+import 'package:infinite_scroll_pagination/src/model/paging_status.dart';
 
 @immutable
 class PagingState<PageKeyType, ItemType> {
   const PagingState({
-    @required this.nextPageKey,
+    this.nextPageKey,
     this.itemList,
     this.error,
-  }) : assert(nextPageKey != null);
+  });
 
   final List<ItemType> itemList;
 
   final dynamic error;
 
   final PageKeyType nextPageKey;
-
-  @override
-  String toString() => '${objectRuntimeType(this, 'PagingState')}'
-      '(nextPageKey: \u2524$nextPageKey\u251C, '
-      'itemList: $itemList, '
-      'error: $error)';
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) {
-      return true;
-    }
-
-    return other is PagingState &&
-        other.nextPageKey == nextPageKey &&
-        other.itemList == itemList &&
-        other.error == error;
-  }
-
-  @override
-  int get hashCode => hashValues(
-        nextPageKey.hashCode,
-        itemList.hashCode,
-        error.hashCode,
-      );
 
   PagingStatus get status {
     if (_isOngoing) {

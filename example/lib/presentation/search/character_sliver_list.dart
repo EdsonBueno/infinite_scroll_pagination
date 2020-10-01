@@ -52,10 +52,10 @@ class _CharacterSliverListState extends State<CharacterSliverList> {
       if (callbackIdentity == _activeCallbackIdentity) {
         final hasFinished = newItems.length < pageSize;
         if (hasFinished) {
+          _pagingController.appendLastPage(newItems);
+        } else {
           final nextPageKey = pageKey + newItems.length;
           _pagingController.appendNewPage(newItems, nextPageKey);
-        } else {
-          _pagingController.appendLastPage(newItems);
         }
       }
     }).catchError((error) {
