@@ -50,8 +50,8 @@ class _CharacterSliverListState extends State<CharacterSliverList> {
     RemoteApi.getCharacterList(pageKey, pageSize, searchTerm: _searchTerm)
         .then((newItems) {
       if (callbackIdentity == _activeCallbackIdentity) {
-        final hasFinished = newItems.length < pageSize;
-        if (hasFinished) {
+        final isLastPage = newItems.length < pageSize;
+        if (isLastPage) {
           _pagingController.appendLastPage(newItems);
         } else {
           final nextPageKey = pageKey + newItems.length;

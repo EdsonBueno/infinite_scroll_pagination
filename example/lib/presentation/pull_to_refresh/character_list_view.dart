@@ -12,10 +12,7 @@ class CharacterListView extends StatefulWidget {
 
 class _CharacterListViewState extends State<CharacterListView> {
   final PagingController<int, CharacterSummary> _pagingController =
-      PagingController(
-    firstPageKey: 0,
-    invisibleItemsThreshold: 5,
-  );
+      PagingController(firstPageKey: 0);
   Object _activeCallbackIdentity;
 
   @override
@@ -34,8 +31,8 @@ class _CharacterListViewState extends State<CharacterListView> {
     const pageSize = 20;
     RemoteApi.getCharacterList(pageKey, pageSize).then((newItems) {
       if (callbackIdentity == _activeCallbackIdentity) {
-        final hasFinished = newItems.length < pageSize;
-        if (hasFinished) {
+        final isLastPage = newItems.length < pageSize;
+        if (isLastPage) {
           _pagingController.appendLastPage(newItems);
         } else {
           final nextPageKey = pageKey + newItems.length;

@@ -52,8 +52,8 @@ class CharacterSliverGridBloc {
         pageSize,
         searchTerm: searchInputValue,
       );
-      final hasFinished = newItems.length < pageSize;
-      final nextPageKey = hasFinished ? null : pageKey + newItems.length;
+      final isLastPage = newItems.length < pageSize;
+      final nextPageKey = isLastPage ? null : pageKey + newItems.length;
       yield CharacterListingState(
         error: null,
         nextPageKey: nextPageKey,
