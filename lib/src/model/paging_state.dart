@@ -39,15 +39,15 @@ class PagingState<PageKeyType, ItemType> {
     }
   }
 
-  bool get _hasItems => itemCount != null && itemCount > 0;
-
   int get itemCount => itemList?.length;
+
+  bool get hasNextPage => nextPageKey != null;
+
+  bool get _hasItems => itemCount != null && itemCount > 0;
 
   bool get _hasError => error != null;
 
   bool get _isListingUnfinished => _hasItems && hasNextPage;
-
-  bool get hasNextPage => nextPageKey != null;
 
   bool get _isOngoing => _isListingUnfinished && !_hasError;
 

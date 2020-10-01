@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:breaking_bapp/character_summary.dart';
-import 'package:breaking_bapp/presentation/character_grid_item.dart';
-import 'package:breaking_bapp/presentation/search/bloc_sliver_grid/character_sliver_grid_bloc.dart';
-import 'package:breaking_bapp/presentation/search/character_search_input_sliver.dart';
+import 'package:breaking_bapp/presentation/common/character_search_input_sliver.dart';
+import 'package:breaking_bapp/presentation/search_grid_bloc/character_grid_item.dart';
+import 'package:breaking_bapp/presentation/search_grid_bloc/character_sliver_grid_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';

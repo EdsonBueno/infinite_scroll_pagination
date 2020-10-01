@@ -1,5 +1,5 @@
 import 'package:breaking_bapp/character_summary.dart';
-import 'package:breaking_bapp/presentation/character_list_item.dart';
+import 'package:breaking_bapp/presentation/common/character_list_item.dart';
 import 'package:breaking_bapp/remote_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';

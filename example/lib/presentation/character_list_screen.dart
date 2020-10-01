@@ -1,6 +1,6 @@
-import 'package:breaking_bapp/presentation/character_list_view.dart';
-import 'package:breaking_bapp/presentation/search/bloc_sliver_grid/character_sliver_grid.dart';
-import 'package:breaking_bapp/presentation/search/character_sliver_list.dart';
+import 'package:breaking_bapp/presentation/pull_to_refresh/character_list_view.dart';
+import 'package:breaking_bapp/presentation/search_grid_bloc/character_sliver_grid.dart';
+import 'package:breaking_bapp/presentation/search_snackbar/character_sliver_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -27,7 +27,7 @@ class _CharacterListScreenState extends State<CharacterListScreen> {
               icon: Icon(Icons.refresh),
             ),
             BottomNavigationBarItem(
-              title: Text('Search/Listener'),
+              title: Text('Search/Snackbar'),
               icon: Icon(Icons.search),
             ),
             BottomNavigationBarItem(

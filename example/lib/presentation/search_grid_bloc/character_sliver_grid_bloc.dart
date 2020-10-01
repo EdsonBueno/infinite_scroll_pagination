@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:breaking_bapp/presentation/search/bloc_sliver_grid/character_sliver_grid_states.dart';
+import 'package:breaking_bapp/presentation/search_grid_bloc/character_sliver_grid_states.dart';
 import 'package:breaking_bapp/remote_api.dart';
 import 'package:rxdart/rxdart.dart';
 
