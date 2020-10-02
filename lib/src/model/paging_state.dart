@@ -33,7 +33,7 @@ class PagingState<PageKeyType, ItemType> {
     }
 
     if (_isEmpty) {
-      return PagingStatus.empty;
+      return PagingStatus.noItemsFound;
     } else {
       return PagingStatus.firstPageError;
     }

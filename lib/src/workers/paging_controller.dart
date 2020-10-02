@@ -11,6 +11,14 @@ typedef PagingStatusListener = void Function(
   PagingStatus status,
 );
 
+/// A controller for a paged widget.
+///
+/// If you modify the [itemList], [error] or [nextPageKey] properties, the
+/// paged widget will be notified and will update itself appropriately.
+///
+/// The [itemList], [error] or [nextPageKey] properties can be set from within
+/// a listener added to this controller. If more than one property need to be
+/// changed then the controller's [value] should be set instead.
 class PagingController<PageKeyType, ItemType>
     extends ValueNotifier<PagingState<PageKeyType, ItemType>> {
   PagingController({
@@ -26,22 +34,23 @@ class PagingController<PageKeyType, ItemType>
   ObserverList<PageRequestListener<PageKeyType>> _pageRequestListeners =
       ObserverList<PageRequestListener<PageKeyType>>();
 
-  /// The number of items before the end of the list that triggers a new fetch.
+  /// The number of remaining invisible items that should trigger a new fetch.
   final int invisibleItemsThreshold;
 
   /// The key for the first page to be fetched.
-  ///
-  /// Needed for being able to reset state.
   final PageKeyType firstPageKey;
 
-  /// The loaded items count.
-  int get itemCount => itemList?.length;
-
-  /// Tells whether there's a next page to fetch.
-  bool get hasNextPage => nextPageKey != null;
-
+  /// List of currently loaded items. Initially `null`.
   List<ItemType> get itemList => value.itemList;
+  set itemList(List<ItemType> newItemList) {
+    value = PagingState<PageKeyType, ItemType>(
+      error: error,
+      itemList: newItemList,
+      nextPageKey: nextPageKey,
+    );
+  }
 
+  /// The current error, if any. Initially `null`.
   dynamic get error => value.error;
   set error(dynamic newError) {
     value = PagingState<PageKeyType, ItemType>(
@@ -51,8 +60,21 @@ class PagingController<PageKeyType, ItemType>
     );
   }
 
+  /// The key for the next page to be fetched.
+  ///
+  /// Initialized with the same value as [firstPageKey], received in the
+  /// constructor.
   PageKeyType get nextPageKey => value.nextPageKey;
+  set nextPageKey(PageKeyType newNextPageKey) {
+    value = PagingState<PageKeyType, ItemType>(
+      error: error,
+      itemList: itemList,
+      nextPageKey: newNextPageKey,
+    );
+  }
 
+  /// Appends [newItems] to the previously loaded ones and replaces
+  /// the next page's key.
   void appendPage(List<ItemType> newItems, PageKeyType nextPageKey) {
     final previousItems = value.itemList ?? [];
     final itemList = previousItems + newItems;
@@ -63,16 +85,19 @@ class PagingController<PageKeyType, ItemType>
     );
   }
 
+  /// Appends [newItems] to the previously loaded ones and sets the next page
+  /// key to `null`.
   void appendLastPage(List<ItemType> newItems) => appendPage(newItems, null);
 
-  /// Erases the current error so that we're back to loading state and retries
-  /// the latest request.
+  /// Erases the current error and requests the last page again from the
+  /// listeners.
   void retryLastRequest() {
     error = null;
     notifyPageRequestListeners(nextPageKey);
   }
 
-  /// Resets `this` to its initial state and fetches the initial key again.
+  /// Resets [value] to its initial state and requests the first page again
+  /// from the listeners.
   void refresh() {
     value = PagingState<PageKeyType, ItemType>(
       nextPageKey: firstPageKey,
@@ -83,14 +108,25 @@ class PagingController<PageKeyType, ItemType>
     notifyPageRequestListeners(firstPageKey);
   }
 
+  /// Calls listener every time the status of the pagination changes.
+  ///
+  /// Listeners can be removed with [removeStatusListener].
   void addStatusListener(PagingStatusListener listener) {
     _statusListeners.add(listener);
   }
 
+  /// Stops calling the listener every time the status of the pagination
+  /// changes.
+  ///
+  /// Listeners can be added with [addStatusListener].
   void removeStatusListener(PagingStatusListener listener) {
     _statusListeners.remove(listener);
   }
 
+  /// Calls all the status listeners.
+  ///
+  /// If listeners are added or removed during this function, the modifications
+  /// will not change which listeners are called during this iteration.
   void notifyStatusListeners(PagingStatus status) {
     final localListeners = List<PagingStatusListener>.from(_statusListeners);
     localListeners.forEach((listener) {
@@ -100,14 +136,24 @@ class PagingController<PageKeyType, ItemType>
     });
   }
 
+  /// Calls listener every time new items are needed.
+  ///
+  /// Listeners can be removed with [removePageRequestListener].
   void addPageRequestListener(PageRequestListener<PageKeyType> listener) {
     _pageRequestListeners.add(listener);
   }
 
+  /// Stops calling the listener every time new items are needed.
+  ///
+  /// Listeners can be added with [addPageRequestListener].
   void removePageRequestListener(PageRequestListener<PageKeyType> listener) {
     _pageRequestListeners.remove(listener);
   }
 
+  /// Calls all the page request listeners.
+  ///
+  /// If listeners are added or removed during this function, the modifications
+  /// will not change which listeners are called during this iteration.
   void notifyPageRequestListeners(PageKeyType pageKey) {
     final localListeners =
         List<PageRequestListener<PageKeyType>>.from(_pageRequestListeners);

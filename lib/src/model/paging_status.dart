@@ -1,6 +1,6 @@
 enum PagingStatus {
   completed,
-  empty,
+  noItemsFound,
   loadingFirstPage,
   ongoing,
   firstPageError,

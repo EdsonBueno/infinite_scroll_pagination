@@ -171,7 +171,7 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
                   _itemCount,
                   (context) => _newPageErrorIndicatorBuilder(context),
                 );
-              case PagingStatus.empty:
+              case PagingStatus.noItemsFound:
                 return SliverFillRemaining(
                   hasScrollBody: false,
                   child: _noItemsFoundIndicatorBuilder(context),
@@ -221,4 +221,12 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
     _lastFetchTriggerIndex = triggerIndex;
     _pagingController.notifyPageRequestListeners(_nextKey);
   }
+}
+
+extension on PagingController {
+  /// The loaded items count.
+  int get itemCount => itemList?.length;
+
+  /// Tells whether there's a next page to fetch.
+  bool get hasNextPage => nextPageKey != null;
 }
