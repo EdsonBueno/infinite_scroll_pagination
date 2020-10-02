@@ -19,6 +19,9 @@ typedef PagingStatusListener = void Function(
 /// The [itemList], [error] or [nextPageKey] properties can be set from within
 /// a listener added to this controller. If more than one property need to be
 /// changed then the controller's [value] should be set instead.
+///
+/// This object should generally have a lifetime longer than the widgets
+/// itself; it should be reused each time a paged widget constructor is called.
 class PagingController<PageKeyType, ItemType>
     extends ValueNotifier<PagingState<PageKeyType, ItemType>> {
   PagingController({

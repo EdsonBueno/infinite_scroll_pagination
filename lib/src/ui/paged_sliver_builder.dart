@@ -30,12 +30,12 @@ typedef LoadingListingBuilder = Widget Function(
   WidgetBuilder newPageProgressIndicatorBuilder,
 );
 
-/// Helps creating infinitely scrolled paged sliver widgets.
+/// Assists the creation of infinitely scrolled paged sliver widgets.
 ///
-/// Combines a [PagedDataSource] with a
+/// Combines a [PagingController] with a
 /// [PagedChildBuilderDelegate] and calls the supplied
 /// [loadingListingBuilder], [errorListingBuilder] or
-/// [completedListingBuilder] to fill in the gaps.
+/// [completedListingBuilder] for filling in the gaps.
 ///
 /// For ordinary cases, this widget shouldn't be used directly. Instead, take a
 /// look at [PagedSliverList], [PagedSliverGrid],
@@ -55,17 +55,13 @@ class PagedSliverBuilder<PageKeyType, ItemType> extends StatefulWidget {
         assert(completedListingBuilder != null),
         super(key: key);
 
-  /// The data source for paged listings.
+  /// The controller for paged listings.
   ///
-  /// Fetches new items, tells what are the currently loaded ones, what's the
-  /// next page's key and whether there is an error.
-  ///
-  /// This object should generally have a lifetime longer than the
-  /// widgets itself; it should be reused each time a paged widget
-  /// constructor is called.
+  /// Informs the current state of the pagination and requests new items from
+  /// its listeners.
   final PagingController<PageKeyType, ItemType> pagingController;
 
-  /// The delegate for building UI pieces of scrolling paged listings.
+  /// The delegate for building the UI pieces of scrolling paged listings.
   final PagedChildBuilderDelegate<ItemType> builderDelegate;
 
   /// The builder for an in-progress listing.
@@ -186,8 +182,8 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
         ),
       );
 
-  /// Connects the [_pagingController] with the [_builderDelegate] in order to create
-  /// a list item widget and request new items if needed.
+  /// Connects the [_pagingController] with the [_builderDelegate] in order to
+  /// create a list item widget and request more items if needed.
   Widget _buildListItemWidget(
     BuildContext context,
     int index,
@@ -216,7 +212,7 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
     return itemWidget;
   }
 
-  /// Requests a new page from the data source.
+  /// Requests a new page from the controller's listeners.
   void _requestNextPage(int triggerIndex) {
     _lastFetchTriggerIndex = triggerIndex;
     _pagingController.notifyPageRequestListeners(_nextKey);
