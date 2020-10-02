@@ -58,7 +58,7 @@ class _CharacterSliverListState extends State<CharacterSliverList> {
           _pagingController.appendLastPage(newItems);
         } else {
           final nextPageKey = pageKey + newItems.length;
-          _pagingController.appendNewPage(newItems, nextPageKey);
+          _pagingController.appendPage(newItems, nextPageKey);
         }
       }
     }).catchError((error) {

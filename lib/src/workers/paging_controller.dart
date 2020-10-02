@@ -53,7 +53,7 @@ class PagingController<PageKeyType, ItemType>
 
   PageKeyType get nextPageKey => value.nextPageKey;
 
-  void appendNewPage(List<ItemType> newItems, PageKeyType nextPageKey) {
+  void appendPage(List<ItemType> newItems, PageKeyType nextPageKey) {
     final previousItems = value.itemList ?? [];
     final itemList = previousItems + newItems;
     value = PagingState<PageKeyType, ItemType>(
@@ -63,7 +63,7 @@ class PagingController<PageKeyType, ItemType>
     );
   }
 
-  void appendLastPage(List<ItemType> newItems) => appendNewPage(newItems, null);
+  void appendLastPage(List<ItemType> newItems) => appendPage(newItems, null);
 
   /// Erases the current error so that we're back to loading state and retries
   /// the latest request.

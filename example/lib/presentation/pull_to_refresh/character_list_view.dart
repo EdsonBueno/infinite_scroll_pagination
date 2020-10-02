@@ -37,7 +37,7 @@ class _CharacterListViewState extends State<CharacterListView> {
           _pagingController.appendLastPage(newItems);
         } else {
           final nextPageKey = pageKey + newItems.length;
-          _pagingController.appendNewPage(newItems, nextPageKey);
+          _pagingController.appendPage(newItems, nextPageKey);
         }
       }
     }).catchError((error) {
