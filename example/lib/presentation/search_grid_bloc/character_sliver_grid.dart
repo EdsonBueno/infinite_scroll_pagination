@@ -25,10 +25,10 @@ class _CharacterSliverGridState extends State<CharacterSliverGrid> {
       _bloc.onPageRequestSink.add(pageKey);
     });
 
-    // We could have used StreamBuilder, but that would unnecessarily recreate
+    // We could've used StreamBuilder, but that would unnecessarily recreate
     // the entire [PagedSliverGrid] every time the state changes.
     // Instead, handling the subscription ourselves and updating only the
-    // _dataSource is more efficient.
+    // _pagingController is more efficient.
     _blocListingStateSubscription =
         _bloc.onNewListingState.listen((listingState) {
       _pagingController.value = PagingState(

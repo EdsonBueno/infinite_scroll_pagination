@@ -16,7 +16,7 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
     @required this.pagingController,
     @required this.builderDelegate,
     // Corresponds to [ScrollView.controller].
-    ScrollController controller,
+    ScrollController scrollController,
     // Corresponds to [ScrollView.scrollDirection].
     Axis scrollDirection = Axis.vertical,
     // Corresponds to [ScrollView.reverse].
@@ -43,7 +43,7 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
           key: key,
           scrollDirection: scrollDirection,
           reverse: reverse,
-          controller: controller,
+          controller: scrollController,
           primary: primary,
           physics: physics,
           shrinkWrap: shrinkWrap,
@@ -56,7 +56,7 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
     @required this.builderDelegate,
     @required this.separatorBuilder,
     // Corresponds to [ScrollView.controller].
-    ScrollController controller,
+    ScrollController scrollController,
     // Corresponds to [ScrollView.scrollDirection].
     Axis scrollDirection = Axis.vertical,
     // Corresponds to [ScrollView.reverse].
@@ -83,7 +83,7 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
           key: key,
           scrollDirection: scrollDirection,
           reverse: reverse,
-          controller: controller,
+          controller: scrollController,
           primary: primary,
           physics: physics,
           shrinkWrap: shrinkWrap,
