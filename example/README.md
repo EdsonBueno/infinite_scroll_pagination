@@ -82,7 +82,7 @@ If you need to add preceding or following widgets that are expected to scroll al
 Widget build(BuildContext context) => CustomScrollView(
       slivers: <Widget>[
        CharacterSearchInputSliver(
-          onChanged: _updateSearchTerm,
+          onChanged: (searchTerm) => _updateSearchTerm(searchTerm),
         ),
         PagedSliverList<int, CharacterSummary>(
           pagingController: _pagingController,
@@ -223,7 +223,7 @@ void initState() {
           ),
           action: SnackBarAction(
             label: 'Retry',
-            onPressed: _pagingController.retryLastRequest,
+            onPressed: () => _pagingController.retryLastRequest(),
           ),
         ),
       );
@@ -326,7 +326,7 @@ class _CharacterSliverGridState extends State<CharacterSliverGrid> {
   Widget build(BuildContext context) => CustomScrollView(
         slivers: <Widget>[
           CharacterSearchInputSliver(
-            onChanged: _bloc.onSearchInputChangedSink.add,
+            onChanged: (searchTerm) => _bloc.onSearchInputChangedSink.add(searchTerm),
           ),
           PagedSliverGrid<int, CharacterSummary>(
             pagingController: _pagingController,

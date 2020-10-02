@@ -44,7 +44,9 @@ class _CharacterSliverGridState extends State<CharacterSliverGrid> {
   Widget build(BuildContext context) => CustomScrollView(
         slivers: <Widget>[
           CharacterSearchInputSliver(
-            onChanged: _bloc.onSearchInputChangedSink.add,
+            onChanged: (searchTerm) => _bloc.onSearchInputChangedSink.add(
+              searchTerm,
+            ),
           ),
           PagedSliverGrid<int, CharacterSummary>(
             pagingController: _pagingController,

@@ -36,7 +36,7 @@ class _CharacterSliverListState extends State<CharacterSliverList> {
             ),
             action: SnackBarAction(
               label: 'Retry',
-              onPressed: _pagingController.retryLastRequest,
+              onPressed: () => _pagingController.retryLastRequest(),
             ),
           ),
         );
@@ -72,7 +72,7 @@ class _CharacterSliverListState extends State<CharacterSliverList> {
   Widget build(BuildContext context) => CustomScrollView(
         slivers: <Widget>[
           CharacterSearchInputSliver(
-            onChanged: _updateSearchTerm,
+            onChanged: (searchTerm) => _updateSearchTerm(searchTerm),
           ),
           PagedSliverList<int, CharacterSummary>(
             pagingController: _pagingController,

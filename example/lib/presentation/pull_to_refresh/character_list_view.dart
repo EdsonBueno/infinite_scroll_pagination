@@ -50,7 +50,7 @@ class _CharacterListViewState extends State<CharacterListView> {
   @override
   Widget build(BuildContext context) => RefreshIndicator(
         onRefresh: () => Future.sync(
-          _pagingController.refresh,
+          () => _pagingController.refresh(),
         ),
         child: PagedListView<int, CharacterSummary>.separated(
           pagingController: _pagingController,
