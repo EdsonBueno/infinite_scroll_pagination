@@ -42,7 +42,7 @@ class _ApiUrlBuilder {
     String searchTerm,
   }) =>
       '$_baseUrl$_charactersResource?'
-      '&offset=$offset'
+      'offset=$offset'
       '&limit=$limit'
       '${_buildSearchTermQuery(searchTerm)}';
 
