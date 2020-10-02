@@ -23,15 +23,15 @@ class _CharacterListScreenState extends State<CharacterListScreen> {
           currentIndex: _currentBarIndex,
           items: const [
             BottomNavigationBarItem(
-              title: Text('Pull to Refresh'),
+              label: 'Pull to Refresh',
               icon: Icon(Icons.refresh),
             ),
             BottomNavigationBarItem(
-              title: Text('Search/Snackbar'),
+              label: 'Search/Snackbar',
               icon: Icon(Icons.search),
             ),
             BottomNavigationBarItem(
-              title: Text('BLoC/Grid/Search'),
+              label: 'BLoC/Grid/Search',
               icon: Icon(Icons.grid_on),
             )
           ],
