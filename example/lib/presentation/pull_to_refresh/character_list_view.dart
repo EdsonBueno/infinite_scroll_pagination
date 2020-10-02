@@ -15,7 +15,6 @@ class _CharacterListViewState extends State<CharacterListView> {
 
   final PagingController<int, CharacterSummary> _pagingController =
       PagingController(firstPageKey: 0);
-  Object _activeCallbackIdentity;
 
   @override
   void initState() {
@@ -26,46 +25,33 @@ class _CharacterListViewState extends State<CharacterListView> {
   }
 
   void _fetchPage(int pageKey) {
-    final callbackIdentity = Object();
-
-    _activeCallbackIdentity = callbackIdentity;
-
     RemoteApi.getCharacterList(pageKey, _pageSize).then((newItems) {
-      if (callbackIdentity == _activeCallbackIdentity) {
-        final isLastPage = newItems.length < _pageSize;
-        if (isLastPage) {
-          _pagingController.appendLastPage(newItems);
-        } else {
-          final nextPageKey = pageKey + newItems.length;
-          _pagingController.appendPage(newItems, nextPageKey);
-        }
+      final isLastPage = newItems.length < _pageSize;
+      if (isLastPage) {
+        _pagingController.appendLastPage(newItems);
+      } else {
+        final nextPageKey = pageKey + newItems.length;
+        _pagingController.appendPage(newItems, nextPageKey);
       }
     }).catchError((error) {
-      if (callbackIdentity == _activeCallbackIdentity) {
-        _pagingController.error = error;
-      }
+      _pagingController.error = error;
     });
   }
 
   @override
-  Widget build(BuildContext context) => RefreshIndicator(
-        onRefresh: () => Future.sync(
-          _pagingController.refresh,
-        ),
-        child: PagedListView<int, CharacterSummary>.separated(
-          pagingController: _pagingController,
-          builderDelegate: PagedChildBuilderDelegate<CharacterSummary>(
-            itemBuilder: (context, item, index) => CharacterListItem(
-              character: item,
-            ),
+  Widget build(BuildContext context) =>
+      PagedListView<int, CharacterSummary>.separated(
+        pagingController: _pagingController,
+        builderDelegate: PagedChildBuilderDelegate<CharacterSummary>(
+          itemBuilder: (context, item, index) => CharacterListItem(
+            character: item,
           ),
-          separatorBuilder: (context, index) => const Divider(),
         ),
+        separatorBuilder: (context, index) => const Divider(),
       );
 
   @override
   void dispose() {
-    _activeCallbackIdentity = null;
     _pagingController.dispose();
     super.dispose();
   }

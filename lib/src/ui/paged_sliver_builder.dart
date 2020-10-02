@@ -90,16 +90,16 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
   PagedChildBuilderDelegate<ItemType> get _builderDelegate =>
       widget.builderDelegate;
 
-  ErrorIndicatorWidgetBuilder get _firstPageErrorIndicatorBuilder =>
+  WidgetBuilder get _firstPageErrorIndicatorBuilder =>
       _builderDelegate.firstPageErrorIndicatorBuilder ??
-      (_, __, retry) => FirstPageErrorIndicator(
-            onTryAgain: retry,
+      (_) => FirstPageErrorIndicator(
+            onTryAgain: _pagingController.refresh,
           );
 
-  ErrorIndicatorWidgetBuilder get _newPageErrorIndicatorBuilder =>
+  WidgetBuilder get _newPageErrorIndicatorBuilder =>
       _builderDelegate.newPageErrorIndicatorBuilder ??
-      (_, __, retry) => NewPageErrorIndicator(
-            onTap: retry,
+      (_) => NewPageErrorIndicator(
+            onTap: _pagingController.retryLastRequest,
           );
 
   WidgetBuilder get _firstPageProgressIndicatorBuilder =>
@@ -120,8 +120,6 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
   int get _itemCount => _pagingController.itemCount;
 
   bool get _hasNextPage => _pagingController.hasNextPage;
-
-  dynamic get _error => _pagingController.error;
 
   PageKeyType get _nextKey => _pagingController.nextPageKey;
 
@@ -171,11 +169,7 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
                   context,
                   _buildListItemWidget,
                   _itemCount,
-                  (context) => _newPageErrorIndicatorBuilder(
-                    context,
-                    _error,
-                    _pagingController.retryLastRequest,
-                  ),
+                  (context) => _newPageErrorIndicatorBuilder(context),
                 );
               case PagingStatus.empty:
                 return SliverFillRemaining(
@@ -185,11 +179,7 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
               default:
                 return SliverFillRemaining(
                   hasScrollBody: false,
-                  child: _firstPageErrorIndicatorBuilder(
-                    context,
-                    _error,
-                    _pagingController.retryLastRequest,
-                  ),
+                  child: _firstPageErrorIndicatorBuilder(context),
                 );
             }
           },
