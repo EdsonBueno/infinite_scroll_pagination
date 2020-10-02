@@ -16,7 +16,7 @@
 
 Unopinionated, extensible and highly customizable package to help you lazily load and display small chunks of data as the user scrolls down your screen – known as infinite scrolling pagination, endless scrolling pagination, auto-pagination, lazy loading pagination, progressive loading pagination, etc.
 
-Designed to feel as part of the Flutter SDK itself.
+Designed to feel like part of the Flutter SDK itself.
 
 <img src="https://raw.githubusercontent.com/EdsonBueno/infinite_scroll_pagination/master/docs/assets/demo.gif" alt="Example Project" />
 
@@ -102,4 +102,4 @@ Flutter indeed [makes our job way easier](https://flutter.dev/docs/resources/ins
 
 [ListView.builder](https://api.flutter.dev/flutter/widgets/ListView/ListView.builder.html) *builds* your items on demand, but it doesn't help you with fetching them or displaying status indicators.
 
-Your listing may go through several statuses: first page loading, first page error, subsequent page loading, subsequent page error, empty list and completed list. **Infinite Scroll Pagination** takes care of orchestrating between them, rendering each one and letting you know when more data is needed.
+Your listing will go through several stages: first page loading, first page error, subsequent page loading, subsequent page error, empty list and completed list. **Infinite Scroll Pagination** takes care of orchestrating between them, rendering each one and letting you know when more data is needed.

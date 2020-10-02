@@ -8,7 +8,7 @@ import 'package:infinite_scroll_pagination/src/ui/default_indicators/first_page_
 import 'package:infinite_scroll_pagination/src/ui/default_indicators/first_page_progress_indicator.dart';
 import 'package:infinite_scroll_pagination/src/ui/default_indicators/new_page_error_indicator.dart';
 import 'package:infinite_scroll_pagination/src/ui/default_indicators/new_page_progress_indicator.dart';
-import 'package:infinite_scroll_pagination/src/workers/paging_controller.dart';
+import 'package:infinite_scroll_pagination/src/core/paging_controller.dart';
 
 typedef CompletedListingBuilder = Widget Function(
   BuildContext context,

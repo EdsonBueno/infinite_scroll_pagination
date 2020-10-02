@@ -1,9 +1,9 @@
 import 'package:flutter/widgets.dart';
+import 'package:infinite_scroll_pagination/src/core/paged_child_builder_delegate.dart';
+import 'package:infinite_scroll_pagination/src/core/paging_controller.dart';
 import 'package:infinite_scroll_pagination/src/ui/paged_grid_view.dart';
 import 'package:infinite_scroll_pagination/src/ui/paged_sliver_builder.dart';
 import 'package:infinite_scroll_pagination/src/utils/appended_sliver_child_builder_delegate.dart';
-import 'package:infinite_scroll_pagination/src/workers/paged_child_builder_delegate.dart';
-import 'package:infinite_scroll_pagination/src/workers/paging_controller.dart';
 
 /// Paged [SliverGrid] with progress and error indicators displayed as the last
 /// item.
