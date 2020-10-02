@@ -40,7 +40,7 @@ class PagingController<PageKeyType, ItemType>
   /// The key for the first page to be fetched.
   final PageKeyType firstPageKey;
 
-  /// List of currently loaded items. Initially `null`.
+  /// List with all items loaded so far. Initially `null`.
   List<ItemType> get itemList => value.itemList;
   set itemList(List<ItemType> newItemList) {
     value = PagingState<PageKeyType, ItemType>(
