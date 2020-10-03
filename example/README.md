@@ -112,8 +112,8 @@ class CharacterSliverList extends StatefulWidget {
 class _CharacterSliverListState extends State<CharacterSliverList> {
   static const _pageSize = 17;
 
-  final PagingController _pagingController =
-      PagingController<int, CharacterSummary>(firstPageKey: 0);
+  final PagingController<int, CharacterSummary> _pagingController =
+      PagingController(firstPageKey: 0);
 
   Object _activeCallbackIdentity;
 

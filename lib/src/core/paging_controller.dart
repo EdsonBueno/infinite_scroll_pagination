@@ -168,6 +168,16 @@ class PagingController<PageKeyType, ItemType>
     });
   }
 
+  /// Corresponding to [ValueNotifier.value].
+  @override
+  set value(PagingState<PageKeyType, ItemType> newValue) {
+    if (value.status != newValue.status) {
+      notifyStatusListeners(newValue.status);
+    }
+
+    super.value = newValue;
+  }
+
   @override
   void dispose() {
     _statusListeners = null;
