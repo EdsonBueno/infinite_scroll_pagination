@@ -168,8 +168,6 @@ class _CharacterSliverListState extends State<CharacterSliverList> {
   final PagingController<int, CharacterSummary> _pagingController =
       PagingController(firstPageKey: 0);
 
-  Object _activeCallbackIdentity;
-
   String _searchTerm;
 
   @override
@@ -182,24 +180,17 @@ class _CharacterSliverListState extends State<CharacterSliverList> {
   }
 
   void _fetchPage(pageKey) {
-    final callbackIdentity = Object();
-
-    _activeCallbackIdentity = callbackIdentity;
     RemoteApi.getCharacterList(pageKey, _pageSize, searchTerm: _searchTerm)
         .then((newItems) {
-      if (callbackIdentity == _activeCallbackIdentity) {
-        final isLastPage = newItems.length < _pageSize;
-        if (isLastPage) {
-          _pagingController.appendLastPage(newItems);
-        } else {
-          final nextPageKey = pageKey + newItems.length;
-          _pagingController.appendPage(newItems, nextPageKey);
-        }
+      final isLastPage = newItems.length < _pageSize;
+      if (isLastPage) {
+        _pagingController.appendLastPage(newItems);
+      } else {
+        final nextPageKey = pageKey + newItems.length;
+        _pagingController.appendPage(newItems, nextPageKey);
       }
     }).catchError((error) {
-      if (callbackIdentity == _activeCallbackIdentity) {
-        _pagingController.error = error;
-      }
+      _pagingController.error = error;
     });
   }
 
@@ -227,7 +218,6 @@ class _CharacterSliverListState extends State<CharacterSliverList> {
 
   @override
   void dispose() {
-    _activeCallbackIdentity = null;
     _pagingController.dispose();
     super.dispose();
   }

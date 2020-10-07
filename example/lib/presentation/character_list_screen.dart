@@ -4,14 +4,31 @@ import 'package:breaking_bapp/presentation/search_snackbar/character_sliver_list
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-/// Fetches and displays a list of characters' summarized info.
 class CharacterListScreen extends StatefulWidget {
   @override
   _CharacterListScreenState createState() => _CharacterListScreenState();
 }
 
 class _CharacterListScreenState extends State<CharacterListScreen> {
-  int _currentBarIndex = 0;
+  int _selectedBottomNavigationIndex = 0;
+
+  final List<_BottomNavigationItem> _bottomNavigationItems = [
+    _BottomNavigationItem(
+      label: 'Pull to Refresh',
+      iconData: Icons.refresh,
+      widgetBuilder: (context) => CharacterListView(),
+    ),
+    _BottomNavigationItem(
+      label: 'Search/Snackbar',
+      iconData: Icons.search,
+      widgetBuilder: (context) => CharacterSliverList(),
+    ),
+    _BottomNavigationItem(
+      label: 'BLoC/Grid/Search',
+      iconData: Icons.grid_on,
+      widgetBuilder: (context) => CharacterSliverGrid(),
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -20,29 +37,40 @@ class _CharacterListScreenState extends State<CharacterListScreen> {
         ),
         resizeToAvoidBottomInset: false,
         bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _currentBarIndex,
-          items: const [
-            BottomNavigationBarItem(
-              label: 'Pull to Refresh',
-              icon: Icon(Icons.refresh),
-            ),
-            BottomNavigationBarItem(
-              label: 'Search/Snackbar',
-              icon: Icon(Icons.search),
-            ),
-            BottomNavigationBarItem(
-              label: 'BLoC/Grid/Search',
-              icon: Icon(Icons.grid_on),
-            )
-          ],
+          currentIndex: _selectedBottomNavigationIndex,
+          items: _bottomNavigationItems
+              .map(
+                (item) => BottomNavigationBarItem(
+                  icon: Icon(item.iconData),
+                  label: item.label,
+                ),
+              )
+              .toList(),
           onTap: (newIndex) => setState(
-            () => _currentBarIndex = newIndex,
+            () => _selectedBottomNavigationIndex = newIndex,
           ),
         ),
-        body: _currentBarIndex == 0
-            ? CharacterListView()
-            : _currentBarIndex == 1
-                ? CharacterSliverList()
-                : CharacterSliverGrid(),
+        body: IndexedStack(
+          index: _selectedBottomNavigationIndex,
+          children: _bottomNavigationItems
+              .map(
+                (item) => item.widgetBuilder(context),
+              )
+              .toList(),
+        ),
       );
+}
+
+class _BottomNavigationItem {
+  const _BottomNavigationItem({
+    @required this.label,
+    @required this.iconData,
+    @required this.widgetBuilder,
+  })  : assert(label != null),
+        assert(iconData != null),
+        assert(widgetBuilder != null);
+
+  final String label;
+  final IconData iconData;
+  final WidgetBuilder widgetBuilder;
 }
