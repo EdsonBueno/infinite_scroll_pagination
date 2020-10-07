@@ -53,12 +53,14 @@ class PagedSliverGrid<PageKeyType, ItemType> extends StatelessWidget {
           context,
           itemBuilder,
           itemCount,
+          noMoreItemsIndicatorBuilder,
         ) =>
             SliverGrid(
           gridDelegate: gridDelegate,
           delegate: _buildSliverDelegate(
             itemBuilder,
             itemCount,
+            statusIndicatorBuilder: noMoreItemsIndicatorBuilder,
           ),
         ),
         loadingListingBuilder: (

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:infinite_scroll_pagination/src/core/paging_controller.dart';
 import 'package:infinite_scroll_pagination/src/model/paging_state.dart';
 import 'package:infinite_scroll_pagination/src/model/paging_status.dart';
 import 'package:infinite_scroll_pagination/src/ui/default_indicators/empty_list_indicator.dart';
@@ -8,12 +9,12 @@ import 'package:infinite_scroll_pagination/src/ui/default_indicators/first_page_
 import 'package:infinite_scroll_pagination/src/ui/default_indicators/first_page_progress_indicator.dart';
 import 'package:infinite_scroll_pagination/src/ui/default_indicators/new_page_error_indicator.dart';
 import 'package:infinite_scroll_pagination/src/ui/default_indicators/new_page_progress_indicator.dart';
-import 'package:infinite_scroll_pagination/src/core/paging_controller.dart';
 
 typedef CompletedListingBuilder = Widget Function(
   BuildContext context,
   IndexedWidgetBuilder itemWidgetBuilder,
   int itemCount,
+  WidgetBuilder noMoreItemsIndicatorBuilder,
 );
 
 typedef ErrorListingBuilder = Widget Function(
@@ -110,6 +111,9 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
       _builderDelegate.noItemsFoundIndicatorBuilder ??
       (_) => EmptyListIndicator();
 
+  WidgetBuilder get _noMoreItemsIndicatorBuilder =>
+      _builderDelegate.noMoreItemsIndicatorBuilder;
+
   int get _invisibleItemsThreshold =>
       _pagingController.invisibleItemsThreshold ?? 3;
 
@@ -153,6 +157,7 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
                   context,
                   _buildListItemWidget,
                   _itemCount,
+                  _noMoreItemsIndicatorBuilder,
                 );
               case PagingStatus.loadingFirstPage:
                 _lastFetchTriggerIndex = null;

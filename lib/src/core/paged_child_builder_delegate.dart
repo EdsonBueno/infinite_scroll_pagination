@@ -18,6 +18,7 @@ class PagedChildBuilderDelegate<ItemType> {
     this.firstPageProgressIndicatorBuilder,
     this.newPageProgressIndicatorBuilder,
     this.noItemsFoundIndicatorBuilder,
+    this.noMoreItemsIndicatorBuilder,
   }) : assert(itemBuilder != null);
 
   /// The builder for list items.
@@ -37,4 +38,7 @@ class PagedChildBuilderDelegate<ItemType> {
 
   /// The builder for a no items list indicator.
   final WidgetBuilder noItemsFoundIndicatorBuilder;
+
+  /// The builder for an indicator that all items have been fetched.
+  final WidgetBuilder noMoreItemsIndicatorBuilder;
 }

@@ -338,12 +338,14 @@ Widget build(BuildContext context) =>
         context,
         itemBuilder,
         itemCount,
+        noMoreItemsIndicatorBuilder,
       ) =>
           SliverGrid(
         gridDelegate: gridDelegate,
         delegate: _buildSliverDelegate(
           itemBuilder,
           itemCount,
+          statusIndicatorBuilder: noMoreItemsIndicatorBuilder,
         ),
       ),
       loadingListingBuilder: (

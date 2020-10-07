@@ -78,10 +78,12 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
           context,
           itemBuilder,
           itemCount,
+          noMoreItemsIndicatorBuilder,
         ) =>
             _buildSliverList(
           itemBuilder,
           itemCount,
+          statusIndicatorBuilder: noMoreItemsIndicatorBuilder,
         ),
         loadingListingBuilder: (
           context,
