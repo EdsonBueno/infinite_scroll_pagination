@@ -84,7 +84,7 @@ For more usage examples, please take a look at our [cookbook](https://pub.dev/pa
 
 - **API-agnostic**: By letting you in complete charge of your API calls, **Infinite Scroll Pagination** works with [any pagination strategy](https://nordicapis.com/everything-you-need-to-know-about-api-pagination/).
 
-- **Highly customizable**: You can change everything. Provide your own progress, error and empty list indicators. Too lazy to change? The defaults will cover you.
+- **Highly customizable**: [You can change everything](https://pub.dev/packages/infinite_scroll_pagination/example#customizing-indicators). Provide your own progress, error and empty list indicators. Too lazy to change? The defaults will cover you.
 
 - **Extensible**: Seamless integration with [pull-to-refresh](https://pub.dev/packages/infinite_scroll_pagination/example#pull-to-refresh), [searching, filtering and sorting](https://pub.dev/packages/infinite_scroll_pagination/example#searchingfilteringsorting).
 
