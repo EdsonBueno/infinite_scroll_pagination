@@ -16,7 +16,7 @@
 
 Unopinionated, extensible and highly customizable package to help you lazily load and display small chunks of data as the user scrolls down your screen – known as infinite scrolling pagination, endless scrolling pagination, auto-pagination, lazy loading pagination, progressive loading pagination, etc.
 
-Designed to feel like part of the Flutter SDK itself.
+Designed to feel like part of the own Flutter framework.
 
 <img src="https://raw.githubusercontent.com/EdsonBueno/infinite_scroll_pagination/master/docs/assets/demo.gif" alt="Example Project" />
 
@@ -57,7 +57,10 @@ class _CharacterListViewState extends State<CharacterListView> {
   }
 
   @override
-  Widget build(BuildContext context) => PagedListView<int, CharacterSummary>(
+  Widget build(BuildContext context) => 
+      // Don't worry about putting progress or error indicators on screen, the package is taking 
+      // care of that. If you want to customize them, use [PagedChildBuilderDelegate] properties.
+      PagedListView<int, CharacterSummary>(
         pagingController: _pagingController,
         builderDelegate: PagedChildBuilderDelegate<CharacterSummary>(
           itemBuilder: (context, item, index) => CharacterListItem(

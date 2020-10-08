@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
-import 'package:infinite_scroll_pagination/src/ui/paged_sliver_builder.dart';
-import 'package:infinite_scroll_pagination/src/ui/paged_sliver_grid.dart';
 import 'package:infinite_scroll_pagination/src/core/paged_child_builder_delegate.dart';
 import 'package:infinite_scroll_pagination/src/core/paging_controller.dart';
+import 'package:infinite_scroll_pagination/src/ui/paged_sliver_builder.dart';
+import 'package:infinite_scroll_pagination/src/ui/paged_sliver_grid.dart';
 
 /// Paged [GridView] with progress and error indicators displayed as the last
 /// item.
@@ -33,6 +33,9 @@ class PagedGridView<PageKeyType, ItemType> extends BoxScrollView {
     this.addSemanticIndexes = true,
     // Corresponds to [ScrollView.cacheExtent].
     double cacheExtent,
+    this.showNewPageProgressIndicatorAsGridChild = true,
+    this.showNewPageErrorIndicatorAsGridChild = true,
+    this.showNoMoreItemsIndicatorAsGridChild = true,
     Key key,
   })  : assert(pagingController != null),
         assert(builderDelegate != null),
@@ -67,6 +70,15 @@ class PagedGridView<PageKeyType, ItemType> extends BoxScrollView {
   /// Corresponds to [SliverChildBuilderDelegate.addSemanticIndexes].
   final bool addSemanticIndexes;
 
+  /// Corresponds to [PagedSliverGrid.showNewPageProgressIndicatorAsGridChild].
+  final bool showNewPageProgressIndicatorAsGridChild;
+
+  /// Corresponds to [PagedSliverGrid.showNewPageErrorIndicatorAsGridChild].
+  final bool showNewPageErrorIndicatorAsGridChild;
+
+  /// Corresponds to [PagedSliverGrid.showNoMoreItemsIndicatorAsGridChild].
+  final bool showNoMoreItemsIndicatorAsGridChild;
+
   @override
   Widget buildChildLayout(BuildContext context) =>
       PagedSliverGrid<PageKeyType, ItemType>(
@@ -76,5 +88,11 @@ class PagedGridView<PageKeyType, ItemType> extends BoxScrollView {
         addAutomaticKeepAlives: addAutomaticKeepAlives,
         addRepaintBoundaries: addRepaintBoundaries,
         addSemanticIndexes: addSemanticIndexes,
+        showNewPageProgressIndicatorAsGridChild:
+            showNewPageProgressIndicatorAsGridChild,
+        showNewPageErrorIndicatorAsGridChild:
+            showNewPageErrorIndicatorAsGridChild,
+        showNoMoreItemsIndicatorAsGridChild:
+            showNoMoreItemsIndicatorAsGridChild,
       );
 }

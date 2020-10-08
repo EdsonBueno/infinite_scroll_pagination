@@ -4,6 +4,7 @@ import 'package:infinite_scroll_pagination/src/core/paging_controller.dart';
 import 'package:infinite_scroll_pagination/src/ui/paged_grid_view.dart';
 import 'package:infinite_scroll_pagination/src/ui/paged_sliver_builder.dart';
 import 'package:infinite_scroll_pagination/src/utils/appended_sliver_child_builder_delegate.dart';
+import 'package:sliver_tools/sliver_tools.dart';
 
 /// Paged [SliverGrid] with progress and error indicators displayed as the last
 /// item.
@@ -20,6 +21,9 @@ class PagedSliverGrid<PageKeyType, ItemType> extends StatelessWidget {
     this.addAutomaticKeepAlives = true,
     this.addRepaintBoundaries = true,
     this.addSemanticIndexes = true,
+    this.showNewPageProgressIndicatorAsGridChild = true,
+    this.showNewPageErrorIndicatorAsGridChild = true,
+    this.showNoMoreItemsIndicatorAsGridChild = true,
     Key key,
   })  : assert(pagingController != null),
         assert(builderDelegate != null),
@@ -44,6 +48,24 @@ class PagedSliverGrid<PageKeyType, ItemType> extends StatelessWidget {
   /// Corresponds to [SliverChildBuilderDelegate.addSemanticIndexes].
   final bool addSemanticIndexes;
 
+  /// Whether the new page progress indicator should display as a grid child
+  /// or put below the grid.
+  ///
+  /// Defaults to true.
+  final bool showNewPageProgressIndicatorAsGridChild;
+
+  /// Whether the new page error indicator should display as a grid child
+  /// or put below the grid.
+  ///
+  /// Defaults to true.
+  final bool showNewPageErrorIndicatorAsGridChild;
+
+  /// Whether the no more items indicator should display as a grid child
+  /// or put below the grid.
+  ///
+  /// Defaults to true.
+  final bool showNoMoreItemsIndicatorAsGridChild;
+
   @override
   Widget build(BuildContext context) =>
       PagedSliverBuilder<PageKeyType, ItemType>(
@@ -55,13 +77,15 @@ class PagedSliverGrid<PageKeyType, ItemType> extends StatelessWidget {
           itemCount,
           noMoreItemsIndicatorBuilder,
         ) =>
-            SliverGrid(
+            _AppendedSliverGrid(
           gridDelegate: gridDelegate,
-          delegate: _buildSliverDelegate(
-            itemBuilder,
-            itemCount,
-            statusIndicatorBuilder: noMoreItemsIndicatorBuilder,
-          ),
+          itemBuilder: itemBuilder,
+          itemCount: itemCount,
+          appendixBuilder: noMoreItemsIndicatorBuilder,
+          showAppendixAsGridChild: showNoMoreItemsIndicatorAsGridChild,
+          addAutomaticKeepAlives: addAutomaticKeepAlives,
+          addSemanticIndexes: addSemanticIndexes,
+          addRepaintBoundaries: addRepaintBoundaries,
         ),
         loadingListingBuilder: (
           context,
@@ -69,13 +93,15 @@ class PagedSliverGrid<PageKeyType, ItemType> extends StatelessWidget {
           itemCount,
           progressIndicatorBuilder,
         ) =>
-            SliverGrid(
+            _AppendedSliverGrid(
           gridDelegate: gridDelegate,
-          delegate: _buildSliverDelegate(
-            itemBuilder,
-            itemCount,
-            statusIndicatorBuilder: progressIndicatorBuilder,
-          ),
+          itemBuilder: itemBuilder,
+          itemCount: itemCount,
+          appendixBuilder: progressIndicatorBuilder,
+          showAppendixAsGridChild: showNewPageProgressIndicatorAsGridChild,
+          addAutomaticKeepAlives: addAutomaticKeepAlives,
+          addSemanticIndexes: addSemanticIndexes,
+          addRepaintBoundaries: addRepaintBoundaries,
         ),
         errorListingBuilder: (
           context,
@@ -83,25 +109,73 @@ class PagedSliverGrid<PageKeyType, ItemType> extends StatelessWidget {
           itemCount,
           errorIndicatorBuilder,
         ) =>
-            SliverGrid(
+            _AppendedSliverGrid(
           gridDelegate: gridDelegate,
-          delegate: _buildSliverDelegate(
-            itemBuilder,
-            itemCount,
-            statusIndicatorBuilder: errorIndicatorBuilder,
-          ),
+          itemBuilder: itemBuilder,
+          itemCount: itemCount,
+          appendixBuilder: errorIndicatorBuilder,
+          showAppendixAsGridChild: showNewPageErrorIndicatorAsGridChild,
+          addAutomaticKeepAlives: addAutomaticKeepAlives,
+          addSemanticIndexes: addSemanticIndexes,
+          addRepaintBoundaries: addRepaintBoundaries,
         ),
       );
+}
 
-  SliverChildBuilderDelegate _buildSliverDelegate(
-    IndexedWidgetBuilder itemBuilder,
-    int itemCount, {
-    WidgetBuilder statusIndicatorBuilder,
+class _AppendedSliverGrid extends StatelessWidget {
+  const _AppendedSliverGrid({
+    @required this.gridDelegate,
+    @required this.itemBuilder,
+    @required this.itemCount,
+    this.showAppendixAsGridChild = true,
+    this.appendixBuilder,
+    this.addAutomaticKeepAlives = true,
+    this.addRepaintBoundaries = true,
+    this.addSemanticIndexes = true,
+    Key key,
+  })  : assert(gridDelegate != null),
+        assert(itemBuilder != null),
+        assert(itemCount != null),
+        super(key: key);
+
+  final SliverGridDelegate gridDelegate;
+  final IndexedWidgetBuilder itemBuilder;
+  final int itemCount;
+  final bool showAppendixAsGridChild;
+  final WidgetBuilder appendixBuilder;
+  final bool addAutomaticKeepAlives;
+  final bool addRepaintBoundaries;
+  final bool addSemanticIndexes;
+
+  @override
+  Widget build(BuildContext context) {
+    if (showAppendixAsGridChild == true || appendixBuilder == null) {
+      return SliverGrid(
+        gridDelegate: gridDelegate,
+        delegate: _buildSliverDelegate(
+          appendixBuilder: appendixBuilder,
+        ),
+      );
+    } else {
+      return MultiSliver(children: [
+        SliverGrid(
+          gridDelegate: gridDelegate,
+          delegate: _buildSliverDelegate(),
+        ),
+        SliverToBoxAdapter(
+          child: appendixBuilder(context),
+        ),
+      ]);
+    }
+  }
+
+  SliverChildBuilderDelegate _buildSliverDelegate({
+    WidgetBuilder appendixBuilder,
   }) =>
       AppendedSliverChildBuilderDelegate(
         builder: itemBuilder,
         childCount: itemCount,
-        appendixBuilder: statusIndicatorBuilder,
+        appendixBuilder: appendixBuilder,
         addAutomaticKeepAlives: addAutomaticKeepAlives,
         addRepaintBoundaries: addRepaintBoundaries,
         addSemanticIndexes: addSemanticIndexes,
