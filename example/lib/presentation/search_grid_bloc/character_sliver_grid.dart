@@ -69,6 +69,7 @@ class _CharacterSliverGridState extends State<CharacterSliverGrid> {
   void dispose() {
     _pagingController.dispose();
     _blocListingStateSubscription.cancel();
+    _bloc.dispose();
     super.dispose();
   }
 }
