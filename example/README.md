@@ -82,14 +82,6 @@ class _CharacterListViewState extends State<CharacterListView> {
   );
 ```
 
-## Changing the Invisible Items Threshold
-By default, the package asks a new page when there are 3 invisible items left while the user is scrolling. You can change that number in the [PagingController](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagingController-class.html)'s constructor.
-
-```dart
-final PagingController<int, CharacterSummary> _pagingController =
-      PagingController(firstPageKey: 0, invisibleItemsThreshold: 5);
-```
-
 ## Separators
 ```dart
 @override
@@ -108,7 +100,7 @@ Widget build(BuildContext context) =>
 Works for both [PagedListView](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedListView-class.html) and [PagedSliverList](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedSliverList-class.html).
 
 ## Pull-to-Refresh
-Simply wrap your [PagedListView](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedListView-class.html), [PagedGridView](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedGridView-class.html) or [CustomScrollView](https://api.flutter.dev/flutter/widgets/CustomScrollView-class.html) with a [RefreshIndicator](https://api.flutter.dev/flutter/material/RefreshIndicator-class.html) (from the [material library](https://api.flutter.dev/flutter/material/material-library.html)) and inside [onRefresh](https://api.flutter.dev/flutter/material/RefreshIndicator/onRefresh.html), call `refresh` on your [PagingController](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagingController-class.html) instance:
+Wrap your [PagedListView](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedListView-class.html), [PagedGridView](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedGridView-class.html) or [CustomScrollView](https://api.flutter.dev/flutter/widgets/CustomScrollView-class.html) with a [RefreshIndicator](https://api.flutter.dev/flutter/material/RefreshIndicator-class.html) (from the [material library](https://api.flutter.dev/flutter/material/material-library.html)) and inside [onRefresh](https://api.flutter.dev/flutter/material/RefreshIndicator/onRefresh.html), call `refresh` on your [PagingController](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagingController-class.html):
 
 ```dart
 @override
@@ -129,6 +121,7 @@ Widget build(BuildContext context) => RefreshIndicator(
 
 ## Preceding/Following Items
 If you need to add widgets preceding or following your list, that are expected to scroll along with it, such as a header, footer, search or filter bar, you should use our [Sliver](https://flutter.dev/docs/development/ui/advanced/slivers) widgets.
+
 **Infinite Scroll Pagination** comes with [PagedSliverList](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedSliverList-class.html) and [PagedSliverGrid](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedSliverGrid-class.html), which works almost the same as [PagedListView](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedListView-class.html) or [PagedGridView](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedGridView-class.html), except that they need to be wrapped by a [CustomScrollView](https://api.flutter.dev/flutter/widgets/CustomScrollView-class.html). That allows you to give them siblings, for example:
 
 ```dart
@@ -152,10 +145,9 @@ Widget build(BuildContext context) => CustomScrollView(
 
 Notice that your preceding/following widgets should also be [Sliver](https://flutter.dev/docs/development/ui/advanced/slivers)s. `CharacterSearchInputSliver`, for example, is nothing but a [TextField](https://api.flutter.dev/flutter/material/TextField-class.html) wrapped by a [SliverToBoxAdapter](https://api.flutter.dev/flutter/widgets/SliverToBoxAdapter-class.html).
 
-If you're adding a single widget, as in the example, [SliverToBoxAdapter](https://api.flutter.dev/flutter/widgets/SliverToBoxAdapter-class.html) will do the job. If you need to add a *list* of preceding/following items, you can use a [SliverList](https://api.flutter.dev/flutter/widgets/SliverList-class.html).
-
 ## Searching/Filtering/Sorting
-In the [preceding recipe](https://pub.dev/packages/infinite_scroll_pagination/example#precedingfollowing-items), you can see how to add a search bar widget as a list header. That example calls a function named `_updateSearchTerm` every time the user changes the search input. That function isn't part of the package, it's just a suggestion on how to implement searching. Here's the complete code:
+
+There are many ways to integrate searching/filtering/sorting with this package. The best one will depend on you state management approach. Below you can see a simple/vanilla example:
 
 ```dart
 class CharacterSliverList extends StatefulWidget {
@@ -281,6 +273,14 @@ void initState() {
 
   super.initState();
 }
+```
+
+## Changing the Invisible Items Threshold
+By default, the package asks a new page when there are 3 invisible items left while the user is scrolling. You can change that number in the [PagingController](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagingController-class.html)'s constructor.
+
+```dart
+final PagingController<int, CharacterSummary> _pagingController =
+      PagingController(firstPageKey: 0, invisibleItemsThreshold: 5);
 ```
 
 ## BLoC
