@@ -120,7 +120,7 @@ Widget build(BuildContext context) => RefreshIndicator(
 ```
 
 ## Preceding/Following Items
-If you need to add widgets preceding or following your list, that are expected to scroll along with it, such as a header, footer, search or filter bar, you should use our [Sliver](https://flutter.dev/docs/development/ui/advanced/slivers) widgets.
+If you need to add widgets preceding or following your list, expected to scroll along with it, such as a header, footer, search or filter bar, you should use our [Sliver](https://flutter.dev/docs/development/ui/advanced/slivers) widgets.
 
 **Infinite Scroll Pagination** comes with [PagedSliverList](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedSliverList-class.html) and [PagedSliverGrid](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedSliverGrid-class.html), which works almost the same as [PagedListView](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedListView-class.html) or [PagedGridView](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedGridView-class.html), except that they need to be wrapped by a [CustomScrollView](https://api.flutter.dev/flutter/widgets/CustomScrollView-class.html). That allows you to give them siblings, for example:
 
@@ -147,7 +147,7 @@ Notice that your preceding/following widgets should also be [Sliver](https://flu
 
 ## Searching/Filtering/Sorting
 
-There are many ways to integrate searching/filtering/sorting with this package. The best one will depend on you state management approach. Below you can see a simple/vanilla example:
+There are many ways to integrate searching/filtering/sorting with this package. The best one will depend on you state management approach. Below you can see a simple example for a vanilla approach:
 
 ```dart
 class CharacterSliverList extends StatefulWidget {
@@ -220,7 +220,7 @@ class _CharacterSliverListState extends State<CharacterSliverList> {
 The same structure can be applied to all kinds of filtering and sorting and works with any layout (not just Slivers).
 
 ## Positioning Grid's Status Indicators
-By default, both [PagedGridView](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedGridView-class.html) and [PagedSliverGrid](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedSliverGrid-class.html) show your completed and subsequent page's progress and error indicators as one of the grid children, respecting the same configurations you set for your items on `gridDelegate`.
+By default, both [PagedGridView](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedGridView-class.html) and [PagedSliverGrid](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedSliverGrid-class.html) show your indicators as one of the grid children, respecting the same configurations you set for your items on the `gridDelegate`.
 If you want to change that, and instead display the items *below* the grid, as is in the list widgets, you can do so by using these boolean properties:
 
 ```dart
