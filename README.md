@@ -14,11 +14,15 @@
 
 # Infinite Scroll Pagination
 
-Unopinionated, extensible and highly customizable package to help you lazily load and display small chunks of data as the user scrolls down your screen – known as infinite scrolling pagination, endless scrolling pagination, auto-pagination, lazy loading pagination, progressive loading pagination, etc.
+Unopinionated, extensible and highly customizable package to help you lazily load and display small chunks of data as the user scrolls down the screen – known as infinite scrolling pagination, endless scrolling pagination, auto-pagination, lazy loading pagination, progressive loading pagination, etc.
 
 Designed to feel like part of the own Flutter framework.
 
 <img src="https://raw.githubusercontent.com/EdsonBueno/infinite_scroll_pagination/master/docs/assets/demo.gif" alt="Example Project" />
+
+## Tutorial
+
+[By raywenderlich.com (step-by-step, hands-on, in-depth and illustrated)](https://www.raywenderlich.com/265121/infinite-scrolling-pagination-in-flutter).
 
 ## Usage
 
