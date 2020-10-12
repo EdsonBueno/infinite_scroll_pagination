@@ -22,7 +22,7 @@ Designed to feel like part of the own Flutter framework.
 
 ## Tutorial
 
-[By raywenderlich.com (step-by-step, hands-on, in-depth and illustrated)](https://www.raywenderlich.com/265121/infinite-scrolling-pagination-in-flutter).
+<a href="https://www.raywenderlich.com/265121/infinite-scrolling-pagination-in-flutter" rel="noopener" target="_blank">By raywenderlich.com (step-by-step, hands-on, in-depth and illustrated)</a>.
 
 ## Usage
 
@@ -46,8 +46,10 @@ class _CharacterListViewState extends State<CharacterListView> {
     super.initState();
   }
 
-  void _fetchPage(int pageKey) {
-    RemoteApi.getCharacterList(pageKey, _pageSize).then((newItems) {
+  Future<void> _fetchPage(int pageKey) async {
+    try {
+      final newItems = await RemoteApi.getCharacterList(pageKey, _pageSize);
+  
       final isLastPage = newItems.length < _pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
@@ -55,9 +57,9 @@ class _CharacterListViewState extends State<CharacterListView> {
         final nextPageKey = pageKey + newItems.length;
         _pagingController.appendPage(newItems, nextPageKey);
       }
-    }).catchError((error) {
+    } catch(error) {
       _pagingController.error = error;
-    });
+    }
   }
 
   @override

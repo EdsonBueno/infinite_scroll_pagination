@@ -48,7 +48,7 @@ class _ApiUrlBuilder {
 
   static String _buildSearchTermQuery(String searchTerm) =>
       searchTerm?.isEmpty == false
-          ? '&name=${searchTerm.replaceAll(' ', '+')}'
+          ? '&name=${searchTerm.replaceAll(' ', '+').toLowerCase()}'
           : '';
 }
 

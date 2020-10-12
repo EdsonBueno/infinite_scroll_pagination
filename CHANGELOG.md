@@ -1,6 +1,7 @@
 ## 2.1.0+1
 
-* Add link to [raywenderlich.com tutorial](https://www.raywenderlich.com/265121/infinite-scrolling-pagination-in-flutter).
+* Adds link to [raywenderlich.com tutorial](https://www.raywenderlich.com/265121/infinite-scrolling-pagination-in-flutter).
+* Changes examples to async/await.
 
 ## 2.1.0
 
