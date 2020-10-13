@@ -49,7 +49,6 @@ class _CharacterListViewState extends State<CharacterListView> {
   Future<void> _fetchPage(int pageKey) async {
     try {
       final newItems = await RemoteApi.getCharacterList(pageKey, _pageSize);
-  
       final isLastPage = newItems.length < _pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
@@ -64,9 +63,9 @@ class _CharacterListViewState extends State<CharacterListView> {
 
   @override
   Widget build(BuildContext context) => 
-      // Don't worry about displaying progress or error indicators on screen, the 
-      // package is taking care of that. If you want to customize them, use 
-      // the [PagedChildBuilderDelegate] properties.
+      // Don't worry about displaying progress or error indicators on screen; the 
+      // package takes care of that. If you want to customize them, use the 
+      // [PagedChildBuilderDelegate] properties.
       PagedListView<int, CharacterSummary>(
         pagingController: _pagingController,
         builderDelegate: PagedChildBuilderDelegate<CharacterSummary>(

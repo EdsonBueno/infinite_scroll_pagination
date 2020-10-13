@@ -27,7 +27,6 @@ class _CharacterListViewState extends State<CharacterListView> {
   Future<void> _fetchPage(int pageKey) async {
     try {
       final newItems = await RemoteApi.getCharacterList(pageKey, _pageSize);
-  
       final isLastPage = newItems.length < _pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
