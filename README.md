@@ -22,7 +22,7 @@ Designed to feel like part of the own Flutter framework.
 
 ## Tutorial
 
-<a href="https://www.raywenderlich.com/265121/infinite-scrolling-pagination-in-flutter" rel="noopener" target="_blank">By raywenderlich.com (step-by-step, hands-on, in-depth and illustrated)</a>.
+[By raywenderlich.com (step-by-step, hands-on, in-depth and illustrated)](https://www.raywenderlich.com/14214369-infinite-scrolling-pagination-in-flutter).
 
 ## Usage
 
