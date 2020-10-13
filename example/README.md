@@ -130,11 +130,11 @@ If you need to add widgets preceding or following your list, expected to scroll 
 
 ```dart
 @override
-Widget build(BuildContext context) =>
+Widget build(BuildContext context) => 
     CustomScrollView(
       slivers: <Widget>[
-       CharacterSearchInputSliver(
-          onChanged: (searchTerm) => _updateSearchTerm(searchTerm),
+        CharacterSearchInputSliver(
+          onChanged: _updateSearchTerm,
         ),
         PagedSliverList<int, CharacterSummary>(
           pagingController: _pagingController,
@@ -152,7 +152,7 @@ Notice that your preceding/following widgets should also be [Sliver](https://flu
 
 ## Searching/Filtering/Sorting
 
-There are many ways to integrate searching/filtering/sorting with this package. The best one will depend on you state management approach. Below you can see a simple example for a vanilla approach:
+There are many ways to integrate searching/filtering/sorting with this package. The best one depends on you state management approach. Below you can see a simple example for a vanilla approach:
 
 ```dart
 class CharacterSliverList extends StatefulWidget {
