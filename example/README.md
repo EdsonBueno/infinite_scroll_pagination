@@ -34,13 +34,14 @@ class _CharacterListViewState extends State<CharacterListView> {
         final nextPageKey = pageKey + newItems.length;
         _pagingController.appendPage(newItems, nextPageKey);
       }
-    } catch(error) {
+    } catch (error) {
       _pagingController.error = error;
     }
   }
 
   @override
-  Widget build(BuildContext context) => PagedListView<int, CharacterSummary>(
+  Widget build(BuildContext context) => 
+      PagedListView<int, CharacterSummary>(
         pagingController: _pagingController,
         builderDelegate: PagedChildBuilderDelegate<CharacterSummary>(
           itemBuilder: (context, item, index) => CharacterListItem(
@@ -61,26 +62,27 @@ class _CharacterListViewState extends State<CharacterListView> {
 
 ```dart
 @override
-  Widget build(BuildContext context) => PagedListView<int, CharacterSummary>(
-    pagingController: _pagingController,
-    builderDelegate: PagedChildBuilderDelegate<CharacterSummary>(
-      itemBuilder: (context, item, index) => CharacterListItem(
-        character: item,
+Widget build(BuildContext context) => 
+    PagedListView<int, CharacterSummary>(
+      pagingController: _pagingController,
+      builderDelegate: PagedChildBuilderDelegate<CharacterSummary>(
+        itemBuilder: (context, item, index) => CharacterListItem(
+          character: item,
+        ),
+        firstPageErrorIndicatorBuilder: (_) => FirstPageErrorIndicator(
+          error: _pagingController.error,
+          onTryAgain: () => _pagingController.refresh(),
+        ),
+        newPageErrorIndicatorBuilder: (_) => NewPageErrorIndicator(
+          error: _pagingController.error,
+          onTryAgain: () => _pagingController.retryLastRequest(),
+        ),
+        firstPageProgressIndicatorBuilder: (_) => FirstPageProgressIndicator(),
+        newPageProgressIndicatorBuilder: (_) => NewPageProgressIndicator(),
+        noItemsFoundIndicatorBuilder: (_) => NoItemsFoundIndicator(),
+        noMoreItemsIndicatorBuilder: (_) => NoMoreItemsIndicator(),
       ),
-      firstPageErrorIndicatorBuilder: (_) => FirstPageErrorIndicator(
-        error: _pagingController.error,
-        onTryAgain: () => _pagingController.refresh(),
-      ),
-      newPageErrorIndicatorBuilder: (_) => NewPageErrorIndicator(
-        error: _pagingController.error,
-        onTryAgain: () => _pagingController.retryLastRequest(),
-      ),
-      firstPageProgressIndicatorBuilder: (_) => FirstPageProgressIndicator(),
-      newPageProgressIndicatorBuilder: (_) => NewPageProgressIndicator(),
-      noItemsFoundIndicatorBuilder: (_) => NoItemsFoundIndicator(),
-      noMoreItemsIndicatorBuilder: (_) => NoMoreItemsIndicator(),
-    ),
-  );
+    );
 ```
 
 ## Separators
@@ -105,7 +107,8 @@ Wrap your [PagedListView](https://pub.dev/documentation/infinite_scroll_paginati
 
 ```dart
 @override
-Widget build(BuildContext context) => RefreshIndicator(
+Widget build(BuildContext context) => 
+    RefreshIndicator(
       onRefresh: () => Future.sync(
         () => _pagingController.refresh(),
       ),
@@ -127,7 +130,8 @@ If you need to add widgets preceding or following your list, expected to scroll 
 
 ```dart
 @override
-Widget build(BuildContext context) => CustomScrollView(
+Widget build(BuildContext context) =>
+    CustomScrollView(
       slivers: <Widget>[
        CharacterSearchInputSliver(
           onChanged: (searchTerm) => _updateSearchTerm(searchTerm),
@@ -169,7 +173,7 @@ class _CharacterSliverListState extends State<CharacterSliverList> {
     _pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });
-    
+
     super.initState();
   }
 
@@ -188,13 +192,14 @@ class _CharacterSliverListState extends State<CharacterSliverList> {
         final nextPageKey = pageKey + newItems.length;
         _pagingController.appendPage(newItems, nextPageKey);
       }
-    } catch(error) {
+    } catch (error) {
       _pagingController.error = error;
     }
   }
 
   @override
-  Widget build(BuildContext context) => CustomScrollView(
+  Widget build(BuildContext context) => 
+      CustomScrollView(
         slivers: <Widget>[
           CharacterSearchInputSliver(
             onChanged: _updateSearchTerm,
@@ -231,23 +236,24 @@ If you want to change that, and instead display the items *below* the grid, as i
 
 ```dart
 @override
-Widget build(BuildContext context) => PagedGridView<int, CharacterSummary>(
-  showNewPageProgressIndicatorAsGridChild: false,
-  showNewPageErrorIndicatorAsGridChild: false,
-  showNoMoreItemsIndicatorAsGridChild: false,
-  pagingController: _pagingController,
-  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-    childAspectRatio: 100 / 150,
-    crossAxisSpacing: 10,
-    mainAxisSpacing: 10,
-    crossAxisCount: 3,
-  ),
-  builderDelegate: PagedChildBuilderDelegate<CharacterSummary>(
-    itemBuilder: (context, item, index) => CharacterGridItem(
-      character: item,
-    ),
-  ),
-);
+Widget build(BuildContext context) => 
+    PagedGridView<int, CharacterSummary>(
+      showNewPageProgressIndicatorAsGridChild: false,
+      showNewPageErrorIndicatorAsGridChild: false,
+      showNoMoreItemsIndicatorAsGridChild: false,
+      pagingController: _pagingController,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        childAspectRatio: 100 / 150,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+        crossAxisCount: 3,
+      ),
+      builderDelegate: PagedChildBuilderDelegate<CharacterSummary>(
+        itemBuilder: (context, item, index) => CharacterGridItem(
+          character: item,
+        ),
+      ),
+    );
 ```
 
 ## Listening to Status Changes
@@ -294,6 +300,11 @@ final PagingController<int, CharacterSummary> _pagingController =
 Below, it's just one of the possible ways to integrate it with BLoCs:
 
 ```dart
+class CharacterSliverGrid extends StatefulWidget {
+  @override
+  _CharacterSliverGridState createState() => _CharacterSliverGridState();
+}
+
 class _CharacterSliverGridState extends State<CharacterSliverGrid> {
   final CharacterSliverGridBloc _bloc = CharacterSliverGridBloc();
   final PagingController<int, CharacterSummary> _pagingController =
@@ -322,10 +333,12 @@ class _CharacterSliverGridState extends State<CharacterSliverGrid> {
   }
 
   @override
-  Widget build(BuildContext context) => CustomScrollView(
+  Widget build(BuildContext context) => 
+      CustomScrollView(
         slivers: <Widget>[
           CharacterSearchInputSliver(
-            onChanged: (searchTerm) => _bloc.onSearchInputChangedSink.add(searchTerm),
+            onChanged: (searchTerm) =>
+                _bloc.onSearchInputChangedSink.add(searchTerm),
           ),
           PagedSliverGrid<int, CharacterSummary>(
             pagingController: _pagingController,
