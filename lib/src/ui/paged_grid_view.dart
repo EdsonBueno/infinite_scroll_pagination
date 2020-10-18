@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 import 'package:infinite_scroll_pagination/src/core/paged_child_builder_delegate.dart';
 import 'package:infinite_scroll_pagination/src/core/paging_controller.dart';
@@ -36,6 +37,15 @@ class PagedGridView<PageKeyType, ItemType> extends BoxScrollView {
     this.showNewPageProgressIndicatorAsGridChild = true,
     this.showNewPageErrorIndicatorAsGridChild = true,
     this.showNoMoreItemsIndicatorAsGridChild = true,
+    // Corresponds to [ScrollView.dragStartBehavior].
+    DragStartBehavior dragStartBehavior = DragStartBehavior.start,
+    // Corresponds to [ScrollView.keyboardDismissBehavior].
+    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
+        ScrollViewKeyboardDismissBehavior.manual,
+    // Corresponds to [ScrollView.restorationId].
+    String restorationId,
+    // Corresponds to [ScrollView.clipBehavior].
+    Clip clipBehavior = Clip.hardEdge,
     Key key,
   })  : assert(pagingController != null),
         assert(builderDelegate != null),
@@ -50,6 +60,10 @@ class PagedGridView<PageKeyType, ItemType> extends BoxScrollView {
           shrinkWrap: shrinkWrap,
           padding: padding,
           cacheExtent: cacheExtent,
+          dragStartBehavior: dragStartBehavior,
+          keyboardDismissBehavior: keyboardDismissBehavior,
+          restorationId: restorationId,
+          clipBehavior: clipBehavior,
         );
 
   /// Corresponds to [PagedSliverBuilder.pagingController].

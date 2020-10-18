@@ -1,8 +1,9 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
-import 'package:infinite_scroll_pagination/src/ui/paged_sliver_builder.dart';
-import 'package:infinite_scroll_pagination/src/ui/paged_sliver_list.dart';
 import 'package:infinite_scroll_pagination/src/core/paged_child_builder_delegate.dart';
 import 'package:infinite_scroll_pagination/src/core/paging_controller.dart';
+import 'package:infinite_scroll_pagination/src/ui/paged_sliver_builder.dart';
+import 'package:infinite_scroll_pagination/src/ui/paged_sliver_list.dart';
 
 /// Paged [ListView] with progress and error indicators displayed as the last
 /// item.
@@ -35,6 +36,15 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
     this.addSemanticIndexes = true,
     // Corresponds to [ScrollView.cacheExtent]
     double cacheExtent,
+    // Corresponds to [ScrollView.dragStartBehavior]
+    DragStartBehavior dragStartBehavior = DragStartBehavior.start,
+    // Corresponds to [ScrollView.keyboardDismissBehavior]
+    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
+        ScrollViewKeyboardDismissBehavior.manual,
+    // Corresponds to [ScrollView.restorationId]
+    String restorationId,
+    // Corresponds to [ScrollView.clipBehavior]
+    Clip clipBehavior = Clip.hardEdge,
     Key key,
   })  : separatorBuilder = null,
         assert(pagingController != null),
@@ -49,6 +59,10 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
           shrinkWrap: shrinkWrap,
           padding: padding,
           cacheExtent: cacheExtent,
+          dragStartBehavior: dragStartBehavior,
+          keyboardDismissBehavior: keyboardDismissBehavior,
+          restorationId: restorationId,
+          clipBehavior: clipBehavior,
         );
 
   const PagedListView.separated({
@@ -75,6 +89,15 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
     this.addSemanticIndexes = true,
     // Corresponds to [ScrollView.cacheExtent]
     double cacheExtent,
+    // Corresponds to [ScrollView.dragStartBehavior]
+    DragStartBehavior dragStartBehavior = DragStartBehavior.start,
+    // Corresponds to [ScrollView.keyboardDismissBehavior]
+    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
+        ScrollViewKeyboardDismissBehavior.manual,
+    // Corresponds to [ScrollView.restorationId]
+    String restorationId,
+    // Corresponds to [ScrollView.clipBehavior]
+    Clip clipBehavior = Clip.hardEdge,
     Key key,
   })  : assert(pagingController != null),
         assert(builderDelegate != null),
@@ -89,6 +112,10 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
           shrinkWrap: shrinkWrap,
           padding: padding,
           cacheExtent: cacheExtent,
+          dragStartBehavior: dragStartBehavior,
+          keyboardDismissBehavior: keyboardDismissBehavior,
+          restorationId: restorationId,
+          clipBehavior: clipBehavior,
         );
 
   /// Corresponds to [PagedSliverBuilder.pagingController].
