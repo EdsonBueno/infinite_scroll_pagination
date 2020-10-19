@@ -1,3 +1,7 @@
+## 2.2.0+1
+
+* Constraint the Flutter SDK dependency to a minimum version of 1.22.0.
+
 ## 2.2.0
 
 * Adds new constructor parameters from [ScrollView](https://api.flutter.dev/flutter/widgets/ScrollView-class.html) to [PagedListView](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedListView-class.html) and [PagedGridView](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedGridView-class.html).
