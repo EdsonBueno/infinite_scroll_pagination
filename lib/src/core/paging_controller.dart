@@ -31,10 +31,10 @@ class PagingController<PageKeyType, ItemType>
           PagingState<PageKeyType, ItemType>(nextPageKey: firstPageKey),
         );
 
-  ObserverList<PagingStatusListener> _statusListeners =
+  final ObserverList<PagingStatusListener> _statusListeners =
       ObserverList<PagingStatusListener>();
 
-  ObserverList<PageRequestListener<PageKeyType>> _pageRequestListeners =
+  final ObserverList<PageRequestListener<PageKeyType>> _pageRequestListeners =
       ObserverList<PageRequestListener<PageKeyType>>();
 
   /// The number of remaining invisible items that should trigger a new fetch.
@@ -180,8 +180,8 @@ class PagingController<PageKeyType, ItemType>
 
   @override
   void dispose() {
-    _statusListeners = null;
-    _pageRequestListeners = null;
+    _statusListeners.forEach(_statusListeners.remove);
+    _pageRequestListeners.forEach(_pageRequestListeners.remove);
     super.dispose();
   }
 }
