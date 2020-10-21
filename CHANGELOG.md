@@ -1,6 +1,12 @@
+## 2.2.1
+
+* Improves the error message displayed when calling a disposed [PagingController](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagingController-class.html).
+* Adds `shrinkWrapFirstPageIndicators` property to [PagedSliverList](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedSliverList-class.html), [PagedSliverGrid](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedSliverGrid-class.html) and [PagedSliverBuilder](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedSliverBuilder-class.html).
+* Fixes separator being displayed on completed lists.
+
 ## 2.2.0+1
 
-* Constraint the Flutter SDK dependency to a minimum version of 1.22.0.
+* Constraints the Flutter SDK dependency to a minimum version of 1.22.0.
 
 ## 2.2.0
 
