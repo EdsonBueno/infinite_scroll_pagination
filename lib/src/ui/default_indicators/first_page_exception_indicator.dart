@@ -20,9 +20,6 @@ class FirstPageExceptionIndicator extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
           child: Column(
             children: [
-              const SizedBox(
-                height: 32,
-              ),
               Text(
                 title,
                 textAlign: TextAlign.center,
@@ -37,7 +34,10 @@ class FirstPageExceptionIndicator extends StatelessWidget {
                   message,
                   textAlign: TextAlign.center,
                 ),
-              if (onTryAgain != null) const Spacer(),
+              if (onTryAgain != null)
+                const SizedBox(
+                  height: 48,
+                ),
               if (onTryAgain != null)
                 SizedBox(
                   height: 50,

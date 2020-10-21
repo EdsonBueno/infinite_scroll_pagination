@@ -49,6 +49,7 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
   })  : separatorBuilder = null,
         assert(pagingController != null),
         assert(builderDelegate != null),
+        _shrinkWrapFirstPageIndicators = shrinkWrap,
         super(
           key: key,
           scrollDirection: scrollDirection,
@@ -102,6 +103,7 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
   })  : assert(pagingController != null),
         assert(builderDelegate != null),
         assert(separatorBuilder != null),
+        _shrinkWrapFirstPageIndicators = shrinkWrap,
         super(
           key: key,
           scrollDirection: scrollDirection,
@@ -139,6 +141,9 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
   /// Corresponds to [ListView.itemExtent].
   final double itemExtent;
 
+  /// Corresponds to [PagedSliverList.shrinkWrapFirstPageIndicators].
+  final bool _shrinkWrapFirstPageIndicators;
+
   @override
   Widget buildChildLayout(BuildContext context) => separatorBuilder != null
       ? PagedSliverList<PageKeyType, ItemType>.separated(
@@ -149,6 +154,7 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
           addRepaintBoundaries: addRepaintBoundaries,
           addSemanticIndexes: addSemanticIndexes,
           itemExtent: itemExtent,
+          shrinkWrapFirstPageIndicators: _shrinkWrapFirstPageIndicators,
         )
       : PagedSliverList<PageKeyType, ItemType>(
           builderDelegate: builderDelegate,
@@ -157,5 +163,6 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
           addRepaintBoundaries: addRepaintBoundaries,
           addSemanticIndexes: addSemanticIndexes,
           itemExtent: itemExtent,
+          shrinkWrapFirstPageIndicators: _shrinkWrapFirstPageIndicators,
         );
 }

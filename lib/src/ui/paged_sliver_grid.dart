@@ -24,6 +24,7 @@ class PagedSliverGrid<PageKeyType, ItemType> extends StatelessWidget {
     this.showNewPageProgressIndicatorAsGridChild = true,
     this.showNewPageErrorIndicatorAsGridChild = true,
     this.showNoMoreItemsIndicatorAsGridChild = true,
+    this.shrinkWrapFirstPageIndicators = false,
     Key key,
   })  : assert(pagingController != null),
         assert(builderDelegate != null),
@@ -65,6 +66,9 @@ class PagedSliverGrid<PageKeyType, ItemType> extends StatelessWidget {
   ///
   /// Defaults to true.
   final bool showNoMoreItemsIndicatorAsGridChild;
+
+  /// Corresponds to [PagedSliverBuilder.shrinkWrapFirstPageIndicators].
+  final bool shrinkWrapFirstPageIndicators;
 
   @override
   Widget build(BuildContext context) =>
@@ -119,6 +123,7 @@ class PagedSliverGrid<PageKeyType, ItemType> extends StatelessWidget {
           addSemanticIndexes: addSemanticIndexes,
           addRepaintBoundaries: addRepaintBoundaries,
         ),
+        shrinkWrapFirstPageIndicators: shrinkWrapFirstPageIndicators,
       );
 }
 

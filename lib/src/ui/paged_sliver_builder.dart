@@ -4,11 +4,11 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:infinite_scroll_pagination/src/core/paging_controller.dart';
 import 'package:infinite_scroll_pagination/src/model/paging_state.dart';
 import 'package:infinite_scroll_pagination/src/model/paging_status.dart';
-import 'package:infinite_scroll_pagination/src/ui/default_indicators/empty_list_indicator.dart';
 import 'package:infinite_scroll_pagination/src/ui/default_indicators/first_page_error_indicator.dart';
 import 'package:infinite_scroll_pagination/src/ui/default_indicators/first_page_progress_indicator.dart';
 import 'package:infinite_scroll_pagination/src/ui/default_indicators/new_page_error_indicator.dart';
 import 'package:infinite_scroll_pagination/src/ui/default_indicators/new_page_progress_indicator.dart';
+import 'package:infinite_scroll_pagination/src/ui/default_indicators/no_items_found_indicator.dart';
 
 typedef CompletedListingBuilder = Widget Function(
   BuildContext context,
@@ -48,6 +48,7 @@ class PagedSliverBuilder<PageKeyType, ItemType> extends StatefulWidget {
     @required this.loadingListingBuilder,
     @required this.errorListingBuilder,
     @required this.completedListingBuilder,
+    this.shrinkWrapFirstPageIndicators = false,
     Key key,
   })  : assert(pagingController != null),
         assert(builderDelegate != null),
@@ -74,6 +75,17 @@ class PagedSliverBuilder<PageKeyType, ItemType> extends StatefulWidget {
   /// The builder for a completed listing.
   final CompletedListingBuilder completedListingBuilder;
 
+  /// Whether the extent of the first page indicators should be determined by
+  /// the contents being viewed.
+  ///
+  /// If the paged sliver builder does not shrink wrap, then the first page
+  /// indicators will expand to the maximum allowed size. If the paged sliver
+  /// builder has unbounded constraints, then [shrinkWrapFirstPageIndicators]
+  /// must be true.
+  ///
+  /// Defaults to false.
+  final bool shrinkWrapFirstPageIndicators;
+
   @override
   _PagedSliverBuilderState<PageKeyType, ItemType> createState() =>
       _PagedSliverBuilderState<PageKeyType, ItemType>();
@@ -86,6 +98,9 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
 
   PagedChildBuilderDelegate<ItemType> get _builderDelegate =>
       widget.builderDelegate;
+
+  bool get _shrinkWrapFirstPageIndicators =>
+      widget.shrinkWrapFirstPageIndicators ?? false;
 
   WidgetBuilder get _firstPageErrorIndicatorBuilder =>
       _builderDelegate.firstPageErrorIndicatorBuilder ??
@@ -109,7 +124,7 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
 
   WidgetBuilder get _noItemsFoundIndicatorBuilder =>
       _builderDelegate.noItemsFoundIndicatorBuilder ??
-      (_) => EmptyListIndicator();
+      (_) => NoItemsFoundIndicator();
 
   WidgetBuilder get _noMoreItemsIndicatorBuilder =>
       _builderDelegate.noMoreItemsIndicatorBuilder;
@@ -161,9 +176,9 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
                 );
               case PagingStatus.loadingFirstPage:
                 _lastFetchTriggerIndex = null;
-                return SliverFillRemaining(
-                  hasScrollBody: false,
-                  child: _firstPageProgressIndicatorBuilder(context),
+                return _FirstPageStatusIndicatorBuilder(
+                  builder: _firstPageProgressIndicatorBuilder,
+                  shrinkWrap: _shrinkWrapFirstPageIndicators,
                 );
               case PagingStatus.subsequentPageError:
                 return widget.errorListingBuilder(
@@ -173,14 +188,14 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
                   (context) => _newPageErrorIndicatorBuilder(context),
                 );
               case PagingStatus.noItemsFound:
-                return SliverFillRemaining(
-                  hasScrollBody: false,
-                  child: _noItemsFoundIndicatorBuilder(context),
+                return _FirstPageStatusIndicatorBuilder(
+                  builder: _noItemsFoundIndicatorBuilder,
+                  shrinkWrap: _shrinkWrapFirstPageIndicators,
                 );
               default:
-                return SliverFillRemaining(
-                  hasScrollBody: false,
-                  child: _firstPageErrorIndicatorBuilder(context),
+                return _FirstPageStatusIndicatorBuilder(
+                  builder: _firstPageErrorIndicatorBuilder,
+                  shrinkWrap: _shrinkWrapFirstPageIndicators,
                 );
             }
           },
@@ -230,4 +245,30 @@ extension on PagingController {
 
   /// Tells whether there's a next page to fetch.
   bool get hasNextPage => nextPageKey != null;
+}
+
+class _FirstPageStatusIndicatorBuilder extends StatelessWidget {
+  const _FirstPageStatusIndicatorBuilder({
+    @required this.builder,
+    this.shrinkWrap = false,
+    Key key,
+  })  : assert(builder != null),
+        super(key: key);
+
+  final WidgetBuilder builder;
+  final bool shrinkWrap;
+
+  @override
+  Widget build(BuildContext context) {
+    if (shrinkWrap) {
+      return SliverToBoxAdapter(
+        child: builder(context),
+      );
+    } else {
+      return SliverFillRemaining(
+        hasScrollBody: false,
+        child: builder(context),
+      );
+    }
+  }
 }

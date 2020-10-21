@@ -24,6 +24,7 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
     this.addSemanticIndexes = true,
     this.itemExtent,
     this.semanticIndexCallback,
+    this.shrinkWrapFirstPageIndicators = false,
     Key key,
   })  : separatorBuilder = null,
         assert(pagingController != null),
@@ -39,6 +40,7 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
     this.addSemanticIndexes = true,
     this.itemExtent,
     this.semanticIndexCallback,
+    this.shrinkWrapFirstPageIndicators = false,
     Key key,
   })  : assert(pagingController != null),
         assert(builderDelegate != null),
@@ -68,6 +70,9 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
 
   /// Corresponds to [SliverFixedExtentList.itemExtent].
   final double itemExtent;
+
+  /// Corresponds to [PagedSliverBuilder.shrinkWrapFirstPageIndicators].
+  final bool shrinkWrapFirstPageIndicators;
 
   @override
   Widget build(BuildContext context) =>
@@ -107,6 +112,7 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
           itemCount,
           statusIndicatorBuilder: errorIndicatorBuilder,
         ),
+        shrinkWrapFirstPageIndicators: shrinkWrapFirstPageIndicators,
       );
 
   SliverMultiBoxAdaptorWidget _buildSliverList(

@@ -50,6 +50,7 @@ class PagedGridView<PageKeyType, ItemType> extends BoxScrollView {
   })  : assert(pagingController != null),
         assert(builderDelegate != null),
         assert(gridDelegate != null),
+        _shrinkWrapFirstPageIndicators = shrinkWrap,
         super(
           key: key,
           scrollDirection: scrollDirection,
@@ -93,6 +94,9 @@ class PagedGridView<PageKeyType, ItemType> extends BoxScrollView {
   /// Corresponds to [PagedSliverGrid.showNoMoreItemsIndicatorAsGridChild].
   final bool showNoMoreItemsIndicatorAsGridChild;
 
+  /// Corresponds to [PagedSliverGrid.shrinkWrapFirstPageIndicators].
+  final bool _shrinkWrapFirstPageIndicators;
+
   @override
   Widget buildChildLayout(BuildContext context) =>
       PagedSliverGrid<PageKeyType, ItemType>(
@@ -108,5 +112,6 @@ class PagedGridView<PageKeyType, ItemType> extends BoxScrollView {
             showNewPageErrorIndicatorAsGridChild,
         showNoMoreItemsIndicatorAsGridChild:
             showNoMoreItemsIndicatorAsGridChild,
+        shrinkWrapFirstPageIndicators: _shrinkWrapFirstPageIndicators,
       );
 }
