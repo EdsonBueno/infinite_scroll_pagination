@@ -253,6 +253,7 @@ class _FirstPageStatusIndicatorBuilder extends StatelessWidget {
     this.shrinkWrap = false,
     Key key,
   })  : assert(builder != null),
+        assert(shrinkWrap != null),
         super(key: key);
 
   final WidgetBuilder builder;
