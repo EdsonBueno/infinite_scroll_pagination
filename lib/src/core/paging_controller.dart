@@ -45,6 +45,7 @@ class PagingController<PageKeyType, ItemType>
 
   /// List with all items loaded so far. Initially `null`.
   List<ItemType> get itemList => value.itemList;
+
   set itemList(List<ItemType> newItemList) {
     value = PagingState<PageKeyType, ItemType>(
       error: error,
@@ -55,6 +56,7 @@ class PagingController<PageKeyType, ItemType>
 
   /// The current error, if any. Initially `null`.
   dynamic get error => value.error;
+
   set error(dynamic newError) {
     value = PagingState<PageKeyType, ItemType>(
       error: newError,
@@ -68,12 +70,23 @@ class PagingController<PageKeyType, ItemType>
   /// Initialized with the same value as [firstPageKey], received in the
   /// constructor.
   PageKeyType get nextPageKey => value.nextPageKey;
+
   set nextPageKey(PageKeyType newNextPageKey) {
     value = PagingState<PageKeyType, ItemType>(
       error: error,
       itemList: itemList,
       nextPageKey: newNextPageKey,
     );
+  }
+
+  /// Corresponding to [ValueNotifier.value].
+  @override
+  set value(PagingState<PageKeyType, ItemType> newValue) {
+    if (value.status != newValue.status) {
+      notifyStatusListeners(newValue.status);
+    }
+
+    super.value = newValue;
   }
 
   /// Appends [newItems] to the previously loaded ones and replaces
@@ -111,10 +124,27 @@ class PagingController<PageKeyType, ItemType>
     notifyPageRequestListeners(firstPageKey);
   }
 
+  bool _debugAssertNotDisposed() {
+    assert(() {
+      if (_pageRequestListeners == null || _statusListeners == null) {
+        throw Exception(
+          'A PagingController was used after being disposed.\nOnce you have '
+          'called dispose() on a PagingController, it can no longer be '
+          'used.\nIf you’re using a Future, it probably completed after '
+          'the disposal of the owning widget.\nMake sure your widget is '
+          'mounted before calling the PagingController.',
+        );
+      }
+      return true;
+    }());
+    return true;
+  }
+
   /// Calls listener every time the status of the pagination changes.
   ///
   /// Listeners can be removed with [removeStatusListener].
   void addStatusListener(PagingStatusListener listener) {
+    assert(_debugAssertNotDisposed());
     _statusListeners.add(listener);
   }
 
@@ -123,6 +153,7 @@ class PagingController<PageKeyType, ItemType>
   ///
   /// Listeners can be added with [addStatusListener].
   void removeStatusListener(PagingStatusListener listener) {
+    assert(_debugAssertNotDisposed());
     _statusListeners.remove(listener);
   }
 
@@ -131,6 +162,12 @@ class PagingController<PageKeyType, ItemType>
   /// If listeners are added or removed during this function, the modifications
   /// will not change which listeners are called during this iteration.
   void notifyStatusListeners(PagingStatus status) {
+    assert(_debugAssertNotDisposed());
+
+    if (_statusListeners.isEmpty) {
+      return;
+    }
+
     final localListeners = List<PagingStatusListener>.from(_statusListeners);
     localListeners.forEach((listener) {
       if (_statusListeners.contains(listener)) {
@@ -143,6 +180,7 @@ class PagingController<PageKeyType, ItemType>
   ///
   /// Listeners can be removed with [removePageRequestListener].
   void addPageRequestListener(PageRequestListener<PageKeyType> listener) {
+    assert(_debugAssertNotDisposed());
     _pageRequestListeners.add(listener);
   }
 
@@ -150,6 +188,7 @@ class PagingController<PageKeyType, ItemType>
   ///
   /// Listeners can be added with [addPageRequestListener].
   void removePageRequestListener(PageRequestListener<PageKeyType> listener) {
+    assert(_debugAssertNotDisposed());
     _pageRequestListeners.remove(listener);
   }
 
@@ -158,6 +197,12 @@ class PagingController<PageKeyType, ItemType>
   /// If listeners are added or removed during this function, the modifications
   /// will not change which listeners are called during this iteration.
   void notifyPageRequestListeners(PageKeyType pageKey) {
+    assert(_debugAssertNotDisposed());
+
+    if (_pageRequestListeners.isEmpty) {
+      return;
+    }
+
     final localListeners =
         List<PageRequestListener<PageKeyType>>.from(_pageRequestListeners);
 
@@ -168,18 +213,9 @@ class PagingController<PageKeyType, ItemType>
     });
   }
 
-  /// Corresponding to [ValueNotifier.value].
-  @override
-  set value(PagingState<PageKeyType, ItemType> newValue) {
-    if (value.status != newValue.status) {
-      notifyStatusListeners(newValue.status);
-    }
-
-    super.value = newValue;
-  }
-
   @override
   void dispose() {
+    assert(_debugAssertNotDisposed());
     _statusListeners = null;
     _pageRequestListeners = null;
     super.dispose();
