@@ -145,7 +145,8 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
 
   @override
   void initState() {
-    if ((_pagingController.itemCount ?? 0) == 0) {
+    final preloadedItemCount = _pagingController.itemCount ?? 0;
+    if (preloadedItemCount == 0) {
       _requestNextPage(0);
     }
     super.initState();

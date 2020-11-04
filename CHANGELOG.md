@@ -1,3 +1,7 @@
+## 2.2.2
+
+* Adds a condition to avoid requesting the first page when there are preloaded items.
+
 ## 2.2.1
 
 * Improves the error message displayed when calling a disposed [PagingController](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagingController-class.html).
