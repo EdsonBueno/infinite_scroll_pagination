@@ -34,7 +34,7 @@ class _CharacterSliverListState extends State<CharacterSliverList> {
             ),
             action: SnackBarAction(
               label: 'Retry',
-              onPressed: () => _pagingController.retryLastRequest(),
+              onPressed: () => _pagingController.retryLastFailedRequest(),
             ),
           ),
         );
@@ -59,7 +59,7 @@ class _CharacterSliverListState extends State<CharacterSliverList> {
         final nextPageKey = pageKey + newItems.length;
         _pagingController.appendPage(newItems, nextPageKey);
       }
-    } catch(error) {
+    } catch (error) {
       _pagingController.error = error;
     }
   }

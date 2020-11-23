@@ -75,7 +75,7 @@ Widget build(BuildContext context) =>
         ),
         newPageErrorIndicatorBuilder: (_) => NewPageErrorIndicator(
           error: _pagingController.error,
-          onTryAgain: () => _pagingController.retryLastRequest(),
+          onTryAgain: () => _pagingController.retryLastFailedRequest(),
         ),
         firstPageProgressIndicatorBuilder: (_) => FirstPageProgressIndicator(),
         newPageProgressIndicatorBuilder: (_) => NewPageProgressIndicator(),
@@ -276,7 +276,7 @@ void initState() {
           ),
           action: SnackBarAction(
             label: 'Retry',
-            onPressed: () => _pagingController.retryLastRequest(),
+            onPressed: () => _pagingController.retryLastFailedRequest(),
           ),
         ),
       );
