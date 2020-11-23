@@ -105,23 +105,18 @@ class PagingController<PageKeyType, ItemType>
   /// key to `null`.
   void appendLastPage(List<ItemType> newItems) => appendPage(newItems, null);
 
-  /// Erases the current error and requests the last page again from the
-  /// listeners.
-  void retryLastRequest() {
+  /// Erases the current error.
+  void retryLastFailedRequest() {
     error = null;
-    notifyPageRequestListeners(nextPageKey);
   }
 
-  /// Resets [value] to its initial state and requests the first page again
-  /// from the listeners.
+  /// Resets [value] to its initial state.
   void refresh() {
     value = PagingState<PageKeyType, ItemType>(
       nextPageKey: firstPageKey,
       error: null,
       itemList: null,
     );
-
-    notifyPageRequestListeners(firstPageKey);
   }
 
   bool _debugAssertNotDisposed() {
@@ -131,8 +126,8 @@ class PagingController<PageKeyType, ItemType>
           'A PagingController was used after being disposed.\nOnce you have '
           'called dispose() on a PagingController, it can no longer be '
           'used.\nIf you’re using a Future, it probably completed after '
-          'the disposal of the owning widget.\nMake sure your widget is '
-          'mounted before calling the PagingController.',
+          'the disposal of the owning widget.\nMake sure dispose() has not '
+          'been called yet before using the PagingController.',
         );
       }
       return true;

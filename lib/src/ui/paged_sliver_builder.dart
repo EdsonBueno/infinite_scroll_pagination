@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -9,6 +11,7 @@ import 'package:infinite_scroll_pagination/src/ui/default_indicators/first_page_
 import 'package:infinite_scroll_pagination/src/ui/default_indicators/new_page_error_indicator.dart';
 import 'package:infinite_scroll_pagination/src/ui/default_indicators/new_page_progress_indicator.dart';
 import 'package:infinite_scroll_pagination/src/ui/default_indicators/no_items_found_indicator.dart';
+import 'package:infinite_scroll_pagination/src/utils/listenable_listener.dart';
 
 typedef CompletedListingBuilder = Widget Function(
   BuildContext context,
@@ -105,13 +108,13 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
   WidgetBuilder get _firstPageErrorIndicatorBuilder =>
       _builderDelegate.firstPageErrorIndicatorBuilder ??
       (_) => FirstPageErrorIndicator(
-            onTryAgain: _pagingController.refresh,
+            onTryAgain: _pagingController.retryLastFailedRequest,
           );
 
   WidgetBuilder get _newPageErrorIndicatorBuilder =>
       _builderDelegate.newPageErrorIndicatorBuilder ??
       (_) => NewPageErrorIndicator(
-            onTap: _pagingController.retryLastRequest,
+            onTap: _pagingController.retryLastFailedRequest,
           );
 
   WidgetBuilder get _firstPageProgressIndicatorBuilder =>
@@ -138,19 +141,8 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
 
   PageKeyType get _nextKey => _pagingController.nextPageKey;
 
-  /// The index that triggered the last page request.
-  ///
-  /// Used to avoid duplicate requests on rebuilds.
-  int _lastFetchTriggerIndex;
-
-  @override
-  void initState() {
-    final preloadedItemCount = _pagingController.itemCount ?? 0;
-    if (preloadedItemCount == 0) {
-      _requestNextPage(0);
-    }
-    super.initState();
-  }
+  /// Avoids duplicate requests on rebuilds.
+  bool _shouldRequestPageOnThresholdIndexBuild = true;
 
   @override
   Widget build(BuildContext context) =>
@@ -159,49 +151,64 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
       // https://github.com/flutter/flutter/issues/55170
       SliverPadding(
         padding: const EdgeInsets.all(0),
-        sliver: ValueListenableBuilder<PagingState<PageKeyType, ItemType>>(
-          valueListenable: _pagingController,
-          builder: (context, pagingState, _) {
-            switch (pagingState.status) {
-              case PagingStatus.ongoing:
-                return widget.loadingListingBuilder(
-                  context,
-                  _buildListItemWidget,
-                  _itemCount,
-                  _newPageProgressIndicatorBuilder,
-                );
-              case PagingStatus.completed:
-                return widget.completedListingBuilder(
-                  context,
-                  _buildListItemWidget,
-                  _itemCount,
-                  _noMoreItemsIndicatorBuilder,
-                );
-              case PagingStatus.loadingFirstPage:
-                _lastFetchTriggerIndex = null;
-                return _FirstPageStatusIndicatorBuilder(
-                  builder: _firstPageProgressIndicatorBuilder,
-                  shrinkWrap: _shrinkWrapFirstPageIndicators,
-                );
-              case PagingStatus.subsequentPageError:
-                return widget.errorListingBuilder(
-                  context,
-                  _buildListItemWidget,
-                  _itemCount,
-                  (context) => _newPageErrorIndicatorBuilder(context),
-                );
-              case PagingStatus.noItemsFound:
-                return _FirstPageStatusIndicatorBuilder(
-                  builder: _noItemsFoundIndicatorBuilder,
-                  shrinkWrap: _shrinkWrapFirstPageIndicators,
-                );
-              default:
-                return _FirstPageStatusIndicatorBuilder(
-                  builder: _firstPageErrorIndicatorBuilder,
-                  shrinkWrap: _shrinkWrapFirstPageIndicators,
-                );
+        sliver: ListenableListener(
+          listenable: _pagingController,
+          listener: () {
+            final status = _pagingController.value.status;
+
+            if (status == PagingStatus.loadingFirstPage) {
+              _pagingController.notifyPageRequestListeners(
+                _pagingController.firstPageKey,
+              );
+            }
+
+            if (status == PagingStatus.ongoing) {
+              _shouldRequestPageOnThresholdIndexBuild = true;
             }
           },
+          child: ValueListenableBuilder<PagingState<PageKeyType, ItemType>>(
+            valueListenable: _pagingController,
+            builder: (context, pagingState, _) {
+              switch (pagingState.status) {
+                case PagingStatus.ongoing:
+                  return widget.loadingListingBuilder(
+                    context,
+                    _buildListItemWidget,
+                    _itemCount,
+                    _newPageProgressIndicatorBuilder,
+                  );
+                case PagingStatus.completed:
+                  return widget.completedListingBuilder(
+                    context,
+                    _buildListItemWidget,
+                    _itemCount,
+                    _noMoreItemsIndicatorBuilder,
+                  );
+                case PagingStatus.loadingFirstPage:
+                  return _FirstPageStatusIndicatorBuilder(
+                    builder: _firstPageProgressIndicatorBuilder,
+                    shrinkWrap: _shrinkWrapFirstPageIndicators,
+                  );
+                case PagingStatus.subsequentPageError:
+                  return widget.errorListingBuilder(
+                    context,
+                    _buildListItemWidget,
+                    _itemCount,
+                    (context) => _newPageErrorIndicatorBuilder(context),
+                  );
+                case PagingStatus.noItemsFound:
+                  return _FirstPageStatusIndicatorBuilder(
+                    builder: _noItemsFoundIndicatorBuilder,
+                    shrinkWrap: _shrinkWrapFirstPageIndicators,
+                  );
+                default:
+                  return _FirstPageStatusIndicatorBuilder(
+                    builder: _firstPageErrorIndicatorBuilder,
+                    shrinkWrap: _shrinkWrapFirstPageIndicators,
+                  );
+              }
+            },
+          ),
         ),
       );
 
@@ -211,34 +218,21 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
     BuildContext context,
     int index,
   ) {
-    final item = _pagingController.itemList[index];
+    if (_shouldRequestPageOnThresholdIndexBuild) {
+      final newFetchTriggerIndex =
+          max(0, _itemCount - _invisibleItemsThreshold);
 
-    final newFetchTriggerIndex = _itemCount - _invisibleItemsThreshold;
+      final isCurrentIndexEqualToTriggerIndex = index == newFetchTriggerIndex;
 
-    final hasRequestedPageForTriggerIndex =
-        newFetchTriggerIndex == _lastFetchTriggerIndex;
-
-    final isThresholdBiggerThanListSize = newFetchTriggerIndex < 0;
-
-    final isCurrentIndexEqualToTriggerIndex = index == newFetchTriggerIndex;
-
-    final isCurrentIndexEligibleForItemsFetch =
-        isThresholdBiggerThanListSize || isCurrentIndexEqualToTriggerIndex;
-
-    if (_hasNextPage &&
-        isCurrentIndexEligibleForItemsFetch &&
-        !hasRequestedPageForTriggerIndex) {
-      _requestNextPage(newFetchTriggerIndex);
+      if (_hasNextPage && isCurrentIndexEqualToTriggerIndex) {
+        _pagingController.notifyPageRequestListeners(_nextKey);
+        _shouldRequestPageOnThresholdIndexBuild = false;
+      }
     }
 
+    final item = _pagingController.itemList[index];
     final itemWidget = _builderDelegate.itemBuilder(context, item, index);
     return itemWidget;
-  }
-
-  /// Requests a new page from the controller's listeners.
-  void _requestNextPage(int triggerIndex) {
-    _lastFetchTriggerIndex = triggerIndex;
-    _pagingController.notifyPageRequestListeners(_nextKey);
   }
 }
 
