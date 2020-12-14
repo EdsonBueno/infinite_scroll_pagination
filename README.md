@@ -104,11 +104,3 @@ For more usage examples, please take a look at our [cookbook](https://pub.dev/pa
 <p align="center">
 	<img src="https://raw.githubusercontent.com/EdsonBueno/infinite_scroll_pagination/master/docs/assets/api-diagram.png" alt="API Diagram" />
 </p>
-
-## Motivation
-
-Flutter indeed [makes our job way easier](https://flutter.dev/docs/resources/inside-flutter#infinite-scrolling) than other toolkits when talking about **infinite scrolling**. It's when we combine that with automated pagination and status indicators that things get complicated.
-
-[ListView.builder](https://api.flutter.dev/flutter/widgets/ListView/ListView.builder.html) *builds* your items on demand, but it doesn't help you with fetching them or displaying status indicators.
-
-Your listing will go through several stages: first page loading, first page error, subsequent page loading, subsequent page error, empty list and completed list. **Infinite Scroll Pagination** takes care of orchestrating between them, rendering each one and letting you know when more data is needed.
