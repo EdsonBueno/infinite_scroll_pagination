@@ -1,3 +1,7 @@
+## 2.2.3
+
+* Fixes a bug where manually resetting to a previous page would stop requesting subsequent pages.
+
 ## 2.2.2
 
 * Adds a condition to avoid requesting the first page when there are preloaded items.
