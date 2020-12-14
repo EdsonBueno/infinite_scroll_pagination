@@ -142,7 +142,7 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
   PageKeyType get _nextKey => _pagingController.nextPageKey;
 
   /// Avoids duplicate requests on rebuilds.
-  bool _shouldRequestPageOnThresholdIndexBuild = true;
+  bool _hasRequestedNextPage = false;
 
   @override
   Widget build(BuildContext context) =>
@@ -163,7 +163,7 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
             }
 
             if (status == PagingStatus.ongoing) {
-              _shouldRequestPageOnThresholdIndexBuild = true;
+              _hasRequestedNextPage = false;
             }
           },
           child: ValueListenableBuilder<PagingState<PageKeyType, ItemType>>(
@@ -218,21 +218,20 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
     BuildContext context,
     int index,
   ) {
-    if (_shouldRequestPageOnThresholdIndexBuild) {
-      final newFetchTriggerIndex =
+    if (!_hasRequestedNextPage) {
+      final newPageRequestTriggerIndex =
           max(0, _itemCount - _invisibleItemsThreshold);
 
-      final isCurrentIndexEqualToTriggerIndex = index == newFetchTriggerIndex;
+      final isBuildingTriggerIndexItem = index == newPageRequestTriggerIndex;
 
-      if (_hasNextPage && isCurrentIndexEqualToTriggerIndex) {
+      if (_hasNextPage && isBuildingTriggerIndexItem) {
         _pagingController.notifyPageRequestListeners(_nextKey);
-        _shouldRequestPageOnThresholdIndexBuild = false;
+        _hasRequestedNextPage = true;
       }
     }
 
     final item = _pagingController.itemList[index];
-    final itemWidget = _builderDelegate.itemBuilder(context, item, index);
-    return itemWidget;
+    return _builderDelegate.itemBuilder(context, item, index);
   }
 }
 
@@ -240,7 +239,7 @@ extension on PagingController {
   /// The loaded items count.
   int get itemCount => itemList?.length;
 
-  /// Tells whether there's a next page to fetch.
+  /// Tells whether there's a next page to request.
   bool get hasNextPage => nextPageKey != null;
 }
 
