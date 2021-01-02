@@ -1,6 +1,6 @@
 ## 2.2.3
 
-* Fixes a bug where manually resetting to a previous page would stop requesting subsequent pages.
+* Fixes a bug in which manually resetting to a previous page would stop requesting subsequent pages.
 
 ## 2.2.2
 
