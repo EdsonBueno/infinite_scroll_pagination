@@ -1,3 +1,7 @@
+## 2.2.4
+
+* Fixes new page requests happening before the end of the current frame.
+
 ## 2.2.3
 
 * Fixes a bug in which manually resetting to a previous page would stop requesting subsequent pages.
