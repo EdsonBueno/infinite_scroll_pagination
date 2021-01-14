@@ -31,6 +31,16 @@ class PagingController<PageKeyType, ItemType>
           PagingState<PageKeyType, ItemType>(nextPageKey: firstPageKey),
         );
 
+  /// Creates a controller with an existing [PagingState].
+  ///
+  /// In this case, [firstPageKey] should be the key that is associated with the
+  /// first page of the existing state, to be used in [refresh].
+  PagingController.withValue(
+    PagingState<PageKeyType, ItemType> value, {
+    @required this.firstPageKey,
+    this.invisibleItemsThreshold,
+  }) : super(value);
+
   ObserverList<PagingStatusListener> _statusListeners =
       ObserverList<PagingStatusListener>();
 
