@@ -1,5 +1,3 @@
-library infinite_scroll_pagination;
-
 export 'src/core/paged_child_builder_delegate.dart';
 export 'src/core/paging_controller.dart';
 export 'src/model/paging_state.dart';

@@ -31,15 +31,15 @@ class PagingController<PageKeyType, ItemType>
           PagingState<PageKeyType, ItemType>(nextPageKey: firstPageKey),
         );
 
-  /// Creates a controller with an existing [PagingState].
+  /// Creates a controller from an existing [PagingState].
   ///
-  /// In this case, [firstPageKey] should be the key that is associated with the
-  /// first page of the existing state, to be used in [refresh].
-  PagingController.withValue(
+  /// [firstPageKey] is the key to be used in case of a [refresh].
+  PagingController.fromValue(
     PagingState<PageKeyType, ItemType> value, {
     @required this.firstPageKey,
     this.invisibleItemsThreshold,
-  }) : super(value);
+  })  : assert(value != null),
+        super(value);
 
   ObserverList<PagingStatusListener> _statusListeners =
       ObserverList<PagingStatusListener>();
@@ -92,6 +92,7 @@ class PagingController<PageKeyType, ItemType>
   /// Corresponding to [ValueNotifier.value].
   @override
   set value(PagingState<PageKeyType, ItemType> newValue) {
+    assert(newValue != null);
     if (value.status != newValue.status) {
       notifyStatusListeners(newValue.status);
     }
