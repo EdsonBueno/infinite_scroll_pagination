@@ -12,33 +12,33 @@ typedef ItemWidgetBuilder<ItemType> = Widget Function(
 /// the list item’s type.
 class PagedChildBuilderDelegate<ItemType> {
   PagedChildBuilderDelegate({
-    @required this.itemBuilder,
+    required this.itemBuilder,
     this.firstPageErrorIndicatorBuilder,
     this.newPageErrorIndicatorBuilder,
     this.firstPageProgressIndicatorBuilder,
     this.newPageProgressIndicatorBuilder,
     this.noItemsFoundIndicatorBuilder,
     this.noMoreItemsIndicatorBuilder,
-  }) : assert(itemBuilder != null);
+  });
 
   /// The builder for list items.
   final ItemWidgetBuilder<ItemType> itemBuilder;
 
   /// The builder for the first page's error indicator.
-  final WidgetBuilder firstPageErrorIndicatorBuilder;
+  final WidgetBuilder? firstPageErrorIndicatorBuilder;
 
   /// The builder for a new page's error indicator.
-  final WidgetBuilder newPageErrorIndicatorBuilder;
+  final WidgetBuilder? newPageErrorIndicatorBuilder;
 
   /// The builder for the first page's progress indicator.
-  final WidgetBuilder firstPageProgressIndicatorBuilder;
+  final WidgetBuilder? firstPageProgressIndicatorBuilder;
 
   /// The builder for a new page's progress indicator.
-  final WidgetBuilder newPageProgressIndicatorBuilder;
+  final WidgetBuilder? newPageProgressIndicatorBuilder;
 
   /// The builder for a no items list indicator.
-  final WidgetBuilder noItemsFoundIndicatorBuilder;
+  final WidgetBuilder? noItemsFoundIndicatorBuilder;
 
   /// The builder for an indicator that all items have been fetched.
-  final WidgetBuilder noMoreItemsIndicatorBuilder;
+  final WidgetBuilder? noMoreItemsIndicatorBuilder;
 }
