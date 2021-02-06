@@ -14,38 +14,38 @@ import 'package:infinite_scroll_pagination/src/ui/paged_sliver_list.dart';
 /// used without the need for a [CustomScrollView]. Similar to a [ListView].
 class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
   const PagedListView({
-    @required this.pagingController,
-    @required this.builderDelegate,
+    required this.pagingController,
+    required this.builderDelegate,
     // Corresponds to [ScrollView.controller].
-    ScrollController scrollController,
+    ScrollController? scrollController,
     // Corresponds to [ScrollView.scrollDirection].
     Axis scrollDirection = Axis.vertical,
     // Corresponds to [ScrollView.reverse].
     bool reverse = false,
     // Corresponds to [ScrollView.primary].
-    bool primary,
+    bool? primary,
     // Corresponds to [ScrollView.physics].
-    ScrollPhysics physics,
+    ScrollPhysics? physics,
     // Corresponds to [ScrollView.shrinkWrap].
     bool shrinkWrap = false,
     // Corresponds to [BoxScrollView.padding].
-    EdgeInsetsGeometry padding,
+    EdgeInsetsGeometry? padding,
     this.itemExtent,
     this.addAutomaticKeepAlives = true,
     this.addRepaintBoundaries = true,
     this.addSemanticIndexes = true,
     // Corresponds to [ScrollView.cacheExtent]
-    double cacheExtent,
+    double? cacheExtent,
     // Corresponds to [ScrollView.dragStartBehavior]
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
     // Corresponds to [ScrollView.keyboardDismissBehavior]
     ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
         ScrollViewKeyboardDismissBehavior.manual,
     // Corresponds to [ScrollView.restorationId]
-    String restorationId,
+    String? restorationId,
     // Corresponds to [ScrollView.clipBehavior]
     Clip clipBehavior = Clip.hardEdge,
-    Key key,
+    Key? key,
   })  : separatorBuilder = null,
         assert(pagingController != null),
         assert(builderDelegate != null),
@@ -67,43 +67,40 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
         );
 
   const PagedListView.separated({
-    @required this.pagingController,
-    @required this.builderDelegate,
-    @required this.separatorBuilder,
+    required this.pagingController,
+    required this.builderDelegate,
+    required this.separatorBuilder,
     // Corresponds to [ScrollView.controller].
-    ScrollController scrollController,
+    ScrollController? scrollController,
     // Corresponds to [ScrollView.scrollDirection].
     Axis scrollDirection = Axis.vertical,
     // Corresponds to [ScrollView.reverse].
     bool reverse = false,
     // Corresponds to [ScrollView.primary].
-    bool primary,
+    bool? primary,
     // Corresponds to [ScrollView.physics].
-    ScrollPhysics physics,
+    ScrollPhysics? physics,
     // Corresponds to [ScrollView.shrinkWrap].
     bool shrinkWrap = false,
     // Corresponds to [BoxScrollView.padding].
-    EdgeInsetsGeometry padding,
+    EdgeInsetsGeometry? padding,
     this.itemExtent,
     this.addAutomaticKeepAlives = true,
     this.addRepaintBoundaries = true,
     this.addSemanticIndexes = true,
     // Corresponds to [ScrollView.cacheExtent]
-    double cacheExtent,
+    double? cacheExtent,
     // Corresponds to [ScrollView.dragStartBehavior]
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
     // Corresponds to [ScrollView.keyboardDismissBehavior]
     ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
         ScrollViewKeyboardDismissBehavior.manual,
     // Corresponds to [ScrollView.restorationId]
-    String restorationId,
+    String? restorationId,
     // Corresponds to [ScrollView.clipBehavior]
     Clip clipBehavior = Clip.hardEdge,
-    Key key,
-  })  : assert(pagingController != null),
-        assert(builderDelegate != null),
-        assert(separatorBuilder != null),
-        _shrinkWrapFirstPageIndicators = shrinkWrap,
+    Key? key,
+  })  : _shrinkWrapFirstPageIndicators = shrinkWrap,
         super(
           key: key,
           scrollDirection: scrollDirection,
@@ -127,7 +124,7 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
   final PagedChildBuilderDelegate<ItemType> builderDelegate;
 
   /// The builder for list item separators, just like in [ListView.separated].
-  final IndexedWidgetBuilder separatorBuilder;
+  final IndexedWidgetBuilder? separatorBuilder;
 
   /// Corresponds to [SliverChildBuilderDelegate.addAutomaticKeepAlives].
   final bool addAutomaticKeepAlives;
@@ -139,7 +136,7 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
   final bool addSemanticIndexes;
 
   /// Corresponds to [ListView.itemExtent].
-  final double itemExtent;
+  final double? itemExtent;
 
   /// Corresponds to [PagedSliverList.shrinkWrapFirstPageIndicators].
   final bool _shrinkWrapFirstPageIndicators;
