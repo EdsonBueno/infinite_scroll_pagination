@@ -135,7 +135,7 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
     int itemCount, {
     WidgetBuilder? statusIndicatorBuilder,
   }) =>
-      separatorBuilder != null
+      separatorBuilder == null
           ? AppendedSliverChildBuilderDelegate(
               builder: itemBuilder,
               childCount: itemCount,

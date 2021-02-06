@@ -98,7 +98,7 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
       widget.builderDelegate;
 
   bool get _shrinkWrapFirstPageIndicators =>
-      widget.shrinkWrapFirstPageIndicators ?? false;
+      widget.shrinkWrapFirstPageIndicators;
 
   WidgetBuilder get _firstPageErrorIndicatorBuilder =>
       _builderDelegate.firstPageErrorIndicatorBuilder ??
