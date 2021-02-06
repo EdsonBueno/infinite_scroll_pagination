@@ -3,13 +3,11 @@ import 'package:flutter/widgets.dart';
 /// A widget that calls [listener] when the given [Listenable] changes value.
 class ListenableListener extends StatefulWidget {
   const ListenableListener({
-    @required this.listenable,
-    @required this.child,
+    required this.listenable,
+    required this.child,
     this.listener,
-    Key key,
-  })  : assert(listenable != null),
-        assert(child != null),
-        super(key: key);
+    Key? key,
+  })  : super(key: key);
 
   /// The [Listenable] to which this widget is listening.
   ///
@@ -17,7 +15,7 @@ class ListenableListener extends StatefulWidget {
   final Listenable listenable;
 
   /// Called every time the [listenable] changes value.
-  final VoidCallback listener;
+  final VoidCallback? listener;
 
   /// The widget below this widget in the tree.
   final Widget child;
