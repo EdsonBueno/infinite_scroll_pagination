@@ -12,28 +12,28 @@ import 'package:infinite_scroll_pagination/src/ui/paged_sliver_grid.dart';
 /// used without the need for a [CustomScrollView]. Similar to a [GridView].
 class PagedGridView<PageKeyType, ItemType> extends BoxScrollView {
   const PagedGridView({
-    @required this.pagingController,
-    @required this.builderDelegate,
-    @required this.gridDelegate,
+    required this.pagingController,
+    required this.builderDelegate,
+    required this.gridDelegate,
     // Corresponds to [ScrollView.controller].
-    ScrollController scrollController,
+    ScrollController? scrollController,
     // Corresponds to [ScrollView.scrollDirection].
     Axis scrollDirection = Axis.vertical,
     // Corresponds to [ScrollView.reverse].
     bool reverse = false,
     // Corresponds to [ScrollView.primary].
-    bool primary,
+    bool? primary,
     // Corresponds to [ScrollView.physics].
-    ScrollPhysics physics,
+    ScrollPhysics? physics,
     // Corresponds to [ScrollView.shrinkWrap].
     bool shrinkWrap = false,
     // Corresponds to [BoxScrollView.padding].
-    EdgeInsetsGeometry padding,
+    EdgeInsetsGeometry? padding,
     this.addAutomaticKeepAlives = true,
     this.addRepaintBoundaries = true,
     this.addSemanticIndexes = true,
     // Corresponds to [ScrollView.cacheExtent].
-    double cacheExtent,
+    double? cacheExtent,
     this.showNewPageProgressIndicatorAsGridChild = true,
     this.showNewPageErrorIndicatorAsGridChild = true,
     this.showNoMoreItemsIndicatorAsGridChild = true,
@@ -43,14 +43,11 @@ class PagedGridView<PageKeyType, ItemType> extends BoxScrollView {
     ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
         ScrollViewKeyboardDismissBehavior.manual,
     // Corresponds to [ScrollView.restorationId].
-    String restorationId,
+    String? restorationId,
     // Corresponds to [ScrollView.clipBehavior].
     Clip clipBehavior = Clip.hardEdge,
-    Key key,
-  })  : assert(pagingController != null),
-        assert(builderDelegate != null),
-        assert(gridDelegate != null),
-        _shrinkWrapFirstPageIndicators = shrinkWrap,
+    Key? key,
+  })  : _shrinkWrapFirstPageIndicators = shrinkWrap,
         super(
           key: key,
           scrollDirection: scrollDirection,
