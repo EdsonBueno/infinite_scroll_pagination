@@ -168,7 +168,7 @@ class PagingController<PageKeyType, ItemType>
   void notifyStatusListeners(PagingStatus status) {
     assert(_debugAssertNotDisposed());
 
-    if (_statusListeners?.isEmpty != false) {
+    if (_statusListeners!.isEmpty) {
       return;
     }
 

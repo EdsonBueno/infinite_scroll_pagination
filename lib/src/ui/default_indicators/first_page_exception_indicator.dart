@@ -16,7 +16,6 @@ class FirstPageExceptionIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Necessary for the Collection If to work with Null Safety.
     final message = this.message;
     return Center(
       child: Padding(
