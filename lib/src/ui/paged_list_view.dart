@@ -47,8 +47,6 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
     Clip clipBehavior = Clip.hardEdge,
     Key? key,
   })  : separatorBuilder = null,
-        assert(pagingController != null),
-        assert(builderDelegate != null),
         _shrinkWrapFirstPageIndicators = shrinkWrap,
         super(
           key: key,

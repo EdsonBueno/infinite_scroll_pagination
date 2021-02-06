@@ -27,7 +27,7 @@ class _CharacterSliverListState extends State<CharacterSliverList> {
 
     _pagingController.addStatusListener((status) {
       if (status == PagingStatus.subsequentPageError) {
-        Scaffold.of(context).showSnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: const Text(
               'Something went wrong while fetching a new page.',
