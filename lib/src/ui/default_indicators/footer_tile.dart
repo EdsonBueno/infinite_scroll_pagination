@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 
 class FooterTile extends StatelessWidget {
   const FooterTile({
-    @required this.child,
-    Key key,
-  })  : assert(child != null),
-        super(key: key);
+    required this.child,
+    Key? key,
+  }) : super(key: key);
 
   final Widget child;
 
