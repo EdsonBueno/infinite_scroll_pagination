@@ -17,7 +17,7 @@ typedef CompletedListingBuilder = Widget Function(
   BuildContext context,
   IndexedWidgetBuilder itemWidgetBuilder,
   int itemCount,
-  WidgetBuilder noMoreItemsIndicatorBuilder,
+  WidgetBuilder? noMoreItemsIndicatorBuilder,
 );
 
 typedef ErrorListingBuilder = Widget Function(
@@ -46,19 +46,14 @@ typedef LoadingListingBuilder = Widget Function(
 /// [PagedGridView] and [PagedListView].
 class PagedSliverBuilder<PageKeyType, ItemType> extends StatefulWidget {
   const PagedSliverBuilder({
-    @required this.pagingController,
-    @required this.builderDelegate,
-    @required this.loadingListingBuilder,
-    @required this.errorListingBuilder,
-    @required this.completedListingBuilder,
+    required this.pagingController,
+    required this.builderDelegate,
+    required this.loadingListingBuilder,
+    required this.errorListingBuilder,
+    required this.completedListingBuilder,
     this.shrinkWrapFirstPageIndicators = false,
-    Key key,
-  })  : assert(pagingController != null),
-        assert(builderDelegate != null),
-        assert(loadingListingBuilder != null),
-        assert(errorListingBuilder != null),
-        assert(completedListingBuilder != null),
-        super(key: key);
+    Key? key,
+  }) : super(key: key);
 
   /// The controller for paged listings.
   ///
@@ -129,7 +124,7 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
       _builderDelegate.noItemsFoundIndicatorBuilder ??
       (_) => NoItemsFoundIndicator();
 
-  WidgetBuilder get _noMoreItemsIndicatorBuilder =>
+  WidgetBuilder? get _noMoreItemsIndicatorBuilder =>
       _builderDelegate.noMoreItemsIndicatorBuilder;
 
   int get _invisibleItemsThreshold =>
@@ -139,7 +134,7 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
 
   bool get _hasNextPage => _pagingController.hasNextPage;
 
-  PageKeyType get _nextKey => _pagingController.nextPageKey;
+  PageKeyType? get _nextKey => _pagingController.nextPageKey;
 
   /// Avoids duplicate requests on rebuilds.
   bool _hasRequestedNextPage = false;
@@ -226,21 +221,21 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
 
       if (_hasNextPage && isBuildingTriggerIndexItem) {
         // Schedules the request for the end of this frame.
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          _pagingController.notifyPageRequestListeners(_nextKey);
+        WidgetsBinding.instance?.addPostFrameCallback((_) {
+          _pagingController.notifyPageRequestListeners(_nextKey!);
         });
         _hasRequestedNextPage = true;
       }
     }
 
-    final item = _pagingController.itemList[index];
+    final item = _pagingController.itemList![index];
     return _builderDelegate.itemBuilder(context, item, index);
   }
 }
 
 extension on PagingController {
   /// The loaded items count.
-  int get itemCount => itemList?.length;
+  int get itemCount => itemList?.length ?? 0;
 
   /// Tells whether there's a next page to request.
   bool get hasNextPage => nextPageKey != null;
@@ -248,12 +243,10 @@ extension on PagingController {
 
 class _FirstPageStatusIndicatorBuilder extends StatelessWidget {
   const _FirstPageStatusIndicatorBuilder({
-    @required this.builder,
+    required this.builder,
     this.shrinkWrap = false,
-    Key key,
-  })  : assert(builder != null),
-        assert(shrinkWrap != null),
-        super(key: key);
+    Key? key,
+  }) : super(key: key);
 
   final WidgetBuilder builder;
   final bool shrinkWrap;
