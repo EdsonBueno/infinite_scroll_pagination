@@ -15,9 +15,9 @@ import 'package:sliver_tools/sliver_tools.dart';
 /// to add some widgets preceding or following your paged grid.
 class PagedSliverGrid<PageKeyType, ItemType> extends StatelessWidget {
   const PagedSliverGrid({
-    @required this.pagingController,
-    @required this.builderDelegate,
-    @required this.gridDelegate,
+    required this.pagingController,
+    required this.builderDelegate,
+    required this.gridDelegate,
     this.addAutomaticKeepAlives = true,
     this.addRepaintBoundaries = true,
     this.addSemanticIndexes = true,
@@ -25,11 +25,8 @@ class PagedSliverGrid<PageKeyType, ItemType> extends StatelessWidget {
     this.showNewPageErrorIndicatorAsGridChild = true,
     this.showNoMoreItemsIndicatorAsGridChild = true,
     this.shrinkWrapFirstPageIndicators = false,
-    Key key,
-  })  : assert(pagingController != null),
-        assert(builderDelegate != null),
-        assert(gridDelegate != null),
-        super(key: key);
+    Key? key,
+  }) : super(key: key);
 
   /// Corresponds to [PagedSliverBuilder.pagingController].
   final PagingController<PageKeyType, ItemType> pagingController;
@@ -129,25 +126,22 @@ class PagedSliverGrid<PageKeyType, ItemType> extends StatelessWidget {
 
 class _AppendedSliverGrid extends StatelessWidget {
   const _AppendedSliverGrid({
-    @required this.gridDelegate,
-    @required this.itemBuilder,
-    @required this.itemCount,
+    required this.gridDelegate,
+    required this.itemBuilder,
+    required this.itemCount,
     this.showAppendixAsGridChild = true,
     this.appendixBuilder,
     this.addAutomaticKeepAlives = true,
     this.addRepaintBoundaries = true,
     this.addSemanticIndexes = true,
-    Key key,
-  })  : assert(gridDelegate != null),
-        assert(itemBuilder != null),
-        assert(itemCount != null),
-        super(key: key);
+    Key? key,
+  }) : super(key: key);
 
   final SliverGridDelegate gridDelegate;
   final IndexedWidgetBuilder itemBuilder;
   final int itemCount;
   final bool showAppendixAsGridChild;
-  final WidgetBuilder appendixBuilder;
+  final WidgetBuilder? appendixBuilder;
   final bool addAutomaticKeepAlives;
   final bool addRepaintBoundaries;
   final bool addSemanticIndexes;
@@ -168,14 +162,14 @@ class _AppendedSliverGrid extends StatelessWidget {
           delegate: _buildSliverDelegate(),
         ),
         SliverToBoxAdapter(
-          child: appendixBuilder(context),
+          child: appendixBuilder!(context),
         ),
       ]);
     }
   }
 
   SliverChildBuilderDelegate _buildSliverDelegate({
-    WidgetBuilder appendixBuilder,
+    WidgetBuilder? appendixBuilder,
   }) =>
       AppendedSliverChildBuilderDelegate(
         builder: itemBuilder,
