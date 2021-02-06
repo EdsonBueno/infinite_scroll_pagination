@@ -1,3 +1,7 @@
+## 3.0.0-nullsafety.0
+
+* Migrates to null safety.
+
 ## 2.3.0
 
 * Adds an [alternative constructor](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagingController/PagingController.fromValue.html) to [PagingController](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagingController-class.html) receiving an initial [PagingState](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagingState-class.html).
