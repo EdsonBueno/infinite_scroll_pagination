@@ -3,10 +3,10 @@ import 'package:infinite_scroll_pagination/src/ui/default_indicators/footer_tile
 
 class NewPageErrorIndicator extends StatelessWidget {
   const NewPageErrorIndicator({
-    Key key,
+    Key? key,
     this.onTap,
   }) : super(key: key);
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) => InkWell(
