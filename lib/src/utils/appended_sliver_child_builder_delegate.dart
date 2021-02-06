@@ -9,16 +9,14 @@ import 'package:flutter/material.dart';
 /// [AppendedSliverChildBuilderDelegate.separated].
 class AppendedSliverChildBuilderDelegate extends SliverChildBuilderDelegate {
   AppendedSliverChildBuilderDelegate({
-    @required IndexedWidgetBuilder builder,
-    @required int childCount,
-    WidgetBuilder appendixBuilder,
+    required IndexedWidgetBuilder builder,
+    required int childCount,
+    WidgetBuilder? appendixBuilder,
     bool addAutomaticKeepAlives = true,
     bool addRepaintBoundaries = true,
     bool addSemanticIndexes = true,
-    SemanticIndexCallback semanticIndexCallback,
-  })  : assert(builder != null),
-        assert(childCount != null),
-        super(
+    SemanticIndexCallback? semanticIndexCallback,
+  }) : super(
           appendixBuilder == null
               ? builder
               : (context, index) {
@@ -35,16 +33,15 @@ class AppendedSliverChildBuilderDelegate extends SliverChildBuilderDelegate {
         );
 
   AppendedSliverChildBuilderDelegate.separated({
-    @required IndexedWidgetBuilder builder,
-    @required int childCount,
-    @required IndexedWidgetBuilder separatorBuilder,
-    WidgetBuilder appendixBuilder,
+    required IndexedWidgetBuilder builder,
+    required int childCount,
+    required IndexedWidgetBuilder separatorBuilder,
+    WidgetBuilder? appendixBuilder,
     bool addAutomaticKeepAlives = true,
     bool addRepaintBoundaries = true,
     bool addSemanticIndexes = true,
   }) : this(
           builder: (context, index) {
-            assert(separatorBuilder != null);
             final itemIndex = index ~/ 2;
             if (index.isEven) {
               return builder(context, itemIndex);
