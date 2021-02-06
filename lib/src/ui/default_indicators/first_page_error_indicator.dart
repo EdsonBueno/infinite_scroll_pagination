@@ -4,10 +4,10 @@ import 'package:infinite_scroll_pagination/src/ui/default_indicators/first_page_
 class FirstPageErrorIndicator extends StatelessWidget {
   const FirstPageErrorIndicator({
     this.onTryAgain,
-    Key key,
+    Key? key,
   }) : super(key: key);
 
-  final VoidCallback onTryAgain;
+  final VoidCallback? onTryAgain;
 
   @override
   Widget build(BuildContext context) => FirstPageExceptionIndicator(
