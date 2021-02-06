@@ -17,35 +17,30 @@ import 'package:infinite_scroll_pagination/src/utils/appended_sliver_child_build
 /// to add some widgets preceding or following your paged list.
 class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
   const PagedSliverList({
-    @required this.pagingController,
-    @required this.builderDelegate,
+    required this.pagingController,
+    required this.builderDelegate,
     this.addAutomaticKeepAlives = true,
     this.addRepaintBoundaries = true,
     this.addSemanticIndexes = true,
     this.itemExtent,
     this.semanticIndexCallback,
     this.shrinkWrapFirstPageIndicators = false,
-    Key key,
+    Key? key,
   })  : separatorBuilder = null,
-        assert(pagingController != null),
-        assert(builderDelegate != null),
         super(key: key);
 
   const PagedSliverList.separated({
-    @required this.pagingController,
-    @required this.builderDelegate,
-    @required this.separatorBuilder,
+    required this.pagingController,
+    required this.builderDelegate,
+    required this.separatorBuilder,
     this.addAutomaticKeepAlives = true,
     this.addRepaintBoundaries = true,
     this.addSemanticIndexes = true,
     this.itemExtent,
     this.semanticIndexCallback,
     this.shrinkWrapFirstPageIndicators = false,
-    Key key,
-  })  : assert(pagingController != null),
-        assert(builderDelegate != null),
-        assert(separatorBuilder != null),
-        super(key: key);
+    Key? key,
+  }) : super(key: key);
 
   /// Corresponds to [PagedSliverBuilder.pagingController].
   final PagingController<PageKeyType, ItemType> pagingController;
@@ -54,7 +49,7 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
   final PagedChildBuilderDelegate<ItemType> builderDelegate;
 
   /// The builder for list item separators, just like in [ListView.separated].
-  final IndexedWidgetBuilder separatorBuilder;
+  final IndexedWidgetBuilder? separatorBuilder;
 
   /// Corresponds to [SliverChildBuilderDelegate.addAutomaticKeepAlives].
   final bool addAutomaticKeepAlives;
@@ -66,10 +61,10 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
   final bool addSemanticIndexes;
 
   /// Corresponds to [SliverChildBuilderDelegate.semanticIndexCallback].
-  final SemanticIndexCallback semanticIndexCallback;
+  final SemanticIndexCallback? semanticIndexCallback;
 
   /// Corresponds to [SliverFixedExtentList.itemExtent].
-  final double itemExtent;
+  final double? itemExtent;
 
   /// Corresponds to [PagedSliverBuilder.shrinkWrapFirstPageIndicators].
   final bool shrinkWrapFirstPageIndicators;
@@ -118,7 +113,7 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
   SliverMultiBoxAdaptorWidget _buildSliverList(
     IndexedWidgetBuilder itemBuilder,
     int itemCount, {
-    WidgetBuilder statusIndicatorBuilder,
+    WidgetBuilder? statusIndicatorBuilder,
   }) {
     final delegate = _buildSliverDelegate(
       itemBuilder,
@@ -131,16 +126,16 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
           )
         : SliverFixedExtentList(
             delegate: delegate,
-            itemExtent: itemExtent,
+            itemExtent: itemExtent!,
           );
   }
 
   SliverChildBuilderDelegate _buildSliverDelegate(
     IndexedWidgetBuilder itemBuilder,
     int itemCount, {
-    WidgetBuilder statusIndicatorBuilder,
+    WidgetBuilder? statusIndicatorBuilder,
   }) =>
-      separatorBuilder == null
+      separatorBuilder != null
           ? AppendedSliverChildBuilderDelegate(
               builder: itemBuilder,
               childCount: itemCount,
@@ -154,7 +149,7 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
               builder: itemBuilder,
               childCount: itemCount,
               appendixBuilder: statusIndicatorBuilder,
-              separatorBuilder: separatorBuilder,
+              separatorBuilder: separatorBuilder!,
               addAutomaticKeepAlives: addAutomaticKeepAlives,
               addRepaintBoundaries: addRepaintBoundaries,
               addSemanticIndexes: addSemanticIndexes,
