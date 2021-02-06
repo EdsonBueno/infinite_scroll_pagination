@@ -13,13 +13,13 @@ class PagingState<PageKeyType, ItemType> {
   });
 
   /// List with all items loaded so far.
-  final List<ItemType> itemList;
+  final List<ItemType>? itemList;
 
   /// The current error, if any.
   final dynamic error;
 
   /// The key for the next page to be fetched.
-  final PageKeyType nextPageKey;
+  final PageKeyType? nextPageKey;
 
   /// The current pagination status.
   PagingStatus get status {
@@ -69,11 +69,14 @@ class PagingState<PageKeyType, ItemType> {
         nextPageKey.hashCode,
       );
 
-  int get _itemCount => itemList?.length;
+  int? get _itemCount => itemList?.length;
 
   bool get _hasNextPage => nextPageKey != null;
 
-  bool get _hasItems => _itemCount != null && _itemCount > 0;
+  bool get _hasItems {
+    final itemCount = _itemCount;
+    return itemCount != null && itemCount > 0;
+  }
 
   bool get _hasError => error != null;
 
