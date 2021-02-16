@@ -90,6 +90,17 @@ class PagingState<PageKeyType, ItemType> extends Equatable {
 
   bool get _isEmpty => _itemCount != null && _itemCount == 0;
 
+  PagingState<PageKeyType, ItemType> copyWith({
+    List<ItemType> itemList,
+    dynamic error,
+    PageKeyType nextPageKey,
+  }) =>
+      PagingState<PageKeyType, ItemType>(
+        itemList: itemList ?? this.itemList,
+        error: error ?? this.error,
+        nextPageKey: nextPageKey ?? this.nextPageKey,
+      );
+
   @override
   List<Object> get props => [itemList, error, nextPageKey];
 }
