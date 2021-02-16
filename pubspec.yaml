@@ -11,6 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   sliver_tools: ^0.1.10+1
+  equatable: ^1.2.6
 
 dev_dependencies:
   flutter_test:
