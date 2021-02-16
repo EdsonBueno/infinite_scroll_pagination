@@ -11,6 +11,9 @@ typedef PagingStatusListener = void Function(
   PagingStatus status,
 );
 
+typedef SetPageState<PageKeyType, ItemType> = PagingState<PageKeyType, ItemType>
+    Function(PagingState<PageKeyType, ItemType>);
+
 /// A controller for a paged widget.
 ///
 /// If you modify the [itemList], [error] or [nextPageKey] properties, the
@@ -99,6 +102,9 @@ class PagingController<PageKeyType, ItemType>
 
     super.value = newValue;
   }
+
+  void setPageState(SetPageState<PageKeyType, ItemType> onSet) =>
+      value = onSet(value);
 
   /// Appends [newItems] to the previously loaded ones and replaces
   /// the next page's key.
