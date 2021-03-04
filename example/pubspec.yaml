@@ -10,7 +10,7 @@ dependencies:
   cached_network_image: ^3.0.0-nullsafety
   flutter:
     sdk: flutter
-  http: 0.13.0
+  http: ^0.13.0
   infinite_scroll_pagination:
     path: ../
   rxdart: ^0.26.0
