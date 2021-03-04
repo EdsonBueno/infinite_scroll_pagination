@@ -124,7 +124,7 @@ Widget build(BuildContext context) =>
 ```
 
 ## Preceding/Following Items
-If you need to add widgets preceding or following your list, expected to scroll along with it, such as a header, footer, search or filter bar, you should use our [Sliver](https://flutter.dev/docs/development/ui/advanced/slivers) widgets.
+If you need to place some widgets before or after your list, and expect them to scroll along with the list items, such as a header, footer, search or filter bar, you should use our [Sliver](https://flutter.dev/docs/development/ui/advanced/slivers) widgets.
 
 **Infinite Scroll Pagination** comes with [PagedSliverList](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedSliverList-class.html) and [PagedSliverGrid](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedSliverGrid-class.html), which works almost the same as [PagedListView](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedListView-class.html) or [PagedGridView](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedGridView-class.html), except that they need to be wrapped by a [CustomScrollView](https://api.flutter.dev/flutter/widgets/CustomScrollView-class.html). That allows you to give them siblings, for example:
 
@@ -166,7 +166,7 @@ class _CharacterSliverListState extends State<CharacterSliverList> {
   final PagingController<int, CharacterSummary> _pagingController =
       PagingController(firstPageKey: 0);
 
-  String _searchTerm;
+  String? _searchTerm;
 
   @override
   void initState() {
@@ -297,7 +297,7 @@ final PagingController<int, CharacterSummary> _pagingController =
 
 ## BLoC
 **Infinite Scroll Pagination** is designed to work with any state management approach you prefer in any way you'd like. Because of that, for each approach, there's not only one, but several ways in which you could work with this package.
-Below, it's just one of the possible ways to integrate it with BLoCs:
+Below you can see one of the possible ways to integrate it with BLoCs:
 
 ```dart
 class CharacterSliverGrid extends StatefulWidget {
@@ -309,7 +309,7 @@ class _CharacterSliverGridState extends State<CharacterSliverGrid> {
   final CharacterSliverGridBloc _bloc = CharacterSliverGridBloc();
   final PagingController<int, CharacterSummary> _pagingController =
       PagingController(firstPageKey: 0);
-  StreamSubscription _blocListingStateSubscription;
+  late StreamSubscription _blocListingStateSubscription;
 
   @override
   void initState() {

@@ -1,3 +1,9 @@
+## 3.0.0
+
+* Promotes null safety to stable release.
+* Migrates example project to null safety.
+* Migrates code samples to null safety.
+
 ## 3.0.0-nullsafety.0
 
 * Migrates to null safety.
