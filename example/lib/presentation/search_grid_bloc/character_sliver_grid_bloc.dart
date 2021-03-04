@@ -38,7 +38,7 @@ class CharacterSliverGridBloc {
   Sink<String> get onSearchInputChangedSink =>
       _onSearchInputChangedSubject.sink;
 
-  String get searchInputValue => _onSearchInputChangedSubject.value;
+  String? get searchInputValue => _onSearchInputChangedSubject.value;
 
   Stream<CharacterListingState> _resetSearch() async* {
     yield CharacterListingState();
@@ -58,13 +58,13 @@ class CharacterSliverGridBloc {
       yield CharacterListingState(
         error: null,
         nextPageKey: nextPageKey,
-        itemList: [...lastListingState.itemList ?? [], ...newItems],
+        itemList: [...lastListingState?.itemList ?? [], ...newItems],
       );
     } catch (e) {
       yield CharacterListingState(
         error: e,
-        nextPageKey: lastListingState.nextPageKey,
-        itemList: lastListingState.itemList,
+        nextPageKey: lastListingState?.nextPageKey,
+        itemList: lastListingState?.itemList,
       );
     }
   }

@@ -7,7 +7,7 @@ class CharacterListingState {
     this.nextPageKey = 0,
   });
 
-  final List<CharacterSummary> itemList;
+  final List<CharacterSummary>? itemList;
   final dynamic error;
-  final int nextPageKey;
+  final int? nextPageKey;
 }

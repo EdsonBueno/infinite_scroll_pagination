@@ -17,7 +17,7 @@ class _CharacterSliverListState extends State<CharacterSliverList> {
   final PagingController<int, CharacterSummary> _pagingController =
       PagingController(firstPageKey: 0);
 
-  String _searchTerm;
+  String? _searchTerm;
 
   @override
   void initState() {

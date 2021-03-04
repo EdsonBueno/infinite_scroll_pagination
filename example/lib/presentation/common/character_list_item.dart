@@ -6,10 +6,9 @@ import 'package:flutter/widgets.dart';
 /// List item representing a single Character with its photo and name.
 class CharacterListItem extends StatelessWidget {
   const CharacterListItem({
-    @required this.character,
-    Key key,
-  })  : assert(character != null),
-        super(key: key);
+    required this.character,
+    Key? key,
+  }) : super(key: key);
 
   final CharacterSummary character;
 
@@ -20,6 +19,5 @@ class CharacterListItem extends StatelessWidget {
           backgroundImage: CachedNetworkImageProvider(character.pictureUrl),
         ),
         title: Text(character.name),
-        trailing: const Icon(Icons.chevron_right, color: Colors.grey),
       );
 }

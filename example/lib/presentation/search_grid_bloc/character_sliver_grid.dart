@@ -17,7 +17,7 @@ class _CharacterSliverGridState extends State<CharacterSliverGrid> {
   final CharacterSliverGridBloc _bloc = CharacterSliverGridBloc();
   final PagingController<int, CharacterSummary> _pagingController =
       PagingController(firstPageKey: 0);
-  StreamSubscription _blocListingStateSubscription;
+  late StreamSubscription _blocListingStateSubscription;
 
   @override
   void initState() {

@@ -5,12 +5,12 @@ import 'package:rxdart/rxdart.dart';
 
 class CharacterSearchInputSliver extends StatefulWidget {
   const CharacterSearchInputSliver({
-    Key key,
+    Key? key,
     this.onChanged,
     this.debounceTime,
   }) : super(key: key);
-  final ValueChanged<String> onChanged;
-  final Duration debounceTime;
+  final ValueChanged<String>? onChanged;
+  final Duration? debounceTime;
 
   @override
   _CharacterSearchInputSliverState createState() =>
@@ -21,7 +21,7 @@ class _CharacterSearchInputSliverState
     extends State<CharacterSearchInputSliver> {
   final StreamController<String> _textChangeStreamController =
       StreamController();
-  StreamSubscription _textChangesSubscription;
+  late StreamSubscription _textChangesSubscription;
 
   @override
   void initState() {
@@ -31,8 +31,9 @@ class _CharacterSearchInputSliverState
         )
         .distinct()
         .listen((text) {
-      if (widget.onChanged != null) {
-        widget.onChanged(text);
+      final onChanged = widget.onChanged;
+      if (onChanged != null) {
+        onChanged(text);
       }
     });
 

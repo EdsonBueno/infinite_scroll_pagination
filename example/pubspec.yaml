@@ -4,16 +4,16 @@ publish_to: none
 version: 1.0.0
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
-  cached_network_image: ^2.3.2+1
+  cached_network_image: ^3.0.0-nullsafety
   flutter:
     sdk: flutter
-  http: 0.12.0+4
+  http: 0.13.0
   infinite_scroll_pagination:
     path: ../
-  rxdart: ^0.24.1
+  rxdart: ^0.26.0
 
 dev_dependencies:
   flutter_test:

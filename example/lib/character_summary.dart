@@ -1,14 +1,10 @@
-import 'package:flutter/foundation.dart';
-
 /// Summarized information of a character.
 class CharacterSummary {
   CharacterSummary({
-    @required this.id,
-    @required this.name,
-    @required this.pictureUrl,
-  })  : assert(id != null),
-        assert(name != null),
-        assert(pictureUrl != null);
+    required this.id,
+    required this.name,
+    required this.pictureUrl,
+  });
 
   factory CharacterSummary.fromJson(Map<String, dynamic> json) =>
       CharacterSummary(

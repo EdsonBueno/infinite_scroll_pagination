@@ -63,12 +63,10 @@ class _CharacterListScreenState extends State<CharacterListScreen> {
 
 class _BottomNavigationItem {
   const _BottomNavigationItem({
-    @required this.label,
-    @required this.iconData,
-    @required this.widgetBuilder,
-  })  : assert(label != null),
-        assert(iconData != null),
-        assert(widgetBuilder != null);
+    required this.label,
+    required this.iconData,
+    required this.widgetBuilder,
+  });
 
   final String label;
   final IconData iconData;

@@ -8,13 +8,13 @@ class RemoteApi {
   static Future<List<CharacterSummary>> getCharacterList(
     int offset,
     int limit, {
-    String searchTerm,
+    String? searchTerm,
   }) async =>
       http
           .get(
             _ApiUrlBuilder.characterList(offset, limit, searchTerm: searchTerm),
           )
-          .mapFromResponse(
+          .mapFromResponse<List<CharacterSummary>, List<dynamic>>(
             (jsonArray) => _parseItemListFromJsonArray(
               jsonArray,
               (jsonObject) => CharacterSummary.fromJson(jsonObject),
@@ -36,18 +36,20 @@ class _ApiUrlBuilder {
   static const _baseUrl = 'https://www.breakingbadapi.com/api/';
   static const _charactersResource = 'characters/';
 
-  static String characterList(
+  static Uri characterList(
     int offset,
     int limit, {
-    String searchTerm,
+    String? searchTerm,
   }) =>
-      '$_baseUrl$_charactersResource?'
-      'offset=$offset'
-      '&limit=$limit'
-      '${_buildSearchTermQuery(searchTerm)}';
+      Uri.parse(
+        '$_baseUrl$_charactersResource?'
+        'offset=$offset'
+        '&limit=$limit'
+        '${_buildSearchTermQuery(searchTerm)}',
+      );
 
-  static String _buildSearchTermQuery(String searchTerm) =>
-      searchTerm?.isEmpty == false
+  static String _buildSearchTermQuery(String? searchTerm) =>
+      searchTerm != null && searchTerm.isNotEmpty
           ? '&name=${searchTerm.replaceAll(' ', '+').toLowerCase()}'
           : '';
 }

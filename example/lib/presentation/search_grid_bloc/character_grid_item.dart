@@ -4,10 +4,9 @@ import 'package:flutter/material.dart';
 
 class CharacterGridItem extends StatelessWidget {
   const CharacterGridItem({
-    @required this.character,
-    Key key,
-  })  : assert(character != null),
-        super(key: key);
+    required this.character,
+    Key? key,
+  }) : super(key: key);
   final CharacterSummary character;
 
   @override
