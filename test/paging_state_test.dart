@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 void main() {
-  group('PagingState.status tests', () {
+  group('status', () {
     test(
         'when the itemList isn\'t empty, the nextPageKey isn\'t null, '
         'and the error is null, the status should be PagingStatus.ongoing', () {
@@ -78,5 +78,50 @@ void main() {
       error: null,
     );
     expect(pagingState1, pagingState2);
+  });
+
+  test('toString returns the correct values', () {
+    const pagingState = PagingState(
+      nextPageKey: 2,
+      error: null,
+      itemList: [1],
+    );
+
+    expect(
+      pagingState.toString(),
+      'PagingState<int, int>(itemList: ┤[1]├, error: null, nextPageKey: 2)',
+    );
+  });
+
+  group('hashCode', () {
+    test('equal states have equal hashCodes', () {
+      const pagingState1 = PagingState(
+        nextPageKey: 2,
+        itemList: [1, 2],
+        error: null,
+      );
+      const pagingState2 = PagingState(
+        nextPageKey: 2,
+        itemList: [1, 2],
+        error: null,
+      );
+
+      expect(pagingState1.hashCode, pagingState2.hashCode);
+    });
+
+    test('different states have different hashCodes', () {
+      const pagingState1 = PagingState(
+        nextPageKey: 2,
+        itemList: [1, 2],
+        error: null,
+      );
+      const pagingState2 = PagingState(
+        nextPageKey: 3,
+        itemList: [1, 2, 3, 4],
+        error: null,
+      );
+
+      expect(pagingState1.hashCode, isNot(pagingState2.hashCode));
+    });
   });
 }

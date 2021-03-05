@@ -355,4 +355,42 @@ void main() {
       );
     });
   });
+
+  group('computed properties', () {
+    test('assigning to itemList changes the value property', () {
+      // given
+      final pagingController = PagingController(firstPageKey: 1);
+
+      // when
+      const itemList = [1, 2, 3, 4];
+      pagingController.itemList = itemList;
+
+      // then
+      expect(pagingController.value.itemList, itemList);
+    });
+
+    test('assigning to nextPageKey changes the value property', () {
+      // given
+      final pagingController = PagingController(firstPageKey: 1);
+
+      // when
+      const nextPageKey = 2;
+      pagingController.nextPageKey = 2;
+
+      // then
+      expect(pagingController.value.nextPageKey, nextPageKey);
+    });
+
+    test('assigning to error changes the value property', () {
+      // given
+      final pagingController = PagingController(firstPageKey: 1);
+
+      // when
+      final error = Error();
+      pagingController.error = error;
+
+      // then
+      expect(pagingController.value.error, error);
+    });
+  });
 }
