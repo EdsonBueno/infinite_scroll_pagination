@@ -2,16 +2,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:mockito/mockito.dart';
 
-class MockStatusListener extends Mock {
-  void call(PagingStatus status);
-}
-
-class MockPageRequestListener<PageKeyType> extends Mock {
-  void call(PageKeyType pageKey);
-}
-
-const firstPageItemList = [1, 2];
-const secondPageItemList = [3, 4];
+const _firstPageItemList = [1, 2];
+const _secondPageItemList = [3, 4];
 
 void main() {
   group('[appendPage] tests', () {
@@ -20,7 +12,7 @@ void main() {
       final pagingController = _buildPagingControllerWithOngoingState();
 
       // when
-      pagingController.appendPage(secondPageItemList, 2);
+      pagingController.appendPage(_secondPageItemList, 2);
 
       // then
       expect(pagingController.itemList, [1, 2, 3, 4]);
@@ -30,7 +22,7 @@ void main() {
       final pagingController = _buildPagingControllerWithOngoingState();
 
       // when
-      pagingController.appendPage(secondPageItemList, 3);
+      pagingController.appendPage(_secondPageItemList, 3);
 
       // then
       expect(pagingController.nextPageKey, 3);
@@ -41,7 +33,7 @@ void main() {
       final pagingController = _buildPagingControllerWithSubsequentPageError();
 
       // when
-      pagingController.appendPage(secondPageItemList, 3);
+      pagingController.appendPage(_secondPageItemList, 3);
 
       // then
       expect(pagingController.error, null);
@@ -54,12 +46,12 @@ void main() {
       final pagingController = _buildPagingControllerWithOngoingState();
 
       // when
-      pagingController.appendLastPage(secondPageItemList);
+      pagingController.appendLastPage(_secondPageItemList);
 
       // then
       expect(pagingController.itemList, [
-        ...firstPageItemList,
-        ...secondPageItemList,
+        ..._firstPageItemList,
+        ..._secondPageItemList,
       ]);
     });
 
@@ -68,7 +60,7 @@ void main() {
       final pagingController = _buildPagingControllerWithOngoingState();
 
       // when
-      pagingController.appendLastPage(secondPageItemList);
+      pagingController.appendLastPage(_secondPageItemList);
 
       // then
       expect(pagingController.nextPageKey, null);
@@ -79,7 +71,7 @@ void main() {
       final pagingController = _buildPagingControllerWithSubsequentPageError();
 
       // when
-      pagingController.appendLastPage(secondPageItemList);
+      pagingController.appendLastPage(_secondPageItemList);
 
       // then
       expect(pagingController.error, null);
@@ -291,7 +283,7 @@ PagingController<int, int> _buildPagingControllerWithSubsequentPageError() =>
     PagingController.fromValue(
       PagingState(
         nextPageKey: 2,
-        itemList: firstPageItemList,
+        itemList: _firstPageItemList,
         error: Error(),
       ),
       firstPageKey: 1,
@@ -306,6 +298,14 @@ PagingController<int, int> _buildPagingControllerWithOngoingState() =>
 PagingState<int, int> _buildFirstPageSuccessfulPagingState() =>
     const PagingState(
       nextPageKey: 2,
-      itemList: firstPageItemList,
+      itemList: _firstPageItemList,
       error: null,
     );
+
+class MockStatusListener extends Mock {
+  void call(PagingStatus status);
+}
+
+class MockPageRequestListener<PageKeyType> extends Mock {
+  void call(PageKeyType pageKey);
+}

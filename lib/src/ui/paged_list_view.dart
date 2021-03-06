@@ -46,7 +46,7 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
     // Corresponds to [ScrollView.clipBehavior]
     Clip clipBehavior = Clip.hardEdge,
     Key? key,
-  })  : separatorBuilder = null,
+  })  : _separatorBuilder = null,
         _shrinkWrapFirstPageIndicators = shrinkWrap,
         super(
           key: key,
@@ -67,7 +67,7 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
   const PagedListView.separated({
     required this.pagingController,
     required this.builderDelegate,
-    required this.separatorBuilder,
+    required IndexedWidgetBuilder separatorBuilder,
     // Corresponds to [ScrollView.controller].
     ScrollController? scrollController,
     // Corresponds to [ScrollView.scrollDirection].
@@ -99,6 +99,7 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
     Clip clipBehavior = Clip.hardEdge,
     Key? key,
   })  : _shrinkWrapFirstPageIndicators = shrinkWrap,
+        _separatorBuilder = separatorBuilder,
         super(
           key: key,
           scrollDirection: scrollDirection,
@@ -122,7 +123,7 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
   final PagedChildBuilderDelegate<ItemType> builderDelegate;
 
   /// The builder for list item separators, just like in [ListView.separated].
-  final IndexedWidgetBuilder? separatorBuilder;
+  final IndexedWidgetBuilder? _separatorBuilder;
 
   /// Corresponds to [SliverChildBuilderDelegate.addAutomaticKeepAlives].
   final bool addAutomaticKeepAlives;
@@ -140,11 +141,11 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
   final bool _shrinkWrapFirstPageIndicators;
 
   @override
-  Widget buildChildLayout(BuildContext context) => separatorBuilder != null
+  Widget buildChildLayout(BuildContext context) => _separatorBuilder != null
       ? PagedSliverList<PageKeyType, ItemType>.separated(
           builderDelegate: builderDelegate,
           pagingController: pagingController,
-          separatorBuilder: separatorBuilder,
+          separatorBuilder: _separatorBuilder,
           addAutomaticKeepAlives: addAutomaticKeepAlives,
           addRepaintBoundaries: addRepaintBoundaries,
           addSemanticIndexes: addSemanticIndexes,
