@@ -52,13 +52,7 @@ void main() {
         (tester) async {
       tester.configureScreenSize(_screenSize);
       final controllerLoadedWithFirstPage =
-          PagingController<int, String>.fromValue(
-        const PagingState(
-          nextPageKey: 2,
-          itemList: _firstPageItemList,
-        ),
-        firstPageKey: 1,
-      );
+          _buildPagingControllerLoadedWithFirstPage();
 
       controllerLoadedWithFirstPage.addPageRequestListener(
         mockPageRequestListener,
@@ -74,13 +68,7 @@ void main() {
 
     testWidgets('Doesn\'t request a page unnecessarily', (tester) async {
       tester.configureScreenSize(_screenSize);
-      final pagingController = PagingController<int, String>.fromValue(
-        const PagingState(
-          nextPageKey: 3,
-          itemList: [..._firstPageItemList, ..._secondPageItemList],
-        ),
-        firstPageKey: 1,
-      );
+      final pagingController = _buildPagingControllerLoadedWithTwoPages();
       pagingController.addPageRequestListener(mockPageRequestListener);
 
       await _pumpPagedSliverGrid(
@@ -93,13 +81,7 @@ void main() {
 
     testWidgets('Requests a new page on scroll', (tester) async {
       tester.configureScreenSize(_screenSize);
-      final pagingController = PagingController<int, String>.fromValue(
-        const PagingState(
-          nextPageKey: 3,
-          itemList: [..._firstPageItemList, ..._secondPageItemList],
-        ),
-        firstPageKey: 1,
-      );
+      final pagingController = _buildPagingControllerLoadedWithTwoPages();
       pagingController.addPageRequestListener(mockPageRequestListener);
 
       await _pumpPagedSliverGrid(
@@ -116,8 +98,120 @@ void main() {
 
       verify(mockPageRequestListener(3)).called(1);
     });
+
+    group('Displays indicators as grid children when specified', () {
+      testWidgets(
+          'Displays new page progress indicator below the grid when '
+          '[showNewPageProgressIndicatorAsGridChild] is false', (tester) async {
+        tester.configureScreenSize(_screenSize);
+        final pagingController = _buildPagingControllerLoadedWithFirstPage();
+
+        final customIndicatorKey = UniqueKey();
+        final customNewPageProgressIndicator = CircularProgressIndicator(
+          key: customIndicatorKey,
+        );
+
+        await _pumpPagedSliverGrid(
+          tester: tester,
+          pagingController: pagingController,
+          newPageProgressIndicator: customNewPageProgressIndicator,
+          showNewPageProgressIndicatorAsGridChild: false,
+        );
+
+        _expectWidgetFromKeyToHaveScreenWidth(customIndicatorKey, tester);
+      });
+
+      testWidgets(
+          'Displays new page error indicator below the grid when '
+          '[showNewPageErrorIndicatorAsGridChild] is false', (tester) async {
+        tester.configureScreenSize(_screenSize);
+        final pagingController =
+            _buildPagingControllerLoadedWithErrorOnSecondPage();
+
+        final customIndicatorKey = UniqueKey();
+        final customNewPageErrorIndicator = Text(
+          'Error',
+          key: customIndicatorKey,
+        );
+
+        await _pumpPagedSliverGrid(
+          tester: tester,
+          pagingController: pagingController,
+          newPageErrorIndicator: customNewPageErrorIndicator,
+          showNewPageErrorIndicatorAsGridChild: false,
+        );
+
+        _expectWidgetFromKeyToHaveScreenWidth(customIndicatorKey, tester);
+      });
+
+      testWidgets(
+          'Displays no more items indicator below the grid when '
+          '[showNoMoreItemsIndicatorAsGridChild] is false', (tester) async {
+        tester.configureScreenSize(_screenSize);
+        final pagingController = _buildCompletedPagingController();
+
+        final customIndicatorKey = UniqueKey();
+        final customNoMoreItemsIndicator = Text(
+          'No More Items',
+          key: customIndicatorKey,
+        );
+
+        await _pumpPagedSliverGrid(
+          tester: tester,
+          pagingController: pagingController,
+          noMoreItemsIndicator: customNoMoreItemsIndicator,
+          showNoMoreItemsIndicatorAsGridChild: false,
+        );
+
+        _expectWidgetFromKeyToHaveScreenWidth(customIndicatorKey, tester);
+      });
+    });
   });
 }
+
+void _expectWidgetFromKeyToHaveScreenWidth(Key key, WidgetTester tester) {
+  final widgetFinder = find.byKey(key);
+  final widgetSize = tester.getSize(widgetFinder);
+  expect(widgetSize.width, _screenSize.width);
+}
+
+PagingController<int, String>
+    _buildPagingControllerLoadedWithErrorOnSecondPage() =>
+        PagingController<int, String>.fromValue(
+          PagingState(
+            nextPageKey: 2,
+            itemList: _firstPageItemList,
+            error: Error(),
+          ),
+          firstPageKey: 1,
+        );
+
+PagingController<int, String> _buildCompletedPagingController() =>
+    PagingController<int, String>.fromValue(
+      const PagingState(
+        nextPageKey: null,
+        itemList: _firstPageItemList,
+      ),
+      firstPageKey: 1,
+    );
+
+PagingController<int, String> _buildPagingControllerLoadedWithTwoPages() =>
+    PagingController<int, String>.fromValue(
+      const PagingState(
+        nextPageKey: 3,
+        itemList: [..._firstPageItemList, ..._secondPageItemList],
+      ),
+      firstPageKey: 1,
+    );
+
+PagingController<int, String> _buildPagingControllerLoadedWithFirstPage() =>
+    PagingController<int, String>.fromValue(
+      const PagingState(
+        nextPageKey: 2,
+        itemList: _firstPageItemList,
+      ),
+      firstPageKey: 1,
+    );
 
 Widget _buildItem(
   BuildContext context,
@@ -138,6 +232,12 @@ class MockPageRequestListener extends Mock {
 Future<void> _pumpPagedSliverGrid({
   required WidgetTester tester,
   required PagingController<int, String> pagingController,
+  Widget? newPageProgressIndicator,
+  Widget? newPageErrorIndicator,
+  Widget? noMoreItemsIndicator,
+  bool showNewPageProgressIndicatorAsGridChild = true,
+  bool showNewPageErrorIndicatorAsGridChild = true,
+  bool showNoMoreItemsIndicatorAsGridChild = true,
 }) =>
     tester.pumpWidget(
       MaterialApp(
@@ -148,12 +248,28 @@ Future<void> _pumpPagedSliverGrid({
                 pagingController: pagingController,
                 builderDelegate: PagedChildBuilderDelegate<String>(
                   itemBuilder: _buildItem,
+                  newPageProgressIndicatorBuilder:
+                      newPageProgressIndicator != null
+                          ? (context) => newPageProgressIndicator
+                          : null,
+                  newPageErrorIndicatorBuilder: newPageErrorIndicator != null
+                      ? (context) => newPageErrorIndicator
+                      : null,
+                  noMoreItemsIndicatorBuilder: noMoreItemsIndicator != null
+                      ? (context) => noMoreItemsIndicator
+                      : null,
                 ),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisSpacing: 0,
                   mainAxisSpacing: 0,
                   crossAxisCount: 2,
                 ),
+                showNewPageProgressIndicatorAsGridChild:
+                    showNewPageProgressIndicatorAsGridChild,
+                showNewPageErrorIndicatorAsGridChild:
+                    showNewPageErrorIndicatorAsGridChild,
+                showNoMoreItemsIndicatorAsGridChild:
+                    showNoMoreItemsIndicatorAsGridChild,
               )
             ],
           ),
