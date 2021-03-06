@@ -10,129 +10,85 @@ class MockPageRequestListener<PageKeyType> extends Mock {
   void call(PageKeyType pageKey);
 }
 
+const firstPageItemList = [1, 2];
+const secondPageItemList = [3, 4];
+
 void main() {
-  group('appendPage', () {
-    test('appendPage appends the new list to itemList', () {
+  group('[appendPage] tests', () {
+    test('Appends the new list to [itemList]', () {
       // given
-      final pagingController = PagingController.fromValue(
-        const PagingState(
-          nextPageKey: 2,
-          itemList: [1, 2, 3, 4],
-          error: null,
-        ),
-        firstPageKey: 1,
-      );
+      final pagingController = _buildPagingControllerWithOngoingState();
 
       // when
-      pagingController.appendPage([5, 6], 3);
+      pagingController.appendPage(secondPageItemList, 2);
 
       // then
-      expect(pagingController.itemList, [1, 2, 3, 4, 5, 6]);
+      expect(pagingController.itemList, [1, 2, 3, 4]);
     });
 
-    test('appendPage changes the nextPageKey', () {
-      // given
-      final pagingController = PagingController.fromValue(
-        const PagingState(
-          nextPageKey: 2,
-          itemList: [1, 2, 3, 4],
-          error: null,
-        ),
-        firstPageKey: 1,
-      );
+    test('Changes [nextPageKey]', () {
+      final pagingController = _buildPagingControllerWithOngoingState();
 
       // when
-      pagingController.appendPage([5, 6], 3);
+      pagingController.appendPage(secondPageItemList, 3);
 
       // then
       expect(pagingController.nextPageKey, 3);
     });
 
-    test('appendPage erases the error', () {
+    test('Sets [error] to null', () {
       // given
-      final pagingController = PagingController.fromValue(
-        PagingState(
-          nextPageKey: 2,
-          itemList: const [1, 2, 3, 4],
-          error: Error(),
-        ),
-        firstPageKey: 1,
-      );
+      final pagingController = _buildPagingControllerWithSubsequentPageError();
 
       // when
-      pagingController.appendPage([5, 6], 3);
+      pagingController.appendPage(secondPageItemList, 3);
 
       // then
       expect(pagingController.error, null);
     });
   });
 
-  group('appendLastPage', () {
-    test('appendLastPage appends the new list to itemList', () {
+  group('[appendLastPage] tests', () {
+    test('Appends the new list to [itemList]', () {
       // given
-      final pagingController = PagingController.fromValue(
-        const PagingState(
-          nextPageKey: 2,
-          itemList: [1, 2, 3, 4],
-          error: null,
-        ),
-        firstPageKey: 1,
-      );
+      final pagingController = _buildPagingControllerWithOngoingState();
 
       // when
-      pagingController.appendLastPage([5, 6]);
+      pagingController.appendLastPage(secondPageItemList);
 
       // then
-      expect(pagingController.itemList, [1, 2, 3, 4, 5, 6]);
+      expect(pagingController.itemList, [
+        ...firstPageItemList,
+        ...secondPageItemList,
+      ]);
     });
 
-    test('appendLastPage sets the nextPageKey to null', () {
+    test('Sets [nextPageKey] to null', () {
       // given
-      final pagingController = PagingController.fromValue(
-        const PagingState(
-          nextPageKey: 2,
-          itemList: [1, 2, 3, 4],
-          error: null,
-        ),
-        firstPageKey: 1,
-      );
+      final pagingController = _buildPagingControllerWithOngoingState();
 
       // when
-      pagingController.appendLastPage([5, 6]);
+      pagingController.appendLastPage(secondPageItemList);
 
       // then
       expect(pagingController.nextPageKey, null);
     });
 
-    test('appendLastPage erases the error', () {
+    test('Sets [error] to null', () {
       // given
-      final pagingController = PagingController.fromValue(
-        PagingState(
-          nextPageKey: 2,
-          itemList: const [1, 2, 3, 4],
-          error: Error(),
-        ),
-        firstPageKey: 1,
-      );
+      final pagingController = _buildPagingControllerWithSubsequentPageError();
 
       // when
-      pagingController.appendLastPage([5, 6]);
+      pagingController.appendLastPage(secondPageItemList);
 
       // then
       expect(pagingController.error, null);
     });
   });
 
-  test('retryLastFailedRequest erases the error', () {
+  test('[retryLastFailedRequest] sets [error] to null', () {
     // given
-    final pagingController = PagingController.fromValue(
-      PagingState(
-        nextPageKey: 2,
-        itemList: const [1, 2, 3, 4],
-        error: Error(),
-      ),
-      firstPageKey: 1,
-    );
+    final pagingController = _buildPagingControllerWithSubsequentPageError();
 
     // when
     pagingController.retryLastFailedRequest();
@@ -141,17 +97,10 @@ void main() {
     expect(pagingController.error, null);
   });
 
-  group('refresh', () {
-    test('refresh sets itemList to null', () {
+  group('[refresh] tests', () {
+    test('Sets [itemList] to null', () {
       // given
-      final pagingController = PagingController.fromValue(
-        const PagingState(
-          nextPageKey: 2,
-          itemList: [1, 2, 3, 4],
-          error: null,
-        ),
-        firstPageKey: 1,
-      );
+      final pagingController = _buildPagingControllerWithOngoingState();
 
       // when
       pagingController.refresh();
@@ -160,16 +109,9 @@ void main() {
       expect(pagingController.itemList, null);
     });
 
-    test('refresh sets the error to null', () {
+    test('Sets [error] to null', () {
       // given
-      final pagingController = PagingController.fromValue(
-        PagingState(
-          nextPageKey: 2,
-          itemList: const [1, 2, 3, 4],
-          error: Error(),
-        ),
-        firstPageKey: 1,
-      );
+      final pagingController = _buildPagingControllerWithSubsequentPageError();
 
       // when
       pagingController.refresh();
@@ -178,27 +120,19 @@ void main() {
       expect(pagingController.error, null);
     });
 
-    test('refresh sets the nextPageKey back to the firstPageKey', () {
+    test('Sets [nextPageKey] back to the [firstPageKey]', () {
       // given
-      const firstPageKey = 1;
-      final pagingController = PagingController.fromValue(
-        const PagingState(
-          nextPageKey: 2,
-          itemList: [1, 2, 3, 4],
-          error: null,
-        ),
-        firstPageKey: firstPageKey,
-      );
+      final pagingController = _buildPagingControllerWithOngoingState();
 
       // when
       pagingController.refresh();
 
       // then
-      expect(pagingController.nextPageKey, firstPageKey);
+      expect(pagingController.nextPageKey, 1);
     });
   });
 
-  group('status listeners', () {
+  group('[PagingStatusListener]s tests', () {
     late PagingController pagingController;
     late PagingStatusListener mockStatusListener;
 
@@ -208,39 +142,28 @@ void main() {
       pagingController.addStatusListener(mockStatusListener);
     });
 
-    test('assigning a different value notifies status listeners', () {
+    test('Assigning a new [value] notifies [PagingStatusListener]', () {
       // when
-      pagingController.value = const PagingState(
-        nextPageKey: 2,
-        itemList: [
-          1,
-          2,
-        ],
-      );
+      pagingController.value = _buildFirstPageSuccessfulPagingState();
 
       // then
       verify(mockStatusListener(PagingStatus.ongoing));
     });
 
-    test('removed status listeners aren\'t called', () {
+    test('Removed [PagingStatusListener]s aren\'t notified', () {
       // when
       pagingController.removeStatusListener(mockStatusListener);
-      pagingController.value = const PagingState(
-        nextPageKey: 2,
-        itemList: [
-          1,
-          2,
-        ],
-      );
+      pagingController.value = _buildFirstPageSuccessfulPagingState();
 
       // then
       verifyNever(mockStatusListener(PagingStatus.ongoing));
     });
   });
 
-  group('page request listeners', () {
+  group('[PageRequestListener]s tests', () {
     late PagingController pagingController;
     late PageRequestListener mockPageRequestListener;
+    const requestedPageKey = 2;
 
     setUp(() {
       pagingController = PagingController(firstPageKey: 1);
@@ -248,18 +171,16 @@ void main() {
       pagingController.addPageRequestListener(mockPageRequestListener);
     });
 
-    test('added page request listeners are notified', () {
+    test('[PageRequestListener]s are notified', () {
       // when
-      const requestedPageKey = 2;
       pagingController.notifyPageRequestListeners(requestedPageKey);
 
       // then
       verify(mockPageRequestListener(requestedPageKey));
     });
 
-    test('removed page request listeners aren\'t notified', () {
+    test('Removed [PageRequestListener]s aren\'t notified', () {
       // when
-      const requestedPageKey = 2;
       pagingController.removePageRequestListener(mockPageRequestListener);
       pagingController.notifyPageRequestListeners(requestedPageKey);
 
@@ -268,87 +189,61 @@ void main() {
     });
   });
 
-  group('dispose', () {
-    late PagingController pagingController;
+  group('[dispose] tests', () {
+    late PagingController disposedPagingController;
     setUp(() {
-      pagingController = PagingController.fromValue(
-        const PagingState(
-          nextPageKey: 2,
-          itemList: [1, 2, 3, 4],
-          error: null,
-        ),
-        firstPageKey: 1,
-      );
+      disposedPagingController = _buildPagingControllerWithOngoingState()
+        ..dispose();
     });
 
-    test('can\'t add a page request listener to a disposed PagingController',
+    test('Can\'t add a [PageRequestListener] to a disposed [PagingController]',
         () {
-      // when
-      pagingController.dispose();
-
-      // then
       expect(
-        () => pagingController.addPageRequestListener((pageKey) {}),
+        () => disposedPagingController.addPageRequestListener((pageKey) {}),
         throwsException,
       );
     });
 
-    test('can\'t add a status listener to a disposed PagingController', () {
-      // when
-      pagingController.dispose();
-
-      // then
+    test('Can\'t add a [PagingStatusListener] to a disposed PagingController',
+        () {
       expect(
-        () => pagingController.addStatusListener((status) {}),
+        () => disposedPagingController.addStatusListener((status) {}),
         throwsException,
       );
     });
 
     test(
-        'can\'t remove a page request listener from a disposed '
-        'PagingController', () {
-      // when
-      pagingController.dispose();
-
-      // then
+        'Can\'t remove a [PageRequestListener] from a disposed '
+        '[PagingController]', () {
       expect(
-        () => pagingController.removePageRequestListener((pageKey) {}),
-        throwsException,
-      );
-    });
-
-    test('can\'t remove a status listener from a disposed PagingController',
-        () {
-      // when
-      pagingController.dispose();
-
-      // then
-      expect(
-        () => pagingController.removeStatusListener((status) {}),
+        () => disposedPagingController.removePageRequestListener((pageKey) {}),
         throwsException,
       );
     });
 
     test(
-        'can\'t notify page request listeners from a disposed '
-        'PagingController', () {
-      // when
-      pagingController.dispose();
-
-      // then
+        'Can\'t remove a [PagingStatusListener] from a disposed '
+        '[PagingController]', () {
       expect(
-        () => pagingController.notifyPageRequestListeners(3),
+        () => disposedPagingController.removeStatusListener((status) {}),
         throwsException,
       );
     });
 
-    test('can\'t notify status listener from a disposed PagingController', () {
-      // when
-      pagingController.dispose();
-
-      // then
+    test(
+        'Can\'t notify [PageRequestListener]s from a disposed '
+        '[PagingController]', () {
       expect(
-        () => pagingController.notifyStatusListeners(
+        () => disposedPagingController.notifyPageRequestListeners(3),
+        throwsException,
+      );
+    });
+
+    test(
+        'Can\'t notify [PagingStatusListener]s from a disposed '
+        '[PagingController]', () {
+      expect(
+        () => disposedPagingController.notifyStatusListeners(
           PagingStatus.subsequentPageError,
         ),
         throwsException,
@@ -356,11 +251,14 @@ void main() {
     });
   });
 
-  group('computed properties', () {
-    test('assigning to itemList changes the value property', () {
-      // given
-      final pagingController = PagingController(firstPageKey: 1);
+  group('Computed Properties tests', () {
+    late PagingController pagingController;
 
+    setUp(() {
+      pagingController = PagingController(firstPageKey: 1);
+    });
+
+    test('Assigning to [itemList] changes [value]', () {
       // when
       const itemList = [1, 2, 3, 4];
       pagingController.itemList = itemList;
@@ -369,10 +267,7 @@ void main() {
       expect(pagingController.value.itemList, itemList);
     });
 
-    test('assigning to nextPageKey changes the value property', () {
-      // given
-      final pagingController = PagingController(firstPageKey: 1);
-
+    test('Assigning to [nextPageKey] changes [value]', () {
       // when
       const nextPageKey = 2;
       pagingController.nextPageKey = 2;
@@ -381,10 +276,7 @@ void main() {
       expect(pagingController.value.nextPageKey, nextPageKey);
     });
 
-    test('assigning to error changes the value property', () {
-      // given
-      final pagingController = PagingController(firstPageKey: 1);
-
+    test('Assigning to [error] changes [value]', () {
       // when
       final error = Error();
       pagingController.error = error;
@@ -394,3 +286,26 @@ void main() {
     });
   });
 }
+
+PagingController<int, int> _buildPagingControllerWithSubsequentPageError() =>
+    PagingController.fromValue(
+      PagingState(
+        nextPageKey: 2,
+        itemList: firstPageItemList,
+        error: Error(),
+      ),
+      firstPageKey: 1,
+    );
+
+PagingController<int, int> _buildPagingControllerWithOngoingState() =>
+    PagingController.fromValue(
+      _buildFirstPageSuccessfulPagingState(),
+      firstPageKey: 1,
+    );
+
+PagingState<int, int> _buildFirstPageSuccessfulPagingState() =>
+    const PagingState(
+      nextPageKey: 2,
+      itemList: firstPageItemList,
+      error: null,
+    );
