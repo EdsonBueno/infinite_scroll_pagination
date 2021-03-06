@@ -2,10 +2,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 void main() {
-  group('status', () {
+  group('[status] tests', () {
     test(
-        'when the itemList isn\'t empty, the nextPageKey isn\'t null, '
-        'and the error is null, the status should be PagingStatus.ongoing', () {
+        'When [itemList] isn\'t empty, [nextPageKey] isn\'t null, '
+        'and [error] is null, [status] should be [PagingStatus.ongoing]', () {
       const pagingState = PagingState(
         nextPageKey: 2,
         error: null,
@@ -16,8 +16,8 @@ void main() {
     });
 
     test(
-        'when the itemList isn\'t empty, and the nextPageKey is null, '
-        'the status should be PagingStatus.completed', () {
+        'When [itemList] isn\'t empty, and [nextPageKey] is null, '
+        '[status] should be [PagingStatus.completed]', () {
       const pagingState = PagingState(
         nextPageKey: null,
         error: null,
@@ -28,8 +28,8 @@ void main() {
     });
 
     test(
-        'when the itemList and the error are null, '
-        'the status should be PagingStatus.loadingFirstPage', () {
+        'When both [itemList] and [error] are null, '
+        '[status] should be [PagingStatus.loadingFirstPage]', () {
       const pagingState = PagingState(
         nextPageKey: null,
         error: null,
@@ -40,9 +40,9 @@ void main() {
     });
 
     test(
-        'when the itemList isn\'t empty, the nextPageKey isn\'t null, and the '
-        'error isn\'t null, '
-        'the status should be PagingStatus.subsequentPageError', () {
+        'When [itemList] isn\'t empty, [nextPageKey] isn\'t null, and '
+        '[error] isn\'t null, '
+        '[status] should be [PagingStatus.subsequentPageError]', () {
       final pagingState = PagingState(
         nextPageKey: 1,
         error: Error(),
@@ -53,8 +53,8 @@ void main() {
     });
 
     test(
-        'when the itemList is empty, '
-        'the status should be PagingStatus.noItemsFound', () {
+        'When [itemList] is empty, '
+        '[status] should be [PagingStatus.noItemsFound]', () {
       const pagingState = PagingState(
         nextPageKey: null,
         error: null,
@@ -65,7 +65,7 @@ void main() {
     });
   });
 
-  test('two different instances with equal properties are considered equal',
+  test('Two different instances with equal properties are considered equal',
       () {
     const pagingState1 = PagingState(
       nextPageKey: 2,
@@ -80,7 +80,7 @@ void main() {
     expect(pagingState1, pagingState2);
   });
 
-  test('toString returns the correct values', () {
+  test('[toString] returns the correct values', () {
     const pagingState = PagingState(
       nextPageKey: 2,
       error: null,
@@ -93,8 +93,8 @@ void main() {
     );
   });
 
-  group('hashCode', () {
-    test('equal states have equal hashCodes', () {
+  group('[hashCode] test', () {
+    test('Equal [PagingState]s have equal [hashCode]s', () {
       const pagingState1 = PagingState(
         nextPageKey: 2,
         itemList: [1, 2],
@@ -109,12 +109,13 @@ void main() {
       expect(pagingState1.hashCode, pagingState2.hashCode);
     });
 
-    test('different states have different hashCodes', () {
+    test('Different [PagingState]s have different [hashCode]s', () {
       const pagingState1 = PagingState(
         nextPageKey: 2,
         itemList: [1, 2],
         error: null,
       );
+
       const pagingState2 = PagingState(
         nextPageKey: 3,
         itemList: [1, 2, 3, 4],
