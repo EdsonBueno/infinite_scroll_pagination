@@ -7,7 +7,7 @@ class ListenableListener extends StatefulWidget {
     required this.child,
     this.listener,
     Key? key,
-  })  : super(key: key);
+  }) : super(key: key);
 
   /// The [Listenable] to which this widget is listening.
   ///
