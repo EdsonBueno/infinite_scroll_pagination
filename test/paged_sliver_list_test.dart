@@ -4,25 +4,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:mockito/mockito.dart';
 
-import 'screen_size_utils.dart';
+import 'utils/paging_controller_utils.dart';
+import 'utils/screen_size_utils.dart';
 
-const _firstPageItemList = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
-const _secondPageItemList = [
-  '11',
-  '12',
-  '13',
-  '14',
-  '15',
-  '16',
-  '17',
-  '18',
-  '19',
-  '20'
-];
-const _pageSize = 10;
 const _screenSize = Size(200, 500);
 
-double get _itemHeight => _screenSize.height / _pageSize;
+double get _itemHeight => _screenSize.height / pageSize;
 
 void main() {
   group('Page request tests', () {
@@ -51,13 +38,7 @@ void main() {
         'Requests second page immediately if the first page isn\'t enough',
         (tester) async {
       final controllerLoadedWithFirstPage =
-          PagingController<int, String>.fromValue(
-        const PagingState(
-          nextPageKey: 2,
-          itemList: _firstPageItemList,
-        ),
-        firstPageKey: 1,
-      );
+          buildPagingControllerLoadedWithFirstPage();
 
       controllerLoadedWithFirstPage.addPageRequestListener(
         mockPageRequestListener,
@@ -73,13 +54,7 @@ void main() {
 
     testWidgets('Doesn\'t request a page unnecessarily', (tester) async {
       tester.configureScreenSize(_screenSize);
-      final pagingController = PagingController<int, String>.fromValue(
-        const PagingState(
-          nextPageKey: 3,
-          itemList: [..._firstPageItemList, ..._secondPageItemList],
-        ),
-        firstPageKey: 1,
-      );
+      final pagingController = buildPagingControllerLoadedWithTwoPages();
       pagingController.addPageRequestListener(mockPageRequestListener);
 
       await _pumpPagedSliverList(
@@ -92,13 +67,7 @@ void main() {
 
     testWidgets('Requests a new page on scroll', (tester) async {
       tester.configureScreenSize(_screenSize);
-      final pagingController = PagingController<int, String>.fromValue(
-        const PagingState(
-          nextPageKey: 3,
-          itemList: [..._firstPageItemList, ..._secondPageItemList],
-        ),
-        firstPageKey: 1,
-      );
+      final pagingController = buildPagingControllerLoadedWithTwoPages();
       pagingController.addPageRequestListener(mockPageRequestListener);
 
       await _pumpPagedSliverList(
@@ -108,7 +77,7 @@ void main() {
 
       await tester.scrollUntilVisible(
         find.text(
-          _secondPageItemList[5],
+          secondPageItemList[5],
         ),
         _itemHeight,
       );
@@ -121,13 +90,7 @@ void main() {
       'Inserts separators between items if a [separatorBuilder] is specified',
       (tester) async {
     final controllerLoadedWithFirstPage =
-        PagingController<int, String>.fromValue(
-      const PagingState(
-        nextPageKey: 2,
-        itemList: _firstPageItemList,
-      ),
-      firstPageKey: 1,
-    );
+        buildPagingControllerLoadedWithFirstPage();
     tester.configureScreenSize(_screenSize);
 
     await _pumpPagedSliverList(
@@ -139,7 +102,96 @@ void main() {
     );
 
     final separatorFinder = find.byType(Divider);
-    expect(separatorFinder, findsNWidgets(_pageSize - 1));
+    expect(separatorFinder, findsNWidgets(pageSize - 1));
+  });
+
+  group('Appends indicators to the item list', () {
+    testWidgets('Appends the new page progress indicator to the list items',
+        (tester) async {
+      tester.configureScreenSize(_screenSize);
+      final pagingController = buildPagingControllerLoadedWithFirstPage();
+
+      final customIndicatorKey = UniqueKey();
+      final customNewPageProgressIndicator = CircularProgressIndicator(
+        key: customIndicatorKey,
+      );
+
+      await _pumpPagedSliverList(
+        tester: tester,
+        pagingController: pagingController,
+        newPageProgressIndicator: customNewPageProgressIndicator,
+      );
+
+      await tester.scrollUntilVisible(
+        find.byKey(customIndicatorKey),
+        _itemHeight,
+      );
+
+      expectWidgetFromKeyToHaveScreenWidth(
+        customIndicatorKey,
+        tester,
+        _screenSize.width,
+      );
+    });
+
+    testWidgets('Appends the new page error indicator to the list items',
+        (tester) async {
+      tester.configureScreenSize(_screenSize);
+      final pagingController =
+          buildPagingControllerLoadedWithErrorOnSecondPage();
+
+      final customIndicatorKey = UniqueKey();
+      final customNewPageErrorIndicator = Text(
+        'Error',
+        key: customIndicatorKey,
+      );
+
+      await _pumpPagedSliverList(
+        tester: tester,
+        pagingController: pagingController,
+        newPageErrorIndicator: customNewPageErrorIndicator,
+      );
+
+      await tester.scrollUntilVisible(
+        find.byKey(customIndicatorKey),
+        _itemHeight,
+      );
+
+      expectWidgetFromKeyToHaveScreenWidth(
+        customIndicatorKey,
+        tester,
+        _screenSize.width,
+      );
+    });
+
+    testWidgets('Appends the no more items indicator to the list items',
+        (tester) async {
+      tester.configureScreenSize(_screenSize);
+      final pagingController = buildCompletedPagingController();
+
+      final customIndicatorKey = UniqueKey();
+      final customNoMoreItemsIndicator = Text(
+        'No More Items',
+        key: customIndicatorKey,
+      );
+
+      await _pumpPagedSliverList(
+        tester: tester,
+        pagingController: pagingController,
+        noMoreItemsIndicator: customNoMoreItemsIndicator,
+      );
+
+      await tester.scrollUntilVisible(
+        find.byKey(customIndicatorKey),
+        _itemHeight,
+      );
+
+      expectWidgetFromKeyToHaveScreenWidth(
+        customIndicatorKey,
+        tester,
+        _screenSize.width,
+      );
+    });
   });
 }
 
@@ -163,27 +215,52 @@ Future<void> _pumpPagedSliverList({
   required WidgetTester tester,
   required PagingController<int, String> pagingController,
   IndexedWidgetBuilder? separatorBuilder,
+  Widget? newPageProgressIndicator,
+  Widget? newPageErrorIndicator,
+  Widget? noMoreItemsIndicator,
 }) =>
     tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: CustomScrollView(slivers: [
-            if (separatorBuilder == null)
-              PagedSliverList(
-                pagingController: pagingController,
-                builderDelegate: PagedChildBuilderDelegate<String>(
-                  itemBuilder: _buildItem,
+          body: CustomScrollView(
+            slivers: [
+              if (separatorBuilder == null)
+                PagedSliverList(
+                  pagingController: pagingController,
+                  builderDelegate: PagedChildBuilderDelegate<String>(
+                    itemBuilder: _buildItem,
+                    newPageProgressIndicatorBuilder:
+                        newPageProgressIndicator != null
+                            ? (context) => newPageProgressIndicator
+                            : null,
+                    newPageErrorIndicatorBuilder: newPageErrorIndicator != null
+                        ? (context) => newPageErrorIndicator
+                        : null,
+                    noMoreItemsIndicatorBuilder: noMoreItemsIndicator != null
+                        ? (context) => noMoreItemsIndicator
+                        : null,
+                  ),
+                )
+              else
+                PagedSliverList.separated(
+                  pagingController: pagingController,
+                  builderDelegate: PagedChildBuilderDelegate<String>(
+                    itemBuilder: _buildItem,
+                    newPageProgressIndicatorBuilder:
+                        newPageProgressIndicator != null
+                            ? (context) => newPageProgressIndicator
+                            : null,
+                    newPageErrorIndicatorBuilder: newPageErrorIndicator != null
+                        ? (context) => newPageErrorIndicator
+                        : null,
+                    noMoreItemsIndicatorBuilder: noMoreItemsIndicator != null
+                        ? (context) => noMoreItemsIndicator
+                        : null,
+                  ),
+                  separatorBuilder: separatorBuilder,
                 ),
-              )
-            else
-              PagedSliverList.separated(
-                pagingController: pagingController,
-                builderDelegate: PagedChildBuilderDelegate<String>(
-                  itemBuilder: _buildItem,
-                ),
-                separatorBuilder: separatorBuilder,
-              ),
-          ]),
+            ],
+          ),
         ),
       ),
     );
