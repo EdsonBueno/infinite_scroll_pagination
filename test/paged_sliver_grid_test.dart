@@ -38,7 +38,8 @@ void main() {
       tester.applyPreferredTestScreenSize();
       final controllerLoadedWithFirstPage =
           buildPagingControllerWithPopulatedState(
-              PopulatedStateOption.ongoingWithOnePage);
+        PopulatedStateOption.ongoingWithOnePage,
+      );
 
       controllerLoadedWithFirstPage.addPageRequestListener(
         mockPageRequestListener,
@@ -55,7 +56,8 @@ void main() {
     testWidgets('Doesn\'t request a page unnecessarily', (tester) async {
       tester.applyPreferredTestScreenSize();
       final pagingController = buildPagingControllerWithPopulatedState(
-          PopulatedStateOption.ongoingWithTwoPages);
+        PopulatedStateOption.ongoingWithTwoPages,
+      );
       pagingController.addPageRequestListener(mockPageRequestListener);
 
       await _pumpPagedSliverGrid(
@@ -69,7 +71,8 @@ void main() {
     testWidgets('Requests a new page on scroll', (tester) async {
       tester.applyPreferredTestScreenSize();
       final pagingController = buildPagingControllerWithPopulatedState(
-          PopulatedStateOption.ongoingWithTwoPages);
+        PopulatedStateOption.ongoingWithTwoPages,
+      );
       pagingController.addPageRequestListener(mockPageRequestListener);
 
       await _pumpPagedSliverGrid(
@@ -92,7 +95,8 @@ void main() {
           (tester) async {
         tester.applyPreferredTestScreenSize();
         final pagingController = buildPagingControllerWithPopulatedState(
-            PopulatedStateOption.ongoingWithOnePage);
+          PopulatedStateOption.ongoingWithOnePage,
+        );
 
         final customIndicatorKey = UniqueKey();
         final customNewPageProgressIndicator = CircularProgressIndicator(
@@ -121,7 +125,8 @@ void main() {
           (tester) async {
         tester.applyPreferredTestScreenSize();
         final pagingController = buildPagingControllerWithPopulatedState(
-            PopulatedStateOption.errorOnSecondPage);
+          PopulatedStateOption.errorOnSecondPage,
+        );
 
         final customIndicatorKey = UniqueKey();
         final customNewPageErrorIndicator = Text(
@@ -151,7 +156,8 @@ void main() {
           (tester) async {
         tester.applyPreferredTestScreenSize();
         final pagingController = buildPagingControllerWithPopulatedState(
-            PopulatedStateOption.completedWithOnePage);
+          PopulatedStateOption.completedWithOnePage,
+        );
 
         final customIndicatorKey = UniqueKey();
         final customNoMoreItemsIndicator = Text(
@@ -184,7 +190,8 @@ void main() {
           '[showNewPageProgressIndicatorAsGridChild] is false', (tester) async {
         tester.applyPreferredTestScreenSize();
         final pagingController = buildPagingControllerWithPopulatedState(
-            PopulatedStateOption.ongoingWithOnePage);
+          PopulatedStateOption.ongoingWithOnePage,
+        );
 
         final customIndicatorKey = UniqueKey();
         final customNewPageProgressIndicator = CircularProgressIndicator(
@@ -209,7 +216,8 @@ void main() {
           '[showNewPageErrorIndicatorAsGridChild] is false', (tester) async {
         tester.applyPreferredTestScreenSize();
         final pagingController = buildPagingControllerWithPopulatedState(
-            PopulatedStateOption.errorOnSecondPage);
+          PopulatedStateOption.errorOnSecondPage,
+        );
 
         final customIndicatorKey = UniqueKey();
         final customNewPageErrorIndicator = Text(
@@ -235,7 +243,8 @@ void main() {
           '[showNoMoreItemsIndicatorAsGridChild] is false', (tester) async {
         tester.applyPreferredTestScreenSize();
         final pagingController = buildPagingControllerWithPopulatedState(
-            PopulatedStateOption.completedWithOnePage);
+          PopulatedStateOption.completedWithOnePage,
+        );
 
         final customIndicatorKey = UniqueKey();
         final customNoMoreItemsIndicator = Text(

@@ -4,26 +4,20 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:mockito/mockito.dart';
 
+import 'utils/paging_controller_utils.dart';
 import 'utils/screen_size_utils.dart';
 
-const _firstPageItemList = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
-const _pageSize = 10;
-const _screenSize = Size(200, 500);
-
-double get _itemHeight => _screenSize.height / _pageSize;
+double get _itemHeight => screenSize.height / pageSize;
 
 void main() {
   testWidgets(
-      'Inserts separators between items if a [separatorBuilder] is specified',
+      'Inserts separators between items if [separatorBuilder] is specified',
       (tester) async {
     final controllerLoadedWithFirstPage =
-        PagingController<int, String>.fromValue(
-      const PagingState(
-        nextPageKey: 2,
-        itemList: _firstPageItemList,
-      ),
-      firstPageKey: 1,
+        buildPagingControllerWithPopulatedState(
+      PopulatedStateOption.ongoingWithOnePage,
     );
+
     tester.applyPreferredTestScreenSize();
 
     await _pumpPagedListView(
@@ -35,7 +29,7 @@ void main() {
     );
 
     final separatorFinder = find.byType(Divider);
-    expect(separatorFinder, findsNWidgets(_pageSize - 1));
+    expect(separatorFinder, findsNWidgets(pageSize - 1));
   });
 }
 
