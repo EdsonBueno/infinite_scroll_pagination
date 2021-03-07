@@ -10,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  sliver_tools: ^0.2.0-nullsafety
+  sliver_tools: ^0.2.0
 
 dev_dependencies:
   flutter_test:
