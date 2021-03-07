@@ -38,7 +38,8 @@ void main() {
         'Requests second page immediately if the first page isn\'t enough',
         (tester) async {
       final controllerLoadedWithFirstPage =
-          buildPagingControllerLoadedWithFirstPage();
+          buildPagingControllerWithPopulatedState(
+              PopulatedStateOption.ongoingWithOnePage);
 
       controllerLoadedWithFirstPage.addPageRequestListener(
         mockPageRequestListener,
@@ -53,8 +54,9 @@ void main() {
     });
 
     testWidgets('Doesn\'t request a page unnecessarily', (tester) async {
-      tester.configureScreenSize(_screenSize);
-      final pagingController = buildPagingControllerLoadedWithTwoPages();
+      tester.applyPreferredTestScreenSize();
+      final pagingController = buildPagingControllerWithPopulatedState(
+          PopulatedStateOption.ongoingWithTwoPages);
       pagingController.addPageRequestListener(mockPageRequestListener);
 
       await _pumpPagedSliverList(
@@ -66,8 +68,9 @@ void main() {
     });
 
     testWidgets('Requests a new page on scroll', (tester) async {
-      tester.configureScreenSize(_screenSize);
-      final pagingController = buildPagingControllerLoadedWithTwoPages();
+      tester.applyPreferredTestScreenSize();
+      final pagingController = buildPagingControllerWithPopulatedState(
+          PopulatedStateOption.ongoingWithTwoPages);
       pagingController.addPageRequestListener(mockPageRequestListener);
 
       await _pumpPagedSliverList(
@@ -90,8 +93,9 @@ void main() {
       'Inserts separators between items if a [separatorBuilder] is specified',
       (tester) async {
     final controllerLoadedWithFirstPage =
-        buildPagingControllerLoadedWithFirstPage();
-    tester.configureScreenSize(_screenSize);
+        buildPagingControllerWithPopulatedState(
+            PopulatedStateOption.ongoingWithOnePage);
+    tester.applyPreferredTestScreenSize();
 
     await _pumpPagedSliverList(
       tester: tester,
@@ -108,8 +112,9 @@ void main() {
   group('Appends indicators to the item list', () {
     testWidgets('Appends the new page progress indicator to the list items',
         (tester) async {
-      tester.configureScreenSize(_screenSize);
-      final pagingController = buildPagingControllerLoadedWithFirstPage();
+      tester.applyPreferredTestScreenSize();
+      final pagingController = buildPagingControllerWithPopulatedState(
+          PopulatedStateOption.ongoingWithOnePage);
 
       final customIndicatorKey = UniqueKey();
       final customNewPageProgressIndicator = CircularProgressIndicator(
@@ -127,18 +132,17 @@ void main() {
         _itemHeight,
       );
 
-      expectWidgetFromKeyToHaveScreenWidth(
+      expectWidgetToHaveScreenWidth(
         customIndicatorKey,
         tester,
-        _screenSize.width,
       );
     });
 
     testWidgets('Appends the new page error indicator to the list items',
         (tester) async {
-      tester.configureScreenSize(_screenSize);
-      final pagingController =
-          buildPagingControllerLoadedWithErrorOnSecondPage();
+      tester.applyPreferredTestScreenSize();
+      final pagingController = buildPagingControllerWithPopulatedState(
+          PopulatedStateOption.errorOnSecondPage);
 
       final customIndicatorKey = UniqueKey();
       final customNewPageErrorIndicator = Text(
@@ -157,17 +161,17 @@ void main() {
         _itemHeight,
       );
 
-      expectWidgetFromKeyToHaveScreenWidth(
+      expectWidgetToHaveScreenWidth(
         customIndicatorKey,
         tester,
-        _screenSize.width,
       );
     });
 
     testWidgets('Appends the no more items indicator to the list items',
         (tester) async {
-      tester.configureScreenSize(_screenSize);
-      final pagingController = buildCompletedPagingController();
+      tester.applyPreferredTestScreenSize();
+      final pagingController = buildPagingControllerWithPopulatedState(
+          PopulatedStateOption.completedWithOnePage);
 
       final customIndicatorKey = UniqueKey();
       final customNoMoreItemsIndicator = Text(
@@ -186,10 +190,9 @@ void main() {
         _itemHeight,
       );
 
-      expectWidgetFromKeyToHaveScreenWidth(
+      expectWidgetToHaveScreenWidth(
         customIndicatorKey,
         tester,
-        _screenSize.width,
       );
     });
   });

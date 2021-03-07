@@ -7,10 +7,7 @@ import 'package:mockito/mockito.dart';
 import 'utils/paging_controller_utils.dart';
 import 'utils/screen_size_utils.dart';
 
-const _pageSize = 10;
-const _screenSize = Size(200, 500);
-
-double get _itemHeight => (_screenSize.height / _pageSize) * 2;
+double get _itemHeight => (screenSize.height / pageSize) * 2;
 
 void main() {
   group('Page request tests', () {
@@ -38,9 +35,10 @@ void main() {
     testWidgets(
         'Requests second page immediately if the first page isn\'t enough',
         (tester) async {
-      tester.configureScreenSize(_screenSize);
+      tester.applyPreferredTestScreenSize();
       final controllerLoadedWithFirstPage =
-          buildPagingControllerLoadedWithFirstPage();
+          buildPagingControllerWithPopulatedState(
+              PopulatedStateOption.ongoingWithOnePage);
 
       controllerLoadedWithFirstPage.addPageRequestListener(
         mockPageRequestListener,
@@ -55,8 +53,9 @@ void main() {
     });
 
     testWidgets('Doesn\'t request a page unnecessarily', (tester) async {
-      tester.configureScreenSize(_screenSize);
-      final pagingController = buildPagingControllerLoadedWithTwoPages();
+      tester.applyPreferredTestScreenSize();
+      final pagingController = buildPagingControllerWithPopulatedState(
+          PopulatedStateOption.ongoingWithTwoPages);
       pagingController.addPageRequestListener(mockPageRequestListener);
 
       await _pumpPagedSliverGrid(
@@ -68,8 +67,9 @@ void main() {
     });
 
     testWidgets('Requests a new page on scroll', (tester) async {
-      tester.configureScreenSize(_screenSize);
-      final pagingController = buildPagingControllerLoadedWithTwoPages();
+      tester.applyPreferredTestScreenSize();
+      final pagingController = buildPagingControllerWithPopulatedState(
+          PopulatedStateOption.ongoingWithTwoPages);
       pagingController.addPageRequestListener(mockPageRequestListener);
 
       await _pumpPagedSliverGrid(
@@ -90,8 +90,9 @@ void main() {
     group('Displays indicators as grid children', () {
       testWidgets('Appends the new page progress indicator to the grid items',
           (tester) async {
-        tester.configureScreenSize(_screenSize);
-        final pagingController = buildPagingControllerLoadedWithFirstPage();
+        tester.applyPreferredTestScreenSize();
+        final pagingController = buildPagingControllerWithPopulatedState(
+            PopulatedStateOption.ongoingWithOnePage);
 
         final customIndicatorKey = UniqueKey();
         final customNewPageProgressIndicator = CircularProgressIndicator(
@@ -110,18 +111,17 @@ void main() {
           _itemHeight,
         );
 
-        expectWidgetFromKeyToHaveHalfOfTheScreenWidth(
+        expectWidgetToHaveHalfOfTheScreenWidth(
           customIndicatorKey,
           tester,
-          _screenSize.width,
         );
       });
 
       testWidgets('Appends the new page error indicator to the grid items',
           (tester) async {
-        tester.configureScreenSize(_screenSize);
-        final pagingController =
-            buildPagingControllerLoadedWithErrorOnSecondPage();
+        tester.applyPreferredTestScreenSize();
+        final pagingController = buildPagingControllerWithPopulatedState(
+            PopulatedStateOption.errorOnSecondPage);
 
         final customIndicatorKey = UniqueKey();
         final customNewPageErrorIndicator = Text(
@@ -141,17 +141,17 @@ void main() {
           _itemHeight,
         );
 
-        expectWidgetFromKeyToHaveHalfOfTheScreenWidth(
+        expectWidgetToHaveHalfOfTheScreenWidth(
           customIndicatorKey,
           tester,
-          _screenSize.width,
         );
       });
 
       testWidgets('Appends the no more items indicator to the grid items',
           (tester) async {
-        tester.configureScreenSize(_screenSize);
-        final pagingController = buildCompletedPagingController();
+        tester.applyPreferredTestScreenSize();
+        final pagingController = buildPagingControllerWithPopulatedState(
+            PopulatedStateOption.completedWithOnePage);
 
         final customIndicatorKey = UniqueKey();
         final customNoMoreItemsIndicator = Text(
@@ -171,10 +171,9 @@ void main() {
           _itemHeight,
         );
 
-        expectWidgetFromKeyToHaveHalfOfTheScreenWidth(
+        expectWidgetToHaveHalfOfTheScreenWidth(
           customIndicatorKey,
           tester,
-          _screenSize.width,
         );
       });
     });
@@ -183,8 +182,9 @@ void main() {
       testWidgets(
           'Displays new page progress indicator below the grid when '
           '[showNewPageProgressIndicatorAsGridChild] is false', (tester) async {
-        tester.configureScreenSize(_screenSize);
-        final pagingController = buildPagingControllerLoadedWithFirstPage();
+        tester.applyPreferredTestScreenSize();
+        final pagingController = buildPagingControllerWithPopulatedState(
+            PopulatedStateOption.ongoingWithOnePage);
 
         final customIndicatorKey = UniqueKey();
         final customNewPageProgressIndicator = CircularProgressIndicator(
@@ -198,19 +198,18 @@ void main() {
           showNewPageProgressIndicatorAsGridChild: false,
         );
 
-        expectWidgetFromKeyToHaveScreenWidth(
+        expectWidgetToHaveScreenWidth(
           customIndicatorKey,
           tester,
-          _screenSize.width,
         );
       });
 
       testWidgets(
           'Displays new page error indicator below the grid when '
           '[showNewPageErrorIndicatorAsGridChild] is false', (tester) async {
-        tester.configureScreenSize(_screenSize);
-        final pagingController =
-            buildPagingControllerLoadedWithErrorOnSecondPage();
+        tester.applyPreferredTestScreenSize();
+        final pagingController = buildPagingControllerWithPopulatedState(
+            PopulatedStateOption.errorOnSecondPage);
 
         final customIndicatorKey = UniqueKey();
         final customNewPageErrorIndicator = Text(
@@ -225,18 +224,18 @@ void main() {
           showNewPageErrorIndicatorAsGridChild: false,
         );
 
-        expectWidgetFromKeyToHaveScreenWidth(
+        expectWidgetToHaveScreenWidth(
           customIndicatorKey,
           tester,
-          _screenSize.width,
         );
       });
 
       testWidgets(
           'Displays no more items indicator below the grid when '
           '[showNoMoreItemsIndicatorAsGridChild] is false', (tester) async {
-        tester.configureScreenSize(_screenSize);
-        final pagingController = buildCompletedPagingController();
+        tester.applyPreferredTestScreenSize();
+        final pagingController = buildPagingControllerWithPopulatedState(
+            PopulatedStateOption.completedWithOnePage);
 
         final customIndicatorKey = UniqueKey();
         final customNoMoreItemsIndicator = Text(
@@ -251,10 +250,9 @@ void main() {
           showNoMoreItemsIndicatorAsGridChild: false,
         );
 
-        expectWidgetFromKeyToHaveScreenWidth(
+        expectWidgetToHaveScreenWidth(
           customIndicatorKey,
           tester,
-          _screenSize.width,
         );
       });
     });

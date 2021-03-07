@@ -1,26 +1,32 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+const screenSize = Size(200, 500);
+
 extension ScreenSizeUtils on WidgetTester {
-  void configureScreenSize(Size screenSize) {
+  void applyPreferredTestScreenSize() {
     binding.window.devicePixelRatioTestValue = 1.0;
     binding.window.physicalSizeTestValue = screenSize;
   }
 }
 
-void expectWidgetFromKeyToHaveScreenWidth(
-    Key key, WidgetTester tester, double screenWidth) {
-  final widgetFinder = find.byKey(key);
+void expectWidgetToHaveScreenWidth(
+  Key widgetKey,
+  WidgetTester tester,
+) {
+  final widgetFinder = find.byKey(widgetKey);
   final widgetSize = tester.getSize(widgetFinder);
-  expect(widgetSize.width, screenWidth);
+  expect(
+    widgetSize.width,
+    screenSize.width,
+  );
 }
 
-void expectWidgetFromKeyToHaveHalfOfTheScreenWidth(
-  Key key,
+void expectWidgetToHaveHalfOfTheScreenWidth(
+  Key widgetKey,
   WidgetTester tester,
-  double screenWidth,
 ) {
-  final widgetFinder = find.byKey(key);
+  final widgetFinder = find.byKey(widgetKey);
   final widgetSize = tester.getSize(widgetFinder);
-  expect(widgetSize.width, screenWidth / 2);
+  expect(widgetSize.width, screenSize.width / 2);
 }

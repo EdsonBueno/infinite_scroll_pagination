@@ -1,4 +1,5 @@
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:infinite_scroll_pagination/src/core/paging_controller.dart';
 
 const firstPageItemList = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
 
@@ -17,40 +18,57 @@ const secondPageItemList = [
 
 const pageSize = 10;
 
-PagingController<int, String>
-    buildPagingControllerLoadedWithErrorOnSecondPage() =>
-        PagingController<int, String>.fromValue(
-          PagingState(
-            nextPageKey: 2,
-            itemList: firstPageItemList,
-            error: Error(),
-          ),
-          firstPageKey: 1,
-        );
-
-PagingController<int, String> buildCompletedPagingController() =>
-    PagingController<int, String>.fromValue(
-      const PagingState(
+PagingState<int, String> buildPagingStateWithPopulatedState(
+  PopulatedStateOption filledStateOption,
+) {
+  switch (filledStateOption) {
+    case PopulatedStateOption.completedWithOnePage:
+      return const PagingState(
         nextPageKey: null,
         itemList: firstPageItemList,
-      ),
-      firstPageKey: 1,
-    );
-
-PagingController<int, String> buildPagingControllerLoadedWithTwoPages() =>
-    PagingController<int, String>.fromValue(
-      const PagingState(
-        nextPageKey: 3,
-        itemList: [...firstPageItemList, ...secondPageItemList],
-      ),
-      firstPageKey: 1,
-    );
-
-PagingController<int, String> buildPagingControllerLoadedWithFirstPage() =>
-    PagingController<int, String>.fromValue(
-      const PagingState(
+      );
+    case PopulatedStateOption.errorOnSecondPage:
+      return PagingState(
         nextPageKey: 2,
         itemList: firstPageItemList,
-      ),
-      firstPageKey: 1,
-    );
+        error: Error(),
+      );
+    case PopulatedStateOption.ongoingWithOnePage:
+      return const PagingState(
+        nextPageKey: 2,
+        itemList: firstPageItemList,
+      );
+    case PopulatedStateOption.ongoingWithTwoPages:
+      return const PagingState(
+        nextPageKey: 3,
+        itemList: [...firstPageItemList, ...secondPageItemList],
+      );
+    case PopulatedStateOption.errorOnFirstPage:
+      return PagingState(
+        error: Error(),
+      );
+    case PopulatedStateOption.noItemsFound:
+      return const PagingState(
+        itemList: [],
+      );
+  }
+}
+
+PagingController<int, String> buildPagingControllerWithPopulatedState(
+  PopulatedStateOption filledStateOption,
+) {
+  final state = buildPagingStateWithPopulatedState(
+    filledStateOption,
+  );
+
+  return PagingController.fromValue(state, firstPageKey: 1);
+}
+
+enum PopulatedStateOption {
+  errorOnSecondPage,
+  completedWithOnePage,
+  ongoingWithTwoPages,
+  ongoingWithOnePage,
+  errorOnFirstPage,
+  noItemsFound,
+}

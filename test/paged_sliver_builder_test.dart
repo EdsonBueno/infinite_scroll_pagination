@@ -8,6 +8,8 @@ import 'package:infinite_scroll_pagination/src/ui/default_indicators/new_page_er
 import 'package:infinite_scroll_pagination/src/ui/default_indicators/new_page_progress_indicator.dart';
 import 'package:infinite_scroll_pagination/src/ui/default_indicators/no_items_found_indicator.dart';
 
+import 'utils/paging_controller_utils.dart';
+
 void main() {
   group('PagingStatus.loadingFirstPage', () {
     late PagingController pagingController;
@@ -24,7 +26,7 @@ void main() {
       );
 
       // when
-      await _pumpFirstPageIndicatorTestPagedSliverBuilder(
+      await _pumpPagedSliverBuilder(
         tester: tester,
         pagingController: pagingController,
         builderDelegate: builderDelegate,
@@ -47,7 +49,7 @@ void main() {
       );
 
       // when
-      await _pumpFirstPageIndicatorTestPagedSliverBuilder(
+      await _pumpPagedSliverBuilder(
         tester: tester,
         pagingController: pagingController,
         builderDelegate: builderDelegate,
@@ -60,12 +62,10 @@ void main() {
 
   group('PagingStatus.firstPageError', () {
     late PagingController pagingController;
+
     setUp(() {
-      pagingController = PagingController.fromValue(
-        PagingState(
-          error: Error(),
-        ),
-        firstPageKey: 1,
+      pagingController = buildPagingControllerWithPopulatedState(
+        PopulatedStateOption.errorOnFirstPage,
       );
     });
 
@@ -78,7 +78,7 @@ void main() {
       );
 
       // when
-      await _pumpFirstPageIndicatorTestPagedSliverBuilder(
+      await _pumpPagedSliverBuilder(
         tester: tester,
         pagingController: pagingController,
         builderDelegate: builderDelegate,
@@ -101,7 +101,7 @@ void main() {
       );
 
       // when
-      await _pumpFirstPageIndicatorTestPagedSliverBuilder(
+      await _pumpPagedSliverBuilder(
         tester: tester,
         pagingController: pagingController,
         builderDelegate: builderDelegate,
@@ -115,11 +115,8 @@ void main() {
   group('PagingStatus.noItemsFound', () {
     late PagingController pagingController;
     setUp(() {
-      pagingController = PagingController.fromValue(
-        const PagingState(
-          itemList: [],
-        ),
-        firstPageKey: 1,
+      pagingController = buildPagingControllerWithPopulatedState(
+        PopulatedStateOption.noItemsFound,
       );
     });
 
@@ -132,7 +129,7 @@ void main() {
       );
 
       // when
-      await _pumpFirstPageIndicatorTestPagedSliverBuilder(
+      await _pumpPagedSliverBuilder(
         tester: tester,
         pagingController: pagingController,
         builderDelegate: builderDelegate,
@@ -155,7 +152,7 @@ void main() {
       );
 
       // when
-      await _pumpFirstPageIndicatorTestPagedSliverBuilder(
+      await _pumpPagedSliverBuilder(
         tester: tester,
         pagingController: pagingController,
         builderDelegate: builderDelegate,
@@ -169,13 +166,8 @@ void main() {
   group('PagingStatus.subsequentPageError', () {
     late PagingController pagingController;
     setUp(() {
-      pagingController = PagingController.fromValue(
-        PagingState(
-          itemList: const [1, 2, 3, 4],
-          nextPageKey: 3,
-          error: Error(),
-        ),
-        firstPageKey: 1,
+      pagingController = buildPagingControllerWithPopulatedState(
+        PopulatedStateOption.errorOnSecondPage,
       );
     });
 
@@ -188,7 +180,7 @@ void main() {
       );
 
       // when
-      await _pumpNewPageErrorIndicatorTestPagedSliverBuilder(
+      await _pumpPagedSliverBuilder(
         tester: tester,
         pagingController: pagingController,
         builderDelegate: builderDelegate,
@@ -214,7 +206,7 @@ void main() {
       );
 
       // when
-      await _pumpNewPageErrorIndicatorTestPagedSliverBuilder(
+      await _pumpPagedSliverBuilder(
         tester: tester,
         pagingController: pagingController,
         builderDelegate: builderDelegate,
@@ -230,12 +222,8 @@ void main() {
   group('PagingStatus.ongoing', () {
     late PagingController pagingController;
     setUp(() {
-      pagingController = PagingController.fromValue(
-        const PagingState(
-          itemList: [1, 2, 3, 4],
-          nextPageKey: 3,
-        ),
-        firstPageKey: 1,
+      pagingController = buildPagingControllerWithPopulatedState(
+        PopulatedStateOption.ongoingWithTwoPages,
       );
     });
 
@@ -248,7 +236,7 @@ void main() {
       );
 
       // when
-      await _pumpNewPageProgressIndicatorTestPagedSliverBuilder(
+      await _pumpPagedSliverBuilder(
         tester: tester,
         pagingController: pagingController,
         builderDelegate: builderDelegate,
@@ -273,7 +261,7 @@ void main() {
       );
 
       // when
-      await _pumpNewPageProgressIndicatorTestPagedSliverBuilder(
+      await _pumpPagedSliverBuilder(
         tester: tester,
         pagingController: pagingController,
         builderDelegate: builderDelegate,
@@ -289,11 +277,8 @@ void main() {
   group('PagingStatus.completed', () {
     late PagingController pagingController;
     setUp(() {
-      pagingController = PagingController.fromValue(
-        const PagingState(
-          itemList: [1, 2, 3, 4],
-        ),
-        firstPageKey: 1,
+      pagingController = buildPagingControllerWithPopulatedState(
+        PopulatedStateOption.completedWithOnePage,
       );
     });
 
@@ -310,7 +295,7 @@ void main() {
       );
 
       // when
-      await _pumpNoMoreItemsIndicatorTestPagedSliverBuilder(
+      await _pumpPagedSliverBuilder(
         tester: tester,
         pagingController: pagingController,
         builderDelegate: builderDelegate,
@@ -322,34 +307,84 @@ void main() {
       _expectWidgetWithKey(customIndicatorKey);
     });
   });
+
+  group('First page indicators height tests', () {
+    final pagingController = PagingController(firstPageKey: 1);
+    const indicatorHeight = 100.0;
+    late Key indicatorKey;
+    late Widget progressIndicator;
+    late PagedChildBuilderDelegate builderDelegate;
+    late Finder indicatorFinder;
+
+    setUp(() {
+      indicatorKey = UniqueKey();
+      progressIndicator = SizedBox(
+        height: indicatorHeight,
+        key: indicatorKey,
+      );
+      indicatorFinder = find.byKey(indicatorKey);
+
+      builderDelegate = PagedChildBuilderDelegate<int>(
+        itemBuilder: (_, __, ___) => Container(),
+        firstPageProgressIndicatorBuilder: (_) => progressIndicator,
+      );
+    });
+
+    testWidgets(
+        'First page indicators are expanded to fill the remaining space',
+        (tester) async {
+      // when
+      await _pumpPagedSliverBuilder(
+        tester: tester,
+        pagingController: pagingController,
+        builderDelegate: builderDelegate,
+        shrinkWrapFirstPageIndicators: false,
+      );
+
+      // then
+      final indicatorSize = tester.getSize(indicatorFinder);
+      expect(indicatorSize.height, isNot(indicatorHeight));
+    });
+
+    testWidgets(
+        'Setting [shrinkWrapFirstPageIndicators] to true '
+        'preserves the indicator height', (tester) async {
+      // when
+      await _pumpPagedSliverBuilder(
+        tester: tester,
+        pagingController: pagingController,
+        builderDelegate: builderDelegate,
+        shrinkWrapFirstPageIndicators: true,
+      );
+
+      // then
+      final indicatorSize = tester.getSize(indicatorFinder);
+      expect(indicatorSize.height, indicatorHeight);
+    });
+  });
 }
 
-Future<void> _pumpFirstPageIndicatorTestPagedSliverBuilder({
-  required WidgetTester tester,
-  required PagingController pagingController,
-  required PagedChildBuilderDelegate builderDelegate,
-}) =>
-    _pumpSliver(
-      sliver: PagedSliverBuilder(
-        pagingController: pagingController,
-        builderDelegate: builderDelegate,
-        loadingListingBuilder: (_, __, ___, ____) => Container(),
-        errorListingBuilder: (_, __, ___, ____) => Container(),
-        completedListingBuilder: (_, __, ___, ____) => Container(),
-      ),
-      tester: tester,
-    );
+void _expectWidgetWithKey(Key key) {
+  final finder = find.byKey(key);
+  expect(finder, findsOneWidget);
+}
 
-Future<void> _pumpNewPageErrorIndicatorTestPagedSliverBuilder({
+void _expectOneWidgetOfType(Type type) {
+  final finder = find.byType(type);
+  expect(finder, findsOneWidget);
+}
+
+Future<void> _pumpPagedSliverBuilder({
   required WidgetTester tester,
   required PagingController pagingController,
   required PagedChildBuilderDelegate builderDelegate,
+  bool shrinkWrapFirstPageIndicators = false,
 }) =>
     _pumpSliver(
       sliver: PagedSliverBuilder(
         pagingController: pagingController,
         builderDelegate: builderDelegate,
-        loadingListingBuilder: (_, __, ___, ____) => Container(),
+        shrinkWrapFirstPageIndicators: shrinkWrapFirstPageIndicators,
         errorListingBuilder: (
           context,
           __,
@@ -361,21 +396,6 @@ Future<void> _pumpNewPageErrorIndicatorTestPagedSliverBuilder({
             context,
           ),
         ),
-        completedListingBuilder: (_, __, ___, ____) => Container(),
-      ),
-      tester: tester,
-    );
-
-Future<void> _pumpNewPageProgressIndicatorTestPagedSliverBuilder({
-  required WidgetTester tester,
-  required PagingController pagingController,
-  required PagedChildBuilderDelegate builderDelegate,
-}) =>
-    _pumpSliver(
-      sliver: PagedSliverBuilder(
-        pagingController: pagingController,
-        builderDelegate: builderDelegate,
-        errorListingBuilder: (_, __, ___, ____) => Container(),
         loadingListingBuilder: (
           context,
           __,
@@ -387,22 +407,6 @@ Future<void> _pumpNewPageProgressIndicatorTestPagedSliverBuilder({
             context,
           ),
         ),
-        completedListingBuilder: (_, __, ___, ____) => Container(),
-      ),
-      tester: tester,
-    );
-
-Future<void> _pumpNoMoreItemsIndicatorTestPagedSliverBuilder({
-  required WidgetTester tester,
-  required PagingController pagingController,
-  required PagedChildBuilderDelegate builderDelegate,
-}) =>
-    _pumpSliver(
-      sliver: PagedSliverBuilder(
-        pagingController: pagingController,
-        builderDelegate: builderDelegate,
-        errorListingBuilder: (_, __, ___, ____) => Container(),
-        loadingListingBuilder: (_, __, ___, ____) => Container(),
         completedListingBuilder: (
           context,
           __,
@@ -433,13 +437,3 @@ Future<void> _pumpSliver({
         ),
       ),
     );
-
-void _expectWidgetWithKey(Key key) {
-  final finder = find.byKey(key);
-  expect(finder, findsOneWidget);
-}
-
-void _expectOneWidgetOfType(Type type) {
-  final finder = find.byType(type);
-  expect(finder, findsOneWidget);
-}

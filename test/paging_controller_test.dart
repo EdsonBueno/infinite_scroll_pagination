@@ -2,27 +2,33 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:mockito/mockito.dart';
 
-const _firstPageItemList = [1, 2];
-const _secondPageItemList = [3, 4];
+import 'utils/paging_controller_utils.dart';
 
 void main() {
   group('[appendPage] tests', () {
     test('Appends the new list to [itemList]', () {
       // given
-      final pagingController = _buildPagingControllerWithOngoingState();
+      final pagingController = buildPagingControllerWithPopulatedState(
+        PopulatedStateOption.ongoingWithOnePage,
+      );
 
       // when
-      pagingController.appendPage(_secondPageItemList, 2);
+      pagingController.appendPage(secondPageItemList, 2);
 
       // then
-      expect(pagingController.itemList, [1, 2, 3, 4]);
+      expect(pagingController.itemList, [
+        ...firstPageItemList,
+        ...secondPageItemList,
+      ]);
     });
 
     test('Changes [nextPageKey]', () {
-      final pagingController = _buildPagingControllerWithOngoingState();
+      final pagingController = buildPagingControllerWithPopulatedState(
+        PopulatedStateOption.ongoingWithOnePage,
+      );
 
       // when
-      pagingController.appendPage(_secondPageItemList, 3);
+      pagingController.appendPage(secondPageItemList, 3);
 
       // then
       expect(pagingController.nextPageKey, 3);
@@ -30,10 +36,12 @@ void main() {
 
     test('Sets [error] to null', () {
       // given
-      final pagingController = _buildPagingControllerWithSubsequentPageError();
+      final pagingController = buildPagingControllerWithPopulatedState(
+        PopulatedStateOption.errorOnSecondPage,
+      );
 
       // when
-      pagingController.appendPage(_secondPageItemList, 3);
+      pagingController.appendPage(secondPageItemList, 3);
 
       // then
       expect(pagingController.error, null);
@@ -43,24 +51,28 @@ void main() {
   group('[appendLastPage] tests', () {
     test('Appends the new list to [itemList]', () {
       // given
-      final pagingController = _buildPagingControllerWithOngoingState();
+      final pagingController = buildPagingControllerWithPopulatedState(
+        PopulatedStateOption.ongoingWithOnePage,
+      );
 
       // when
-      pagingController.appendLastPage(_secondPageItemList);
+      pagingController.appendLastPage(secondPageItemList);
 
       // then
       expect(pagingController.itemList, [
-        ..._firstPageItemList,
-        ..._secondPageItemList,
+        ...firstPageItemList,
+        ...secondPageItemList,
       ]);
     });
 
     test('Sets [nextPageKey] to null', () {
       // given
-      final pagingController = _buildPagingControllerWithOngoingState();
+      final pagingController = buildPagingControllerWithPopulatedState(
+        PopulatedStateOption.ongoingWithOnePage,
+      );
 
       // when
-      pagingController.appendLastPage(_secondPageItemList);
+      pagingController.appendLastPage(secondPageItemList);
 
       // then
       expect(pagingController.nextPageKey, null);
@@ -68,10 +80,12 @@ void main() {
 
     test('Sets [error] to null', () {
       // given
-      final pagingController = _buildPagingControllerWithSubsequentPageError();
+      final pagingController = buildPagingControllerWithPopulatedState(
+        PopulatedStateOption.errorOnSecondPage,
+      );
 
       // when
-      pagingController.appendLastPage(_secondPageItemList);
+      pagingController.appendLastPage(secondPageItemList);
 
       // then
       expect(pagingController.error, null);
@@ -80,7 +94,9 @@ void main() {
 
   test('[retryLastFailedRequest] sets [error] to null', () {
     // given
-    final pagingController = _buildPagingControllerWithSubsequentPageError();
+    final pagingController = buildPagingControllerWithPopulatedState(
+      PopulatedStateOption.errorOnSecondPage,
+    );
 
     // when
     pagingController.retryLastFailedRequest();
@@ -92,7 +108,9 @@ void main() {
   group('[refresh] tests', () {
     test('Sets [itemList] to null', () {
       // given
-      final pagingController = _buildPagingControllerWithOngoingState();
+      final pagingController = buildPagingControllerWithPopulatedState(
+        PopulatedStateOption.ongoingWithOnePage,
+      );
 
       // when
       pagingController.refresh();
@@ -103,7 +121,9 @@ void main() {
 
     test('Sets [error] to null', () {
       // given
-      final pagingController = _buildPagingControllerWithSubsequentPageError();
+      final pagingController = buildPagingControllerWithPopulatedState(
+        PopulatedStateOption.errorOnSecondPage,
+      );
 
       // when
       pagingController.refresh();
@@ -114,7 +134,9 @@ void main() {
 
     test('Sets [nextPageKey] back to the [firstPageKey]', () {
       // given
-      final pagingController = _buildPagingControllerWithOngoingState();
+      final pagingController = buildPagingControllerWithPopulatedState(
+        PopulatedStateOption.ongoingWithOnePage,
+      );
 
       // when
       pagingController.refresh();
@@ -125,7 +147,7 @@ void main() {
   });
 
   group('[PagingStatusListener]s tests', () {
-    late PagingController pagingController;
+    late PagingController<int, String> pagingController;
     late PagingStatusListener mockStatusListener;
 
     setUp(() {
@@ -136,7 +158,9 @@ void main() {
 
     test('Assigning a new [value] notifies [PagingStatusListener]', () {
       // when
-      pagingController.value = _buildFirstPageSuccessfulPagingState();
+      pagingController.value = buildPagingStateWithPopulatedState(
+        PopulatedStateOption.ongoingWithOnePage,
+      );
 
       // then
       verify(mockStatusListener(PagingStatus.ongoing));
@@ -145,7 +169,9 @@ void main() {
     test('Removed [PagingStatusListener]s aren\'t notified', () {
       // when
       pagingController.removeStatusListener(mockStatusListener);
-      pagingController.value = _buildFirstPageSuccessfulPagingState();
+      pagingController.value = buildPagingStateWithPopulatedState(
+        PopulatedStateOption.ongoingWithOnePage,
+      );
 
       // then
       verifyNever(mockStatusListener(PagingStatus.ongoing));
@@ -184,8 +210,9 @@ void main() {
   group('[dispose] tests', () {
     late PagingController disposedPagingController;
     setUp(() {
-      disposedPagingController = _buildPagingControllerWithOngoingState()
-        ..dispose();
+      disposedPagingController = buildPagingControllerWithPopulatedState(
+        PopulatedStateOption.ongoingWithOnePage,
+      )..dispose();
     });
 
     test('Can\'t add a [PageRequestListener] to a disposed [PagingController]',
@@ -278,29 +305,6 @@ void main() {
     });
   });
 }
-
-PagingController<int, int> _buildPagingControllerWithSubsequentPageError() =>
-    PagingController.fromValue(
-      PagingState(
-        nextPageKey: 2,
-        itemList: _firstPageItemList,
-        error: Error(),
-      ),
-      firstPageKey: 1,
-    );
-
-PagingController<int, int> _buildPagingControllerWithOngoingState() =>
-    PagingController.fromValue(
-      _buildFirstPageSuccessfulPagingState(),
-      firstPageKey: 1,
-    );
-
-PagingState<int, int> _buildFirstPageSuccessfulPagingState() =>
-    const PagingState(
-      nextPageKey: 2,
-      itemList: _firstPageItemList,
-      error: null,
-    );
 
 class MockStatusListener extends Mock {
   void call(PagingStatus status);

@@ -24,7 +24,7 @@ void main() {
       ),
       firstPageKey: 1,
     );
-    tester.configureScreenSize(_screenSize);
+    tester.applyPreferredTestScreenSize();
 
     await _pumpPagedListView(
       tester: tester,
