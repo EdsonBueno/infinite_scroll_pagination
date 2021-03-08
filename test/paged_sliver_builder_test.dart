@@ -308,7 +308,7 @@ void main() {
     });
   });
 
-  group('First page indicators height tests', () {
+  group('First page indicators\' height', () {
     final pagingController = PagingController(firstPageKey: 1);
     const indicatorHeight = 100.0;
     late Key indicatorKey;
@@ -331,8 +331,8 @@ void main() {
     });
 
     testWidgets(
-        'First page indicators are expanded to fill the remaining space',
-        (tester) async {
+        'By default, first page indicators are expanded to fill the '
+        'remaining space', (tester) async {
       // when
       await _pumpPagedSliverBuilder(
         tester: tester,

@@ -10,7 +10,7 @@ import 'utils/screen_size_utils.dart';
 double get _itemHeight => (screenSize.height / pageSize) * 2;
 
 void main() {
-  group('Page request tests', () {
+  group('Page requests', () {
     late MockPageRequestListener mockPageRequestListener;
 
     setUp(() {
@@ -36,6 +36,7 @@ void main() {
         'Requests second page immediately if the first page isn\'t enough',
         (tester) async {
       tester.applyPreferredTestScreenSize();
+
       final controllerLoadedWithFirstPage =
           buildPagingControllerWithPopulatedState(
         PopulatedStateOption.ongoingWithOnePage,
@@ -55,6 +56,7 @@ void main() {
 
     testWidgets('Doesn\'t request a page unnecessarily', (tester) async {
       tester.applyPreferredTestScreenSize();
+
       final pagingController = buildPagingControllerWithPopulatedState(
         PopulatedStateOption.ongoingWithTwoPages,
       );
@@ -70,6 +72,7 @@ void main() {
 
     testWidgets('Requests a new page on scroll', (tester) async {
       tester.applyPreferredTestScreenSize();
+
       final pagingController = buildPagingControllerWithPopulatedState(
         PopulatedStateOption.ongoingWithTwoPages,
       );
@@ -94,6 +97,7 @@ void main() {
       testWidgets('Appends the new page progress indicator to the grid items',
           (tester) async {
         tester.applyPreferredTestScreenSize();
+
         final pagingController = buildPagingControllerWithPopulatedState(
           PopulatedStateOption.ongoingWithOnePage,
         );
@@ -124,6 +128,7 @@ void main() {
       testWidgets('Appends the new page error indicator to the grid items',
           (tester) async {
         tester.applyPreferredTestScreenSize();
+
         final pagingController = buildPagingControllerWithPopulatedState(
           PopulatedStateOption.errorOnSecondPage,
         );
@@ -155,6 +160,7 @@ void main() {
       testWidgets('Appends the no more items indicator to the grid items',
           (tester) async {
         tester.applyPreferredTestScreenSize();
+
         final pagingController = buildPagingControllerWithPopulatedState(
           PopulatedStateOption.completedWithOnePage,
         );
@@ -189,6 +195,7 @@ void main() {
           'Displays new page progress indicator below the grid when '
           '[showNewPageProgressIndicatorAsGridChild] is false', (tester) async {
         tester.applyPreferredTestScreenSize();
+
         final pagingController = buildPagingControllerWithPopulatedState(
           PopulatedStateOption.ongoingWithOnePage,
         );
@@ -215,6 +222,7 @@ void main() {
           'Displays new page error indicator below the grid when '
           '[showNewPageErrorIndicatorAsGridChild] is false', (tester) async {
         tester.applyPreferredTestScreenSize();
+
         final pagingController = buildPagingControllerWithPopulatedState(
           PopulatedStateOption.errorOnSecondPage,
         );
@@ -242,6 +250,7 @@ void main() {
           'Displays no more items indicator below the grid when '
           '[showNoMoreItemsIndicatorAsGridChild] is false', (tester) async {
         tester.applyPreferredTestScreenSize();
+
         final pagingController = buildPagingControllerWithPopulatedState(
           PopulatedStateOption.completedWithOnePage,
         );
@@ -267,18 +276,6 @@ void main() {
     });
   });
 }
-
-Widget _buildItem(
-  BuildContext context,
-  String item,
-  int index,
-) =>
-    SizedBox(
-      height: _itemHeight,
-      child: Text(
-        item,
-      ),
-    );
 
 class MockPageRequestListener extends Mock {
   void call(int pageKey);
@@ -330,5 +327,17 @@ Future<void> _pumpPagedSliverGrid({
             ],
           ),
         ),
+      ),
+    );
+
+Widget _buildItem(
+  BuildContext context,
+  String item,
+  int index,
+) =>
+    SizedBox(
+      height: _itemHeight,
+      child: Text(
+        item,
       ),
     );

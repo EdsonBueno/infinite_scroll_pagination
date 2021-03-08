@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 void main() {
-  group('[status] tests', () {
+  group('[status]', () {
     test(
         'When [itemList] isn\'t empty, [nextPageKey] isn\'t null, '
         'and [error] is null, [status] should be [PagingStatus.ongoing]', () {
@@ -93,7 +93,7 @@ void main() {
     );
   });
 
-  group('[hashCode] test', () {
+  group('[hashCode]', () {
     test('Equal [PagingState]s have equal [hashCode]s', () {
       const pagingState1 = PagingState(
         nextPageKey: 2,

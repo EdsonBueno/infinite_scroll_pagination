@@ -5,7 +5,7 @@ import 'package:mockito/mockito.dart';
 import 'utils/paging_controller_utils.dart';
 
 void main() {
-  group('[appendPage] tests', () {
+  group('[appendPage]', () {
     test('Appends the new list to [itemList]', () {
       // given
       final pagingController = buildPagingControllerWithPopulatedState(
@@ -26,12 +26,13 @@ void main() {
       final pagingController = buildPagingControllerWithPopulatedState(
         PopulatedStateOption.ongoingWithOnePage,
       );
+      const newNextPageKey = 3;
 
       // when
-      pagingController.appendPage(secondPageItemList, 3);
+      pagingController.appendPage(secondPageItemList, newNextPageKey);
 
       // then
-      expect(pagingController.nextPageKey, 3);
+      expect(pagingController.nextPageKey, newNextPageKey);
     });
 
     test('Sets [error] to null', () {
@@ -48,7 +49,7 @@ void main() {
     });
   });
 
-  group('[appendLastPage] tests', () {
+  group('[appendLastPage]', () {
     test('Appends the new list to [itemList]', () {
       // given
       final pagingController = buildPagingControllerWithPopulatedState(
@@ -105,7 +106,7 @@ void main() {
     expect(pagingController.error, null);
   });
 
-  group('[refresh] tests', () {
+  group('[refresh]', () {
     test('Sets [itemList] to null', () {
       // given
       final pagingController = buildPagingControllerWithPopulatedState(
@@ -132,7 +133,7 @@ void main() {
       expect(pagingController.error, null);
     });
 
-    test('Sets [nextPageKey] back to the [firstPageKey]', () {
+    test('Sets [nextPageKey] back to [firstPageKey]', () {
       // given
       final pagingController = buildPagingControllerWithPopulatedState(
         PopulatedStateOption.ongoingWithOnePage,
@@ -146,7 +147,7 @@ void main() {
     });
   });
 
-  group('[PagingStatusListener]s tests', () {
+  group('[PagingStatusListener]', () {
     late PagingController<int, String> pagingController;
     late PagingStatusListener mockStatusListener;
 
@@ -178,7 +179,7 @@ void main() {
     });
   });
 
-  group('[PageRequestListener]s tests', () {
+  group('[PageRequestListener]', () {
     late PagingController pagingController;
     late PageRequestListener mockPageRequestListener;
     const requestedPageKey = 2;
@@ -207,7 +208,7 @@ void main() {
     });
   });
 
-  group('[dispose] tests', () {
+  group('[dispose]', () {
     late PagingController disposedPagingController;
     setUp(() {
       disposedPagingController = buildPagingControllerWithPopulatedState(
@@ -279,17 +280,16 @@ void main() {
 
     test('Assigning to [itemList] changes [value]', () {
       // when
-      const itemList = [1, 2, 3, 4];
-      pagingController.itemList = itemList;
+      pagingController.itemList = firstPageItemList;
 
       // then
-      expect(pagingController.value.itemList, itemList);
+      expect(pagingController.value.itemList, firstPageItemList);
     });
 
     test('Assigning to [nextPageKey] changes [value]', () {
       // when
       const nextPageKey = 2;
-      pagingController.nextPageKey = 2;
+      pagingController.nextPageKey = nextPageKey;
 
       // then
       expect(pagingController.value.nextPageKey, nextPageKey);

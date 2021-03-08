@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:mockito/mockito.dart';
 
 import 'utils/paging_controller_utils.dart';
 import 'utils/screen_size_utils.dart';
@@ -33,22 +32,6 @@ void main() {
   });
 }
 
-Widget _buildItem(
-  BuildContext context,
-  String item,
-  int index,
-) =>
-    SizedBox(
-      height: _itemHeight,
-      child: Text(
-        item,
-      ),
-    );
-
-class MockPageRequestListener extends Mock {
-  void call(int pageKey);
-}
-
 Future<void> _pumpPagedListView({
   required WidgetTester tester,
   required PagingController<int, String> pagingController,
@@ -72,5 +55,17 @@ Future<void> _pumpPagedListView({
                   separatorBuilder: separatorBuilder,
                 ),
         ),
+      ),
+    );
+
+Widget _buildItem(
+  BuildContext context,
+  String item,
+  int index,
+) =>
+    SizedBox(
+      height: _itemHeight,
+      child: Text(
+        item,
       ),
     );
