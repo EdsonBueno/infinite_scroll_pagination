@@ -16,3 +16,5 @@ jobs:
         channel: 'stable' 
     - run: flutter pub get
     - run: flutter analyze
+    - run: flutter test --coverage --coverage-path coverage/lcov.info
+    - uses: codecov/codecov-action@v1
