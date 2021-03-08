@@ -1,3 +1,9 @@
+## 3.0.1
+
+* Fixes code formatting in ListenableListener.
+* Updates [sliver_tools](https://pub.dev/packages/sliver_tools) dependency.
+* Adds new unit tests.
+
 ## 3.0.0
 
 * Promotes null safety to stable release.
