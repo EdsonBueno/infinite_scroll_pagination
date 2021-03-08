@@ -26,13 +26,13 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
     this.semanticIndexCallback,
     this.shrinkWrapFirstPageIndicators = false,
     Key? key,
-  })  : separatorBuilder = null,
+  })  : _separatorBuilder = null,
         super(key: key);
 
   const PagedSliverList.separated({
     required this.pagingController,
     required this.builderDelegate,
-    required this.separatorBuilder,
+    required IndexedWidgetBuilder separatorBuilder,
     this.addAutomaticKeepAlives = true,
     this.addRepaintBoundaries = true,
     this.addSemanticIndexes = true,
@@ -40,7 +40,8 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
     this.semanticIndexCallback,
     this.shrinkWrapFirstPageIndicators = false,
     Key? key,
-  }) : super(key: key);
+  })  : _separatorBuilder = separatorBuilder,
+        super(key: key);
 
   /// Corresponds to [PagedSliverBuilder.pagingController].
   final PagingController<PageKeyType, ItemType> pagingController;
@@ -49,7 +50,7 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
   final PagedChildBuilderDelegate<ItemType> builderDelegate;
 
   /// The builder for list item separators, just like in [ListView.separated].
-  final IndexedWidgetBuilder? separatorBuilder;
+  final IndexedWidgetBuilder? _separatorBuilder;
 
   /// Corresponds to [SliverChildBuilderDelegate.addAutomaticKeepAlives].
   final bool addAutomaticKeepAlives;
@@ -120,13 +121,16 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
       itemCount,
       statusIndicatorBuilder: statusIndicatorBuilder,
     );
-    return (itemExtent == null || separatorBuilder != null)
+
+    final itemExtent = this.itemExtent;
+
+    return (itemExtent == null || _separatorBuilder != null)
         ? SliverList(
             delegate: delegate,
           )
         : SliverFixedExtentList(
             delegate: delegate,
-            itemExtent: itemExtent!,
+            itemExtent: itemExtent,
           );
   }
 
@@ -134,24 +138,26 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
     IndexedWidgetBuilder itemBuilder,
     int itemCount, {
     WidgetBuilder? statusIndicatorBuilder,
-  }) =>
-      separatorBuilder == null
-          ? AppendedSliverChildBuilderDelegate(
-              builder: itemBuilder,
-              childCount: itemCount,
-              appendixBuilder: statusIndicatorBuilder,
-              addAutomaticKeepAlives: addAutomaticKeepAlives,
-              addRepaintBoundaries: addRepaintBoundaries,
-              addSemanticIndexes: addSemanticIndexes,
-              semanticIndexCallback: semanticIndexCallback,
-            )
-          : AppendedSliverChildBuilderDelegate.separated(
-              builder: itemBuilder,
-              childCount: itemCount,
-              appendixBuilder: statusIndicatorBuilder,
-              separatorBuilder: separatorBuilder!,
-              addAutomaticKeepAlives: addAutomaticKeepAlives,
-              addRepaintBoundaries: addRepaintBoundaries,
-              addSemanticIndexes: addSemanticIndexes,
-            );
+  }) {
+    final separatorBuilder = _separatorBuilder;
+    return separatorBuilder == null
+        ? AppendedSliverChildBuilderDelegate(
+            builder: itemBuilder,
+            childCount: itemCount,
+            appendixBuilder: statusIndicatorBuilder,
+            addAutomaticKeepAlives: addAutomaticKeepAlives,
+            addRepaintBoundaries: addRepaintBoundaries,
+            addSemanticIndexes: addSemanticIndexes,
+            semanticIndexCallback: semanticIndexCallback,
+          )
+        : AppendedSliverChildBuilderDelegate.separated(
+            builder: itemBuilder,
+            childCount: itemCount,
+            appendixBuilder: statusIndicatorBuilder,
+            separatorBuilder: separatorBuilder,
+            addAutomaticKeepAlives: addAutomaticKeepAlives,
+            addRepaintBoundaries: addRepaintBoundaries,
+            addSemanticIndexes: addSemanticIndexes,
+          );
+  }
 }

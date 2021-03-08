@@ -141,24 +141,27 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
   final bool _shrinkWrapFirstPageIndicators;
 
   @override
-  Widget buildChildLayout(BuildContext context) => _separatorBuilder != null
-      ? PagedSliverList<PageKeyType, ItemType>.separated(
-          builderDelegate: builderDelegate,
-          pagingController: pagingController,
-          separatorBuilder: _separatorBuilder,
-          addAutomaticKeepAlives: addAutomaticKeepAlives,
-          addRepaintBoundaries: addRepaintBoundaries,
-          addSemanticIndexes: addSemanticIndexes,
-          itemExtent: itemExtent,
-          shrinkWrapFirstPageIndicators: _shrinkWrapFirstPageIndicators,
-        )
-      : PagedSliverList<PageKeyType, ItemType>(
-          builderDelegate: builderDelegate,
-          pagingController: pagingController,
-          addAutomaticKeepAlives: addAutomaticKeepAlives,
-          addRepaintBoundaries: addRepaintBoundaries,
-          addSemanticIndexes: addSemanticIndexes,
-          itemExtent: itemExtent,
-          shrinkWrapFirstPageIndicators: _shrinkWrapFirstPageIndicators,
-        );
+  Widget buildChildLayout(BuildContext context) {
+    final separatorBuilder = _separatorBuilder;
+    return separatorBuilder != null
+        ? PagedSliverList<PageKeyType, ItemType>.separated(
+            builderDelegate: builderDelegate,
+            pagingController: pagingController,
+            separatorBuilder: separatorBuilder,
+            addAutomaticKeepAlives: addAutomaticKeepAlives,
+            addRepaintBoundaries: addRepaintBoundaries,
+            addSemanticIndexes: addSemanticIndexes,
+            itemExtent: itemExtent,
+            shrinkWrapFirstPageIndicators: _shrinkWrapFirstPageIndicators,
+          )
+        : PagedSliverList<PageKeyType, ItemType>(
+            builderDelegate: builderDelegate,
+            pagingController: pagingController,
+            addAutomaticKeepAlives: addAutomaticKeepAlives,
+            addRepaintBoundaries: addRepaintBoundaries,
+            addSemanticIndexes: addSemanticIndexes,
+            itemExtent: itemExtent,
+            shrinkWrapFirstPageIndicators: _shrinkWrapFirstPageIndicators,
+          );
+  }
 }
