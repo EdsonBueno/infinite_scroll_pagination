@@ -1,3 +1,7 @@
+## 3.0.1+1
+
+* Adds [Flutter Favorite](https://flutter.dev/docs/development/packages-and-plugins/favorites) status to the README.
+
 ## 3.0.1
 
 * Fixes code formatting in ListenableListener.
