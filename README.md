@@ -2,7 +2,7 @@
 	<img src="https://raw.githubusercontent.com/EdsonBueno/infinite_scroll_pagination/master/docs/assets/logo.png" alt="Package Logo with Flutter Favorite Badge" />
 </p>
 <p align="center">
-	<i>Chosen as a <a href="https://pub.dev/flutter/favorites" rel="noopener" target="_blank">Flutter Favorite</a> by the Flutter Ecosystem Committee</i>
+	<i>Chosen as a <a href="https://flutter.dev/docs/development/packages-and-plugins/favorites" rel="noopener" target="_blank">Flutter Favorite</a> by the Flutter Ecosystem Committee</i>
 </p>
 <p align="center">
 	<a href="https://pub.dev/packages/infinite_scroll_pagination" rel="noopener" target="_blank"><img src="https://img.shields.io/pub/v/infinite_scroll_pagination.svg" alt="Pub.dev Badge"></a>
