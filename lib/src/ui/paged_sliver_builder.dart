@@ -12,6 +12,7 @@ import 'package:infinite_scroll_pagination/src/ui/default_indicators/new_page_er
 import 'package:infinite_scroll_pagination/src/ui/default_indicators/new_page_progress_indicator.dart';
 import 'package:infinite_scroll_pagination/src/ui/default_indicators/no_items_found_indicator.dart';
 import 'package:infinite_scroll_pagination/src/utils/listenable_listener.dart';
+import 'package:sliver_tools/sliver_tools.dart';
 
 typedef CompletedListingBuilder = Widget Function(
   BuildContext context,
@@ -141,70 +142,94 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
 
   @override
   Widget build(BuildContext context) =>
-      // The SliverPadding is used to avoid changing the topmost item inside a
-      // CustomScrollView.
-      // https://github.com/flutter/flutter/issues/55170
-      SliverPadding(
-        padding: const EdgeInsets.all(0),
-        sliver: ListenableListener(
-          listenable: _pagingController,
-          listener: () {
-            final status = _pagingController.value.status;
+      ValueListenableBuilder<PagingState<PageKeyType, ItemType>>(
+        valueListenable: _pagingController,
+        builder: (context, pagingState, _) {
+          Widget child;
 
-            if (status == PagingStatus.loadingFirstPage) {
-              _pagingController.notifyPageRequestListeners(
-                _pagingController.firstPageKey,
+          switch (pagingState.status) {
+            case PagingStatus.ongoing:
+              child = widget.loadingListingBuilder(
+                context,
+                _buildListItemWidget,
+                _itemCount,
+                _newPageProgressIndicatorBuilder,
               );
-            }
+              break;
+            case PagingStatus.completed:
+              child = widget.completedListingBuilder(
+                context,
+                _buildListItemWidget,
+                _itemCount,
+                _noMoreItemsIndicatorBuilder,
+              );
+              break;
+            case PagingStatus.loadingFirstPage:
+              child = _FirstPageStatusIndicatorBuilder(
+                builder: _firstPageProgressIndicatorBuilder,
+                shrinkWrap: _shrinkWrapFirstPageIndicators,
+              );
+              break;
+            case PagingStatus.subsequentPageError:
+              child = widget.errorListingBuilder(
+                context,
+                _buildListItemWidget,
+                _itemCount,
+                (context) => _newPageErrorIndicatorBuilder(context),
+              );
+              break;
+            case PagingStatus.noItemsFound:
+              child = _FirstPageStatusIndicatorBuilder(
+                builder: _noItemsFoundIndicatorBuilder,
+                shrinkWrap: _shrinkWrapFirstPageIndicators,
+              );
+              break;
+            default:
+              child = _FirstPageStatusIndicatorBuilder(
+                builder: _firstPageErrorIndicatorBuilder,
+                shrinkWrap: _shrinkWrapFirstPageIndicators,
+              );
+          }
 
-            if (status == PagingStatus.ongoing) {
-              _hasRequestedNextPage = false;
-            }
-          },
-          child: ValueListenableBuilder<PagingState<PageKeyType, ItemType>>(
-            valueListenable: _pagingController,
-            builder: (context, pagingState, _) {
-              switch (pagingState.status) {
-                case PagingStatus.ongoing:
-                  return widget.loadingListingBuilder(
-                    context,
-                    _buildListItemWidget,
-                    _itemCount,
-                    _newPageProgressIndicatorBuilder,
+          // The SliverPadding is used to avoid changing the topmost item inside
+          // a CustomScrollView.
+          // https://github.com/flutter/flutter/issues/55170
+          child = SliverPadding(
+            // We set the paging state as the widget key, so that if transitions
+            // are animated, the widgets are differentiated correctly and the
+            // SliverAnimatedSwitcher properly animates them.
+            key: ObjectKey(pagingState),
+            padding: const EdgeInsets.all(0),
+            sliver: ListenableListener(
+              listenable: _pagingController,
+              listener: () {
+                final status = _pagingController.value.status;
+
+                if (status == PagingStatus.loadingFirstPage) {
+                  _pagingController.notifyPageRequestListeners(
+                    _pagingController.firstPageKey,
                   );
-                case PagingStatus.completed:
-                  return widget.completedListingBuilder(
-                    context,
-                    _buildListItemWidget,
-                    _itemCount,
-                    _noMoreItemsIndicatorBuilder,
-                  );
-                case PagingStatus.loadingFirstPage:
-                  return _FirstPageStatusIndicatorBuilder(
-                    builder: _firstPageProgressIndicatorBuilder,
-                    shrinkWrap: _shrinkWrapFirstPageIndicators,
-                  );
-                case PagingStatus.subsequentPageError:
-                  return widget.errorListingBuilder(
-                    context,
-                    _buildListItemWidget,
-                    _itemCount,
-                    (context) => _newPageErrorIndicatorBuilder(context),
-                  );
-                case PagingStatus.noItemsFound:
-                  return _FirstPageStatusIndicatorBuilder(
-                    builder: _noItemsFoundIndicatorBuilder,
-                    shrinkWrap: _shrinkWrapFirstPageIndicators,
-                  );
-                default:
-                  return _FirstPageStatusIndicatorBuilder(
-                    builder: _firstPageErrorIndicatorBuilder,
-                    shrinkWrap: _shrinkWrapFirstPageIndicators,
-                  );
-              }
-            },
-          ),
-        ),
+                }
+
+                if (status == PagingStatus.ongoing) {
+                  _hasRequestedNextPage = false;
+                }
+              },
+              child: child,
+            ),
+          );
+
+          // Finally, if the builder delegate wants to animate transitions, wrap
+          // the child in an animated switcher
+          if (_builderDelegate.animateTransitions) {
+            child = SliverAnimatedSwitcher(
+              duration: _builderDelegate.transitionDuration,
+              child: child,
+            );
+          }
+
+          return child;
+        },
       );
 
   /// Connects the [_pagingController] with the [_builderDelegate] in order to
