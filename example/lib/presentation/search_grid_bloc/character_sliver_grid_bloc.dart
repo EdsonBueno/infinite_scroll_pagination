@@ -33,12 +33,12 @@ class CharacterSliverGridBloc {
 
   Sink<int> get onPageRequestSink => _onPageRequest.sink;
 
-  final _onSearchInputChangedSubject = BehaviorSubject<String>();
+  final _onSearchInputChangedSubject = BehaviorSubject<String?>.seeded(null);
 
-  Sink<String> get onSearchInputChangedSink =>
+  Sink<String?> get onSearchInputChangedSink =>
       _onSearchInputChangedSubject.sink;
 
-  String? get searchInputValue => _onSearchInputChangedSubject.value;
+  String? get _searchInputValue => _onSearchInputChangedSubject.value;
 
   Stream<CharacterListingState> _resetSearch() async* {
     yield CharacterListingState();
@@ -51,20 +51,20 @@ class CharacterSliverGridBloc {
       final newItems = await RemoteApi.getCharacterList(
         pageKey,
         _pageSize,
-        searchTerm: searchInputValue,
+        searchTerm: _searchInputValue,
       );
       final isLastPage = newItems.length < _pageSize;
       final nextPageKey = isLastPage ? null : pageKey + newItems.length;
       yield CharacterListingState(
         error: null,
         nextPageKey: nextPageKey,
-        itemList: [...lastListingState?.itemList ?? [], ...newItems],
+        itemList: [...lastListingState.itemList ?? [], ...newItems],
       );
     } catch (e) {
       yield CharacterListingState(
         error: e,
-        nextPageKey: lastListingState?.nextPageKey,
-        itemList: lastListingState?.itemList,
+        nextPageKey: lastListingState.nextPageKey,
+        itemList: lastListingState.itemList,
       );
     }
   }

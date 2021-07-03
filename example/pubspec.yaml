@@ -7,13 +7,13 @@ environment:
   sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
-  cached_network_image: ^3.0.0-nullsafety
+  cached_network_image: ^3.0.0
   flutter:
     sdk: flutter
-  http: ^0.13.0
+  http: ^0.13.3
   infinite_scroll_pagination:
     path: ../
-  rxdart: ^0.26.0
+  rxdart: ^0.27.1
 
 dev_dependencies:
   flutter_test:

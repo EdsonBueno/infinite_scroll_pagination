@@ -10,10 +10,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  sliver_tools: ^0.2.0
+  sliver_tools: ^0.2.5
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  mockito: ^5.0.0
+  mockito: ^5.0.9
   test: ^1.16.5

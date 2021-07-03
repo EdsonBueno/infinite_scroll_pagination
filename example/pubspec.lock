@@ -28,7 +28,7 @@ packages:
       name: cached_network_image
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.0-nullsafety"
+    version: "3.0.0"
   characters:
     dependency: transitive
     description:
@@ -96,14 +96,14 @@ packages:
       name: flutter_blurhash
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.2-nullsafety.0"
+    version: "0.6.0"
   flutter_cache_manager:
     dependency: transitive
     description:
       name: flutter_cache_manager
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.0-nullsafety.1"
+    version: "3.1.1"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -115,7 +115,7 @@ packages:
       name: http
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.13.0"
+    version: "0.13.3"
   http_parser:
     dependency: transitive
     description:
@@ -136,7 +136,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "3.0.1"
+    version: "3.0.1+1"
   matcher:
     dependency: transitive
     description:
@@ -157,7 +157,7 @@ packages:
       name: octo_image
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.0-nullsafety.1"
+    version: "1.0.0+1"
   path:
     dependency: transitive
     description:
@@ -206,7 +206,7 @@ packages:
       name: pedantic
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.10.0"
+    version: "1.11.0"
   petitparser:
     dependency: transitive
     description:
@@ -241,7 +241,7 @@ packages:
       name: rxdart
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.26.0"
+    version: "0.27.1"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -253,7 +253,7 @@ packages:
       name: sliver_tools
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.0"
+    version: "0.2.5"
   source_span:
     dependency: transitive
     description:
@@ -267,7 +267,7 @@ packages:
       name: sqflite
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0+2"
+    version: "2.0.0+3"
   sqflite_common:
     dependency: transitive
     description:
