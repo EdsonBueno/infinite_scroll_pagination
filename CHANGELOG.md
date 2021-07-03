@@ -1,3 +1,7 @@
+## 3.1.0
+
+* Adds [animated status transitions](https://pub.dev/packages/infinite_scroll_pagination/example#animating-status-transitions).
+
 ## 3.0.1+1
 
 * Adds [Flutter Favorite](https://flutter.dev/docs/development/packages-and-plugins/favorites) status to the README.

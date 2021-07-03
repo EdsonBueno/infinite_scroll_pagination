@@ -73,6 +73,7 @@ class _CharacterSliverListState extends State<CharacterSliverList> {
           PagedSliverList<int, CharacterSummary>(
             pagingController: _pagingController,
             builderDelegate: PagedChildBuilderDelegate<CharacterSummary>(
+              animateTransitions: true,
               itemBuilder: (context, item, index) => CharacterListItem(
                 character: item,
               ),

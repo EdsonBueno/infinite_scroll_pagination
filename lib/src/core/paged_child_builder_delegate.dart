@@ -44,9 +44,9 @@ class PagedChildBuilderDelegate<ItemType> {
   /// The builder for an indicator that all items have been fetched.
   final WidgetBuilder? noMoreItemsIndicatorBuilder;
 
-  /// Whether to animate transitions between various Widget states
+  /// Whether status transitions should be animated.
   final bool animateTransitions;
 
-  /// If animateTransitions is true, use this duration for the transition spped.
+  /// The duration of animated transitions when [animateTransitions] is `true`.
   final Duration transitionDuration;
 }

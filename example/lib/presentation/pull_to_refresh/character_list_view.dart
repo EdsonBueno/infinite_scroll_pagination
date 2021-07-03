@@ -48,6 +48,7 @@ class _CharacterListViewState extends State<CharacterListView> {
         child: PagedListView<int, CharacterSummary>.separated(
           pagingController: _pagingController,
           builderDelegate: PagedChildBuilderDelegate<CharacterSummary>(
+            animateTransitions: true,
             itemBuilder: (context, item, index) => CharacterListItem(
               character: item,
             ),

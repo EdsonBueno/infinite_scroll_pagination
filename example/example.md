@@ -85,6 +85,23 @@ Widget build(BuildContext context) =>
     );
 ```
 
+## Animating Status Transitions
+```dart
+@override
+Widget build(BuildContext context) =>
+    PagedListView<int, CharacterSummary>(
+      pagingController: _pagingController,
+      builderDelegate: PagedChildBuilderDelegate<CharacterSummary>(
+        animateTransitions: true,
+        // [transitionDuration] has a default value of 250 milliseconds.
+        transitionDuration: const Duration(milliseconds: 500),
+        itemBuilder: (context, item, index) => CharacterListItem(
+          character: item,
+        ),
+      ),
+    );
+```
+
 ## Separators
 ```dart
 @override
