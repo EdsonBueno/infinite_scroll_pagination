@@ -1,19 +1,13 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:infinite_scroll_pagination/src/core/paged_child_builder_delegate.dart';
 import 'package:infinite_scroll_pagination/src/core/paging_controller.dart';
-import 'package:infinite_scroll_pagination/src/ui/paged_grid_view.dart';
 import 'package:infinite_scroll_pagination/src/ui/paged_sliver_builder.dart';
 import 'package:infinite_scroll_pagination/src/ui/paged_sliver_grid_builder.dart';
 
-/// Paged [SliverGrid] with progress and error indicators displayed as the last
-/// item.
-///
-/// Similar to [PagedGridView] but needs to be wrapped by a
-/// [CustomScrollView] when added to the screen.
-/// Useful for combining multiple scrollable pieces in your UI or if you need
-/// to add some widgets preceding or following your paged grid.
-class PagedSliverGrid<PageKeyType, ItemType> extends StatelessWidget {
-  const PagedSliverGrid({
+/// TODO: Document
+class PagedStaggeredSliverGrid<PageKeyType, ItemType> extends StatelessWidget {
+  const PagedStaggeredSliverGrid({
     required this.pagingController,
     required this.builderDelegate,
     required this.gridDelegate,
@@ -27,14 +21,66 @@ class PagedSliverGrid<PageKeyType, ItemType> extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
+  /// TODO: Document
+  PagedStaggeredSliverGrid.countBuilder({
+    required this.pagingController,
+    required this.builderDelegate,
+    required int crossAxisCount,
+    required IndexedStaggeredTileBuilder staggeredTileBuilder,
+    required int itemCount,
+    double mainAxisSpacing = 0,
+    double crossAxisSpacing = 0,
+    this.addAutomaticKeepAlives = true,
+    this.addRepaintBoundaries = true,
+    this.addSemanticIndexes = true,
+    this.showNewPageProgressIndicatorAsGridChild = true,
+    this.showNewPageErrorIndicatorAsGridChild = true,
+    this.showNoMoreItemsIndicatorAsGridChild = true,
+    this.shrinkWrapFirstPageIndicators = false,
+    Key? key,
+  })  : gridDelegate = SliverStaggeredGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: crossAxisCount,
+          mainAxisSpacing: mainAxisSpacing,
+          crossAxisSpacing: crossAxisSpacing,
+          staggeredTileBuilder: staggeredTileBuilder,
+          staggeredTileCount: itemCount,
+        ),
+        super(key: key);
+
+  /// TODO: Document
+  PagedStaggeredSliverGrid.extentBuilder({
+    required this.pagingController,
+    required this.builderDelegate,
+    required double maxCrossAxisExtent,
+    required IndexedStaggeredTileBuilder staggeredTileBuilder,
+    required int itemCount,
+    double mainAxisSpacing = 0,
+    double crossAxisSpacing = 0,
+    this.addAutomaticKeepAlives = true,
+    this.addRepaintBoundaries = true,
+    this.addSemanticIndexes = true,
+    this.showNewPageProgressIndicatorAsGridChild = true,
+    this.showNewPageErrorIndicatorAsGridChild = true,
+    this.showNoMoreItemsIndicatorAsGridChild = true,
+    this.shrinkWrapFirstPageIndicators = false,
+    Key? key,
+  })  : gridDelegate = SliverStaggeredGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: maxCrossAxisExtent,
+          mainAxisSpacing: mainAxisSpacing,
+          crossAxisSpacing: crossAxisSpacing,
+          staggeredTileBuilder: staggeredTileBuilder,
+          staggeredTileCount: itemCount,
+        ),
+        super(key: key);
+
   /// Corresponds to [PagedSliverBuilder.pagingController].
   final PagingController<PageKeyType, ItemType> pagingController;
 
   /// Corresponds to [PagedSliverBuilder.builderDelegate].
   final PagedChildBuilderDelegate<ItemType> builderDelegate;
 
-  /// Corresponds to [GridView.gridDelegate].
-  final SliverGridDelegate gridDelegate;
+  /// Corresponds to [SliverStaggeredGrid.gridDelegate].
+  final SliverStaggeredGridDelegate gridDelegate;
 
   /// Corresponds to [SliverChildBuilderDelegate.addAutomaticKeepAlives].
   final bool addAutomaticKeepAlives;
@@ -62,7 +108,7 @@ class PagedSliverGrid<PageKeyType, ItemType> extends StatelessWidget {
       PagedSliverGridBuilder<PageKeyType, ItemType>(
         pagingController: pagingController,
         builderDelegate: builderDelegate,
-        sliverGridBuilder: (delegate) => SliverGrid(
+        sliverGridBuilder: (delegate) => SliverStaggeredGrid(
           delegate: delegate,
           gridDelegate: gridDelegate,
         ),
