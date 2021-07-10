@@ -1,19 +1,18 @@
 import 'dart:async';
 
 import 'package:breaking_bapp/character_summary.dart';
-import 'package:breaking_bapp/presentation/common/character_search_input_sliver.dart';
-import 'package:breaking_bapp/presentation/search_grid_bloc/character_grid_item.dart';
-import 'package:breaking_bapp/presentation/search_grid_bloc/character_sliver_grid_bloc.dart';
+import 'package:breaking_bapp/presentation/grid_bloc/character_grid_item.dart';
+import 'package:breaking_bapp/presentation/grid_bloc/character_sliver_grid_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-class CharacterSliverGrid extends StatefulWidget {
+class CharacterStaggeredGrid extends StatefulWidget {
   @override
-  _CharacterSliverGridState createState() => _CharacterSliverGridState();
+  _CharacterStaggeredGridState createState() => _CharacterStaggeredGridState();
 }
 
-class _CharacterSliverGridState extends State<CharacterSliverGrid> {
+class _CharacterStaggeredGridState extends State<CharacterStaggeredGrid> {
   final CharacterSliverGridBloc _bloc = CharacterSliverGridBloc();
   final PagingController<int, CharacterSummary> _pagingController =
       PagingController(firstPageKey: 0);
@@ -41,28 +40,15 @@ class _CharacterSliverGridState extends State<CharacterSliverGrid> {
   }
 
   @override
-  Widget build(BuildContext context) => CustomScrollView(
-        slivers: <Widget>[
-          CharacterSearchInputSliver(
-            onChanged: (searchTerm) => _bloc.onSearchInputChangedSink.add(
-              searchTerm,
-            ),
+  Widget build(BuildContext context) => PagedStaggeredGridView.count(
+        pagingController: _pagingController,
+        builderDelegate: PagedChildBuilderDelegate<CharacterSummary>(
+          itemBuilder: (context, item, index) => CharacterGridItem(
+            character: item,
           ),
-          PagedSliverGrid<int, CharacterSummary>(
-            pagingController: _pagingController,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              childAspectRatio: 100 / 150,
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
-              crossAxisCount: 3,
-            ),
-            builderDelegate: PagedChildBuilderDelegate<CharacterSummary>(
-              itemBuilder: (context, item, index) => CharacterGridItem(
-                character: item,
-              ),
-            ),
-          ),
-        ],
+        ),
+        crossAxisCount: 2,
+        staggeredTileBuilder: (index) => const StaggeredTile.fit(1),
       );
 
   @override

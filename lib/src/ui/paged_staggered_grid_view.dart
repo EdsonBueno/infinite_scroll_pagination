@@ -12,7 +12,7 @@ class PagedStaggeredGridView<PageKeyType, ItemType> extends BoxScrollView {
   const PagedStaggeredGridView({
     required this.pagingController,
     required this.builderDelegate,
-    required this.gridDelegate,
+    required this.gridDelegateBuilder,
     // Corresponds to [ScrollView.controller].
     ScrollController? scrollController,
     // Corresponds to [ScrollView.scrollDirection].
@@ -63,14 +63,13 @@ class PagedStaggeredGridView<PageKeyType, ItemType> extends BoxScrollView {
         );
 
   /// TODO: Document
-  PagedStaggeredGridView.countBuilder({
+  PagedStaggeredGridView.count({
     required this.pagingController,
     required this.builderDelegate,
     required int crossAxisCount,
     required IndexedStaggeredTileBuilder staggeredTileBuilder,
     double mainAxisSpacing = 0.0,
     double crossAxisSpacing = 0.0,
-    int? itemCount,
     // Corresponds to [ScrollView.controller].
     ScrollController? scrollController,
     // Corresponds to [ScrollView.scrollDirection].
@@ -103,14 +102,18 @@ class PagedStaggeredGridView<PageKeyType, ItemType> extends BoxScrollView {
     // Corresponds to [ScrollView.clipBehavior].
     Clip clipBehavior = Clip.hardEdge,
     Key? key,
-  })  : _shrinkWrapFirstPageIndicators = shrinkWrap,
-        gridDelegate = SliverStaggeredGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: crossAxisCount,
-          mainAxisSpacing: mainAxisSpacing,
-          crossAxisSpacing: crossAxisSpacing,
-          staggeredTileBuilder: staggeredTileBuilder,
-          staggeredTileCount: itemCount,
-        ),
+  })
+      : _shrinkWrapFirstPageIndicators = shrinkWrap,
+        gridDelegateBuilder =
+            ((childCount) {
+              return SliverStaggeredGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: crossAxisCount,
+                  mainAxisSpacing: mainAxisSpacing,
+                  crossAxisSpacing: crossAxisSpacing,
+                  staggeredTileBuilder: staggeredTileBuilder,
+                  staggeredTileCount: childCount,
+                );
+            }),
         super(
           key: key,
           scrollDirection: scrollDirection,
@@ -128,14 +131,13 @@ class PagedStaggeredGridView<PageKeyType, ItemType> extends BoxScrollView {
         );
 
   /// TODO: Document
-  PagedStaggeredGridView.extentBuilder({
+  PagedStaggeredGridView.extent({
     required this.pagingController,
     required this.builderDelegate,
     required double maxCrossAxisExtent,
     required IndexedStaggeredTileBuilder staggeredTileBuilder,
     double mainAxisSpacing = 0.0,
     double crossAxisSpacing = 0.0,
-    int? itemCount,
     // Corresponds to [ScrollView.controller].
     ScrollController? scrollController,
     // Corresponds to [ScrollView.scrollDirection].
@@ -169,13 +171,14 @@ class PagedStaggeredGridView<PageKeyType, ItemType> extends BoxScrollView {
     Clip clipBehavior = Clip.hardEdge,
     Key? key,
   })  : _shrinkWrapFirstPageIndicators = shrinkWrap,
-        gridDelegate = SliverStaggeredGridDelegateWithMaxCrossAxisExtent(
-          maxCrossAxisExtent: maxCrossAxisExtent,
-          mainAxisSpacing: mainAxisSpacing,
-          crossAxisSpacing: crossAxisSpacing,
-          staggeredTileBuilder: staggeredTileBuilder,
-          staggeredTileCount: itemCount,
-        ),
+        gridDelegateBuilder =
+            ((childCount) => SliverStaggeredGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: maxCrossAxisExtent,
+                  mainAxisSpacing: mainAxisSpacing,
+                  crossAxisSpacing: crossAxisSpacing,
+                  staggeredTileBuilder: staggeredTileBuilder,
+                  staggeredTileCount: childCount,
+                )),
         super(
           key: key,
           scrollDirection: scrollDirection,
@@ -198,8 +201,8 @@ class PagedStaggeredGridView<PageKeyType, ItemType> extends BoxScrollView {
   /// Corresponds to [PagedSliverBuilder.builderDelegate].
   final PagedChildBuilderDelegate<ItemType> builderDelegate;
 
-  /// Corresponds to [SliverStaggeredGrid.gridDelegate].
-  final SliverStaggeredGridDelegate gridDelegate;
+  /// Corresponds to [PagedStaggeredSliverGrid.gridDelegateBuilder].
+  final SliverStaggeredGridDelegateBuilder gridDelegateBuilder;
 
   /// Corresponds to [SliverChildBuilderDelegate.addAutomaticKeepAlives].
   final bool addAutomaticKeepAlives;
@@ -227,7 +230,7 @@ class PagedStaggeredGridView<PageKeyType, ItemType> extends BoxScrollView {
       PagedStaggeredSliverGrid<PageKeyType, ItemType>(
         builderDelegate: builderDelegate,
         pagingController: pagingController,
-        gridDelegate: gridDelegate,
+        gridDelegateBuilder: gridDelegateBuilder,
         addAutomaticKeepAlives: addAutomaticKeepAlives,
         addRepaintBoundaries: addRepaintBoundaries,
         addSemanticIndexes: addSemanticIndexes,

@@ -6,6 +6,7 @@ import 'package:infinite_scroll_pagination/src/utils/appended_sliver_child_build
 import 'package:sliver_tools/sliver_tools.dart';
 
 typedef SliverGridBuilder = SliverWithKeepAliveWidget Function(
+  int childCount,
   SliverChildDelegate delegate,
 );
 
@@ -147,6 +148,7 @@ class _AppendedSliverGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     if (showAppendixAsGridChild == true || appendixBuilder == null) {
       return sliverGridBuilder(
+        itemCount + (appendixBuilder == null ? 0 : 1),
         _buildSliverDelegate(
           appendixBuilder: appendixBuilder,
         ),
@@ -154,6 +156,7 @@ class _AppendedSliverGrid extends StatelessWidget {
     } else {
       return MultiSliver(children: [
         sliverGridBuilder(
+          itemCount,
           _buildSliverDelegate(),
         ),
         SliverToBoxAdapter(
@@ -172,6 +175,6 @@ class _AppendedSliverGrid extends StatelessWidget {
         appendixBuilder: appendixBuilder,
         addAutomaticKeepAlives: addAutomaticKeepAlives,
         addRepaintBoundaries: addRepaintBoundaries,
-        addSemanticIndexes: addSemanticIndexes,
+        addSemanticIndexes: true,
       );
 }
