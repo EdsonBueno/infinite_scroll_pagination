@@ -18,7 +18,6 @@ class PagedPageView<PageKeyType, ItemType> extends StatelessWidget {
     this.addAutomaticKeepAlives = true,
     this.addRepaintBoundaries = true,
     this.addSemanticIndexes = true,
-    this.shrinkWrapFirstPageIndicators = false,
     this.allowImplicitScrolling = false,
     this.restorationId,
     this.pageController,
@@ -38,9 +37,6 @@ class PagedPageView<PageKeyType, ItemType> extends StatelessWidget {
 
   /// Corresponds to [PagedSliverBuilder.builderDelegate].
   final PagedChildBuilderDelegate<ItemType> builderDelegate;
-
-  /// Corresponds to [PagedSliverBuilder.shrinkWrapFirstPageIndicators].
-  final bool shrinkWrapFirstPageIndicators;
 
   /// Corresponds to [SliverChildBuilderDelegate.addAutomaticKeepAlives].
   final bool addAutomaticKeepAlives;
@@ -77,6 +73,7 @@ class PagedPageView<PageKeyType, ItemType> extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
       PagedSliverBuilder<PageKeyType, ItemType>(
+        isSliver: false,
         pagingController: pagingController,
         builderDelegate: builderDelegate,
         completedListingBuilder: (
@@ -92,6 +89,17 @@ class PagedPageView<PageKeyType, ItemType> extends StatelessWidget {
           addAutomaticKeepAlives: addAutomaticKeepAlives,
           addSemanticIndexes: addSemanticIndexes,
           addRepaintBoundaries: addRepaintBoundaries,
+          restorationId: restorationId,
+          pageController: pageController,
+          onPageChanged: onPageChanged,
+          scrollBehavior: scrollBehavior,
+          scrollDirection: scrollDirection,
+          dragStartBehavior: dragStartBehavior,
+          clipBehavior: clipBehavior,
+          allowImplicitScrolling: allowImplicitScrolling,
+          reverse: reverse,
+          physics: physics,
+          pageSnapping: pageSnapping,
         ),
         loadingListingBuilder: (
           context,
@@ -106,6 +114,17 @@ class PagedPageView<PageKeyType, ItemType> extends StatelessWidget {
           addAutomaticKeepAlives: addAutomaticKeepAlives,
           addSemanticIndexes: addSemanticIndexes,
           addRepaintBoundaries: addRepaintBoundaries,
+          restorationId: restorationId,
+          pageController: pageController,
+          onPageChanged: onPageChanged,
+          scrollBehavior: scrollBehavior,
+          scrollDirection: scrollDirection,
+          dragStartBehavior: dragStartBehavior,
+          clipBehavior: clipBehavior,
+          allowImplicitScrolling: allowImplicitScrolling,
+          reverse: reverse,
+          physics: physics,
+          pageSnapping: pageSnapping,
         ),
         errorListingBuilder: (
           context,
@@ -120,8 +139,18 @@ class PagedPageView<PageKeyType, ItemType> extends StatelessWidget {
           addAutomaticKeepAlives: addAutomaticKeepAlives,
           addSemanticIndexes: addSemanticIndexes,
           addRepaintBoundaries: addRepaintBoundaries,
+          restorationId: restorationId,
+          pageController: pageController,
+          onPageChanged: onPageChanged,
+          scrollBehavior: scrollBehavior,
+          scrollDirection: scrollDirection,
+          dragStartBehavior: dragStartBehavior,
+          clipBehavior: clipBehavior,
+          allowImplicitScrolling: allowImplicitScrolling,
+          reverse: reverse,
+          physics: physics,
+          pageSnapping: pageSnapping,
         ),
-        shrinkWrapFirstPageIndicators: shrinkWrapFirstPageIndicators,
       );
 }
 
