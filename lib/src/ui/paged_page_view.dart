@@ -11,8 +11,8 @@ import 'package:infinite_scroll_pagination/src/utils/appended_sliver_child_build
 ///
 /// Similar to a [PageView].
 /// Useful for combining another paged widget with a page view with details.
-class PagedSliverGrid<PageKeyType, ItemType> extends StatelessWidget {
-  const PagedSliverGrid({
+class PagedPageView<PageKeyType, ItemType> extends StatelessWidget {
+  const PagedPageView({
     required this.pagingController,
     required this.builderDelegate,
     this.addAutomaticKeepAlives = true,
