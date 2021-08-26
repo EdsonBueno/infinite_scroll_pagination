@@ -53,7 +53,7 @@ class PagedSliverBuilder<PageKeyType, ItemType> extends StatefulWidget {
     required this.errorListingBuilder,
     required this.completedListingBuilder,
     this.shrinkWrapFirstPageIndicators = false,
-    this.isSliver = false,
+    this.isSliver = true,
     Key? key,
   }) : super(key: key);
 
@@ -92,7 +92,7 @@ class PagedSliverBuilder<PageKeyType, ItemType> extends StatefulWidget {
   /// are not slivers.
   /// If true, [PagedChildBuilderDelegate.animateTransitions] is ignored.
   ///
-  /// Defaults to false.
+  /// Defaults to true.
   final bool isSliver;
 
   @override
