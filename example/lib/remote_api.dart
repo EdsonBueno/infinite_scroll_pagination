@@ -58,11 +58,10 @@ extension on Future<http.Response> {
   Future<R> mapFromResponse<R, T>(R Function(T) jsonParser) async {
     try {
       final response = await this;
-      if (response.statusCode == 200) {
-        return jsonParser(jsonDecode(response.body));
-      } else {
+      if (response.statusCode != 200) {
         throw GenericHttpException();
       }
+      return jsonParser(jsonDecode(response.body));
     } on SocketException {
       throw NoConnectionException();
     }

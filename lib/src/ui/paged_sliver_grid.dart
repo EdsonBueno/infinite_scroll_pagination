@@ -155,17 +155,16 @@ class _AppendedSliverGrid extends StatelessWidget {
           appendixBuilder: appendixBuilder,
         ),
       );
-    } else {
-      return MultiSliver(children: [
-        SliverGrid(
-          gridDelegate: gridDelegate,
-          delegate: _buildSliverDelegate(),
-        ),
-        SliverToBoxAdapter(
-          child: appendixBuilder!(context),
-        ),
-      ]);
     }
+    return MultiSliver(children: [
+      SliverGrid(
+        gridDelegate: gridDelegate,
+        delegate: _buildSliverDelegate(),
+      ),
+      SliverToBoxAdapter(
+        child: appendixBuilder!(context),
+      ),
+    ]);
   }
 
   SliverChildBuilderDelegate _buildSliverDelegate({

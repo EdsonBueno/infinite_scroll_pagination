@@ -232,9 +232,8 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
                   child: child,
                 ),
               );
-            } else {
-              return child;
             }
+            return child;
           },
         ),
       );
@@ -290,11 +289,10 @@ class _FirstPageStatusIndicatorBuilder extends StatelessWidget {
       return SliverToBoxAdapter(
         child: builder(context),
       );
-    } else {
-      return SliverFillRemaining(
-        hasScrollBody: false,
-        child: builder(context),
-      );
     }
+    return SliverFillRemaining(
+      hasScrollBody: false,
+      child: builder(context),
+    );
   }
 }
