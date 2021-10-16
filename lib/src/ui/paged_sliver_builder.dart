@@ -35,7 +35,7 @@ typedef LoadingListingBuilder = Widget Function(
   WidgetBuilder newPageProgressIndicatorBuilder,
 );
 
-/// Assists the creation of infinitely scrolled paged sliver widgets.
+/// Facilitates creating infinitely scrolled paged sliver widgets.
 ///
 /// Combines a [PagingController] with a
 /// [PagedChildBuilderDelegate] and calls the supplied

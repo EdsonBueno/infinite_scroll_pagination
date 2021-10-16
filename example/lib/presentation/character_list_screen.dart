@@ -1,5 +1,6 @@
+import 'package:breaking_bapp/presentation/grid_bloc/search_grid_bloc/character_sliver_grid.dart';
+import 'package:breaking_bapp/presentation/grid_bloc/search_grid_bloc/character_staggered_grid.dart';
 import 'package:breaking_bapp/presentation/pull_to_refresh/character_list_view.dart';
-import 'package:breaking_bapp/presentation/search_grid_bloc/character_sliver_grid.dart';
 import 'package:breaking_bapp/presentation/search_snackbar/character_sliver_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -19,14 +20,19 @@ class _CharacterListScreenState extends State<CharacterListScreen> {
       widgetBuilder: (context) => CharacterListView(),
     ),
     _BottomNavigationItem(
-      label: 'Search/Snackbar',
+      label: 'Search',
       iconData: Icons.search,
       widgetBuilder: (context) => CharacterSliverList(),
     ),
     _BottomNavigationItem(
-      label: 'BLoC/Grid/Search',
+      label: 'Grid/Search',
       iconData: Icons.grid_on,
       widgetBuilder: (context) => CharacterSliverGrid(),
+    ),
+    _BottomNavigationItem(
+      label: 'StaggeredGrid',
+      iconData: Icons.view_quilt,
+      widgetBuilder: (context) => CharacterStaggeredGrid(),
     ),
   ];
 
@@ -38,6 +44,7 @@ class _CharacterListScreenState extends State<CharacterListScreen> {
         resizeToAvoidBottomInset: false,
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _selectedBottomNavigationIndex,
+          type: BottomNavigationBarType.fixed,
           items: _bottomNavigationItems
               .map(
                 (item) => BottomNavigationBarItem(

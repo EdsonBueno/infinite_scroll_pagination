@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:breaking_bapp/presentation/search_grid_bloc/character_sliver_grid_states.dart';
+import 'package:breaking_bapp/presentation/grid_bloc/character_sliver_grid_states.dart';
 import 'package:breaking_bapp/remote_api.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -17,7 +17,7 @@ class CharacterSliverGridBloc {
         .addTo(_subscriptions);
   }
 
-  static const _pageSize = 20;
+  static const _pageSize = 10;
 
   final _subscriptions = CompositeSubscription();
 
