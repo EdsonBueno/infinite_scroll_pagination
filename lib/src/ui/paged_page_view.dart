@@ -47,27 +47,37 @@ class PagedPageView<PageKeyType, ItemType> extends StatelessWidget {
   /// Corresponds to [SliverChildBuilderDelegate.addSemanticIndexes].
   final bool addSemanticIndexes;
 
-  // Corresponds to [PageView.allowImplicitScrolling].
+  /// Corresponds to [PageView.allowImplicitScrolling].
   final bool allowImplicitScrolling;
-  // Corresponds to [PageView.restorationId].
+
+  /// Corresponds to [PageView.restorationId].
   final String? restorationId;
-  // Corresponds to [PageView.pageController].
+
+  /// Corresponds to [PageView.controller].
   final PageController? pageController;
-  // Corresponds to [PageView.scrollBehavior].
+
+  /// Corresponds to [PageView.scrollBehavior].
   final ScrollBehavior? scrollBehavior;
-  // Corresponds to [PageView.scrollDirection].
+
+  /// Corresponds to [PageView.scrollDirection].
   final Axis scrollDirection;
-  // Corresponds to [PageView.dragStartBehavior].
+
+  /// Corresponds to [PageView.dragStartBehavior].
   final DragStartBehavior dragStartBehavior;
-  // Corresponds to [PageView.clipBehavior].
+
+  /// Corresponds to [PageView.clipBehavior].
   final Clip clipBehavior;
-  // Corresponds to [PageView.reverse].
+
+  /// Corresponds to [PageView.reverse].
   final bool reverse;
-  // Corresponds to [PageView.physics].
+
+  /// Corresponds to [PageView.physics].
   final ScrollPhysics? physics;
-  // Corresponds to [PageView.pageSnapping].
+
+  /// Corresponds to [PageView.pageSnapping].
   final bool pageSnapping;
-  // Corresponds to [PageView.onPageChanged].
+
+  /// Corresponds to [PageView.onPageChanged].
   final void Function(int)? onPageChanged;
 
   @override
