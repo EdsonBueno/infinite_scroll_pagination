@@ -23,10 +23,15 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
     this.addRepaintBoundaries = true,
     this.addSemanticIndexes = true,
     this.itemExtent,
+    this.prototypeItem,
     this.semanticIndexCallback,
     this.shrinkWrapFirstPageIndicators = false,
     Key? key,
-  })  : _separatorBuilder = null,
+  })  : assert(
+          itemExtent ==null ||prototypeItem==null, 
+          'You can only pass itemExtent or prototypeItem, not both',
+        ),
+        _separatorBuilder = null,
         super(key: key);
 
   const PagedSliverList.separated({
@@ -37,10 +42,15 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
     this.addRepaintBoundaries = true,
     this.addSemanticIndexes = true,
     this.itemExtent,
+    this.prototypeItem,
     this.semanticIndexCallback,
     this.shrinkWrapFirstPageIndicators = false,
     Key? key,
-  })  : _separatorBuilder = separatorBuilder,
+  })  : assert(
+          itemExtent == null ||prototypeItem == null, 
+          'You can only pass itemExtent or prototypeItem, not both',
+        ),
+        _separatorBuilder = separatorBuilder,
         super(key: key);
 
   /// Corresponds to [PagedSliverBuilder.pagingController].
@@ -65,7 +75,12 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
   final SemanticIndexCallback? semanticIndexCallback;
 
   /// Corresponds to [SliverFixedExtentList.itemExtent].
+  /// If this is not null, [prototypeItem] must be null, and vice versa.
   final double? itemExtent;
+
+  /// Corresponds to [SliverPrototypeExtentList.prototypeItem].
+  /// If this is not null, [itemExtent] must be null, and vice versa.
+  final Widget? prototypeItem;
 
   /// Corresponds to [PagedSliverBuilder.shrinkWrapFirstPageIndicators].
   final bool shrinkWrapFirstPageIndicators;
@@ -124,13 +139,17 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
 
     final itemExtent = this.itemExtent;
 
-    return (itemExtent == null || _separatorBuilder != null)
+    return ((itemExtent == null && prototypeItem == null) || _separatorBuilder != null)
         ? SliverList(
             delegate: delegate,
           )
-        : SliverFixedExtentList(
+        : (itemExtent != null)? 
+        SliverFixedExtentList(
             delegate: delegate,
             itemExtent: itemExtent,
+          ): SliverPrototypeExtentList(
+            delegate: delegate,
+            prototypeItem: prototypeItem!,
           );
   }
 
