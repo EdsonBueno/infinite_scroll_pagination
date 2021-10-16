@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:breaking_bapp/character_summary.dart';
 import 'package:breaking_bapp/presentation/common/character_search_input_sliver.dart';
-import 'package:breaking_bapp/presentation/grid_bloc/character_grid_item.dart';
 import 'package:breaking_bapp/presentation/grid_bloc/character_sliver_grid_bloc.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -57,8 +57,8 @@ class _CharacterSliverGridState extends State<CharacterSliverGrid> {
               crossAxisCount: 3,
             ),
             builderDelegate: PagedChildBuilderDelegate<CharacterSummary>(
-              itemBuilder: (context, item, index) => CharacterGridItem(
-                character: item,
+              itemBuilder: (context, item, index) => CachedNetworkImage(
+                imageUrl: item.pictureUrl,
               ),
             ),
           ),

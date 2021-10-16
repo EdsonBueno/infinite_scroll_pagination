@@ -34,6 +34,11 @@ class _CharacterListScreenState extends State<CharacterListScreen> {
       iconData: Icons.view_quilt,
       widgetBuilder: (context) => CharacterStaggeredGrid(),
     ),
+    _BottomNavigationItem(
+      label: 'PageView',
+      iconData: Icons.fullscreen,
+      widgetBuilder: (context) => CharacterStaggeredGrid(),
+    ),
   ];
 
   @override

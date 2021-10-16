@@ -330,9 +330,13 @@ class _FirstPageStatusIndicatorBuilder extends StatelessWidget {
         );
       }
     } else {
-      return Center(
-        child: builder(context),
-      );
+      if (shrinkWrap) {
+        return builder(context);
+      } else {
+        return Center(
+          child: builder(context),
+        );
+      }
     }
   }
 }
