@@ -28,7 +28,7 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
     this.shrinkWrapFirstPageIndicators = false,
     Key? key,
   })  : assert(
-          itemExtent ==null ||prototypeItem==null, 
+          itemExtent == null || prototypeItem == null,
           'You can only pass itemExtent or prototypeItem, not both',
         ),
         _separatorBuilder = null,
@@ -42,14 +42,10 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
     this.addRepaintBoundaries = true,
     this.addSemanticIndexes = true,
     this.itemExtent,
-    this.prototypeItem,
     this.semanticIndexCallback,
     this.shrinkWrapFirstPageIndicators = false,
     Key? key,
-  })  : assert(
-          itemExtent == null ||prototypeItem == null, 
-          'You can only pass itemExtent or prototypeItem, not both',
-        ),
+  })  : prototypeItem = null,
         _separatorBuilder = separatorBuilder,
         super(key: key);
 
@@ -75,10 +71,12 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
   final SemanticIndexCallback? semanticIndexCallback;
 
   /// Corresponds to [SliverFixedExtentList.itemExtent].
+  ///
   /// If this is not null, [prototypeItem] must be null, and vice versa.
   final double? itemExtent;
 
   /// Corresponds to [SliverPrototypeExtentList.prototypeItem].
+  ///
   /// If this is not null, [itemExtent] must be null, and vice versa.
   final Widget? prototypeItem;
 
@@ -139,18 +137,20 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
 
     final itemExtent = this.itemExtent;
 
-    return ((itemExtent == null && prototypeItem == null) || _separatorBuilder != null)
+    return ((itemExtent == null && prototypeItem == null) ||
+            _separatorBuilder != null)
         ? SliverList(
             delegate: delegate,
           )
-        : (itemExtent != null)? 
-        SliverFixedExtentList(
-            delegate: delegate,
-            itemExtent: itemExtent,
-          ): SliverPrototypeExtentList(
-            delegate: delegate,
-            prototypeItem: prototypeItem!,
-          );
+        : (itemExtent != null)
+            ? SliverFixedExtentList(
+                delegate: delegate,
+                itemExtent: itemExtent,
+              )
+            : SliverPrototypeExtentList(
+                delegate: delegate,
+                prototypeItem: prototypeItem!,
+              );
   }
 
   SliverChildBuilderDelegate _buildSliverDelegate(

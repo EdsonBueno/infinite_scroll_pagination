@@ -48,7 +48,7 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
     Clip clipBehavior = Clip.hardEdge,
     Key? key,
   })  : assert(
-          itemExtent == null ||prototypeItem == null, 
+          itemExtent == null || prototypeItem == null,
           'You can only pass itemExtent or prototypeItem, not both',
         ),
         _separatorBuilder = null,
@@ -88,7 +88,6 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
     // Corresponds to [BoxScrollView.padding].
     EdgeInsetsGeometry? padding,
     this.itemExtent,
-    this.prototypeItem,
     this.addAutomaticKeepAlives = true,
     this.addRepaintBoundaries = true,
     this.addSemanticIndexes = true,
@@ -104,10 +103,7 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
     // Corresponds to [ScrollView.clipBehavior]
     Clip clipBehavior = Clip.hardEdge,
     Key? key,
-  })  : assert(
-          itemExtent == null ||prototypeItem == null, 
-          'You can only pass itemExtent or prototypeItem, not both',
-        ),
+  })  : prototypeItem = null,
         _shrinkWrapFirstPageIndicators = shrinkWrap,
         _separatorBuilder = separatorBuilder,
         super(
@@ -144,11 +140,13 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
   /// Corresponds to [SliverChildBuilderDelegate.addSemanticIndexes].
   final bool addSemanticIndexes;
 
-    /// Corresponds to [SliverFixedExtentList.itemExtent].
+  /// Corresponds to [SliverFixedExtentList.itemExtent].
+  ///
   /// If this is not null, [prototypeItem] must be null, and vice versa.
   final double? itemExtent;
 
   /// Corresponds to [SliverPrototypeExtentList.prototypeItem].
+  ///
   /// If this is not null, [itemExtent] must be null, and vice versa.
   final Widget? prototypeItem;
 
@@ -177,6 +175,7 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
             addSemanticIndexes: addSemanticIndexes,
             itemExtent: itemExtent,
             shrinkWrapFirstPageIndicators: _shrinkWrapFirstPageIndicators,
+            prototypeItem: prototypeItem,
           );
   }
 }
