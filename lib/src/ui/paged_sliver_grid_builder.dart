@@ -12,10 +12,6 @@ typedef SliverGridBuilder = SliverWithKeepAliveWidget Function(
 
 /// Facilitates creating paged sliver grids by providing the adjusted child
 /// count and the appended [SliverChildDelegate] within [builder].
-///
-/// Both the child count and the delegate of a Grid change whether status
-/// indicators should be displayed (based on the current status of the
-/// pagination.)
 class PagedSliverGridBuilder<PageKeyType, ItemType> extends StatelessWidget {
   const PagedSliverGridBuilder({
     required this.pagingController,
@@ -38,7 +34,7 @@ class PagedSliverGridBuilder<PageKeyType, ItemType> extends StatelessWidget {
   final PagedChildBuilderDelegate<ItemType> builderDelegate;
 
   /// Supplies the adjusted child count, the appended [SliverChildDelegate],
-  /// and expects a Sliver Grid in return.
+  /// and expects a sliver grid in return.
   final SliverGridBuilder builder;
 
   /// Corresponds to [SliverChildBuilderDelegate.addAutomaticKeepAlives].
@@ -152,6 +148,8 @@ class _AppendedSliverGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appendixBuilder = this.appendixBuilder;
+
     if (showAppendixAsGridChild == true || appendixBuilder == null) {
       return sliverGridBuilder(
         itemCount + (appendixBuilder == null ? 0 : 1),
@@ -167,7 +165,7 @@ class _AppendedSliverGrid extends StatelessWidget {
             _buildSliverDelegate(),
           ),
           SliverToBoxAdapter(
-            child: appendixBuilder!(context),
+            child: appendixBuilder(context),
           ),
         ],
       );

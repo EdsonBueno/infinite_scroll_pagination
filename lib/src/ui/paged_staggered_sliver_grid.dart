@@ -18,7 +18,7 @@ typedef SliverStaggeredGridDelegateBuilder = SliverStaggeredGridDelegate
 ///
 /// This is a wrapper around the [flutter_staggered_grid_view](https://pub.dev/packages/flutter_staggered_grid_view)
 /// package. For more info on how to build staggered grids, check out the
-/// package's documentation and examples.
+/// referred package's documentation and examples.
 ///
 /// Similar to [PagedStaggeredGridView] but this needs to be wrapped by a
 /// [CustomScrollView] when added to the screen.
@@ -130,7 +130,7 @@ class PagedStaggeredSliverGrid<PageKeyType, ItemType> extends StatelessWidget {
         builder: (childCount, delegate) => SliverStaggeredGrid(
           delegate: delegate,
           gridDelegate: gridDelegateBuilder(childCount),
-          // Hardcoding [addAutomaticKeepAlives] to false is a workaround for:
+          // Hardcoding [addAutomaticKeepAlives] to false is a workaround for 
           // https://github.com/letsar/flutter_staggered_grid_view/issues/189
           addAutomaticKeepAlives: false,
         ),

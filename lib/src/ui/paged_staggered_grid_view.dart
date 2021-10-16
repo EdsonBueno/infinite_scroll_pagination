@@ -15,7 +15,7 @@ import 'package:infinite_scroll_pagination/src/ui/paged_staggered_sliver_grid.da
 ///
 /// This is a wrapper around the [flutter_staggered_grid_view](https://pub.dev/packages/flutter_staggered_grid_view)
 /// package. For more info on how to build staggered grids, check out the
-/// package's documentation and examples.
+/// referred package's documentation and examples.
 class PagedStaggeredGridView<PageKeyType, ItemType> extends BoxScrollView {
   const PagedStaggeredGridView({
     required this.pagingController,
