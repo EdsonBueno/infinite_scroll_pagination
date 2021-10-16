@@ -6,8 +6,7 @@ import 'package:infinite_scroll_pagination/src/ui/paged_list_view.dart';
 import 'package:infinite_scroll_pagination/src/ui/paged_sliver_builder.dart';
 import 'package:infinite_scroll_pagination/src/utils/appended_sliver_child_builder_delegate.dart';
 
-/// Paged [SliverList] with progress and error indicators displayed as the last
-/// item.
+/// A [SliverList] with pagination capabilities.
 ///
 /// To include separators, use [PagedSliverList.separated].
 ///

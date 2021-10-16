@@ -1,13 +1,21 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:infinite_scroll_pagination/src/core/paged_child_builder_delegate.dart';
 import 'package:infinite_scroll_pagination/src/core/paging_controller.dart';
 import 'package:infinite_scroll_pagination/src/ui/paged_sliver_builder.dart';
 import 'package:infinite_scroll_pagination/src/ui/paged_sliver_grid.dart';
 import 'package:infinite_scroll_pagination/src/ui/paged_staggered_sliver_grid.dart';
 
-/// TODO: Document
+/// A [StaggeredGridView] with pagination capabilities.
+///
+/// You can also see this as a [PagedGridView] that supports rows of varying
+/// sizes.
+///
+/// This is a wrapper around the [flutter_staggered_grid_view](https://pub.dev/packages/flutter_staggered_grid_view)
+/// package. For more info on how to build staggered grids, check out the
+/// package's documentation and examples.
 class PagedStaggeredGridView<PageKeyType, ItemType> extends BoxScrollView {
   const PagedStaggeredGridView({
     required this.pagingController,
@@ -62,7 +70,7 @@ class PagedStaggeredGridView<PageKeyType, ItemType> extends BoxScrollView {
           clipBehavior: clipBehavior,
         );
 
-  /// TODO: Document
+  /// Equivalent to [StaggeredGridView.countBuilder].
   PagedStaggeredGridView.count({
     required this.pagingController,
     required this.builderDelegate,
@@ -102,8 +110,7 @@ class PagedStaggeredGridView<PageKeyType, ItemType> extends BoxScrollView {
     // Corresponds to [ScrollView.clipBehavior].
     Clip clipBehavior = Clip.hardEdge,
     Key? key,
-  })
-      : _shrinkWrapFirstPageIndicators = shrinkWrap,
+  })  : _shrinkWrapFirstPageIndicators = shrinkWrap,
         gridDelegateBuilder =
             ((childCount) => SliverStaggeredGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: crossAxisCount,
@@ -128,7 +135,7 @@ class PagedStaggeredGridView<PageKeyType, ItemType> extends BoxScrollView {
           clipBehavior: clipBehavior,
         );
 
-  /// TODO: Document
+  /// Equivalent to [StaggeredGridView.extentBuilder].
   PagedStaggeredGridView.extent({
     required this.pagingController,
     required this.builderDelegate,

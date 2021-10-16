@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:infinite_scroll_pagination/src/core/paged_child_builder_delegate.dart';
 import 'package:infinite_scroll_pagination/src/core/paging_controller.dart';
 import 'package:infinite_scroll_pagination/src/ui/paged_sliver_builder.dart';
@@ -10,7 +11,19 @@ typedef SliverStaggeredGridDelegateBuilder = SliverStaggeredGridDelegate
   int childCount,
 );
 
-/// TODO: Document
+/// A [SliverStaggeredGrid] with pagination capabilities.
+///
+/// You can also see this as a [PagedSliverGrid] that supports rows of varying
+/// sizes.
+///
+/// This is a wrapper around the [flutter_staggered_grid_view](https://pub.dev/packages/flutter_staggered_grid_view)
+/// package. For more info on how to build staggered grids, check out the
+/// package's documentation and examples.
+///
+/// Similar to [PagedStaggeredGridView] but this needs to be wrapped by a
+/// [CustomScrollView] when added to the screen.
+/// Useful for combining multiple scrollable pieces in your UI or if you need
+/// to add some widgets preceding or following your paged list.
 class PagedStaggeredSliverGrid<PageKeyType, ItemType> extends StatelessWidget {
   const PagedStaggeredSliverGrid({
     required this.pagingController,
@@ -26,7 +39,7 @@ class PagedStaggeredSliverGrid<PageKeyType, ItemType> extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  /// TODO: Document
+  /// Equivalent to [SliverStaggeredGrid.countBuilder].
   PagedStaggeredSliverGrid.count({
     required this.pagingController,
     required this.builderDelegate,
@@ -52,7 +65,7 @@ class PagedStaggeredSliverGrid<PageKeyType, ItemType> extends StatelessWidget {
                 )),
         super(key: key);
 
-  /// TODO: Document
+  /// Equivalent to [SliverStaggeredGrid.extentBuilder].
   PagedStaggeredSliverGrid.extent({
     required this.pagingController,
     required this.builderDelegate,
@@ -84,7 +97,8 @@ class PagedStaggeredSliverGrid<PageKeyType, ItemType> extends StatelessWidget {
   /// Corresponds to [PagedSliverBuilder.builderDelegate].
   final PagedChildBuilderDelegate<ItemType> builderDelegate;
 
-  /// TODO document.
+  /// Provides the adjusted child count (based on the pagination status) so
+  /// that a [SliverStaggeredGridDelegate] can be returned.
   final SliverStaggeredGridDelegateBuilder gridDelegateBuilder;
 
   /// Corresponds to [SliverChildBuilderDelegate.addAutomaticKeepAlives].

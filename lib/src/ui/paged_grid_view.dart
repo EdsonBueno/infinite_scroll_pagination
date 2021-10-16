@@ -5,8 +5,7 @@ import 'package:infinite_scroll_pagination/src/core/paging_controller.dart';
 import 'package:infinite_scroll_pagination/src/ui/paged_sliver_builder.dart';
 import 'package:infinite_scroll_pagination/src/ui/paged_sliver_grid.dart';
 
-/// Paged [GridView] with progress and error indicators displayed as the last
-/// item.
+/// A [GridView] with pagination capabilities.
 ///
 /// Wraps a [PagedSliverGrid] in a [BoxScrollView] so that it can be
 /// used without the need for a [CustomScrollView]. Similar to a [GridView].
