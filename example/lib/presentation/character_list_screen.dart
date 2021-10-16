@@ -1,6 +1,7 @@
 import 'package:breaking_bapp/presentation/character_list_view.dart';
-import 'package:breaking_bapp/presentation/character_sliver_list.dart';
+import 'package:breaking_bapp/presentation/character_page_view.dart';
 import 'package:breaking_bapp/presentation/character_sliver_grid.dart';
+import 'package:breaking_bapp/presentation/character_sliver_list.dart';
 import 'package:breaking_bapp/presentation/character_staggered_grid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -37,7 +38,7 @@ class _CharacterListScreenState extends State<CharacterListScreen> {
     _BottomNavigationItem(
       label: 'PageView',
       iconData: Icons.fullscreen,
-      widgetBuilder: (context) => CharacterStaggeredGrid(),
+      widgetBuilder: (context) => CharacterPageView(),
     ),
   ];
 
