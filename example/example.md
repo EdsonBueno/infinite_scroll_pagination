@@ -248,7 +248,7 @@ class _CharacterSliverListState extends State<CharacterSliverList> {
 The same structure can be applied to all kinds of filtering and sorting and works with any layout (not just Slivers).
 
 ## Positioning Grid's Status Indicators
-By default, both [PagedGridView](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedGridView-class.html) and [PagedSliverGrid](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedSliverGrid-class.html) show your indicators as one of the grid children, respecting the same configurations you set for your items on the `gridDelegate`.
+By default, all our paged grid widgets show your indicators as one of the grid children, respecting the same configurations you set for your items on the `gridDelegate`.
 If you want to change that, and instead display the items *below* the grid, as is in the list widgets, you can do so by using these boolean properties:
 
 ```dart
