@@ -70,6 +70,7 @@ class PagedSliverGridBuilder<PageKeyType, ItemType> extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
       PagedLayoutBuilder<PageKeyType, ItemType>(
+        layoutProtocol: LayoutProtocol.sliver,
         pagingController: pagingController,
         builderDelegate: builderDelegate,
         completedListingBuilder: (

@@ -83,7 +83,7 @@ class PagedPageView<PageKeyType, ItemType> extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
       PagedLayoutBuilder<PageKeyType, ItemType>(
-        isSliver: false,
+        layoutProtocol: LayoutProtocol.box,
         pagingController: pagingController,
         builderDelegate: builderDelegate,
         completedListingBuilder: (
