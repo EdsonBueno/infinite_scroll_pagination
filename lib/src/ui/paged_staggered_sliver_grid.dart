@@ -127,7 +127,7 @@ class PagedStaggeredSliverGrid<PageKeyType, ItemType> extends StatelessWidget {
       PagedSliverGridBuilder<PageKeyType, ItemType>(
         pagingController: pagingController,
         builderDelegate: builderDelegate,
-        sliverGridBuilder: (childCount, delegate) => SliverStaggeredGrid(
+        builder: (childCount, delegate) => SliverStaggeredGrid(
           delegate: delegate,
           gridDelegate: gridDelegateBuilder(childCount),
           // Hardcoding [addAutomaticKeepAlives] to false is a workaround for:

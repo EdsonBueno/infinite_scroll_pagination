@@ -11,7 +11,7 @@ typedef SliverGridBuilder = SliverWithKeepAliveWidget Function(
 );
 
 /// Facilitates creating paged sliver grids by providing the adjusted child
-/// count and the appended [SliverChildDelegate] within [sliverGridBuilder].
+/// count and the appended [SliverChildDelegate] within [builder].
 ///
 /// Both the child count and the delegate of a Grid change whether status
 /// indicators should be displayed (based on the current status of the
@@ -20,7 +20,7 @@ class PagedSliverGridBuilder<PageKeyType, ItemType> extends StatelessWidget {
   const PagedSliverGridBuilder({
     required this.pagingController,
     required this.builderDelegate,
-    required this.sliverGridBuilder,
+    required this.builder,
     this.addAutomaticKeepAlives = true,
     this.addRepaintBoundaries = true,
     this.addSemanticIndexes = true,
@@ -39,7 +39,7 @@ class PagedSliverGridBuilder<PageKeyType, ItemType> extends StatelessWidget {
 
   /// Supplies the adjusted child count, the appended [SliverChildDelegate],
   /// and expects a Sliver Grid in return.
-  final SliverGridBuilder sliverGridBuilder;
+  final SliverGridBuilder builder;
 
   /// Corresponds to [SliverChildBuilderDelegate.addAutomaticKeepAlives].
   final bool addAutomaticKeepAlives;
@@ -83,7 +83,7 @@ class PagedSliverGridBuilder<PageKeyType, ItemType> extends StatelessWidget {
           noMoreItemsIndicatorBuilder,
         ) =>
             _AppendedSliverGrid(
-          sliverGridBuilder: sliverGridBuilder,
+          sliverGridBuilder: builder,
           itemBuilder: itemBuilder,
           itemCount: itemCount,
           appendixBuilder: noMoreItemsIndicatorBuilder,
@@ -99,7 +99,7 @@ class PagedSliverGridBuilder<PageKeyType, ItemType> extends StatelessWidget {
           progressIndicatorBuilder,
         ) =>
             _AppendedSliverGrid(
-          sliverGridBuilder: sliverGridBuilder,
+          sliverGridBuilder: builder,
           itemBuilder: itemBuilder,
           itemCount: itemCount,
           appendixBuilder: progressIndicatorBuilder,
@@ -115,7 +115,7 @@ class PagedSliverGridBuilder<PageKeyType, ItemType> extends StatelessWidget {
           errorIndicatorBuilder,
         ) =>
             _AppendedSliverGrid(
-          sliverGridBuilder: sliverGridBuilder,
+          sliverGridBuilder: builder,
           itemBuilder: itemBuilder,
           itemCount: itemCount,
           appendixBuilder: errorIndicatorBuilder,
@@ -183,6 +183,6 @@ class _AppendedSliverGrid extends StatelessWidget {
         appendixBuilder: appendixBuilder,
         addAutomaticKeepAlives: addAutomaticKeepAlives,
         addRepaintBoundaries: addRepaintBoundaries,
-        addSemanticIndexes: true,
+        addSemanticIndexes: addSemanticIndexes,
       );
 }

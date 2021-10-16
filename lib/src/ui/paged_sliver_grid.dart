@@ -62,7 +62,7 @@ class PagedSliverGrid<PageKeyType, ItemType> extends StatelessWidget {
       PagedSliverGridBuilder<PageKeyType, ItemType>(
         pagingController: pagingController,
         builderDelegate: builderDelegate,
-        sliverGridBuilder: (_, delegate) => SliverGrid(
+        builder: (_, delegate) => SliverGrid(
           delegate: delegate,
           gridDelegate: gridDelegate,
         ),
