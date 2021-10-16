@@ -1,11 +1,23 @@
 import 'dart:async';
 
-import 'package:breaking_bapp/presentation/grid_bloc/character_sliver_grid_states.dart';
+import 'package:breaking_bapp/character_summary.dart';
 import 'package:breaking_bapp/remote_api.dart';
 import 'package:rxdart/rxdart.dart';
 
-class CharacterSliverGridBloc {
-  CharacterSliverGridBloc() {
+class CharacterListingState {
+  CharacterListingState({
+    this.itemList,
+    this.error,
+    this.nextPageKey = 0,
+  });
+
+  final List<CharacterSummary>? itemList;
+  final dynamic error;
+  final int? nextPageKey;
+}
+
+class CharacterListingBloc {
+  CharacterListingBloc() {
     _onPageRequest.stream
         .flatMap(_fetchCharacterSummaryList)
         .listen(_onNewListingStateController.add)
