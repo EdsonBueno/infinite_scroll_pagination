@@ -1,5 +1,10 @@
+export 'package:flutter_staggered_grid_view/src/rendering/sliver_staggered_grid.dart'
+    show
+        SliverStaggeredGridDelegate,
+        SliverStaggeredGridDelegateWithFixedCrossAxisCount,
+        SliverStaggeredGridDelegateWithMaxCrossAxisExtent;
 export 'package:flutter_staggered_grid_view/src/widgets/staggered_tile.dart';
-export 'package:flutter_staggered_grid_view/src/rendering/sliver_staggered_grid.dart';
+
 export 'src/core/paged_child_builder_delegate.dart';
 export 'src/core/paging_controller.dart';
 export 'src/model/paging_state.dart';
