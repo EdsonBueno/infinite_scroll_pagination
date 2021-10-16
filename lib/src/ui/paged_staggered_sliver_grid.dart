@@ -3,7 +3,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:infinite_scroll_pagination/src/core/paged_child_builder_delegate.dart';
 import 'package:infinite_scroll_pagination/src/core/paging_controller.dart';
-import 'package:infinite_scroll_pagination/src/ui/paged_sliver_builder.dart';
+import 'package:infinite_scroll_pagination/src/ui/paged_layout_builder.dart';
 import 'package:infinite_scroll_pagination/src/ui/paged_sliver_grid_builder.dart';
 
 typedef SliverStaggeredGridDelegateBuilder = SliverStaggeredGridDelegate
@@ -91,10 +91,10 @@ class PagedStaggeredSliverGrid<PageKeyType, ItemType> extends StatelessWidget {
                 )),
         super(key: key);
 
-  /// Corresponds to [PagedSliverBuilder.pagingController].
+  /// Corresponds to [PagedLayoutBuilder.pagingController].
   final PagingController<PageKeyType, ItemType> pagingController;
 
-  /// Corresponds to [PagedSliverBuilder.builderDelegate].
+  /// Corresponds to [PagedLayoutBuilder.builderDelegate].
   final PagedChildBuilderDelegate<ItemType> builderDelegate;
 
   /// Provides the adjusted child count (based on the pagination status) so
@@ -119,7 +119,7 @@ class PagedStaggeredSliverGrid<PageKeyType, ItemType> extends StatelessWidget {
   /// Corresponds to [PagedSliverGridBuilder.showNoMoreItemsIndicatorAsGridChild].
   final bool showNoMoreItemsIndicatorAsGridChild;
 
-  /// Corresponds to [PagedSliverBuilder.shrinkWrapFirstPageIndicators].
+  /// Corresponds to [PagedLayoutBuilder.shrinkWrapFirstPageIndicators].
   final bool shrinkWrapFirstPageIndicators;
 
   @override

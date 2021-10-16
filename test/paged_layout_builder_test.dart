@@ -26,7 +26,7 @@ void main() {
       );
 
       // when
-      await _pumpPagedSliverBuilder(
+      await _pumpPagedLayoutBuilder(
         tester: tester,
         pagingController: pagingController,
         builderDelegate: builderDelegate,
@@ -49,7 +49,7 @@ void main() {
       );
 
       // when
-      await _pumpPagedSliverBuilder(
+      await _pumpPagedLayoutBuilder(
         tester: tester,
         pagingController: pagingController,
         builderDelegate: builderDelegate,
@@ -78,7 +78,7 @@ void main() {
       );
 
       // when
-      await _pumpPagedSliverBuilder(
+      await _pumpPagedLayoutBuilder(
         tester: tester,
         pagingController: pagingController,
         builderDelegate: builderDelegate,
@@ -101,7 +101,7 @@ void main() {
       );
 
       // when
-      await _pumpPagedSliverBuilder(
+      await _pumpPagedLayoutBuilder(
         tester: tester,
         pagingController: pagingController,
         builderDelegate: builderDelegate,
@@ -129,7 +129,7 @@ void main() {
       );
 
       // when
-      await _pumpPagedSliverBuilder(
+      await _pumpPagedLayoutBuilder(
         tester: tester,
         pagingController: pagingController,
         builderDelegate: builderDelegate,
@@ -152,7 +152,7 @@ void main() {
       );
 
       // when
-      await _pumpPagedSliverBuilder(
+      await _pumpPagedLayoutBuilder(
         tester: tester,
         pagingController: pagingController,
         builderDelegate: builderDelegate,
@@ -180,7 +180,7 @@ void main() {
       );
 
       // when
-      await _pumpPagedSliverBuilder(
+      await _pumpPagedLayoutBuilder(
         tester: tester,
         pagingController: pagingController,
         builderDelegate: builderDelegate,
@@ -206,7 +206,7 @@ void main() {
       );
 
       // when
-      await _pumpPagedSliverBuilder(
+      await _pumpPagedLayoutBuilder(
         tester: tester,
         pagingController: pagingController,
         builderDelegate: builderDelegate,
@@ -236,7 +236,7 @@ void main() {
       );
 
       // when
-      await _pumpPagedSliverBuilder(
+      await _pumpPagedLayoutBuilder(
         tester: tester,
         pagingController: pagingController,
         builderDelegate: builderDelegate,
@@ -261,7 +261,7 @@ void main() {
       );
 
       // when
-      await _pumpPagedSliverBuilder(
+      await _pumpPagedLayoutBuilder(
         tester: tester,
         pagingController: pagingController,
         builderDelegate: builderDelegate,
@@ -295,7 +295,7 @@ void main() {
       );
 
       // when
-      await _pumpPagedSliverBuilder(
+      await _pumpPagedLayoutBuilder(
         tester: tester,
         pagingController: pagingController,
         builderDelegate: builderDelegate,
@@ -334,7 +334,7 @@ void main() {
         'By default, first page indicators are expanded to fill the '
         'remaining space', (tester) async {
       // when
-      await _pumpPagedSliverBuilder(
+      await _pumpPagedLayoutBuilder(
         tester: tester,
         pagingController: pagingController,
         builderDelegate: builderDelegate,
@@ -350,7 +350,7 @@ void main() {
         'Setting [shrinkWrapFirstPageIndicators] to true '
         'preserves the indicator height', (tester) async {
       // when
-      await _pumpPagedSliverBuilder(
+      await _pumpPagedLayoutBuilder(
         tester: tester,
         pagingController: pagingController,
         builderDelegate: builderDelegate,
@@ -374,14 +374,14 @@ void _expectOneWidgetOfType(Type type) {
   expect(finder, findsOneWidget);
 }
 
-Future<void> _pumpPagedSliverBuilder({
+Future<void> _pumpPagedLayoutBuilder({
   required WidgetTester tester,
   required PagingController pagingController,
   required PagedChildBuilderDelegate builderDelegate,
   bool shrinkWrapFirstPageIndicators = false,
 }) =>
     _pumpSliver(
-      sliver: PagedSliverBuilder(
+      sliver: PagedLayoutBuilder(
         pagingController: pagingController,
         builderDelegate: builderDelegate,
         shrinkWrapFirstPageIndicators: shrinkWrapFirstPageIndicators,

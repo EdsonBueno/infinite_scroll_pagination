@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:infinite_scroll_pagination/src/core/paging_controller.dart';
-import 'package:infinite_scroll_pagination/src/ui/paged_sliver_builder.dart';
+import 'package:infinite_scroll_pagination/src/ui/paged_layout_builder.dart';
 import 'package:infinite_scroll_pagination/src/utils/appended_sliver_child_builder_delegate.dart';
 
 /// Paged [PageView] with progress and error indicators displayed as the last
@@ -32,10 +32,10 @@ class PagedPageView<PageKeyType, ItemType> extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  /// Corresponds to [PagedSliverBuilder.pagingController].
+  /// Corresponds to [PagedLayoutBuilder.pagingController].
   final PagingController<PageKeyType, ItemType> pagingController;
 
-  /// Corresponds to [PagedSliverBuilder.builderDelegate].
+  /// Corresponds to [PagedLayoutBuilder.builderDelegate].
   final PagedChildBuilderDelegate<ItemType> builderDelegate;
 
   /// Corresponds to [SliverChildBuilderDelegate.addAutomaticKeepAlives].
@@ -82,7 +82,7 @@ class PagedPageView<PageKeyType, ItemType> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) =>
-      PagedSliverBuilder<PageKeyType, ItemType>(
+      PagedLayoutBuilder<PageKeyType, ItemType>(
         isSliver: false,
         pagingController: pagingController,
         builderDelegate: builderDelegate,

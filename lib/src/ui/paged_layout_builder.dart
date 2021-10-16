@@ -35,7 +35,7 @@ typedef LoadingListingBuilder = Widget Function(
   WidgetBuilder newPageProgressIndicatorBuilder,
 );
 
-/// Facilitates creating infinitely scrolled paged sliver widgets.
+/// Facilitates creating infinitely scrolled paged layouts.
 ///
 /// Combines a [PagingController] with a
 /// [PagedChildBuilderDelegate] and calls the supplied
@@ -43,10 +43,11 @@ typedef LoadingListingBuilder = Widget Function(
 /// [completedListingBuilder] for filling in the gaps.
 ///
 /// For ordinary cases, this widget shouldn't be used directly. Instead, take a
-/// look at [PagedSliverList], [PagedSliverGrid],
-/// [PagedGridView] and [PagedListView].
-class PagedSliverBuilder<PageKeyType, ItemType> extends StatefulWidget {
-  const PagedSliverBuilder({
+/// look at [PagedSliverList], [PagedSliverGrid], [PagedStaggeredSliverGrid],
+/// [PagedListView], [PagedGridView], [PagedStaggeredGridView], or
+/// [PagedPageView].
+class PagedLayoutBuilder<PageKeyType, ItemType> extends StatefulWidget {
+  const PagedLayoutBuilder({
     required this.pagingController,
     required this.builderDelegate,
     required this.loadingListingBuilder,
@@ -96,12 +97,12 @@ class PagedSliverBuilder<PageKeyType, ItemType> extends StatefulWidget {
   final bool isSliver;
 
   @override
-  _PagedSliverBuilderState<PageKeyType, ItemType> createState() =>
-      _PagedSliverBuilderState<PageKeyType, ItemType>();
+  _PagedLayoutBuilderState<PageKeyType, ItemType> createState() =>
+      _PagedLayoutBuilderState<PageKeyType, ItemType>();
 }
 
-class _PagedSliverBuilderState<PageKeyType, ItemType>
-    extends State<PagedSliverBuilder<PageKeyType, ItemType>> {
+class _PagedLayoutBuilderState<PageKeyType, ItemType>
+    extends State<PagedLayoutBuilder<PageKeyType, ItemType>> {
   PagingController<PageKeyType, ItemType> get _pagingController =>
       widget.pagingController;
 

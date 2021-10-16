@@ -4,7 +4,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:infinite_scroll_pagination/src/core/paged_child_builder_delegate.dart';
 import 'package:infinite_scroll_pagination/src/core/paging_controller.dart';
-import 'package:infinite_scroll_pagination/src/ui/paged_sliver_builder.dart';
+import 'package:infinite_scroll_pagination/src/ui/paged_layout_builder.dart';
 import 'package:infinite_scroll_pagination/src/ui/paged_sliver_grid.dart';
 import 'package:infinite_scroll_pagination/src/ui/paged_staggered_sliver_grid.dart';
 
@@ -200,10 +200,10 @@ class PagedStaggeredGridView<PageKeyType, ItemType> extends BoxScrollView {
           clipBehavior: clipBehavior,
         );
 
-  /// Corresponds to [PagedSliverBuilder.pagingController].
+  /// Corresponds to [PagedLayoutBuilder.pagingController].
   final PagingController<PageKeyType, ItemType> pagingController;
 
-  /// Corresponds to [PagedSliverBuilder.builderDelegate].
+  /// Corresponds to [PagedLayoutBuilder.builderDelegate].
   final PagedChildBuilderDelegate<ItemType> builderDelegate;
 
   /// Corresponds to [PagedStaggeredSliverGrid.gridDelegateBuilder].

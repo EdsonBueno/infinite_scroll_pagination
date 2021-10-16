@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:infinite_scroll_pagination/src/core/paged_child_builder_delegate.dart';
 import 'package:infinite_scroll_pagination/src/core/paging_controller.dart';
 import 'package:infinite_scroll_pagination/src/ui/paged_list_view.dart';
-import 'package:infinite_scroll_pagination/src/ui/paged_sliver_builder.dart';
+import 'package:infinite_scroll_pagination/src/ui/paged_layout_builder.dart';
 import 'package:infinite_scroll_pagination/src/utils/appended_sliver_child_builder_delegate.dart';
 
 /// A [SliverList] with pagination capabilities.
@@ -48,10 +48,10 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
         _separatorBuilder = separatorBuilder,
         super(key: key);
 
-  /// Corresponds to [PagedSliverBuilder.pagingController].
+  /// Corresponds to [PagedLayoutBuilder.pagingController].
   final PagingController<PageKeyType, ItemType> pagingController;
 
-  /// Corresponds to [PagedSliverBuilder.builderDelegate].
+  /// Corresponds to [PagedLayoutBuilder.builderDelegate].
   final PagedChildBuilderDelegate<ItemType> builderDelegate;
 
   /// The builder for list item separators, just like in [ListView.separated].
@@ -79,12 +79,12 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
   /// If this is not null, [itemExtent] must be null, and vice versa.
   final Widget? prototypeItem;
 
-  /// Corresponds to [PagedSliverBuilder.shrinkWrapFirstPageIndicators].
+  /// Corresponds to [PagedLayoutBuilder.shrinkWrapFirstPageIndicators].
   final bool shrinkWrapFirstPageIndicators;
 
   @override
   Widget build(BuildContext context) =>
-      PagedSliverBuilder<PageKeyType, ItemType>(
+      PagedLayoutBuilder<PageKeyType, ItemType>(
         pagingController: pagingController,
         builderDelegate: builderDelegate,
         completedListingBuilder: (
