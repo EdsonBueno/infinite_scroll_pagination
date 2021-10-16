@@ -53,6 +53,7 @@ class PagedSliverBuilder<PageKeyType, ItemType> extends StatefulWidget {
     required this.errorListingBuilder,
     required this.completedListingBuilder,
     this.shrinkWrapFirstPageIndicators = false,
+    this.isSliver = true,
     Key? key,
   }) : super(key: key);
 
@@ -85,6 +86,15 @@ class PagedSliverBuilder<PageKeyType, ItemType> extends StatefulWidget {
   /// Defaults to false.
   final bool shrinkWrapFirstPageIndicators;
 
+  /// Whether the builder is used in a sliver.
+  ///
+  /// This is useful for usages of the builder with widgets that
+  /// are not slivers.
+  /// If true, [PagedChildBuilderDelegate.animateTransitions] is ignored.
+  ///
+  /// Defaults to true.
+  final bool isSliver;
+
   @override
   _PagedSliverBuilderState<PageKeyType, ItemType> createState() =>
       _PagedSliverBuilderState<PageKeyType, ItemType>();
@@ -100,6 +110,8 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
 
   bool get _shrinkWrapFirstPageIndicators =>
       widget.shrinkWrapFirstPageIndicators;
+
+  bool get _isSliver => widget.isSliver;
 
   WidgetBuilder get _firstPageErrorIndicatorBuilder =>
       _builderDelegate.firstPageErrorIndicatorBuilder ??
@@ -194,6 +206,7 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
                 child = _FirstPageStatusIndicatorBuilder(
                   builder: _firstPageProgressIndicatorBuilder,
                   shrinkWrap: _shrinkWrapFirstPageIndicators,
+                  isSliver: _isSliver,
                 );
                 break;
               case PagingStatus.subsequentPageError:
@@ -212,16 +225,18 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
                 child = _FirstPageStatusIndicatorBuilder(
                   builder: _noItemsFoundIndicatorBuilder,
                   shrinkWrap: _shrinkWrapFirstPageIndicators,
+                  isSliver: _isSliver,
                 );
                 break;
               default:
                 child = _FirstPageStatusIndicatorBuilder(
                   builder: _firstPageErrorIndicatorBuilder,
                   shrinkWrap: _shrinkWrapFirstPageIndicators,
+                  isSliver: _isSliver,
                 );
             }
 
-            if (_builderDelegate.animateTransitions) {
+            if (_isSliver && _builderDelegate.animateTransitions) {
               return SliverAnimatedSwitcher(
                 duration: _builderDelegate.transitionDuration,
                 child: KeyedSubtree(
@@ -278,21 +293,29 @@ class _FirstPageStatusIndicatorBuilder extends StatelessWidget {
   const _FirstPageStatusIndicatorBuilder({
     required this.builder,
     this.shrinkWrap = false,
+    this.isSliver = false,
     Key? key,
   }) : super(key: key);
 
   final WidgetBuilder builder;
   final bool shrinkWrap;
+  final bool isSliver;
 
   @override
   Widget build(BuildContext context) {
-    if (shrinkWrap) {
-      return SliverToBoxAdapter(
-        child: builder(context),
-      );
+    if (isSliver) {
+      if (shrinkWrap) {
+        return SliverToBoxAdapter(
+          child: builder(context),
+        );
+      } else {
+        return SliverFillRemaining(
+          hasScrollBody: false,
+          child: builder(context),
+        );
+      }
     } else {
-      return SliverFillRemaining(
-        hasScrollBody: false,
+      return Center(
         child: builder(context),
       );
     }
