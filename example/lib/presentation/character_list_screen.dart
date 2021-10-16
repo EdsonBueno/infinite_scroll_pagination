@@ -1,6 +1,6 @@
+import 'package:breaking_bapp/presentation/grid_bloc/search_grid_bloc/character_sliver_grid.dart';
 import 'package:breaking_bapp/presentation/grid_bloc/search_grid_bloc/character_staggered_grid.dart';
 import 'package:breaking_bapp/presentation/pull_to_refresh/character_list_view.dart';
-import 'package:breaking_bapp/presentation/grid_bloc/search_grid_bloc/character_sliver_grid.dart';
 import 'package:breaking_bapp/presentation/search_snackbar/character_sliver_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';

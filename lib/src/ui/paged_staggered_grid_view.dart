@@ -105,15 +105,13 @@ class PagedStaggeredGridView<PageKeyType, ItemType> extends BoxScrollView {
   })
       : _shrinkWrapFirstPageIndicators = shrinkWrap,
         gridDelegateBuilder =
-            ((childCount) {
-              return SliverStaggeredGridDelegateWithFixedCrossAxisCount(
+            ((childCount) => SliverStaggeredGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: crossAxisCount,
                   mainAxisSpacing: mainAxisSpacing,
                   crossAxisSpacing: crossAxisSpacing,
                   staggeredTileBuilder: staggeredTileBuilder,
                   staggeredTileCount: childCount,
-                );
-            }),
+                )),
         super(
           key: key,
           scrollDirection: scrollDirection,

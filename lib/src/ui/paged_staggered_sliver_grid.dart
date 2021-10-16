@@ -116,6 +116,9 @@ class PagedStaggeredSliverGrid<PageKeyType, ItemType> extends StatelessWidget {
         sliverGridBuilder: (childCount, delegate) => SliverStaggeredGrid(
           delegate: delegate,
           gridDelegate: gridDelegateBuilder(childCount),
+          // Hardcoding [addAutomaticKeepAlives] to false is a workaround for:
+          // https://github.com/letsar/flutter_staggered_grid_view/issues/189
+          addAutomaticKeepAlives: false,
         ),
         addAutomaticKeepAlives: addAutomaticKeepAlives,
         addRepaintBoundaries: addRepaintBoundaries,
