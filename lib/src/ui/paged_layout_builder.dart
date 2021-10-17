@@ -35,8 +35,8 @@ typedef LoadingListingBuilder = Widget Function(
   WidgetBuilder newPageProgressIndicatorBuilder,
 );
 
-/// The layout protocols supported by [PagedLayoutBuilder].
-enum LayoutProtocol { sliver, box }
+/// The Flutter layout protocols supported by [PagedLayoutBuilder].
+enum PagedLayoutProtocol { sliver, box }
 
 /// Facilitates creating infinitely scrolled paged layouts.
 ///
@@ -90,12 +90,12 @@ class PagedLayoutBuilder<PageKeyType, ItemType> extends StatefulWidget {
   /// Defaults to false.
   final bool shrinkWrapFirstPageIndicators;
 
-  /// The layout protocol of the widget you're building.
+  /// The layout protocol of the widget you're using this to build.
   ///
-  /// For example, if [LayoutProtocol.sliver] is specified, then
+  /// For example, if [PagedLayoutProtocol.sliver] is specified, then
   /// [loadingListingBuilder], [errorListingBuilder], and
   /// [completedListingBuilder] have to return a Sliver widget.
-  final LayoutProtocol layoutProtocol;
+  final PagedLayoutProtocol layoutProtocol;
 
   @override
   _PagedLayoutBuilderState<PageKeyType, ItemType> createState() =>
@@ -113,7 +113,7 @@ class _PagedLayoutBuilderState<PageKeyType, ItemType>
   bool get _shrinkWrapFirstPageIndicators =>
       widget.shrinkWrapFirstPageIndicators;
 
-  LayoutProtocol get _layoutProtocol => widget.layoutProtocol;
+  PagedLayoutProtocol get _layoutProtocol => widget.layoutProtocol;
 
   WidgetBuilder get _firstPageErrorIndicatorBuilder =>
       _builderDelegate.firstPageErrorIndicatorBuilder ??
@@ -239,7 +239,7 @@ class _PagedLayoutBuilderState<PageKeyType, ItemType>
             }
 
             if (_builderDelegate.animateTransitions) {
-              if (_layoutProtocol == LayoutProtocol.sliver) {
+              if (_layoutProtocol == PagedLayoutProtocol.sliver) {
                 return SliverAnimatedSwitcher(
                   duration: _builderDelegate.transitionDuration,
                   child: KeyedSubtree(
@@ -254,9 +254,6 @@ class _PagedLayoutBuilderState<PageKeyType, ItemType>
                 return AnimatedSwitcher(
                   duration: _builderDelegate.transitionDuration,
                   child: KeyedSubtree(
-                    // The `ObjectKey` makes it possible to differentiate
-                    // transitions between same Widget types, e.g., ongoing to
-                    // completed.
                     key: ObjectKey(pagingState),
                     child: child,
                   ),
@@ -314,11 +311,11 @@ class _FirstPageStatusIndicatorBuilder extends StatelessWidget {
 
   final WidgetBuilder builder;
   final bool shrinkWrap;
-  final LayoutProtocol layoutProtocol;
+  final PagedLayoutProtocol layoutProtocol;
 
   @override
   Widget build(BuildContext context) {
-    if (layoutProtocol == LayoutProtocol.sliver) {
+    if (layoutProtocol == PagedLayoutProtocol.sliver) {
       if (shrinkWrap) {
         return SliverToBoxAdapter(
           child: builder(context),

@@ -16,7 +16,7 @@ class _CharacterListScreenState extends State<CharacterListScreen> {
 
   final List<_BottomNavigationItem> _bottomNavigationItems = [
     _BottomNavigationItem(
-      label: 'Pull to Refresh',
+      label: 'Refresh',
       iconData: Icons.refresh,
       widgetBuilder: (context) => CharacterListView(),
     ),
@@ -26,7 +26,7 @@ class _CharacterListScreenState extends State<CharacterListScreen> {
       widgetBuilder: (context) => CharacterSliverList(),
     ),
     _BottomNavigationItem(
-      label: 'Grid/Search',
+      label: 'Grid',
       iconData: Icons.grid_on,
       widgetBuilder: (context) => CharacterSliverGrid(),
     ),

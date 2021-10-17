@@ -382,7 +382,7 @@ Future<void> _pumpPagedLayoutBuilder({
 }) =>
     _pumpSliver(
       sliver: PagedLayoutBuilder(
-        layoutProtocol: LayoutProtocol.sliver,
+        layoutProtocol: PagedLayoutProtocol.sliver,
         pagingController: pagingController,
         builderDelegate: builderDelegate,
         shrinkWrapFirstPageIndicators: shrinkWrapFirstPageIndicators,
