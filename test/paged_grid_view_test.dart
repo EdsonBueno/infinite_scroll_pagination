@@ -24,7 +24,7 @@ void main() {
 
       pagingController.addPageRequestListener(mockPageRequestListener);
 
-      await _pumpPagedSliverGrid(
+      await _pumpPagedGridView(
         tester: tester,
         pagingController: pagingController,
       );
@@ -46,7 +46,7 @@ void main() {
         mockPageRequestListener,
       );
 
-      await _pumpPagedSliverGrid(
+      await _pumpPagedGridView(
         tester: tester,
         pagingController: controllerLoadedWithFirstPage,
       );
@@ -62,7 +62,7 @@ void main() {
       );
       pagingController.addPageRequestListener(mockPageRequestListener);
 
-      await _pumpPagedSliverGrid(
+      await _pumpPagedGridView(
         tester: tester,
         pagingController: pagingController,
       );
@@ -78,7 +78,7 @@ void main() {
       );
       pagingController.addPageRequestListener(mockPageRequestListener);
 
-      await _pumpPagedSliverGrid(
+      await _pumpPagedGridView(
         tester: tester,
         pagingController: pagingController,
       );
@@ -107,7 +107,7 @@ void main() {
           key: customIndicatorKey,
         );
 
-        await _pumpPagedSliverGrid(
+        await _pumpPagedGridView(
           tester: tester,
           pagingController: pagingController,
           newPageProgressIndicator: customNewPageProgressIndicator,
@@ -139,7 +139,7 @@ void main() {
           key: customIndicatorKey,
         );
 
-        await _pumpPagedSliverGrid(
+        await _pumpPagedGridView(
           tester: tester,
           pagingController: pagingController,
           newPageErrorIndicator: customNewPageErrorIndicator,
@@ -171,7 +171,7 @@ void main() {
           key: customIndicatorKey,
         );
 
-        await _pumpPagedSliverGrid(
+        await _pumpPagedGridView(
           tester: tester,
           pagingController: pagingController,
           noMoreItemsIndicator: customNoMoreItemsIndicator,
@@ -205,7 +205,7 @@ void main() {
           key: customIndicatorKey,
         );
 
-        await _pumpPagedSliverGrid(
+        await _pumpPagedGridView(
           tester: tester,
           pagingController: pagingController,
           newPageProgressIndicator: customNewPageProgressIndicator,
@@ -233,7 +233,7 @@ void main() {
           key: customIndicatorKey,
         );
 
-        await _pumpPagedSliverGrid(
+        await _pumpPagedGridView(
           tester: tester,
           pagingController: pagingController,
           newPageErrorIndicator: customNewPageErrorIndicator,
@@ -261,7 +261,7 @@ void main() {
           key: customIndicatorKey,
         );
 
-        await _pumpPagedSliverGrid(
+        await _pumpPagedGridView(
           tester: tester,
           pagingController: pagingController,
           noMoreItemsIndicator: customNoMoreItemsIndicator,
@@ -281,7 +281,7 @@ class MockPageRequestListener extends Mock {
   void call(int pageKey);
 }
 
-Future<void> _pumpPagedSliverGrid({
+Future<void> _pumpPagedGridView({
   required WidgetTester tester,
   required PagingController<int, String> pagingController,
   int crossAxisCount = 2,
@@ -295,36 +295,31 @@ Future<void> _pumpPagedSliverGrid({
     tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: CustomScrollView(
-            slivers: [
-              PagedSliverGrid(
-                pagingController: pagingController,
-                builderDelegate: PagedChildBuilderDelegate<String>(
-                  itemBuilder: _buildItem,
-                  newPageProgressIndicatorBuilder:
-                      newPageProgressIndicator != null
-                          ? (context) => newPageProgressIndicator
-                          : null,
-                  newPageErrorIndicatorBuilder: newPageErrorIndicator != null
-                      ? (context) => newPageErrorIndicator
-                      : null,
-                  noMoreItemsIndicatorBuilder: noMoreItemsIndicator != null
-                      ? (context) => noMoreItemsIndicator
-                      : null,
-                ),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisSpacing: 0,
-                  mainAxisSpacing: 0,
-                  crossAxisCount: crossAxisCount,
-                ),
-                showNewPageProgressIndicatorAsGridChild:
-                    showNewPageProgressIndicatorAsGridChild,
-                showNewPageErrorIndicatorAsGridChild:
-                    showNewPageErrorIndicatorAsGridChild,
-                showNoMoreItemsIndicatorAsGridChild:
-                    showNoMoreItemsIndicatorAsGridChild,
-              )
-            ],
+          body: PagedGridView(
+            pagingController: pagingController,
+            builderDelegate: PagedChildBuilderDelegate<String>(
+              itemBuilder: _buildItem,
+              newPageProgressIndicatorBuilder: newPageProgressIndicator != null
+                  ? (context) => newPageProgressIndicator
+                  : null,
+              newPageErrorIndicatorBuilder: newPageErrorIndicator != null
+                  ? (context) => newPageErrorIndicator
+                  : null,
+              noMoreItemsIndicatorBuilder: noMoreItemsIndicator != null
+                  ? (context) => noMoreItemsIndicator
+                  : null,
+            ),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisSpacing: 0,
+              mainAxisSpacing: 0,
+              crossAxisCount: crossAxisCount,
+            ),
+            showNewPageProgressIndicatorAsGridChild:
+                showNewPageProgressIndicatorAsGridChild,
+            showNewPageErrorIndicatorAsGridChild:
+                showNewPageErrorIndicatorAsGridChild,
+            showNoMoreItemsIndicatorAsGridChild:
+                showNoMoreItemsIndicatorAsGridChild,
           ),
         ),
       ),
