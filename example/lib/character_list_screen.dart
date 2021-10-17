@@ -1,8 +1,8 @@
-import 'package:breaking_bapp/presentation/character_list_view.dart';
-import 'package:breaking_bapp/presentation/character_page_view.dart';
-import 'package:breaking_bapp/presentation/character_sliver_grid.dart';
-import 'package:breaking_bapp/presentation/character_sliver_list.dart';
-import 'package:breaking_bapp/presentation/character_staggered_grid.dart';
+import 'package:breaking_bapp/samples/character_list_view.dart';
+import 'package:breaking_bapp/samples/character_page_view.dart';
+import 'package:breaking_bapp/samples/character_sliver_grid.dart';
+import 'package:breaking_bapp/samples/character_sliver_list.dart';
+import 'package:breaking_bapp/samples/character_staggered_grid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 

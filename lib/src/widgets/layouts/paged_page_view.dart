@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:infinite_scroll_pagination/src/core/paging_controller.dart';
-import 'package:infinite_scroll_pagination/src/ui/paged_layout_builder.dart';
 import 'package:infinite_scroll_pagination/src/utils/appended_sliver_child_builder_delegate.dart';
+import 'package:infinite_scroll_pagination/src/widgets/helpers/paged_layout_builder.dart';
 
 /// Paged [PageView] with progress and error indicators displayed as the last
 /// item.
@@ -34,58 +34,58 @@ class PagedPageView<PageKeyType, ItemType> extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  /// Corresponds to [PagedLayoutBuilder.pagingController].
+  /// Matches [PagedLayoutBuilder.pagingController].
   final PagingController<PageKeyType, ItemType> pagingController;
 
-  /// Corresponds to [PagedLayoutBuilder.builderDelegate].
+  /// Matches [PagedLayoutBuilder.builderDelegate].
   final PagedChildBuilderDelegate<ItemType> builderDelegate;
 
-  /// Corresponds to [SliverChildBuilderDelegate.addAutomaticKeepAlives].
+  /// Matches [SliverChildBuilderDelegate.addAutomaticKeepAlives].
   final bool addAutomaticKeepAlives;
 
-  /// Corresponds to [SliverChildBuilderDelegate.addRepaintBoundaries].
+  /// Matches [SliverChildBuilderDelegate.addRepaintBoundaries].
   final bool addRepaintBoundaries;
 
-  /// Corresponds to [SliverChildBuilderDelegate.addSemanticIndexes].
+  /// Matches [SliverChildBuilderDelegate.addSemanticIndexes].
   final bool addSemanticIndexes;
 
-  /// Corresponds to [PageView.allowImplicitScrolling].
+  /// Matches [PageView.allowImplicitScrolling].
   final bool allowImplicitScrolling;
 
-  /// Corresponds to [PageView.restorationId].
+  /// Matches [PageView.restorationId].
   final String? restorationId;
 
-  /// Corresponds to [PageView.controller].
+  /// Matches [PageView.controller].
   final PageController? pageController;
 
-  /// Corresponds to [PageView.scrollBehavior].
+  /// Matches [PageView.scrollBehavior].
   final ScrollBehavior? scrollBehavior;
 
-  /// Corresponds to [PageView.scrollDirection].
+  /// Matches [PageView.scrollDirection].
   final Axis scrollDirection;
 
-  /// Corresponds to [PageView.dragStartBehavior].
+  /// Matches [PageView.dragStartBehavior].
   final DragStartBehavior dragStartBehavior;
 
-  /// Corresponds to [PageView.clipBehavior].
+  /// Matches [PageView.clipBehavior].
   final Clip clipBehavior;
 
-  /// Corresponds to [PageView.reverse].
+  /// Matches [PageView.reverse].
   final bool reverse;
 
-  /// Corresponds to [PageView.physics].
+  /// Matches [PageView.physics].
   final ScrollPhysics? physics;
 
-  /// Corresponds to [PageView.pageSnapping].
+  /// Matches [PageView.pageSnapping].
   final bool pageSnapping;
 
-  /// Corresponds to [PageView.onPageChanged].
+  /// Matches [PageView.onPageChanged].
   final void Function(int)? onPageChanged;
 
-  /// Corresponds to [PageView.padEnds].
+  /// Matches [PageView.padEnds].
   final bool padEnds;
 
-  /// Corresponds to [PagedLayoutBuilder.shrinkWrapFirstPageIndicators].
+  /// Matches [PagedLayoutBuilder.shrinkWrapFirstPageIndicators].
   final bool shrinkWrapFirstPageIndicators;
 
   @override

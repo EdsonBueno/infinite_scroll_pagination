@@ -6,12 +6,12 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:infinite_scroll_pagination/src/core/paging_controller.dart';
 import 'package:infinite_scroll_pagination/src/model/paging_state.dart';
 import 'package:infinite_scroll_pagination/src/model/paging_status.dart';
-import 'package:infinite_scroll_pagination/src/ui/default_indicators/first_page_error_indicator.dart';
-import 'package:infinite_scroll_pagination/src/ui/default_indicators/first_page_progress_indicator.dart';
-import 'package:infinite_scroll_pagination/src/ui/default_indicators/new_page_error_indicator.dart';
-import 'package:infinite_scroll_pagination/src/ui/default_indicators/new_page_progress_indicator.dart';
-import 'package:infinite_scroll_pagination/src/ui/default_indicators/no_items_found_indicator.dart';
 import 'package:infinite_scroll_pagination/src/utils/listenable_listener.dart';
+import 'package:infinite_scroll_pagination/src/widgets/helpers/default_status_indicators/first_page_error_indicator.dart';
+import 'package:infinite_scroll_pagination/src/widgets/helpers/default_status_indicators/first_page_progress_indicator.dart';
+import 'package:infinite_scroll_pagination/src/widgets/helpers/default_status_indicators/new_page_error_indicator.dart';
+import 'package:infinite_scroll_pagination/src/widgets/helpers/default_status_indicators/new_page_progress_indicator.dart';
+import 'package:infinite_scroll_pagination/src/widgets/helpers/default_status_indicators/no_items_found_indicator.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 typedef CompletedListingBuilder = Widget Function(
@@ -82,8 +82,8 @@ class PagedLayoutBuilder<PageKeyType, ItemType> extends StatefulWidget {
   /// Whether the extent of the first page indicators should be determined by
   /// the contents being viewed.
   ///
-  /// If the paged sliver builder does not shrink wrap, then the first page
-  /// indicators will expand to the maximum allowed size. If the paged sliver
+  /// If the paged layout builder does not shrink wrap, then the first page
+  /// indicators will expand to the maximum allowed size. If the paged layout
   /// builder has unbounded constraints, then [shrinkWrapFirstPageIndicators]
   /// must be true.
   ///
@@ -242,21 +242,12 @@ class _PagedLayoutBuilderState<PageKeyType, ItemType>
               if (_layoutProtocol == PagedLayoutProtocol.sliver) {
                 return SliverAnimatedSwitcher(
                   duration: _builderDelegate.transitionDuration,
-                  child: KeyedSubtree(
-                    // The `ObjectKey` makes it possible to differentiate
-                    // transitions between same Widget types, e.g., ongoing to
-                    // completed.
-                    key: ObjectKey(pagingState),
-                    child: child,
-                  ),
+                  child: child,
                 );
               } else {
                 return AnimatedSwitcher(
                   duration: _builderDelegate.transitionDuration,
-                  child: KeyedSubtree(
-                    key: ObjectKey(pagingState),
-                    child: child,
-                  ),
+                  child: child,
                 );
               }
             } else {

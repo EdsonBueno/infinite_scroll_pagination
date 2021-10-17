@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:infinite_scroll_pagination/src/core/paged_child_builder_delegate.dart';
 import 'package:infinite_scroll_pagination/src/core/paging_controller.dart';
-import 'package:infinite_scroll_pagination/src/ui/paged_list_view.dart';
-import 'package:infinite_scroll_pagination/src/ui/paged_layout_builder.dart';
 import 'package:infinite_scroll_pagination/src/utils/appended_sliver_child_builder_delegate.dart';
+import 'package:infinite_scroll_pagination/src/widgets/helpers/paged_layout_builder.dart';
+import 'package:infinite_scroll_pagination/src/widgets/layouts/paged_list_view.dart';
 
 /// A [SliverList] with pagination capabilities.
 ///
@@ -48,38 +48,38 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
         _separatorBuilder = separatorBuilder,
         super(key: key);
 
-  /// Corresponds to [PagedLayoutBuilder.pagingController].
+  /// Matches [PagedLayoutBuilder.pagingController].
   final PagingController<PageKeyType, ItemType> pagingController;
 
-  /// Corresponds to [PagedLayoutBuilder.builderDelegate].
+  /// Matches [PagedLayoutBuilder.builderDelegate].
   final PagedChildBuilderDelegate<ItemType> builderDelegate;
 
   /// The builder for list item separators, just like in [ListView.separated].
   final IndexedWidgetBuilder? _separatorBuilder;
 
-  /// Corresponds to [SliverChildBuilderDelegate.addAutomaticKeepAlives].
+  /// Matches [SliverChildBuilderDelegate.addAutomaticKeepAlives].
   final bool addAutomaticKeepAlives;
 
-  /// Corresponds to [SliverChildBuilderDelegate.addRepaintBoundaries].
+  /// Matches [SliverChildBuilderDelegate.addRepaintBoundaries].
   final bool addRepaintBoundaries;
 
-  /// Corresponds to [SliverChildBuilderDelegate.addSemanticIndexes].
+  /// Matches [SliverChildBuilderDelegate.addSemanticIndexes].
   final bool addSemanticIndexes;
 
-  /// Corresponds to [SliverChildBuilderDelegate.semanticIndexCallback].
+  /// Matches [SliverChildBuilderDelegate.semanticIndexCallback].
   final SemanticIndexCallback? semanticIndexCallback;
 
-  /// Corresponds to [SliverFixedExtentList.itemExtent].
+  /// Matches [SliverFixedExtentList.itemExtent].
   ///
   /// If this is not null, [prototypeItem] must be null, and vice versa.
   final double? itemExtent;
 
-  /// Corresponds to [SliverPrototypeExtentList.prototypeItem].
+  /// Matches [SliverPrototypeExtentList.prototypeItem].
   ///
   /// If this is not null, [itemExtent] must be null, and vice versa.
   final Widget? prototypeItem;
 
-  /// Corresponds to [PagedLayoutBuilder.shrinkWrapFirstPageIndicators].
+  /// Matches [PagedLayoutBuilder.shrinkWrapFirstPageIndicators].
   final bool shrinkWrapFirstPageIndicators;
 
   @override

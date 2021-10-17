@@ -1,7 +1,7 @@
-import 'package:breaking_bapp/character_summary.dart';
-import 'package:breaking_bapp/presentation/common/character_list_item.dart';
-import 'package:breaking_bapp/presentation/common/character_search_input_sliver.dart';
-import 'package:breaking_bapp/remote_api.dart';
+import 'package:breaking_bapp/remote/character_summary.dart';
+import 'package:breaking_bapp/remote/remote_api.dart';
+import 'package:breaking_bapp/samples/common/character_list_item.dart';
+import 'package:breaking_bapp/samples/common/character_search_input_sliver.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';

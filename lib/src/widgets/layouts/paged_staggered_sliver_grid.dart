@@ -3,8 +3,8 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:infinite_scroll_pagination/src/core/paged_child_builder_delegate.dart';
 import 'package:infinite_scroll_pagination/src/core/paging_controller.dart';
-import 'package:infinite_scroll_pagination/src/ui/paged_layout_builder.dart';
-import 'package:infinite_scroll_pagination/src/ui/paged_sliver_grid_builder.dart';
+import 'package:infinite_scroll_pagination/src/widgets/helpers/paged_layout_builder.dart';
+import 'package:infinite_scroll_pagination/src/widgets/helpers/paged_sliver_grid_builder.dart';
 
 typedef SliverStaggeredGridDelegateBuilder = SliverStaggeredGridDelegate
     Function(
@@ -91,35 +91,35 @@ class PagedStaggeredSliverGrid<PageKeyType, ItemType> extends StatelessWidget {
                 )),
         super(key: key);
 
-  /// Corresponds to [PagedLayoutBuilder.pagingController].
+  /// Matches [PagedLayoutBuilder.pagingController].
   final PagingController<PageKeyType, ItemType> pagingController;
 
-  /// Corresponds to [PagedLayoutBuilder.builderDelegate].
+  /// Matches [PagedLayoutBuilder.builderDelegate].
   final PagedChildBuilderDelegate<ItemType> builderDelegate;
 
   /// Provides the adjusted child count (based on the pagination status) so
   /// that a [SliverStaggeredGridDelegate] can be returned.
   final SliverStaggeredGridDelegateBuilder gridDelegateBuilder;
 
-  /// Corresponds to [SliverChildBuilderDelegate.addAutomaticKeepAlives].
+  /// Matches [SliverChildBuilderDelegate.addAutomaticKeepAlives].
   final bool addAutomaticKeepAlives;
 
-  /// Corresponds to [SliverChildBuilderDelegate.addRepaintBoundaries].
+  /// Matches [SliverChildBuilderDelegate.addRepaintBoundaries].
   final bool addRepaintBoundaries;
 
-  /// Corresponds to [SliverChildBuilderDelegate.addSemanticIndexes].
+  /// Matches [SliverChildBuilderDelegate.addSemanticIndexes].
   final bool addSemanticIndexes;
 
-  /// Corresponds to [PagedSliverGridBuilder.showNewPageProgressIndicatorAsGridChild].
+  /// Matches [PagedSliverGridBuilder.showNewPageProgressIndicatorAsGridChild].
   final bool showNewPageProgressIndicatorAsGridChild;
 
-  /// Corresponds to [PagedSliverGridBuilder.showNewPageErrorIndicatorAsGridChild].
+  /// Matches [PagedSliverGridBuilder.showNewPageErrorIndicatorAsGridChild].
   final bool showNewPageErrorIndicatorAsGridChild;
 
-  /// Corresponds to [PagedSliverGridBuilder.showNoMoreItemsIndicatorAsGridChild].
+  /// Matches [PagedSliverGridBuilder.showNoMoreItemsIndicatorAsGridChild].
   final bool showNoMoreItemsIndicatorAsGridChild;
 
-  /// Corresponds to [PagedLayoutBuilder.shrinkWrapFirstPageIndicators].
+  /// Matches [PagedLayoutBuilder.shrinkWrapFirstPageIndicators].
   final bool shrinkWrapFirstPageIndicators;
 
   @override
@@ -130,7 +130,7 @@ class PagedStaggeredSliverGrid<PageKeyType, ItemType> extends StatelessWidget {
         builder: (childCount, delegate) => SliverStaggeredGrid(
           delegate: delegate,
           gridDelegate: gridDelegateBuilder(childCount),
-          // Hardcoding [addAutomaticKeepAlives] to false is a workaround for 
+          // Hardcoding [addAutomaticKeepAlives] to false is a workaround for
           // https://github.com/letsar/flutter_staggered_grid_view/issues/189
           addAutomaticKeepAlives: false,
         ),

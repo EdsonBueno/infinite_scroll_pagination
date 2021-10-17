@@ -1,17 +1,16 @@
-import 'package:breaking_bapp/character_summary.dart';
-import 'package:breaking_bapp/presentation/common/character_list_item.dart';
-import 'package:breaking_bapp/remote_api.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:breaking_bapp/remote/character_summary.dart';
+import 'package:breaking_bapp/remote/remote_api.dart';
+import 'package:breaking_bapp/samples/common/character_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-class CharacterPageView extends StatefulWidget {
+class CharacterListView extends StatefulWidget {
   @override
-  _CharacterPageViewState createState() => _CharacterPageViewState();
+  _CharacterListViewState createState() => _CharacterListViewState();
 }
 
-class _CharacterPageViewState extends State<CharacterPageView> {
+class _CharacterListViewState extends State<CharacterListView> {
   static const _pageSize = 20;
 
   final PagingController<int, CharacterSummary> _pagingController =
@@ -42,13 +41,19 @@ class _CharacterPageViewState extends State<CharacterPageView> {
   }
 
   @override
-  Widget build(BuildContext context) => PagedPageView<int, CharacterSummary>(
-        pagingController: _pagingController,
-        builderDelegate: PagedChildBuilderDelegate<CharacterSummary>(
-          animateTransitions: true,
-          itemBuilder: (context, item, index) => CachedNetworkImage(
-            imageUrl: item.pictureUrl,
+  Widget build(BuildContext context) => RefreshIndicator(
+        onRefresh: () => Future.sync(
+          () => _pagingController.refresh(),
+        ),
+        child: PagedListView<int, CharacterSummary>.separated(
+          pagingController: _pagingController,
+          builderDelegate: PagedChildBuilderDelegate<CharacterSummary>(
+            animateTransitions: true,
+            itemBuilder: (context, item, index) => CharacterListItem(
+              character: item,
+            ),
           ),
+          separatorBuilder: (context, index) => const Divider(),
         ),
       );
 

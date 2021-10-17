@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:breaking_bapp/character_summary.dart';
+import 'package:breaking_bapp/remote/character_summary.dart';
 import 'package:http/http.dart' as http;
 
 class RemoteApi {

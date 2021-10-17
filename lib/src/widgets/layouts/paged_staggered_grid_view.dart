@@ -4,9 +4,9 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:infinite_scroll_pagination/src/core/paged_child_builder_delegate.dart';
 import 'package:infinite_scroll_pagination/src/core/paging_controller.dart';
-import 'package:infinite_scroll_pagination/src/ui/paged_layout_builder.dart';
-import 'package:infinite_scroll_pagination/src/ui/paged_sliver_grid.dart';
-import 'package:infinite_scroll_pagination/src/ui/paged_staggered_sliver_grid.dart';
+import 'package:infinite_scroll_pagination/src/widgets/helpers/paged_layout_builder.dart';
+import 'package:infinite_scroll_pagination/src/widgets/layouts/paged_sliver_grid.dart';
+import 'package:infinite_scroll_pagination/src/widgets/layouts/paged_staggered_sliver_grid.dart';
 
 /// A [StaggeredGridView] with pagination capabilities.
 ///
@@ -21,36 +21,36 @@ class PagedStaggeredGridView<PageKeyType, ItemType> extends BoxScrollView {
     required this.pagingController,
     required this.builderDelegate,
     required this.gridDelegateBuilder,
-    // Corresponds to [ScrollView.controller].
+    // Matches [ScrollView.controller].
     ScrollController? scrollController,
-    // Corresponds to [ScrollView.scrollDirection].
+    // Matches [ScrollView.scrollDirection].
     Axis scrollDirection = Axis.vertical,
-    // Corresponds to [ScrollView.reverse].
+    // Matches [ScrollView.reverse].
     bool reverse = false,
-    // Corresponds to [ScrollView.primary].
+    // Matches [ScrollView.primary].
     bool? primary,
-    // Corresponds to [ScrollView.physics].
+    // Matches [ScrollView.physics].
     ScrollPhysics? physics,
-    // Corresponds to [ScrollView.shrinkWrap].
+    // Matches [ScrollView.shrinkWrap].
     bool shrinkWrap = false,
-    // Corresponds to [BoxScrollView.padding].
+    // Matches [BoxScrollView.padding].
     EdgeInsetsGeometry? padding,
     this.addAutomaticKeepAlives = true,
     this.addRepaintBoundaries = true,
     this.addSemanticIndexes = true,
-    // Corresponds to [ScrollView.cacheExtent].
+    // Matches [ScrollView.cacheExtent].
     double? cacheExtent,
     this.showNewPageProgressIndicatorAsGridChild = true,
     this.showNewPageErrorIndicatorAsGridChild = true,
     this.showNoMoreItemsIndicatorAsGridChild = true,
-    // Corresponds to [ScrollView.dragStartBehavior].
+    // Matches [ScrollView.dragStartBehavior].
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
-    // Corresponds to [ScrollView.keyboardDismissBehavior].
+    // Matches [ScrollView.keyboardDismissBehavior].
     ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
         ScrollViewKeyboardDismissBehavior.manual,
-    // Corresponds to [ScrollView.restorationId].
+    // Matches [ScrollView.restorationId].
     String? restorationId,
-    // Corresponds to [ScrollView.clipBehavior].
+    // Matches [ScrollView.clipBehavior].
     Clip clipBehavior = Clip.hardEdge,
     Key? key,
   })  : _shrinkWrapFirstPageIndicators = shrinkWrap,
@@ -78,36 +78,36 @@ class PagedStaggeredGridView<PageKeyType, ItemType> extends BoxScrollView {
     required IndexedStaggeredTileBuilder staggeredTileBuilder,
     double mainAxisSpacing = 0.0,
     double crossAxisSpacing = 0.0,
-    // Corresponds to [ScrollView.controller].
+    // Matches [ScrollView.controller].
     ScrollController? scrollController,
-    // Corresponds to [ScrollView.scrollDirection].
+    // Matches [ScrollView.scrollDirection].
     Axis scrollDirection = Axis.vertical,
-    // Corresponds to [ScrollView.reverse].
+    // Matches [ScrollView.reverse].
     bool reverse = false,
-    // Corresponds to [ScrollView.primary].
+    // Matches [ScrollView.primary].
     bool? primary,
-    // Corresponds to [ScrollView.physics].
+    // Matches [ScrollView.physics].
     ScrollPhysics? physics,
-    // Corresponds to [ScrollView.shrinkWrap].
+    // Matches [ScrollView.shrinkWrap].
     bool shrinkWrap = false,
-    // Corresponds to [BoxScrollView.padding].
+    // Matches [BoxScrollView.padding].
     EdgeInsetsGeometry? padding,
     this.addAutomaticKeepAlives = true,
     this.addRepaintBoundaries = true,
     this.addSemanticIndexes = true,
-    // Corresponds to [ScrollView.cacheExtent].
+    // Matches [ScrollView.cacheExtent].
     double? cacheExtent,
     this.showNewPageProgressIndicatorAsGridChild = true,
     this.showNewPageErrorIndicatorAsGridChild = true,
     this.showNoMoreItemsIndicatorAsGridChild = true,
-    // Corresponds to [ScrollView.dragStartBehavior].
+    // Matches [ScrollView.dragStartBehavior].
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
-    // Corresponds to [ScrollView.keyboardDismissBehavior].
+    // Matches [ScrollView.keyboardDismissBehavior].
     ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
         ScrollViewKeyboardDismissBehavior.manual,
-    // Corresponds to [ScrollView.restorationId].
+    // Matches [ScrollView.restorationId].
     String? restorationId,
-    // Corresponds to [ScrollView.clipBehavior].
+    // Matches [ScrollView.clipBehavior].
     Clip clipBehavior = Clip.hardEdge,
     Key? key,
   })  : _shrinkWrapFirstPageIndicators = shrinkWrap,
@@ -143,36 +143,36 @@ class PagedStaggeredGridView<PageKeyType, ItemType> extends BoxScrollView {
     required IndexedStaggeredTileBuilder staggeredTileBuilder,
     double mainAxisSpacing = 0.0,
     double crossAxisSpacing = 0.0,
-    // Corresponds to [ScrollView.controller].
+    // Matches [ScrollView.controller].
     ScrollController? scrollController,
-    // Corresponds to [ScrollView.scrollDirection].
+    // Matches [ScrollView.scrollDirection].
     Axis scrollDirection = Axis.vertical,
-    // Corresponds to [ScrollView.reverse].
+    // Matches [ScrollView.reverse].
     bool reverse = false,
-    // Corresponds to [ScrollView.primary].
+    // Matches [ScrollView.primary].
     bool? primary,
-    // Corresponds to [ScrollView.physics].
+    // Matches [ScrollView.physics].
     ScrollPhysics? physics,
-    // Corresponds to [ScrollView.shrinkWrap].
+    // Matches [ScrollView.shrinkWrap].
     bool shrinkWrap = false,
-    // Corresponds to [BoxScrollView.padding].
+    // Matches [BoxScrollView.padding].
     EdgeInsetsGeometry? padding,
     this.addAutomaticKeepAlives = true,
     this.addRepaintBoundaries = true,
     this.addSemanticIndexes = true,
-    // Corresponds to [ScrollView.cacheExtent].
+    // Matches [ScrollView.cacheExtent].
     double? cacheExtent,
     this.showNewPageProgressIndicatorAsGridChild = true,
     this.showNewPageErrorIndicatorAsGridChild = true,
     this.showNoMoreItemsIndicatorAsGridChild = true,
-    // Corresponds to [ScrollView.dragStartBehavior].
+    // Matches [ScrollView.dragStartBehavior].
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
-    // Corresponds to [ScrollView.keyboardDismissBehavior].
+    // Matches [ScrollView.keyboardDismissBehavior].
     ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
         ScrollViewKeyboardDismissBehavior.manual,
-    // Corresponds to [ScrollView.restorationId].
+    // Matches [ScrollView.restorationId].
     String? restorationId,
-    // Corresponds to [ScrollView.clipBehavior].
+    // Matches [ScrollView.clipBehavior].
     Clip clipBehavior = Clip.hardEdge,
     Key? key,
   })  : _shrinkWrapFirstPageIndicators = shrinkWrap,
@@ -200,34 +200,34 @@ class PagedStaggeredGridView<PageKeyType, ItemType> extends BoxScrollView {
           clipBehavior: clipBehavior,
         );
 
-  /// Corresponds to [PagedLayoutBuilder.pagingController].
+  /// Matches [PagedLayoutBuilder.pagingController].
   final PagingController<PageKeyType, ItemType> pagingController;
 
-  /// Corresponds to [PagedLayoutBuilder.builderDelegate].
+  /// Matches [PagedLayoutBuilder.builderDelegate].
   final PagedChildBuilderDelegate<ItemType> builderDelegate;
 
-  /// Corresponds to [PagedStaggeredSliverGrid.gridDelegateBuilder].
+  /// Matches [PagedStaggeredSliverGrid.gridDelegateBuilder].
   final SliverStaggeredGridDelegateBuilder gridDelegateBuilder;
 
-  /// Corresponds to [SliverChildBuilderDelegate.addAutomaticKeepAlives].
+  /// Matches [SliverChildBuilderDelegate.addAutomaticKeepAlives].
   final bool addAutomaticKeepAlives;
 
-  /// Corresponds to [SliverChildBuilderDelegate.addRepaintBoundaries].
+  /// Matches [SliverChildBuilderDelegate.addRepaintBoundaries].
   final bool addRepaintBoundaries;
 
-  /// Corresponds to [SliverChildBuilderDelegate.addSemanticIndexes].
+  /// Matches [SliverChildBuilderDelegate.addSemanticIndexes].
   final bool addSemanticIndexes;
 
-  /// Corresponds to [PagedSliverGrid.showNewPageProgressIndicatorAsGridChild].
+  /// Matches [PagedSliverGrid.showNewPageProgressIndicatorAsGridChild].
   final bool showNewPageProgressIndicatorAsGridChild;
 
-  /// Corresponds to [PagedSliverGrid.showNewPageErrorIndicatorAsGridChild].
+  /// Matches [PagedSliverGrid.showNewPageErrorIndicatorAsGridChild].
   final bool showNewPageErrorIndicatorAsGridChild;
 
-  /// Corresponds to [PagedSliverGrid.showNoMoreItemsIndicatorAsGridChild].
+  /// Matches [PagedSliverGrid.showNoMoreItemsIndicatorAsGridChild].
   final bool showNoMoreItemsIndicatorAsGridChild;
 
-  /// Corresponds to [PagedSliverGrid.shrinkWrapFirstPageIndicators].
+  /// Matches [PagedSliverGrid.shrinkWrapFirstPageIndicators].
   final bool _shrinkWrapFirstPageIndicators;
 
   @override

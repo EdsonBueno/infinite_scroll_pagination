@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:infinite_scroll_pagination/src/core/paged_child_builder_delegate.dart';
 import 'package:infinite_scroll_pagination/src/core/paging_controller.dart';
-import 'package:infinite_scroll_pagination/src/ui/paged_layout_builder.dart';
 import 'package:infinite_scroll_pagination/src/utils/appended_sliver_child_builder_delegate.dart';
+import 'package:infinite_scroll_pagination/src/widgets/helpers/paged_layout_builder.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 typedef SliverGridBuilder = SliverWithKeepAliveWidget Function(
@@ -27,23 +27,23 @@ class PagedSliverGridBuilder<PageKeyType, ItemType> extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  /// Corresponds to [PagedLayoutBuilder.pagingController].
+  /// Matches [PagedLayoutBuilder.pagingController].
   final PagingController<PageKeyType, ItemType> pagingController;
 
-  /// Corresponds to [PagedLayoutBuilder.builderDelegate].
+  /// Matches [PagedLayoutBuilder.builderDelegate].
   final PagedChildBuilderDelegate<ItemType> builderDelegate;
 
   /// Supplies the adjusted child count, the appended [SliverChildDelegate],
   /// and expects a sliver grid in return.
   final SliverGridBuilder builder;
 
-  /// Corresponds to [SliverChildBuilderDelegate.addAutomaticKeepAlives].
+  /// Matches [SliverChildBuilderDelegate.addAutomaticKeepAlives].
   final bool addAutomaticKeepAlives;
 
-  /// Corresponds to [SliverChildBuilderDelegate.addRepaintBoundaries].
+  /// Matches [SliverChildBuilderDelegate.addRepaintBoundaries].
   final bool addRepaintBoundaries;
 
-  /// Corresponds to [SliverChildBuilderDelegate.addSemanticIndexes].
+  /// Matches [SliverChildBuilderDelegate.addSemanticIndexes].
   final bool addSemanticIndexes;
 
   /// Whether the new page progress indicator should display as a grid child
@@ -64,7 +64,7 @@ class PagedSliverGridBuilder<PageKeyType, ItemType> extends StatelessWidget {
   /// Defaults to true.
   final bool showNoMoreItemsIndicatorAsGridChild;
 
-  /// Corresponds to [PagedLayoutBuilder.shrinkWrapFirstPageIndicators].
+  /// Matches [PagedLayoutBuilder.shrinkWrapFirstPageIndicators].
   final bool shrinkWrapFirstPageIndicators;
 
   @override

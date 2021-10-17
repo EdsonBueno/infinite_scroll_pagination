@@ -1,18 +1,19 @@
 import 'dart:async';
 
-import 'package:breaking_bapp/character_summary.dart';
-import 'package:breaking_bapp/presentation/character_listing_bloc.dart';
+import 'package:breaking_bapp/remote/character_summary.dart';
+import 'package:breaking_bapp/samples/common/character_listing_bloc.dart';
+import 'package:breaking_bapp/samples/common/character_search_input_sliver.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-class CharacterStaggeredGrid extends StatefulWidget {
+class CharacterSliverGrid extends StatefulWidget {
   @override
-  _CharacterStaggeredGridState createState() => _CharacterStaggeredGridState();
+  _CharacterSliverGridState createState() => _CharacterSliverGridState();
 }
 
-class _CharacterStaggeredGridState extends State<CharacterStaggeredGrid> {
+class _CharacterSliverGridState extends State<CharacterSliverGrid> {
   final CharacterListingBloc _bloc = CharacterListingBloc();
   final PagingController<int, CharacterSummary> _pagingController =
       PagingController(firstPageKey: 0);
@@ -40,15 +41,28 @@ class _CharacterStaggeredGridState extends State<CharacterStaggeredGrid> {
   }
 
   @override
-  Widget build(BuildContext context) => PagedStaggeredGridView.count(
-        pagingController: _pagingController,
-        builderDelegate: PagedChildBuilderDelegate<CharacterSummary>(
-          itemBuilder: (context, item, index) => CachedNetworkImage(
-            imageUrl: item.pictureUrl,
+  Widget build(BuildContext context) => CustomScrollView(
+        slivers: <Widget>[
+          CharacterSearchInputSliver(
+            onChanged: (searchTerm) => _bloc.onSearchInputChangedSink.add(
+              searchTerm,
+            ),
           ),
-        ),
-        crossAxisCount: 2,
-        staggeredTileBuilder: (index) => const StaggeredTile.fit(1),
+          PagedSliverGrid<int, CharacterSummary>(
+            pagingController: _pagingController,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              childAspectRatio: 100 / 150,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+              crossAxisCount: 3,
+            ),
+            builderDelegate: PagedChildBuilderDelegate<CharacterSummary>(
+              itemBuilder: (context, item, index) => CachedNetworkImage(
+                imageUrl: item.pictureUrl,
+              ),
+            ),
+          ),
+        ],
       );
 
   @override

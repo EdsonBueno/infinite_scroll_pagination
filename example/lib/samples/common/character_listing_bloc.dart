@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:breaking_bapp/character_summary.dart';
-import 'package:breaking_bapp/remote_api.dart';
+import 'package:breaking_bapp/remote/character_summary.dart';
+import 'package:breaking_bapp/remote/remote_api.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CharacterListingState {
