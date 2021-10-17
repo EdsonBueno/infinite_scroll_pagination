@@ -91,7 +91,7 @@ class PagedPageView<PageKeyType, ItemType> extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
       PagedLayoutBuilder<PageKeyType, ItemType>(
-        layoutProtocol: LayoutProtocol.box,
+        layoutProtocol: PagedLayoutProtocol.box,
         pagingController: pagingController,
         builderDelegate: builderDelegate,
         shrinkWrapFirstPageIndicators: shrinkWrapFirstPageIndicators,
@@ -101,110 +101,7 @@ class PagedPageView<PageKeyType, ItemType> extends StatelessWidget {
           itemCount,
           noMoreItemsIndicatorBuilder,
         ) =>
-            _AppendedPageView(
-          itemBuilder: itemBuilder,
-          itemCount: itemCount,
-          appendixBuilder: noMoreItemsIndicatorBuilder,
-          addAutomaticKeepAlives: addAutomaticKeepAlives,
-          addSemanticIndexes: addSemanticIndexes,
-          addRepaintBoundaries: addRepaintBoundaries,
-          restorationId: restorationId,
-          pageController: pageController,
-          onPageChanged: onPageChanged,
-          scrollBehavior: scrollBehavior,
-          scrollDirection: scrollDirection,
-          dragStartBehavior: dragStartBehavior,
-          clipBehavior: clipBehavior,
-          allowImplicitScrolling: allowImplicitScrolling,
-          reverse: reverse,
-          physics: physics,
-          pageSnapping: pageSnapping,
-        ),
-        loadingListingBuilder: (
-          context,
-          itemBuilder,
-          itemCount,
-          progressIndicatorBuilder,
-        ) =>
-            _AppendedPageView(
-          itemBuilder: itemBuilder,
-          itemCount: itemCount,
-          appendixBuilder: progressIndicatorBuilder,
-          addAutomaticKeepAlives: addAutomaticKeepAlives,
-          addSemanticIndexes: addSemanticIndexes,
-          addRepaintBoundaries: addRepaintBoundaries,
-          restorationId: restorationId,
-          pageController: pageController,
-          onPageChanged: onPageChanged,
-          scrollBehavior: scrollBehavior,
-          scrollDirection: scrollDirection,
-          dragStartBehavior: dragStartBehavior,
-          clipBehavior: clipBehavior,
-          allowImplicitScrolling: allowImplicitScrolling,
-          reverse: reverse,
-          physics: physics,
-          pageSnapping: pageSnapping,
-        ),
-        errorListingBuilder: (
-          context,
-          itemBuilder,
-          itemCount,
-          errorIndicatorBuilder,
-        ) =>
-            _AppendedPageView(
-          itemBuilder: itemBuilder,
-          itemCount: itemCount,
-          appendixBuilder: errorIndicatorBuilder,
-          addAutomaticKeepAlives: addAutomaticKeepAlives,
-          addSemanticIndexes: addSemanticIndexes,
-          addRepaintBoundaries: addRepaintBoundaries,
-          restorationId: restorationId,
-          pageController: pageController,
-          onPageChanged: onPageChanged,
-          scrollBehavior: scrollBehavior,
-          scrollDirection: scrollDirection,
-          dragStartBehavior: dragStartBehavior,
-          clipBehavior: clipBehavior,
-          allowImplicitScrolling: allowImplicitScrolling,
-          reverse: reverse,
-          physics: physics,
-          pageSnapping: pageSnapping,
-        ),
-      );
-}
-
-class _AppendedPageView extends PageView {
-  _AppendedPageView({
-    required IndexedWidgetBuilder itemBuilder,
-    required int itemCount,
-    WidgetBuilder? appendixBuilder,
-    bool addAutomaticKeepAlives = true,
-    bool addRepaintBoundaries = true,
-    bool addSemanticIndexes = true,
-    // Corresponds to [PageView.allowImplicitScrolling].
-    bool allowImplicitScrolling = false,
-    // Corresponds to [PageView.restorationId].
-    String? restorationId,
-    // Corresponds to [PageView.pageController].
-    PageController? pageController,
-    // Corresponds to [PageView.scrollBehavior].
-    ScrollBehavior? scrollBehavior,
-    // Corresponds to [PageView.scrollDirection].
-    Axis scrollDirection = Axis.horizontal,
-    // Corresponds to [PageView.dragStartBehavior].
-    DragStartBehavior dragStartBehavior = DragStartBehavior.start,
-    // Corresponds to [PageView.clipBehavior].
-    Clip clipBehavior = Clip.hardEdge,
-    // Corresponds to [PageView.reverse].
-    bool reverse = false,
-    // Corresponds to [PageView.physics].
-    ScrollPhysics? physics,
-    // Corresponds to [PageView.pageSnapping].
-    bool pageSnapping = true,
-    // Corresponds to [PageView.onPageChanged].
-    void Function(int)? onPageChanged,
-    Key? key,
-  }) : super.custom(
+            PageView.custom(
           key: key,
           restorationId: restorationId,
           controller: pageController,
@@ -217,13 +114,73 @@ class _AppendedPageView extends PageView {
           reverse: reverse,
           physics: physics,
           pageSnapping: pageSnapping,
+          padEnds: padEnds,
           childrenDelegate: AppendedSliverChildBuilderDelegate(
             builder: itemBuilder,
             childCount: itemCount,
-            appendixBuilder: appendixBuilder,
+            appendixBuilder: noMoreItemsIndicatorBuilder,
             addAutomaticKeepAlives: addAutomaticKeepAlives,
             addRepaintBoundaries: addRepaintBoundaries,
             addSemanticIndexes: addSemanticIndexes,
           ),
-        );
+        ),
+        loadingListingBuilder: (
+          context,
+          itemBuilder,
+          itemCount,
+          progressIndicatorBuilder,
+        ) =>
+            PageView.custom(
+          key: key,
+          restorationId: restorationId,
+          controller: pageController,
+          onPageChanged: onPageChanged,
+          scrollBehavior: scrollBehavior,
+          scrollDirection: scrollDirection,
+          dragStartBehavior: dragStartBehavior,
+          clipBehavior: clipBehavior,
+          allowImplicitScrolling: allowImplicitScrolling,
+          reverse: reverse,
+          physics: physics,
+          pageSnapping: pageSnapping,
+          padEnds: padEnds,
+          childrenDelegate: AppendedSliverChildBuilderDelegate(
+            builder: itemBuilder,
+            childCount: itemCount,
+            appendixBuilder: progressIndicatorBuilder,
+            addAutomaticKeepAlives: addAutomaticKeepAlives,
+            addRepaintBoundaries: addRepaintBoundaries,
+            addSemanticIndexes: addSemanticIndexes,
+          ),
+        ),
+        errorListingBuilder: (
+          context,
+          itemBuilder,
+          itemCount,
+          errorIndicatorBuilder,
+        ) =>
+            PageView.custom(
+          key: key,
+          restorationId: restorationId,
+          controller: pageController,
+          onPageChanged: onPageChanged,
+          scrollBehavior: scrollBehavior,
+          scrollDirection: scrollDirection,
+          dragStartBehavior: dragStartBehavior,
+          clipBehavior: clipBehavior,
+          allowImplicitScrolling: allowImplicitScrolling,
+          reverse: reverse,
+          physics: physics,
+          pageSnapping: pageSnapping,
+          padEnds: padEnds,
+          childrenDelegate: AppendedSliverChildBuilderDelegate(
+            builder: itemBuilder,
+            childCount: itemCount,
+            appendixBuilder: errorIndicatorBuilder,
+            addAutomaticKeepAlives: addAutomaticKeepAlives,
+            addRepaintBoundaries: addRepaintBoundaries,
+            addSemanticIndexes: addSemanticIndexes,
+          ),
+        ),
+      );
 }
