@@ -12,31 +12,32 @@ import 'package:infinite_scroll_pagination/src/widgets/helpers/default_status_in
 import 'package:infinite_scroll_pagination/src/widgets/helpers/default_status_indicators/new_page_error_indicator.dart';
 import 'package:infinite_scroll_pagination/src/widgets/helpers/default_status_indicators/new_page_progress_indicator.dart';
 import 'package:infinite_scroll_pagination/src/widgets/helpers/default_status_indicators/no_items_found_indicator.dart';
-import 'package:sliver_tools/sliver_tools.dart';
 
 typedef CompletedListingBuilder = Widget Function(
-  BuildContext context,
-  IndexedWidgetBuilder itemWidgetBuilder,
-  int itemCount,
-  WidgetBuilder? noMoreItemsIndicatorBuilder,
-);
+    BuildContext context,
+    IndexedWidgetBuilder itemWidgetBuilder,
+    int itemCount,
+    WidgetBuilder? noMoreItemsIndicatorBuilder,
+    );
 
 typedef ErrorListingBuilder = Widget Function(
-  BuildContext context,
-  IndexedWidgetBuilder itemWidgetBuilder,
-  int itemCount,
-  WidgetBuilder newPageErrorIndicatorBuilder,
-);
+    BuildContext context,
+    IndexedWidgetBuilder itemWidgetBuilder,
+    int itemCount,
+    WidgetBuilder newPageErrorIndicatorBuilder,
+    );
 
 typedef LoadingListingBuilder = Widget Function(
-  BuildContext context,
-  IndexedWidgetBuilder itemWidgetBuilder,
-  int itemCount,
-  WidgetBuilder newPageProgressIndicatorBuilder,
-);
+    BuildContext context,
+    IndexedWidgetBuilder itemWidgetBuilder,
+    int itemCount,
+    WidgetBuilder newPageProgressIndicatorBuilder,
+    );
 
-/// The Flutter layout protocols supported by [PagedLayoutBuilder].
-enum PagedLayoutProtocol { sliver, box }
+typedef LayoutBuilder = Widget Function(
+    BuildContext context,
+    Widget child,
+    );
 
 /// Facilitates creating infinitely scrolled paged layouts.
 ///
@@ -46,18 +47,17 @@ enum PagedLayoutProtocol { sliver, box }
 /// [completedListingBuilder] for filling in the gaps.
 ///
 /// For ordinary cases, this widget shouldn't be used directly. Instead, take a
-/// look at [PagedSliverList], [PagedSliverGrid], [PagedStaggeredSliverGrid],
-/// [PagedListView], [PagedGridView], [PagedStaggeredGridView], or
-/// [PagedPageView].
+/// look at [PagedSliverLayoutBuilder] and [PagedBoxLayoutBuilder].
 class PagedLayoutBuilder<PageKeyType, ItemType> extends StatefulWidget {
+  a
+
   const PagedLayoutBuilder({
     required this.pagingController,
     required this.builderDelegate,
     required this.loadingListingBuilder,
     required this.errorListingBuilder,
     required this.completedListingBuilder,
-    required this.layoutProtocol,
-    this.shrinkWrapFirstPageIndicators = false,
+    required this.layoutBuilder,
     Key? key,
   }) : super(key: key);
 
@@ -79,23 +79,8 @@ class PagedLayoutBuilder<PageKeyType, ItemType> extends StatefulWidget {
   /// The builder for a completed listing.
   final CompletedListingBuilder completedListingBuilder;
 
-  /// Whether the extent of the first page indicators should be determined by
-  /// the contents being viewed.
-  ///
-  /// If the paged layout builder does not shrink wrap, then the first page
-  /// indicators will expand to the maximum allowed size. If the paged layout
-  /// builder has unbounded constraints, then [shrinkWrapFirstPageIndicators]
-  /// must be true.
-  ///
-  /// Defaults to false.
-  final bool shrinkWrapFirstPageIndicators;
-
-  /// The layout protocol of the widget you're using this to build.
-  ///
-  /// For example, if [PagedLayoutProtocol.sliver] is specified, then
-  /// [loadingListingBuilder], [errorListingBuilder], and
-  /// [completedListingBuilder] have to return a Sliver widget.
-  final PagedLayoutProtocol layoutProtocol;
+  /// TODO
+  final LayoutBuilder layoutBuilder;
 
   @override
   _PagedLayoutBuilderState<PageKeyType, ItemType> createState() =>
@@ -110,34 +95,31 @@ class _PagedLayoutBuilderState<PageKeyType, ItemType>
   PagedChildBuilderDelegate<ItemType> get _builderDelegate =>
       widget.builderDelegate;
 
-  bool get _shrinkWrapFirstPageIndicators =>
-      widget.shrinkWrapFirstPageIndicators;
-
-  PagedLayoutProtocol get _layoutProtocol => widget.layoutProtocol;
-
   WidgetBuilder get _firstPageErrorIndicatorBuilder =>
       _builderDelegate.firstPageErrorIndicatorBuilder ??
-      (_) => FirstPageErrorIndicator(
-            onTryAgain: _pagingController.retryLastFailedRequest,
-          );
+              (_) =>
+              FirstPageErrorIndicator(
+                onTryAgain: _pagingController.retryLastFailedRequest,
+              );
 
   WidgetBuilder get _newPageErrorIndicatorBuilder =>
       _builderDelegate.newPageErrorIndicatorBuilder ??
-      (_) => NewPageErrorIndicator(
-            onTap: _pagingController.retryLastFailedRequest,
-          );
+              (_) =>
+              NewPageErrorIndicator(
+                onTap: _pagingController.retryLastFailedRequest,
+              );
 
   WidgetBuilder get _firstPageProgressIndicatorBuilder =>
       _builderDelegate.firstPageProgressIndicatorBuilder ??
-      (_) => FirstPageProgressIndicator();
+              (_) => const FirstPageProgressIndicator();
 
   WidgetBuilder get _newPageProgressIndicatorBuilder =>
       _builderDelegate.newPageProgressIndicatorBuilder ??
-      (_) => const NewPageProgressIndicator();
+              (_) => const NewPageProgressIndicator();
 
   WidgetBuilder get _noItemsFoundIndicatorBuilder =>
       _builderDelegate.noItemsFoundIndicatorBuilder ??
-      (_) => NoItemsFoundIndicator();
+              (_) => const NoItemsFoundIndicator();
 
   WidgetBuilder? get _noMoreItemsIndicatorBuilder =>
       _builderDelegate.noMoreItemsIndicatorBuilder;
@@ -155,7 +137,8 @@ class _PagedLayoutBuilderState<PageKeyType, ItemType>
   bool _hasRequestedNextPage = false;
 
   @override
-  Widget build(BuildContext context) => ListenableListener(
+  Widget build(BuildContext context) =>
+      ListenableListener(
         listenable: _pagingController,
         listener: () {
           final status = _pagingController.value.status;
@@ -183,11 +166,12 @@ class _PagedLayoutBuilderState<PageKeyType, ItemType>
                   // value. That way, we are safe if [itemList] value changes
                   // while Flutter rebuilds the widget (due to animations, for
                   // example.)
-                  (context, index) => _buildListItemWidget(
-                    context,
-                    index,
-                    itemList!,
-                  ),
+                      (context, index) =>
+                      _buildListItemWidget(
+                        context,
+                        index,
+                        itemList!,
+                      ),
                   _itemCount,
                   _newPageProgressIndicatorBuilder,
                 );
@@ -195,78 +179,52 @@ class _PagedLayoutBuilderState<PageKeyType, ItemType>
               case PagingStatus.completed:
                 child = widget.completedListingBuilder(
                   context,
-                  (context, index) => _buildListItemWidget(
-                    context,
-                    index,
-                    itemList!,
-                  ),
+                      (context, index) =>
+                      _buildListItemWidget(
+                        context,
+                        index,
+                        itemList!,
+                      ),
                   _itemCount,
                   _noMoreItemsIndicatorBuilder,
                 );
                 break;
               case PagingStatus.loadingFirstPage:
-                child = _FirstPageStatusIndicatorBuilder(
-                  builder: _firstPageProgressIndicatorBuilder,
-                  shrinkWrap: _shrinkWrapFirstPageIndicators,
-                  layoutProtocol: _layoutProtocol,
-                );
+                child = _firstPageProgressIndicatorBuilder(context);
                 break;
               case PagingStatus.subsequentPageError:
                 child = widget.errorListingBuilder(
                   context,
-                  (context, index) => _buildListItemWidget(
-                    context,
-                    index,
-                    itemList!,
-                  ),
+                      (context, index) =>
+                      _buildListItemWidget(
+                        context,
+                        index,
+                        itemList!,
+                      ),
                   _itemCount,
-                  (context) => _newPageErrorIndicatorBuilder(context),
+                      (context) => _newPageErrorIndicatorBuilder(context),
                 );
                 break;
               case PagingStatus.noItemsFound:
-                child = _FirstPageStatusIndicatorBuilder(
-                  builder: _noItemsFoundIndicatorBuilder,
-                  shrinkWrap: _shrinkWrapFirstPageIndicators,
-                  layoutProtocol: _layoutProtocol,
-                );
+                child = _noItemsFoundIndicatorBuilder(context);
                 break;
               default:
-                child = _FirstPageStatusIndicatorBuilder(
-                  builder: _firstPageErrorIndicatorBuilder,
-                  shrinkWrap: _shrinkWrapFirstPageIndicators,
-                  layoutProtocol: _layoutProtocol,
-                );
+                child = _firstPageErrorIndicatorBuilder(context);
             }
 
-            if (_builderDelegate.animateTransitions) {
-              if (_layoutProtocol == PagedLayoutProtocol.sliver) {
-                return SliverAnimatedSwitcher(
-                  duration: _builderDelegate.transitionDuration,
-                  child: child,
-                );
-              } else {
-                return AnimatedSwitcher(
-                  duration: _builderDelegate.transitionDuration,
-                  child: child,
-                );
-              }
-            } else {
-              return child;
-            }
+            return widget.layoutBuilder(context, child);
           },
         ),
       );
 
   /// Connects the [_pagingController] with the [_builderDelegate] in order to
   /// create a list item widget and request more items if needed.
-  Widget _buildListItemWidget(
-    BuildContext context,
-    int index,
-    List<ItemType> itemList,
-  ) {
+  Widget _buildListItemWidget(BuildContext context,
+      int index,
+      List<ItemType> itemList,) {
     if (!_hasRequestedNextPage) {
       final newPageRequestTriggerIndex =
-          max(0, _itemCount - _invisibleItemsThreshold);
+      max(0, _itemCount - _invisibleItemsThreshold);
 
       final isBuildingTriggerIndexItem = index == newPageRequestTriggerIndex;
 
@@ -290,41 +248,4 @@ extension on PagingController {
 
   /// Tells whether there's a next page to request.
   bool get hasNextPage => nextPageKey != null;
-}
-
-class _FirstPageStatusIndicatorBuilder extends StatelessWidget {
-  const _FirstPageStatusIndicatorBuilder({
-    required this.builder,
-    required this.layoutProtocol,
-    this.shrinkWrap = false,
-    Key? key,
-  }) : super(key: key);
-
-  final WidgetBuilder builder;
-  final bool shrinkWrap;
-  final PagedLayoutProtocol layoutProtocol;
-
-  @override
-  Widget build(BuildContext context) {
-    if (layoutProtocol == PagedLayoutProtocol.sliver) {
-      if (shrinkWrap) {
-        return SliverToBoxAdapter(
-          child: builder(context),
-        );
-      } else {
-        return SliverFillRemaining(
-          hasScrollBody: false,
-          child: builder(context),
-        );
-      }
-    } else {
-      if (shrinkWrap) {
-        return builder(context);
-      } else {
-        return Center(
-          child: builder(context),
-        );
-      }
-    }
-  }
 }

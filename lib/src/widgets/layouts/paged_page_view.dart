@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:infinite_scroll_pagination/src/core/paging_controller.dart';
 import 'package:infinite_scroll_pagination/src/utils/appended_sliver_child_builder_delegate.dart';
+import 'package:infinite_scroll_pagination/src/widgets/helpers/paged_box_layout_builder.dart';
 import 'package:infinite_scroll_pagination/src/widgets/helpers/paged_layout_builder.dart';
 
 /// Paged [PageView] with progress and error indicators displayed as the last
@@ -90,8 +91,7 @@ class PagedPageView<PageKeyType, ItemType> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) =>
-      PagedLayoutBuilder<PageKeyType, ItemType>(
-        layoutProtocol: PagedLayoutProtocol.box,
+      PagedBoxLayoutBuilder<PageKeyType, ItemType>(
         pagingController: pagingController,
         builderDelegate: builderDelegate,
         shrinkWrapFirstPageIndicators: shrinkWrapFirstPageIndicators,

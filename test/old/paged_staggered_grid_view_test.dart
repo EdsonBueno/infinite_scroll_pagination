@@ -4,8 +4,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:mockito/mockito.dart';
 
-import 'utils/paging_controller_utils.dart';
-import 'utils/screen_size_utils.dart';
+import '../utils/paging_controller_utils.dart';
+import '../utils/screen_size_utils.dart';
 
 double get _itemHeight => (screenSize.height / pageSize) * 2;
 
@@ -24,7 +24,7 @@ void main() {
 
       pagingController.addPageRequestListener(mockPageRequestListener);
 
-      await _pumpPagedGridView(
+      await _pumpPagedStaggeredGridView(
         tester: tester,
         pagingController: pagingController,
       );
@@ -46,7 +46,7 @@ void main() {
         mockPageRequestListener,
       );
 
-      await _pumpPagedGridView(
+      await _pumpPagedStaggeredGridView(
         tester: tester,
         pagingController: controllerLoadedWithFirstPage,
       );
@@ -62,7 +62,7 @@ void main() {
       );
       pagingController.addPageRequestListener(mockPageRequestListener);
 
-      await _pumpPagedGridView(
+      await _pumpPagedStaggeredGridView(
         tester: tester,
         pagingController: pagingController,
       );
@@ -78,7 +78,7 @@ void main() {
       );
       pagingController.addPageRequestListener(mockPageRequestListener);
 
-      await _pumpPagedGridView(
+      await _pumpPagedStaggeredGridView(
         tester: tester,
         pagingController: pagingController,
       );
@@ -107,7 +107,7 @@ void main() {
           key: customIndicatorKey,
         );
 
-        await _pumpPagedGridView(
+        await _pumpPagedStaggeredGridView(
           tester: tester,
           pagingController: pagingController,
           newPageProgressIndicator: customNewPageProgressIndicator,
@@ -139,7 +139,7 @@ void main() {
           key: customIndicatorKey,
         );
 
-        await _pumpPagedGridView(
+        await _pumpPagedStaggeredGridView(
           tester: tester,
           pagingController: pagingController,
           newPageErrorIndicator: customNewPageErrorIndicator,
@@ -171,7 +171,7 @@ void main() {
           key: customIndicatorKey,
         );
 
-        await _pumpPagedGridView(
+        await _pumpPagedStaggeredGridView(
           tester: tester,
           pagingController: pagingController,
           noMoreItemsIndicator: customNoMoreItemsIndicator,
@@ -205,7 +205,7 @@ void main() {
           key: customIndicatorKey,
         );
 
-        await _pumpPagedGridView(
+        await _pumpPagedStaggeredGridView(
           tester: tester,
           pagingController: pagingController,
           newPageProgressIndicator: customNewPageProgressIndicator,
@@ -233,7 +233,7 @@ void main() {
           key: customIndicatorKey,
         );
 
-        await _pumpPagedGridView(
+        await _pumpPagedStaggeredGridView(
           tester: tester,
           pagingController: pagingController,
           newPageErrorIndicator: customNewPageErrorIndicator,
@@ -261,7 +261,7 @@ void main() {
           key: customIndicatorKey,
         );
 
-        await _pumpPagedGridView(
+        await _pumpPagedStaggeredGridView(
           tester: tester,
           pagingController: pagingController,
           noMoreItemsIndicator: customNoMoreItemsIndicator,
@@ -281,7 +281,7 @@ class MockPageRequestListener extends Mock {
   void call(int pageKey);
 }
 
-Future<void> _pumpPagedGridView({
+Future<void> _pumpPagedStaggeredGridView({
   required WidgetTester tester,
   required PagingController<int, String> pagingController,
   int crossAxisCount = 2,
@@ -295,11 +295,12 @@ Future<void> _pumpPagedGridView({
     tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: PagedGridView(
+          body: PagedStaggeredGridView.count(
             pagingController: pagingController,
             builderDelegate: PagedChildBuilderDelegate<String>(
               itemBuilder: _buildItem,
-              newPageProgressIndicatorBuilder: newPageProgressIndicator != null
+              newPageProgressIndicatorBuilder:
+              newPageProgressIndicator != null
                   ? (context) => newPageProgressIndicator
                   : null,
               newPageErrorIndicatorBuilder: newPageErrorIndicator != null
@@ -309,17 +310,14 @@ Future<void> _pumpPagedGridView({
                   ? (context) => noMoreItemsIndicator
                   : null,
             ),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisSpacing: 0,
-              mainAxisSpacing: 0,
-              crossAxisCount: crossAxisCount,
-            ),
+            crossAxisCount: 2,
+            staggeredTileBuilder: (index) => const StaggeredTile.fit(1),
             showNewPageProgressIndicatorAsGridChild:
-                showNewPageProgressIndicatorAsGridChild,
+            showNewPageProgressIndicatorAsGridChild,
             showNewPageErrorIndicatorAsGridChild:
-                showNewPageErrorIndicatorAsGridChild,
+            showNewPageErrorIndicatorAsGridChild,
             showNoMoreItemsIndicatorAsGridChild:
-                showNoMoreItemsIndicatorAsGridChild,
+            showNoMoreItemsIndicatorAsGridChild,
           ),
         ),
       ),

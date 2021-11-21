@@ -4,6 +4,7 @@ import 'package:infinite_scroll_pagination/src/core/paged_child_builder_delegate
 import 'package:infinite_scroll_pagination/src/core/paging_controller.dart';
 import 'package:infinite_scroll_pagination/src/utils/appended_sliver_child_builder_delegate.dart';
 import 'package:infinite_scroll_pagination/src/widgets/helpers/paged_layout_builder.dart';
+import 'package:infinite_scroll_pagination/src/widgets/helpers/paged_sliver_layout_builder.dart';
 import 'package:infinite_scroll_pagination/src/widgets/layouts/paged_list_view.dart';
 
 /// A [SliverList] with pagination capabilities.
@@ -84,8 +85,7 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) =>
-      PagedLayoutBuilder<PageKeyType, ItemType>(
-        layoutProtocol: PagedLayoutProtocol.sliver,
+      PagedSliverLayoutBuilder<PageKeyType, ItemType>(
         pagingController: pagingController,
         builderDelegate: builderDelegate,
         completedListingBuilder: (

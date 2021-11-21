@@ -1,5 +1,4 @@
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:infinite_scroll_pagination/src/core/paging_controller.dart';
 
 const firstPageItemList = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
 
@@ -54,15 +53,15 @@ PagingState<int, String> buildPagingStateWithPopulatedState(
   }
 }
 
-PagingController<int, String> buildPagingControllerWithPopulatedState(
-  PopulatedStateOption filledStateOption,
-) {
-  final state = buildPagingStateWithPopulatedState(
-    filledStateOption,
-  );
-
-  return PagingController.fromValue(state, firstPageKey: 1);
-}
+// PagingController<int, String> buildPagingControllerWithPopulatedState(
+//   PopulatedStateOption filledStateOption,
+// ) {
+//   final state = buildPagingStateWithPopulatedState(
+//     filledStateOption,
+//   );
+//
+//   return PagingController.fromValue(state, firstPageKey: 1);
+// }
 
 enum PopulatedStateOption {
   errorOnSecondPage,

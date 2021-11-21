@@ -7,8 +7,9 @@ import 'package:infinite_scroll_pagination/src/widgets/helpers/default_status_in
 import 'package:infinite_scroll_pagination/src/widgets/helpers/default_status_indicators/new_page_error_indicator.dart';
 import 'package:infinite_scroll_pagination/src/widgets/helpers/default_status_indicators/new_page_progress_indicator.dart';
 import 'package:infinite_scroll_pagination/src/widgets/helpers/default_status_indicators/no_items_found_indicator.dart';
+import 'package:infinite_scroll_pagination/src/widgets/helpers/paged_sliver_layout_builder.dart';
 
-import 'utils/paging_controller_utils.dart';
+import '../utils/paging_controller_utils.dart';
 
 void main() {
   group('PagingStatus.loadingFirstPage', () {
@@ -381,8 +382,7 @@ Future<void> _pumpPagedLayoutBuilder({
   bool shrinkWrapFirstPageIndicators = false,
 }) =>
     _pumpSliver(
-      sliver: PagedLayoutBuilder(
-        layoutProtocol: PagedLayoutProtocol.sliver,
+      sliver: PagedSliverLayoutBuilder(
         pagingController: pagingController,
         builderDelegate: builderDelegate,
         shrinkWrapFirstPageIndicators: shrinkWrapFirstPageIndicators,
