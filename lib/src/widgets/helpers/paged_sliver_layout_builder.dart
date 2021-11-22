@@ -56,7 +56,7 @@ class PagedSliverLayoutBuilder<PageKeyType, ItemType> extends StatelessWidget {
         completedListingBuilder: completedListingBuilder,
         layoutBuilder: (context, child) {
           final wrappedChild =
-              pagingController.value.status.isFirstPageStatusIndicator
+              pagingController.value.status.isFirstPageStatus
                   ? _FirstPageStatusIndicatorBuilder(
                       shrinkWrap: shrinkWrapFirstPageIndicators,
                       child: child,
@@ -76,7 +76,7 @@ class PagedSliverLayoutBuilder<PageKeyType, ItemType> extends StatelessWidget {
 }
 
 extension on PagingStatus {
-  bool get isFirstPageStatusIndicator =>
+  bool get isFirstPageStatus =>
       this == PagingStatus.loadingFirstPage ||
       this == PagingStatus.noItemsFound ||
       this == PagingStatus.firstPageError;
