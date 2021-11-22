@@ -65,7 +65,7 @@ class PagedSliverGridBuilder<PageKeyType, ItemType> extends StatelessWidget {
   /// Defaults to true.
   final bool showNoMoreItemsIndicatorAsGridChild;
 
-  /// Matches [PagedLayoutBuilder.shrinkWrapFirstPageIndicators].
+  /// TODO
   final bool shrinkWrapFirstPageIndicators;
 
   @override

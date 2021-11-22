@@ -31,7 +31,6 @@ class PagedPageView<PageKeyType, ItemType> extends StatelessWidget {
     this.onPageChanged,
     this.pageSnapping = true,
     this.padEnds = true,
-    this.shrinkWrapFirstPageIndicators = false,
     Key? key,
   }) : super(key: key);
 
@@ -86,15 +85,11 @@ class PagedPageView<PageKeyType, ItemType> extends StatelessWidget {
   /// Matches [PageView.padEnds].
   final bool padEnds;
 
-  /// Matches [PagedLayoutBuilder.shrinkWrapFirstPageIndicators].
-  final bool shrinkWrapFirstPageIndicators;
-
   @override
   Widget build(BuildContext context) =>
       PagedBoxLayoutBuilder<PageKeyType, ItemType>(
         pagingController: pagingController,
         builderDelegate: builderDelegate,
-        shrinkWrapFirstPageIndicators: shrinkWrapFirstPageIndicators,
         completedListingBuilder: (
           context,
           itemBuilder,
