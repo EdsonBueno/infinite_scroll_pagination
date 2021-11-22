@@ -22,46 +22,36 @@ PagingState<int, String> buildPagingStateWithPopulatedState(
 ) {
   switch (filledStateOption) {
     case PopulatedStateOption.completedWithOnePage:
-      return const PagingState(
+      return const PagingState<int, String>(
         nextPageKey: null,
         itemList: firstPageItemList,
       );
     case PopulatedStateOption.errorOnSecondPage:
-      return PagingState(
+      return PagingState<int, String>(
         nextPageKey: 2,
         itemList: firstPageItemList,
         error: Error(),
       );
     case PopulatedStateOption.ongoingWithOnePage:
-      return const PagingState(
+      return const PagingState<int, String>(
         nextPageKey: 2,
         itemList: firstPageItemList,
       );
     case PopulatedStateOption.ongoingWithTwoPages:
-      return const PagingState(
+      return const PagingState<int, String>(
         nextPageKey: 3,
         itemList: [...firstPageItemList, ...secondPageItemList],
       );
     case PopulatedStateOption.errorOnFirstPage:
-      return PagingState(
+      return PagingState<int, String>(
         error: Error(),
       );
     case PopulatedStateOption.noItemsFound:
-      return const PagingState(
+      return const PagingState<int, String>(
         itemList: [],
       );
   }
 }
-
-// PagingController<int, String> buildPagingControllerWithPopulatedState(
-//   PopulatedStateOption filledStateOption,
-// ) {
-//   final state = buildPagingStateWithPopulatedState(
-//     filledStateOption,
-//   );
-//
-//   return PagingController.fromValue(state, firstPageKey: 1);
-// }
 
 enum PopulatedStateOption {
   errorOnSecondPage,

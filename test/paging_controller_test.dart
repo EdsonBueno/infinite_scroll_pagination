@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 
 import 'utils/paging_controller_utils.dart';
 
@@ -8,8 +8,11 @@ void main() {
   group('[appendPage]', () {
     test('Appends the new list to [itemList]', () {
       // given
-      final pagingController = buildPagingControllerWithPopulatedState(
-        PopulatedStateOption.ongoingWithOnePage,
+      final pagingController = PagingController.fromValue(
+        buildPagingStateWithPopulatedState(
+          PopulatedStateOption.ongoingWithOnePage,
+        ),
+        firstPageKey: 1,
       );
 
       // when
@@ -23,9 +26,13 @@ void main() {
     });
 
     test('Changes [nextPageKey]', () {
-      final pagingController = buildPagingControllerWithPopulatedState(
-        PopulatedStateOption.ongoingWithOnePage,
+      final pagingController = PagingController.fromValue(
+        buildPagingStateWithPopulatedState(
+          PopulatedStateOption.ongoingWithOnePage,
+        ),
+        firstPageKey: 1,
       );
+
       const newNextPageKey = 3;
 
       // when
@@ -37,8 +44,11 @@ void main() {
 
     test('Sets [error] to null', () {
       // given
-      final pagingController = buildPagingControllerWithPopulatedState(
-        PopulatedStateOption.errorOnSecondPage,
+      final pagingController = PagingController.fromValue(
+        buildPagingStateWithPopulatedState(
+          PopulatedStateOption.errorOnSecondPage,
+        ),
+        firstPageKey: 1,
       );
 
       // when
@@ -52,8 +62,11 @@ void main() {
   group('[appendLastPage]', () {
     test('Appends the new list to [itemList]', () {
       // given
-      final pagingController = buildPagingControllerWithPopulatedState(
-        PopulatedStateOption.ongoingWithOnePage,
+      final pagingController = PagingController.fromValue(
+        buildPagingStateWithPopulatedState(
+          PopulatedStateOption.ongoingWithOnePage,
+        ),
+        firstPageKey: 1,
       );
 
       // when
@@ -68,8 +81,11 @@ void main() {
 
     test('Sets [nextPageKey] to null', () {
       // given
-      final pagingController = buildPagingControllerWithPopulatedState(
-        PopulatedStateOption.ongoingWithOnePage,
+      final pagingController = PagingController.fromValue(
+        buildPagingStateWithPopulatedState(
+          PopulatedStateOption.ongoingWithOnePage,
+        ),
+        firstPageKey: 1,
       );
 
       // when
@@ -81,8 +97,11 @@ void main() {
 
     test('Sets [error] to null', () {
       // given
-      final pagingController = buildPagingControllerWithPopulatedState(
-        PopulatedStateOption.errorOnSecondPage,
+      final pagingController = PagingController.fromValue(
+        buildPagingStateWithPopulatedState(
+          PopulatedStateOption.errorOnSecondPage,
+        ),
+        firstPageKey: 1,
       );
 
       // when
@@ -95,8 +114,11 @@ void main() {
 
   test('[retryLastFailedRequest] sets [error] to null', () {
     // given
-    final pagingController = buildPagingControllerWithPopulatedState(
-      PopulatedStateOption.errorOnSecondPage,
+    final pagingController = PagingController.fromValue(
+      buildPagingStateWithPopulatedState(
+        PopulatedStateOption.errorOnSecondPage,
+      ),
+      firstPageKey: 1,
     );
 
     // when
@@ -109,8 +131,11 @@ void main() {
   group('[refresh]', () {
     test('Sets [itemList] to null', () {
       // given
-      final pagingController = buildPagingControllerWithPopulatedState(
-        PopulatedStateOption.ongoingWithOnePage,
+      final pagingController = PagingController.fromValue(
+        buildPagingStateWithPopulatedState(
+          PopulatedStateOption.ongoingWithOnePage,
+        ),
+        firstPageKey: 1,
       );
 
       // when
@@ -122,8 +147,11 @@ void main() {
 
     test('Sets [error] to null', () {
       // given
-      final pagingController = buildPagingControllerWithPopulatedState(
-        PopulatedStateOption.errorOnSecondPage,
+      final pagingController = PagingController.fromValue(
+        buildPagingStateWithPopulatedState(
+          PopulatedStateOption.errorOnSecondPage,
+        ),
+        firstPageKey: 1,
       );
 
       // when
@@ -135,8 +163,11 @@ void main() {
 
     test('Sets [nextPageKey] back to [firstPageKey]', () {
       // given
-      final pagingController = buildPagingControllerWithPopulatedState(
-        PopulatedStateOption.ongoingWithOnePage,
+      final pagingController = PagingController.fromValue(
+        buildPagingStateWithPopulatedState(
+          PopulatedStateOption.ongoingWithOnePage,
+        ),
+        firstPageKey: 1,
       );
 
       // when
@@ -164,7 +195,11 @@ void main() {
       );
 
       // then
-      verify(mockStatusListener(PagingStatus.ongoing));
+      verify(
+        () => mockStatusListener(
+          PagingStatus.ongoing,
+        ),
+      );
     });
 
     test('Removed [PagingStatusListener]s aren\'t notified', () {
@@ -175,7 +210,11 @@ void main() {
       );
 
       // then
-      verifyNever(mockStatusListener(PagingStatus.ongoing));
+      verifyNever(
+        () => mockStatusListener(
+          PagingStatus.ongoing,
+        ),
+      );
     });
   });
 
@@ -195,7 +234,11 @@ void main() {
       pagingController.notifyPageRequestListeners(requestedPageKey);
 
       // then
-      verify(mockPageRequestListener(requestedPageKey));
+      verify(
+        () => mockPageRequestListener(
+          requestedPageKey,
+        ),
+      );
     });
 
     test('Removed [PageRequestListener]s aren\'t notified', () {
@@ -204,15 +247,22 @@ void main() {
       pagingController.notifyPageRequestListeners(requestedPageKey);
 
       // then
-      verifyNever(mockPageRequestListener(requestedPageKey));
+      verifyNever(
+        () => mockPageRequestListener(
+          requestedPageKey,
+        ),
+      );
     });
   });
 
   group('[dispose]', () {
     late PagingController disposedPagingController;
     setUp(() {
-      disposedPagingController = buildPagingControllerWithPopulatedState(
-        PopulatedStateOption.ongoingWithOnePage,
+      disposedPagingController = PagingController.fromValue(
+        buildPagingStateWithPopulatedState(
+          PopulatedStateOption.ongoingWithOnePage,
+        ),
+        firstPageKey: 1,
       )..dispose();
     });
 
