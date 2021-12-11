@@ -13,7 +13,7 @@ class FirstPageErrorIndicator extends StatelessWidget {
   Widget build(BuildContext context) => FirstPageExceptionIndicator(
         title: 'Something went wrong',
         message: 'The application has encountered an unknown error.\n'
-            'Please try again later.',
+            'Please try again later',
         onTryAgain: onTryAgain,
       );
 }

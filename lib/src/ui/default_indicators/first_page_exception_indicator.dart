@@ -25,7 +25,10 @@ class FirstPageExceptionIndicator extends StatelessWidget {
             Text(
               title,
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context)
+                  .textTheme
+                  .headline6
+                  ?.copyWith(color: Colors.grey),
             ),
             if (message != null)
               const SizedBox(
@@ -35,6 +38,7 @@ class FirstPageExceptionIndicator extends StatelessWidget {
               Text(
                 message,
                 textAlign: TextAlign.center,
+                style: const TextStyle(color: Colors.grey),
               ),
             if (onTryAgain != null)
               const SizedBox(
