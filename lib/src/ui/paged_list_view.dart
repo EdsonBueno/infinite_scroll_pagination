@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 import 'package:infinite_scroll_pagination/src/core/paged_child_builder_delegate.dart';
 import 'package:infinite_scroll_pagination/src/core/paging_controller.dart';
+import 'package:infinite_scroll_pagination/src/ui/internationalization.dart';
 import 'package:infinite_scroll_pagination/src/ui/paged_sliver_builder.dart';
 import 'package:infinite_scroll_pagination/src/ui/paged_sliver_list.dart';
 
@@ -13,40 +14,41 @@ import 'package:infinite_scroll_pagination/src/ui/paged_sliver_list.dart';
 /// Wraps a [PagedSliverList] in a [BoxScrollView] so that it can be
 /// used without the need for a [CustomScrollView]. Similar to a [ListView].
 class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
-  const PagedListView({
-    required this.pagingController,
-    required this.builderDelegate,
-    // Corresponds to [ScrollView.controller].
-    ScrollController? scrollController,
-    // Corresponds to [ScrollView.scrollDirection].
-    Axis scrollDirection = Axis.vertical,
-    // Corresponds to [ScrollView.reverse].
-    bool reverse = false,
-    // Corresponds to [ScrollView.primary].
-    bool? primary,
-    // Corresponds to [ScrollView.physics].
-    ScrollPhysics? physics,
-    // Corresponds to [ScrollView.shrinkWrap].
-    bool shrinkWrap = false,
-    // Corresponds to [BoxScrollView.padding].
-    EdgeInsetsGeometry? padding,
-    this.itemExtent,
-    this.addAutomaticKeepAlives = true,
-    this.addRepaintBoundaries = true,
-    this.addSemanticIndexes = true,
-    // Corresponds to [ScrollView.cacheExtent]
-    double? cacheExtent,
-    // Corresponds to [ScrollView.dragStartBehavior]
-    DragStartBehavior dragStartBehavior = DragStartBehavior.start,
-    // Corresponds to [ScrollView.keyboardDismissBehavior]
-    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
-        ScrollViewKeyboardDismissBehavior.manual,
-    // Corresponds to [ScrollView.restorationId]
-    String? restorationId,
-    // Corresponds to [ScrollView.clipBehavior]
-    Clip clipBehavior = Clip.hardEdge,
-    Key? key,
-  })  : _separatorBuilder = null,
+  const PagedListView(
+      {required this.pagingController,
+      required this.builderDelegate,
+      // Corresponds to [ScrollView.controller].
+      ScrollController? scrollController,
+      // Corresponds to [ScrollView.scrollDirection].
+      Axis scrollDirection = Axis.vertical,
+      // Corresponds to [ScrollView.reverse].
+      bool reverse = false,
+      // Corresponds to [ScrollView.primary].
+      bool? primary,
+      // Corresponds to [ScrollView.physics].
+      ScrollPhysics? physics,
+      // Corresponds to [ScrollView.shrinkWrap].
+      bool shrinkWrap = false,
+      // Corresponds to [BoxScrollView.padding].
+      EdgeInsetsGeometry? padding,
+      this.itemExtent,
+      this.addAutomaticKeepAlives = true,
+      this.addRepaintBoundaries = true,
+      this.addSemanticIndexes = true,
+      // Corresponds to [ScrollView.cacheExtent]
+      double? cacheExtent,
+      // Corresponds to [ScrollView.dragStartBehavior]
+      DragStartBehavior dragStartBehavior = DragStartBehavior.start,
+      // Corresponds to [ScrollView.keyboardDismissBehavior]
+      ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
+          ScrollViewKeyboardDismissBehavior.manual,
+      // Corresponds to [ScrollView.restorationId]
+      String? restorationId,
+      // Corresponds to [ScrollView.clipBehavior]
+      Clip clipBehavior = Clip.hardEdge,
+      Key? key,
+      this.internationalizationHelper})
+      : _separatorBuilder = null,
         _shrinkWrapFirstPageIndicators = shrinkWrap,
         super(
           key: key,
@@ -68,6 +70,7 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
     required this.pagingController,
     required this.builderDelegate,
     required IndexedWidgetBuilder separatorBuilder,
+    this.internationalizationHelper,
     // Corresponds to [ScrollView.controller].
     ScrollController? scrollController,
     // Corresponds to [ScrollView.scrollDirection].
@@ -140,6 +143,8 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
   /// Corresponds to [PagedSliverList.shrinkWrapFirstPageIndicators].
   final bool _shrinkWrapFirstPageIndicators;
 
+  final InternationalizationHelper? internationalizationHelper;
+
   @override
   Widget buildChildLayout(BuildContext context) {
     final separatorBuilder = _separatorBuilder;
@@ -153,6 +158,8 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
             addSemanticIndexes: addSemanticIndexes,
             itemExtent: itemExtent,
             shrinkWrapFirstPageIndicators: _shrinkWrapFirstPageIndicators,
+            internationalizationHelper:
+                internationalizationHelper ?? InternationalizationHelper(),
           )
         : PagedSliverList<PageKeyType, ItemType>(
             builderDelegate: builderDelegate,
@@ -162,6 +169,8 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
             addSemanticIndexes: addSemanticIndexes,
             itemExtent: itemExtent,
             shrinkWrapFirstPageIndicators: _shrinkWrapFirstPageIndicators,
+            internationalizationHelper:
+                internationalizationHelper ?? InternationalizationHelper(),
           );
   }
 }

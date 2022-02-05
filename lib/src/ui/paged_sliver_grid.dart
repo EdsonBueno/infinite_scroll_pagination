@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:infinite_scroll_pagination/src/core/paged_child_builder_delegate.dart';
 import 'package:infinite_scroll_pagination/src/core/paging_controller.dart';
+import 'package:infinite_scroll_pagination/src/ui/internationalization.dart';
 import 'package:infinite_scroll_pagination/src/ui/paged_grid_view.dart';
 import 'package:infinite_scroll_pagination/src/ui/paged_sliver_builder.dart';
 import 'package:infinite_scroll_pagination/src/utils/appended_sliver_child_builder_delegate.dart';
@@ -25,6 +26,7 @@ class PagedSliverGrid<PageKeyType, ItemType> extends StatelessWidget {
     this.showNewPageErrorIndicatorAsGridChild = true,
     this.showNoMoreItemsIndicatorAsGridChild = true,
     this.shrinkWrapFirstPageIndicators = false,
+    this.internationalizationHelper,
     Key? key,
   }) : super(key: key);
 
@@ -67,6 +69,8 @@ class PagedSliverGrid<PageKeyType, ItemType> extends StatelessWidget {
   /// Corresponds to [PagedSliverBuilder.shrinkWrapFirstPageIndicators].
   final bool shrinkWrapFirstPageIndicators;
 
+  final InternationalizationHelper? internationalizationHelper;
+
   @override
   Widget build(BuildContext context) =>
       PagedSliverBuilder<PageKeyType, ItemType>(
@@ -104,6 +108,8 @@ class PagedSliverGrid<PageKeyType, ItemType> extends StatelessWidget {
           addSemanticIndexes: addSemanticIndexes,
           addRepaintBoundaries: addRepaintBoundaries,
         ),
+        internationalizationHelper:
+            internationalizationHelper ?? InternationalizationHelper(),
         errorListingBuilder: (
           context,
           itemBuilder,

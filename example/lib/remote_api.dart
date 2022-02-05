@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:breaking_bapp/character_summary.dart';
 import 'package:http/http.dart' as http;
 
+import 'character_summary.dart';
+
 class RemoteApi {
   static Future<List<CharacterSummary>> getCharacterList(
     int offset,

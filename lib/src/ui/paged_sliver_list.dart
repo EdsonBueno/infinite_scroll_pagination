@@ -6,6 +6,8 @@ import 'package:infinite_scroll_pagination/src/ui/paged_list_view.dart';
 import 'package:infinite_scroll_pagination/src/ui/paged_sliver_builder.dart';
 import 'package:infinite_scroll_pagination/src/utils/appended_sliver_child_builder_delegate.dart';
 
+import 'internationalization.dart';
+
 /// Paged [SliverList] with progress and error indicators displayed as the last
 /// item.
 ///
@@ -25,6 +27,7 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
     this.itemExtent,
     this.semanticIndexCallback,
     this.shrinkWrapFirstPageIndicators = false,
+    this.internationalizationHelper,
     Key? key,
   })  : _separatorBuilder = null,
         super(key: key);
@@ -39,6 +42,7 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
     this.itemExtent,
     this.semanticIndexCallback,
     this.shrinkWrapFirstPageIndicators = false,
+    this.internationalizationHelper,
     Key? key,
   })  : _separatorBuilder = separatorBuilder,
         super(key: key);
@@ -69,6 +73,8 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
 
   /// Corresponds to [PagedSliverBuilder.shrinkWrapFirstPageIndicators].
   final bool shrinkWrapFirstPageIndicators;
+
+  final InternationalizationHelper? internationalizationHelper;
 
   @override
   Widget build(BuildContext context) =>
@@ -109,6 +115,8 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
           statusIndicatorBuilder: errorIndicatorBuilder,
         ),
         shrinkWrapFirstPageIndicators: shrinkWrapFirstPageIndicators,
+        internationalizationHelper:
+            internationalizationHelper ?? InternationalizationHelper(),
       );
 
   SliverMultiBoxAdaptorWidget _buildSliverList(

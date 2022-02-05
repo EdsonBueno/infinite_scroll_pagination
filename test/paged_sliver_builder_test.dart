@@ -7,6 +7,7 @@ import 'package:infinite_scroll_pagination/src/ui/default_indicators/first_page_
 import 'package:infinite_scroll_pagination/src/ui/default_indicators/new_page_error_indicator.dart';
 import 'package:infinite_scroll_pagination/src/ui/default_indicators/new_page_progress_indicator.dart';
 import 'package:infinite_scroll_pagination/src/ui/default_indicators/no_items_found_indicator.dart';
+import 'package:infinite_scroll_pagination/src/ui/internationalization.dart';
 
 import 'utils/paging_controller_utils.dart';
 
@@ -382,6 +383,7 @@ Future<void> _pumpPagedSliverBuilder({
 }) =>
     _pumpSliver(
       sliver: PagedSliverBuilder(
+        internationalizationHelper: InternationalizationHelper(),
         pagingController: pagingController,
         builderDelegate: builderDelegate,
         shrinkWrapFirstPageIndicators: shrinkWrapFirstPageIndicators,
