@@ -33,7 +33,7 @@ Designed to feel like part of the Flutter framework.
 ```dart
 class CharacterListView extends StatefulWidget {
   @override
-  _CharacterListViewState createState() => _CharacterListViewState();
+  State<CharacterListView> createState() => _CharacterListViewState();
 }
 
 class _CharacterListViewState extends State<CharacterListView> {
