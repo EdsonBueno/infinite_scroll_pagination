@@ -7,7 +7,7 @@ All the snippets are from the [example project](https://github.com/EdsonBueno/in
 ```dart
 class CharacterListView extends StatefulWidget {
   @override
-  _CharacterListViewState createState() => _CharacterListViewState();
+  State<CharacterListView> createState() => _CharacterListViewState();
 }
 
 class _CharacterListViewState extends State<CharacterListView> {
@@ -174,7 +174,7 @@ There are many ways to integrate searching/filtering/sorting with this package. 
 ```dart
 class CharacterSliverList extends StatefulWidget {
   @override
-  _CharacterSliverListState createState() => _CharacterSliverListState();
+  State<CharacterSliverList> createState() => _CharacterSliverListState();
 }
 
 class _CharacterSliverListState extends State<CharacterSliverList> {
@@ -319,7 +319,7 @@ Below you can see one of the possible ways to integrate it with BLoCs:
 ```dart
 class CharacterSliverGrid extends StatefulWidget {
   @override
-  _CharacterSliverGridState createState() => _CharacterSliverGridState();
+  State<CharacterSliverGrid> createState() => _CharacterSliverGridState();
 }
 
 class _CharacterSliverGridState extends State<CharacterSliverGrid> {

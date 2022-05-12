@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/widgets.dart';
 import 'package:infinite_scroll_pagination/src/model/paging_state.dart';
 import 'package:infinite_scroll_pagination/src/model/paging_status.dart';
 
@@ -35,10 +34,10 @@ class PagingController<PageKeyType, ItemType>
   ///
   /// [firstPageKey] is the key to be used in case of a [refresh].
   PagingController.fromValue(
-    PagingState<PageKeyType, ItemType> value, {
+    super.value, {
     required this.firstPageKey,
     this.invisibleItemsThreshold,
-  }) : super(value);
+  });
 
   ObserverList<PagingStatusListener>? _statusListeners =
       ObserverList<PagingStatusListener>();

@@ -9,7 +9,6 @@ class MyApp extends StatelessWidget {
         title: 'Infinite Scroll Pagination Sample',
         theme: ThemeData(
           primarySwatch: Colors.green,
-          buttonColor: Colors.green,
         ),
         home: CharacterListScreen(),
       );

@@ -3,9 +3,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:infinite_scroll_pagination/src/core/paging_controller.dart';
-import 'package:infinite_scroll_pagination/src/model/paging_state.dart';
-import 'package:infinite_scroll_pagination/src/model/paging_status.dart';
 import 'package:infinite_scroll_pagination/src/ui/default_indicators/first_page_error_indicator.dart';
 import 'package:infinite_scroll_pagination/src/ui/default_indicators/first_page_progress_indicator.dart';
 import 'package:infinite_scroll_pagination/src/ui/default_indicators/new_page_error_indicator.dart';
@@ -53,8 +50,8 @@ class PagedSliverBuilder<PageKeyType, ItemType> extends StatefulWidget {
     required this.errorListingBuilder,
     required this.completedListingBuilder,
     this.shrinkWrapFirstPageIndicators = false,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// The controller for paged listings.
   ///
@@ -86,7 +83,7 @@ class PagedSliverBuilder<PageKeyType, ItemType> extends StatefulWidget {
   final bool shrinkWrapFirstPageIndicators;
 
   @override
-  _PagedSliverBuilderState<PageKeyType, ItemType> createState() =>
+  State<PagedSliverBuilder<PageKeyType, ItemType>> createState() =>
       _PagedSliverBuilderState<PageKeyType, ItemType>();
 }
 
@@ -254,7 +251,7 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
 
       if (_hasNextPage && isBuildingTriggerIndexItem) {
         // Schedules the request for the end of this frame.
-        WidgetsBinding.instance?.addPostFrameCallback((_) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
           _pagingController.notifyPageRequestListeners(_nextKey!);
         });
         _hasRequestedNextPage = true;
@@ -278,8 +275,8 @@ class _FirstPageStatusIndicatorBuilder extends StatelessWidget {
   const _FirstPageStatusIndicatorBuilder({
     required this.builder,
     this.shrinkWrap = false,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final WidgetBuilder builder;
   final bool shrinkWrap;

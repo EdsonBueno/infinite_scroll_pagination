@@ -10,7 +10,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class CharacterSliverGrid extends StatefulWidget {
   @override
-  _CharacterSliverGridState createState() => _CharacterSliverGridState();
+  State<CharacterSliverGrid> createState() => _CharacterSliverGridState();
 }
 
 class _CharacterSliverGridState extends State<CharacterSliverGrid> {

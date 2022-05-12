@@ -5,15 +5,15 @@ import 'package:rxdart/rxdart.dart';
 
 class CharacterSearchInputSliver extends StatefulWidget {
   const CharacterSearchInputSliver({
-    Key? key,
+    super.key,
     this.onChanged,
     this.debounceTime,
-  }) : super(key: key);
+  });
   final ValueChanged<String>? onChanged;
   final Duration? debounceTime;
 
   @override
-  _CharacterSearchInputSliverState createState() =>
+  State<CharacterSearchInputSliver> createState() =>
       _CharacterSearchInputSliverState();
 }
 
