@@ -1,3 +1,7 @@
+## 3.2.0
+
+* Migrates to Flutter 3.
+
 ## 3.1.0
 
 * Adds [animated status transitions](https://pub.dev/packages/infinite_scroll_pagination/example#animating-status-transitions).
