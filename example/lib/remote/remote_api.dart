@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:breaking_bapp/remote/character_summary.dart';
 import 'package:http/http.dart' as http;
 
+// ignore: avoid_classes_with_only_static_members
 class RemoteApi {
   static Future<List<CharacterSummary>> getCharacterList(
     int offset,
@@ -32,6 +33,7 @@ class GenericHttpException implements Exception {}
 
 class NoConnectionException implements Exception {}
 
+// ignore: avoid_classes_with_only_static_members
 class _ApiUrlBuilder {
   static const _baseUrl = 'https://www.breakingbadapi.com/api/';
   static const _charactersResource = 'characters/';

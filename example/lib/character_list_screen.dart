@@ -4,7 +4,6 @@ import 'package:breaking_bapp/samples/character_sliver_grid.dart';
 import 'package:breaking_bapp/samples/character_sliver_list.dart';
 import 'package:breaking_bapp/samples/character_staggered_grid.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class CharacterListScreen extends StatefulWidget {
   @override

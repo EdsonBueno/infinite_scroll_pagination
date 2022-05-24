@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:mockito/mockito.dart';
@@ -299,8 +298,7 @@ Future<void> _pumpPagedStaggeredGridView({
             pagingController: pagingController,
             builderDelegate: PagedChildBuilderDelegate<String>(
               itemBuilder: _buildItem,
-              newPageProgressIndicatorBuilder:
-              newPageProgressIndicator != null
+              newPageProgressIndicatorBuilder: newPageProgressIndicator != null
                   ? (context) => newPageProgressIndicator
                   : null,
               newPageErrorIndicatorBuilder: newPageErrorIndicator != null
@@ -313,11 +311,11 @@ Future<void> _pumpPagedStaggeredGridView({
             crossAxisCount: 2,
             staggeredTileBuilder: (index) => const StaggeredTile.fit(1),
             showNewPageProgressIndicatorAsGridChild:
-            showNewPageProgressIndicatorAsGridChild,
+                showNewPageProgressIndicatorAsGridChild,
             showNewPageErrorIndicatorAsGridChild:
-            showNewPageErrorIndicatorAsGridChild,
+                showNewPageErrorIndicatorAsGridChild,
             showNoMoreItemsIndicatorAsGridChild:
-            showNoMoreItemsIndicatorAsGridChild,
+                showNoMoreItemsIndicatorAsGridChild,
           ),
         ),
       ),
