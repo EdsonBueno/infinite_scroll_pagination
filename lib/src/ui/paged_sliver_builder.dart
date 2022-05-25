@@ -251,7 +251,7 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
 
       if (_hasNextPage && isBuildingTriggerIndexItem) {
         // Schedules the request for the end of this frame.
-        WidgetsBinding.instance.addPostFrameCallback((_) {
+        WidgetsBinding.instance?.addPostFrameCallback((_) {
           _pagingController.notifyPageRequestListeners(_nextKey!);
         });
         _hasRequestedNextPage = true;
