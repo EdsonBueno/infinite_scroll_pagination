@@ -42,7 +42,8 @@ typedef LoadingListingBuilder = Widget Function(
 /// For ordinary cases, this widget shouldn't be used directly. Instead, take a
 /// look at [PagedSliverList], [PagedSliverGrid],
 /// [PagedGridView] and [PagedListView].
-class PagedSliverBuilder<PageKeyType, ItemType> extends StatefulWidget {
+class PagedSliverBuilder<PageKeyType, ItemType>
+    extends StatefulWidget {
   const PagedSliverBuilder({
     required this.pagingController,
     required this.builderDelegate,
@@ -153,7 +154,8 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
             _hasRequestedNextPage = false;
           }
         },
-        child: ValueListenableBuilder<PagingState<PageKeyType, ItemType>>(
+        child: ValueListenableBuilder<
+            PagingState<PageKeyType, ItemType>>(
           valueListenable: _pagingController,
           builder: (context, pagingState, _) {
             Widget child;
@@ -247,11 +249,12 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
       final newPageRequestTriggerIndex =
           max(0, _itemCount - _invisibleItemsThreshold);
 
-      final isBuildingTriggerIndexItem = index == newPageRequestTriggerIndex;
+      final isBuildingTriggerIndexItem =
+          index == newPageRequestTriggerIndex;
 
       if (_hasNextPage && isBuildingTriggerIndexItem) {
         // Schedules the request for the end of this frame.
-        WidgetsBinding.instance.addPostFrameCallback((_) {
+        WidgetsBinding.instance?.addPostFrameCallback((_) {
           _pagingController.notifyPageRequestListeners(_nextKey!);
         });
         _hasRequestedNextPage = true;
