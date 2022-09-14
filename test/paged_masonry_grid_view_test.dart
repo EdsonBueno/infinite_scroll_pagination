@@ -188,91 +188,6 @@ void main() {
         );
       });
     });
-
-    group('Displays indicators below the grid when specified', () {
-      testWidgets(
-          'Displays new page progress indicator below the grid when '
-          '[showNewPageProgressIndicatorAsGridChild] is false', (tester) async {
-        tester.applyPreferredTestScreenSize();
-
-        final pagingController = buildPagingControllerWithPopulatedState(
-          PopulatedStateOption.ongoingWithOnePage,
-        );
-
-        final customIndicatorKey = UniqueKey();
-        final customNewPageProgressIndicator = CircularProgressIndicator(
-          key: customIndicatorKey,
-        );
-
-        await _pumpPagedStaggeredGridView(
-          tester: tester,
-          pagingController: pagingController,
-          newPageProgressIndicator: customNewPageProgressIndicator,
-          showNewPageProgressIndicatorAsGridChild: false,
-        );
-
-        expectWidgetToHaveScreenWidth(
-          customIndicatorKey,
-          tester,
-        );
-      });
-
-      testWidgets(
-          'Displays new page error indicator below the grid when '
-          '[showNewPageErrorIndicatorAsGridChild] is false', (tester) async {
-        tester.applyPreferredTestScreenSize();
-
-        final pagingController = buildPagingControllerWithPopulatedState(
-          PopulatedStateOption.errorOnSecondPage,
-        );
-
-        final customIndicatorKey = UniqueKey();
-        final customNewPageErrorIndicator = Text(
-          'Error',
-          key: customIndicatorKey,
-        );
-
-        await _pumpPagedStaggeredGridView(
-          tester: tester,
-          pagingController: pagingController,
-          newPageErrorIndicator: customNewPageErrorIndicator,
-          showNewPageErrorIndicatorAsGridChild: false,
-        );
-
-        expectWidgetToHaveScreenWidth(
-          customIndicatorKey,
-          tester,
-        );
-      });
-
-      testWidgets(
-          'Displays no more items indicator below the grid when '
-          '[showNoMoreItemsIndicatorAsGridChild] is false', (tester) async {
-        tester.applyPreferredTestScreenSize();
-
-        final pagingController = buildPagingControllerWithPopulatedState(
-          PopulatedStateOption.completedWithOnePage,
-        );
-
-        final customIndicatorKey = UniqueKey();
-        final customNoMoreItemsIndicator = Text(
-          'No More Items',
-          key: customIndicatorKey,
-        );
-
-        await _pumpPagedStaggeredGridView(
-          tester: tester,
-          pagingController: pagingController,
-          noMoreItemsIndicator: customNoMoreItemsIndicator,
-          showNoMoreItemsIndicatorAsGridChild: false,
-        );
-
-        expectWidgetToHaveScreenWidth(
-          customIndicatorKey,
-          tester,
-        );
-      });
-    });
   });
 }
 
@@ -287,14 +202,11 @@ Future<void> _pumpPagedStaggeredGridView({
   Widget? newPageProgressIndicator,
   Widget? newPageErrorIndicator,
   Widget? noMoreItemsIndicator,
-  bool showNewPageProgressIndicatorAsGridChild = true,
-  bool showNewPageErrorIndicatorAsGridChild = true,
-  bool showNoMoreItemsIndicatorAsGridChild = true,
 }) =>
     tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: PagedStaggeredGridView.count(
+          body: PagedMasonryGridView.count(
             pagingController: pagingController,
             builderDelegate: PagedChildBuilderDelegate<String>(
               itemBuilder: _buildItem,
@@ -309,13 +221,6 @@ Future<void> _pumpPagedStaggeredGridView({
                   : null,
             ),
             crossAxisCount: 2,
-            staggeredTileBuilder: (index) => const StaggeredTile.fit(1),
-            showNewPageProgressIndicatorAsGridChild:
-                showNewPageProgressIndicatorAsGridChild,
-            showNewPageErrorIndicatorAsGridChild:
-                showNewPageErrorIndicatorAsGridChild,
-            showNoMoreItemsIndicatorAsGridChild:
-                showNoMoreItemsIndicatorAsGridChild,
           ),
         ),
       ),

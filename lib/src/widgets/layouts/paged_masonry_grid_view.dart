@@ -4,7 +4,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:infinite_scroll_pagination/src/utils/appended_sliver_child_builder_delegate.dart';
 
-typedef StaggeredGridDelegateBuilder = SliverSimpleGridDelegate Function(
+typedef SliverSimpleGridDelegateBuilder = SliverSimpleGridDelegate Function(
   int childCount,
 );
 
@@ -16,8 +16,8 @@ typedef StaggeredGridDelegateBuilder = SliverSimpleGridDelegate Function(
 /// This is a wrapper around the [flutter_staggered_grid_view](https://pub.dev/packages/flutter_staggered_grid_view)
 /// package. For more info on how to build staggered grids, check out the
 /// referred package's documentation and examples.
-class PagedStaggeredGridView<PageKeyType, ItemType> extends StatelessWidget {
-  const PagedStaggeredGridView({
+class PagedMasonryGridView<PageKeyType, ItemType> extends StatelessWidget {
+  const PagedMasonryGridView({
     required this.pagingController,
     required this.builderDelegate,
     required this.gridDelegateBuilder,
@@ -46,7 +46,7 @@ class PagedStaggeredGridView<PageKeyType, ItemType> extends StatelessWidget {
         );
 
   /// Equivalent to [MasonryGridView.count].
-  PagedStaggeredGridView.count({
+  PagedMasonryGridView.count({
     required this.pagingController,
     required this.builderDelegate,
     required int crossAxisCount,
@@ -79,7 +79,7 @@ class PagedStaggeredGridView<PageKeyType, ItemType> extends StatelessWidget {
         );
 
   /// Equivalent to [MasonryGridView.extent].
-  PagedStaggeredGridView.extent({
+  PagedMasonryGridView.extent({
     required this.pagingController,
     required this.builderDelegate,
     required double maxCrossAxisExtent,
@@ -119,7 +119,7 @@ class PagedStaggeredGridView<PageKeyType, ItemType> extends StatelessWidget {
 
   /// Provides the adjusted child count (based on the pagination status) so
   /// that a [SliverSimpleGridDelegate] can be returned.
-  final StaggeredGridDelegateBuilder gridDelegateBuilder;
+  final SliverSimpleGridDelegateBuilder gridDelegateBuilder;
 
   /// Matches [ScrollView.scrollDirection]
   final Axis scrollDirection;
@@ -183,18 +183,6 @@ class PagedStaggeredGridView<PageKeyType, ItemType> extends StatelessWidget {
           itemCount,
           noMoreItemsIndicatorBuilder,
         ) =>
-            //     _AppendedSliverGrid(
-            //   sliverGridBuilder: (_, delegate) => SliverGrid(
-            //     delegate: delegate,
-            //     gridDelegate: gridDelegate,
-            //   ),
-            //   itemBuilder: itemBuilder,
-            //   itemCount: itemCount,
-            //   appendixBuilder: noMoreItemsIndicatorBuilder,
-            //   addAutomaticKeepAlives: addAutomaticKeepAlives,
-            //   addSemanticIndexes: addSemanticIndexes,
-            //   addRepaintBoundaries: addRepaintBoundaries,
-            // ),
             MasonryGridView.custom(
           scrollDirection: scrollDirection,
           reverse: reverse,
@@ -253,19 +241,6 @@ class PagedStaggeredGridView<PageKeyType, ItemType> extends StatelessWidget {
             addSemanticIndexes: addSemanticIndexes,
           ),
         ),
-
-        //     _AppendedSliverGrid(
-        //   sliverGridBuilder: (_, delegate) => SliverGrid(
-        //     delegate: delegate,
-        //     gridDelegate: gridDelegate,
-        //   ),
-        //   itemBuilder: itemBuilder,
-        //   itemCount: itemCount,
-        //   appendixBuilder: progressIndicatorBuilder,
-        //   addAutomaticKeepAlives: addAutomaticKeepAlives,
-        //   addSemanticIndexes: addSemanticIndexes,
-        //   addRepaintBoundaries: addRepaintBoundaries,
-        // ),
         errorListingBuilder: (
           context,
           itemBuilder,
@@ -298,39 +273,5 @@ class PagedStaggeredGridView<PageKeyType, ItemType> extends StatelessWidget {
             addSemanticIndexes: addSemanticIndexes,
           ),
         ),
-        //     _AppendedSliverGrid(
-        //   sliverGridBuilder: (_, delegate) => SliverGrid(
-        //     delegate: delegate,
-        //     gridDelegate: gridDelegate,
-        //   ),
-        //   itemBuilder: itemBuilder,
-        //   itemCount: itemCount,
-        //   appendixBuilder: errorIndicatorBuilder,
-        //   addAutomaticKeepAlives: addAutomaticKeepAlives,
-        //   addSemanticIndexes: addSemanticIndexes,
-        //   addRepaintBoundaries: addRepaintBoundaries,
-        // ),
       );
-
-// PagedSliverGridBuilder<PageKeyType, ItemType>(
-//   pagingController: pagingController,
-//   builderDelegate: builderDelegate,
-//   builder: (childCount, delegate) => SliverStaggeredGrid(
-//     delegate: delegate,
-//     gridDelegate: gridDelegateBuilder(childCount),
-//     // Hardcoding [addAutomaticKeepAlives] to false is a workaround for
-//     // https://github.com/letsar/flutter_staggered_grid_view/issues/189
-//     addAutomaticKeepAlives: false,
-//   ),
-//   addAutomaticKeepAlives: addAutomaticKeepAlives,
-//   addRepaintBoundaries: addRepaintBoundaries,
-//   addSemanticIndexes: addSemanticIndexes,
-//   showNewPageProgressIndicatorAsGridChild:
-//   showNewPageProgressIndicatorAsGridChild,
-//   showNewPageErrorIndicatorAsGridChild:
-//   showNewPageErrorIndicatorAsGridChild,
-//   showNoMoreItemsIndicatorAsGridChild:
-//   showNoMoreItemsIndicatorAsGridChild,
-//   shrinkWrapFirstPageIndicators: shrinkWrapFirstPageIndicators,
-// );
 }

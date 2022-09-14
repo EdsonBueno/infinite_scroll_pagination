@@ -7,12 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-class CharacterStaggeredGrid extends StatefulWidget {
+class CharacterMasonryGrid extends StatefulWidget {
   @override
-  _CharacterStaggeredGridState createState() => _CharacterStaggeredGridState();
+  _CharacterMasonryGridState createState() => _CharacterMasonryGridState();
 }
 
-class _CharacterStaggeredGridState extends State<CharacterStaggeredGrid> {
+class _CharacterMasonryGridState extends State<CharacterMasonryGrid> {
   final CharacterListingBloc _bloc = CharacterListingBloc();
   final PagingController<int, CharacterSummary> _pagingController =
       PagingController(firstPageKey: 0);
@@ -40,7 +40,7 @@ class _CharacterStaggeredGridState extends State<CharacterStaggeredGrid> {
   }
 
   @override
-  Widget build(BuildContext context) => PagedStaggeredGridView.count(
+  Widget build(BuildContext context) => PagedMasonryGridView.count(
         pagingController: _pagingController,
         builderDelegate: PagedChildBuilderDelegate<CharacterSummary>(
           itemBuilder: (context, item, index) => CachedNetworkImage(

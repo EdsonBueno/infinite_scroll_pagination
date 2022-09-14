@@ -1,8 +1,8 @@
 import 'package:breaking_bapp/samples/character_list_view.dart';
+import 'package:breaking_bapp/samples/character_masonry_grid.dart';
 import 'package:breaking_bapp/samples/character_page_view.dart';
 import 'package:breaking_bapp/samples/character_sliver_grid.dart';
 import 'package:breaking_bapp/samples/character_sliver_list.dart';
-import 'package:breaking_bapp/samples/character_staggered_grid.dart';
 import 'package:flutter/material.dart';
 
 class CharacterListScreen extends StatefulWidget {
@@ -30,9 +30,9 @@ class _CharacterListScreenState extends State<CharacterListScreen> {
       widgetBuilder: (context) => CharacterSliverGrid(),
     ),
     _BottomNavigationItem(
-      label: 'StaggeredGrid',
+      label: 'MasonryGrid',
       iconData: Icons.view_quilt,
-      widgetBuilder: (context) => CharacterStaggeredGrid(),
+      widgetBuilder: (context) => CharacterMasonryGrid(),
     ),
     _BottomNavigationItem(
       label: 'PageView',

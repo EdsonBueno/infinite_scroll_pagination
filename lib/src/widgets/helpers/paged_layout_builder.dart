@@ -44,7 +44,7 @@ enum PagedLayoutProtocol { sliver, box }
 ///
 /// For ordinary cases, this widget shouldn't be used directly. Instead, take a
 /// look at [PagedSliverList], [PagedSliverGrid], [PagedStaggeredSliverGrid],
-/// [PagedListView], [PagedGridView], [PagedStaggeredGridView], or
+/// [PagedListView], [PagedGridView], [PagedMasonryGridView], or
 /// [PagedPageView].
 class PagedLayoutBuilder<PageKeyType, ItemType> extends StatefulWidget {
   const PagedLayoutBuilder({
