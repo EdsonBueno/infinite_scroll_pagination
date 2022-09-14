@@ -48,7 +48,6 @@ class _CharacterStaggeredGridState extends State<CharacterStaggeredGrid> {
           ),
         ),
         crossAxisCount: 2,
-        staggeredTileBuilder: (index) => const StaggeredTile.fit(1),
       );
 
   @override
