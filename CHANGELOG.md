@@ -1,3 +1,9 @@
+## 4.0.0-dev.1
+
+* Renames `PagedSliverBuilder` to [PagedLayoutBuilder](https://pub.dev/documentation/infinite_scroll_pagination/4.0.0-dev.1/infinite_scroll_pagination/PagedLayoutBuilder-class.html) and adds support for creating layouts using the box protocol.
+* Introduces [PagedMasonryGridView](https://pub.dev/documentation/infinite_scroll_pagination/4.0.0-dev.1/infinite_scroll_pagination/PagedMasonryGridView-class.html).
+* Introduces [PagedPageView](https://pub.dev/documentation/infinite_scroll_pagination/4.0.0-dev.1/infinite_scroll_pagination/PagedPageView-class.html).
+
 ## 3.2.0
 
 * Migrates to Flutter 3.

@@ -43,9 +43,8 @@ enum PagedLayoutProtocol { sliver, box }
 /// [completedListingBuilder] for filling in the gaps.
 ///
 /// For ordinary cases, this widget shouldn't be used directly. Instead, take a
-/// look at [PagedSliverList], [PagedSliverGrid], [PagedStaggeredSliverGrid],
-/// [PagedListView], [PagedGridView], [PagedMasonryGridView], or
-/// [PagedPageView].
+/// look at [PagedSliverList], [PagedSliverGrid], [PagedListView],
+/// [PagedGridView], [PagedMasonryGridView], or [PagedPageView].
 class PagedLayoutBuilder<PageKeyType, ItemType> extends StatefulWidget {
   const PagedLayoutBuilder({
     required this.pagingController,
