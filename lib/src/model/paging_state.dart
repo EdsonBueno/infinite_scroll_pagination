@@ -1,5 +1,5 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/widgets.dart';
 import 'package:infinite_scroll_pagination/src/model/paging_status.dart';
 
 /// The current item's list, error, and next page key state for a paginated
@@ -52,22 +52,22 @@ class PagingState<PageKeyType, ItemType> {
       '$itemList\u251C, error: $error, nextPageKey: $nextPageKey)';
 
   @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) {
-      return true;
-    }
-    return other is PagingState &&
-        other.itemList == itemList &&
-        other.error == error &&
-        other.nextPageKey == nextPageKey;
-  }
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other.runtimeType == runtimeType &&
+              other is PagingState &&
+              (identical(other.error, error) || other.error == error)) &&
+          (identical(other.nextPageKey, nextPageKey) ||
+              other.nextPageKey == nextPageKey) &&
+          const DeepCollectionEquality().equals(other.itemList, itemList);
 
   @override
-  int get hashCode => hashValues(
-        itemList.hashCode,
-        error.hashCode,
-        nextPageKey.hashCode,
-      );
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        const DeepCollectionEquality().hash(itemList),
+        error,
+        nextPageKey,
+      ]);
 
   int? get _itemCount => itemList?.length;
 
