@@ -90,5 +90,5 @@ class PagingState<PageKeyType, ItemType> {
 
   bool get _hasSubsequentPageError => _isListingUnfinished && _hasError;
 
-  bool get _isEmpty => _itemCount != null && _itemCount == 0;
+  bool get _isEmpty => _itemCount != null && _itemCount == 0 && !_hasError;
 }
