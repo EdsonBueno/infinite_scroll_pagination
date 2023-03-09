@@ -101,7 +101,7 @@ void main() {
       );
 
       // when
-      pagingController.prependPage(secondPageItemList, 2);
+      pagingController.prependPage(secondPageItemList);
 
       // then
       expect(pagingController.itemList, [

@@ -109,9 +109,8 @@ class PagingController<PageKeyType, ItemType>
     );
   }
 
-  /// Prepends [newItems] to the previously loaded ones and replaces
-  /// the next page's key.
-  void prependPage(List<ItemType> newItems, PageKeyType? nextPageKey) {
+  /// Prepends [newItems] to the previously loaded ones
+  void prependPage(List<ItemType> newItems) {
     final previousItems = value.itemList ?? [];
     final itemList = newItems + previousItems;
     value = PagingState<PageKeyType, ItemType>(
