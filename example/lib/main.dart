@@ -1,4 +1,4 @@
-import 'package:breaking_bapp/presentation/character_list_screen.dart';
+import 'package:breaking_bapp/character_list_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
