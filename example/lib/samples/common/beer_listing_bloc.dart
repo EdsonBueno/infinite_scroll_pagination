@@ -1,25 +1,25 @@
 import 'dart:async';
 
-import 'package:breaking_bapp/remote/character_summary.dart';
+import 'package:breaking_bapp/remote/beer_summary.dart';
 import 'package:breaking_bapp/remote/remote_api.dart';
 import 'package:rxdart/rxdart.dart';
 
-class CharacterListingState {
-  CharacterListingState({
+class BeerListingState {
+  BeerListingState({
     this.itemList,
     this.error,
-    this.nextPageKey = 0,
+    this.nextPageKey = 1,
   });
 
-  final List<CharacterSummary>? itemList;
+  final List<BeerSummary>? itemList;
   final dynamic error;
   final int? nextPageKey;
 }
 
-class CharacterListingBloc {
-  CharacterListingBloc() {
+class BeerListingBloc {
+  BeerListingBloc() {
     _onPageRequest.stream
-        .flatMap(_fetchCharacterSummaryList)
+        .flatMap(_fetchBeerSummaryList)
         .listen(_onNewListingStateController.add)
         .addTo(_subscriptions);
 
@@ -33,12 +33,11 @@ class CharacterListingBloc {
 
   final _subscriptions = CompositeSubscription();
 
-  final _onNewListingStateController =
-      BehaviorSubject<CharacterListingState>.seeded(
-    CharacterListingState(),
+  final _onNewListingStateController = BehaviorSubject<BeerListingState>.seeded(
+    BeerListingState(),
   );
 
-  Stream<CharacterListingState> get onNewListingState =>
+  Stream<BeerListingState> get onNewListingState =>
       _onNewListingStateController.stream;
 
   final _onPageRequest = StreamController<int>();
@@ -52,28 +51,31 @@ class CharacterListingBloc {
 
   String? get _searchInputValue => _onSearchInputChangedSubject.value;
 
-  Stream<CharacterListingState> _resetSearch() async* {
-    yield CharacterListingState();
-    yield* _fetchCharacterSummaryList(0);
+  Stream<BeerListingState> _resetSearch() async* {
+    yield BeerListingState();
+    yield* _fetchBeerSummaryList(1);
   }
 
-  Stream<CharacterListingState> _fetchCharacterSummaryList(int pageKey) async* {
+  Stream<BeerListingState> _fetchBeerSummaryList(int pageKey) async* {
     final lastListingState = _onNewListingStateController.value;
     try {
-      final newItems = await RemoteApi.getCharacterList(
+      final newItems = await RemoteApi.getBeerList(
         pageKey,
         _pageSize,
         searchTerm: _searchInputValue,
       );
       final isLastPage = newItems.length < _pageSize;
-      final nextPageKey = isLastPage ? null : pageKey + newItems.length;
-      yield CharacterListingState(
+      final nextPageKey = isLastPage ? null : pageKey + 1;
+      yield BeerListingState(
         error: null,
         nextPageKey: nextPageKey,
-        itemList: [...lastListingState.itemList ?? [], ...newItems],
+        itemList: [
+          ...lastListingState.itemList ?? [],
+          ...newItems,
+        ],
       );
     } catch (e) {
-      yield CharacterListingState(
+      yield BeerListingState(
         error: e,
         nextPageKey: lastListingState.nextPageKey,
         itemList: lastListingState.itemList,

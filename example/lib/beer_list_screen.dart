@@ -1,50 +1,50 @@
-import 'package:breaking_bapp/samples/character_list_view.dart';
-import 'package:breaking_bapp/samples/character_masonry_grid.dart';
-import 'package:breaking_bapp/samples/character_page_view.dart';
-import 'package:breaking_bapp/samples/character_sliver_grid.dart';
-import 'package:breaking_bapp/samples/character_sliver_list.dart';
+import 'package:breaking_bapp/samples/beer_list_view.dart';
+import 'package:breaking_bapp/samples/beer_masonry_grid.dart';
+import 'package:breaking_bapp/samples/beer_page_view.dart';
+import 'package:breaking_bapp/samples/beer_sliver_grid.dart';
+import 'package:breaking_bapp/samples/beer_sliver_list.dart';
 import 'package:flutter/material.dart';
 
-class CharacterListScreen extends StatefulWidget {
+class BeerListScreen extends StatefulWidget {
   @override
-  _CharacterListScreenState createState() => _CharacterListScreenState();
+  _BeerListScreenState createState() => _BeerListScreenState();
 }
 
-class _CharacterListScreenState extends State<CharacterListScreen> {
+class _BeerListScreenState extends State<BeerListScreen> {
   int _selectedBottomNavigationIndex = 0;
 
   final List<_BottomNavigationItem> _bottomNavigationItems = [
     _BottomNavigationItem(
       label: 'Refresh',
       iconData: Icons.refresh,
-      widgetBuilder: (context) => CharacterListView(),
+      widgetBuilder: (context) => BeerListView(),
     ),
     _BottomNavigationItem(
       label: 'Search',
       iconData: Icons.search,
-      widgetBuilder: (context) => CharacterSliverList(),
+      widgetBuilder: (context) => BeerSliverList(),
     ),
     _BottomNavigationItem(
       label: 'Grid',
       iconData: Icons.grid_on,
-      widgetBuilder: (context) => CharacterSliverGrid(),
+      widgetBuilder: (context) => BeerSliverGrid(),
     ),
     _BottomNavigationItem(
       label: 'MasonryGrid',
       iconData: Icons.view_quilt,
-      widgetBuilder: (context) => CharacterMasonryGrid(),
+      widgetBuilder: (context) => BeerMasonryGrid(),
     ),
     _BottomNavigationItem(
       label: 'PageView',
       iconData: Icons.fullscreen,
-      widgetBuilder: (context) => CharacterPageView(),
+      widgetBuilder: (context) => BeerPageView(),
     ),
   ];
 
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          title: const Text('Characters'),
+          title: const Text('Beers'),
         ),
         resizeToAvoidBottomInset: false,
         bottomNavigationBar: BottomNavigationBar(

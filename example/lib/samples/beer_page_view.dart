@@ -1,20 +1,21 @@
-import 'package:breaking_bapp/remote/character_summary.dart';
+import 'package:breaking_bapp/remote/beer_summary.dart';
 import 'package:breaking_bapp/remote/remote_api.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-class CharacterPageView extends StatefulWidget {
+class BeerPageView extends StatefulWidget {
   @override
-  _CharacterPageViewState createState() => _CharacterPageViewState();
+  _BeerPageViewState createState() => _BeerPageViewState();
 }
 
-class _CharacterPageViewState extends State<CharacterPageView> {
+class _BeerPageViewState extends State<BeerPageView> {
   static const _pageSize = 20;
 
-  final PagingController<int, CharacterSummary> _pagingController =
-      PagingController(firstPageKey: 0);
+  final PagingController<int, BeerSummary> _pagingController = PagingController(
+    firstPageKey: 1,
+  );
 
   @override
   void initState() {
@@ -26,13 +27,13 @@ class _CharacterPageViewState extends State<CharacterPageView> {
 
   Future<void> _fetchPage(int pageKey) async {
     try {
-      final newItems = await RemoteApi.getCharacterList(pageKey, _pageSize);
+      final newItems = await RemoteApi.getBeerList(pageKey, _pageSize);
 
       final isLastPage = newItems.length < _pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
       } else {
-        final nextPageKey = pageKey + newItems.length;
+        final nextPageKey = pageKey + 1;
         _pagingController.appendPage(newItems, nextPageKey);
       }
     } catch (error) {
@@ -41,11 +42,11 @@ class _CharacterPageViewState extends State<CharacterPageView> {
   }
 
   @override
-  Widget build(BuildContext context) => PagedPageView<int, CharacterSummary>(
+  Widget build(BuildContext context) => PagedPageView<int, BeerSummary>(
         pagingController: _pagingController,
-        builderDelegate: PagedChildBuilderDelegate<CharacterSummary>(
+        builderDelegate: PagedChildBuilderDelegate<BeerSummary>(
           itemBuilder: (context, item, index) => CachedNetworkImage(
-            imageUrl: item.pictureUrl,
+            imageUrl: item.imageUrl,
           ),
         ),
       );

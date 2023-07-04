@@ -1,20 +1,20 @@
 import 'dart:async';
 
-import 'package:breaking_bapp/remote/character_summary.dart';
-import 'package:breaking_bapp/samples/common/character_listing_bloc.dart';
+import 'package:breaking_bapp/remote/beer_summary.dart';
+import 'package:breaking_bapp/samples/common/beer_listing_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-class CharacterMasonryGrid extends StatefulWidget {
+class BeerMasonryGrid extends StatefulWidget {
   @override
-  _CharacterMasonryGridState createState() => _CharacterMasonryGridState();
+  _BeerMasonryGridState createState() => _BeerMasonryGridState();
 }
 
-class _CharacterMasonryGridState extends State<CharacterMasonryGrid> {
-  final CharacterListingBloc _bloc = CharacterListingBloc();
-  final PagingController<int, CharacterSummary> _pagingController =
+class _BeerMasonryGridState extends State<BeerMasonryGrid> {
+  final BeerListingBloc _bloc = BeerListingBloc();
+  final PagingController<int, BeerSummary> _pagingController =
       PagingController(firstPageKey: 0);
   late StreamSubscription _blocListingStateSubscription;
 
@@ -42,9 +42,9 @@ class _CharacterMasonryGridState extends State<CharacterMasonryGrid> {
   @override
   Widget build(BuildContext context) => PagedMasonryGridView.count(
         pagingController: _pagingController,
-        builderDelegate: PagedChildBuilderDelegate<CharacterSummary>(
+        builderDelegate: PagedChildBuilderDelegate<BeerSummary>(
           itemBuilder: (context, item, index) => CachedNetworkImage(
-            imageUrl: item.pictureUrl,
+            imageUrl: item.imageUrl,
           ),
         ),
         crossAxisCount: 2,

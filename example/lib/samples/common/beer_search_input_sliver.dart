@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
-class CharacterSearchInputSliver extends StatefulWidget {
-  const CharacterSearchInputSliver({
+class BeerSearchInputSliver extends StatefulWidget {
+  const BeerSearchInputSliver({
     Key? key,
     this.onChanged,
     this.debounceTime,
@@ -13,12 +13,10 @@ class CharacterSearchInputSliver extends StatefulWidget {
   final Duration? debounceTime;
 
   @override
-  _CharacterSearchInputSliverState createState() =>
-      _CharacterSearchInputSliverState();
+  _BeerSearchInputSliverState createState() => _BeerSearchInputSliverState();
 }
 
-class _CharacterSearchInputSliverState
-    extends State<CharacterSearchInputSliver> {
+class _BeerSearchInputSliverState extends State<BeerSearchInputSliver> {
   final StreamController<String> _textChangeStreamController =
       StreamController();
   late StreamSubscription _textChangesSubscription;
@@ -27,7 +25,10 @@ class _CharacterSearchInputSliverState
   void initState() {
     _textChangesSubscription = _textChangeStreamController.stream
         .debounceTime(
-          widget.debounceTime ?? const Duration(seconds: 1),
+          widget.debounceTime ??
+              const Duration(
+                seconds: 1,
+              ),
         )
         .distinct()
         .listen((text) {
@@ -43,11 +44,15 @@ class _CharacterSearchInputSliverState
   @override
   Widget build(BuildContext context) => SliverToBoxAdapter(
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(
+            16,
+          ),
           child: TextField(
             decoration: const InputDecoration(
-              prefixIcon: Icon(Icons.search),
-              labelText: 'Character Name',
+              prefixIcon: Icon(
+                Icons.search,
+              ),
+              labelText: 'Beer Name',
             ),
             onChanged: _textChangeStreamController.add,
           ),

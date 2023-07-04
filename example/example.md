@@ -5,15 +5,15 @@ All the snippets are from the [example project](https://github.com/EdsonBueno/in
 ## Simple Usage
 
 ```dart
-class CharacterListView extends StatefulWidget {
+class BeerListView extends StatefulWidget {
   @override
-  _CharacterListViewState createState() => _CharacterListViewState();
+  _BeerListViewState createState() => _BeerListViewState();
 }
 
-class _CharacterListViewState extends State<CharacterListView> {
+class _BeerListViewState extends State<BeerListView> {
   static const _pageSize = 20;
 
-  final PagingController<int, CharacterSummary> _pagingController =
+  final PagingController<int, BeerSummary> _pagingController =
       PagingController(firstPageKey: 0);
 
   @override
@@ -26,7 +26,7 @@ class _CharacterListViewState extends State<CharacterListView> {
 
   Future<void> _fetchPage(int pageKey) async {
     try {
-      final newItems = await RemoteApi.getCharacterList(pageKey, _pageSize);
+      final newItems = await RemoteApi.getBeerList(pageKey, _pageSize);
       final isLastPage = newItems.length < _pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
@@ -41,11 +41,11 @@ class _CharacterListViewState extends State<CharacterListView> {
 
   @override
   Widget build(BuildContext context) => 
-      PagedListView<int, CharacterSummary>(
+      PagedListView<int, BeerSummary>(
         pagingController: _pagingController,
-        builderDelegate: PagedChildBuilderDelegate<CharacterSummary>(
-          itemBuilder: (context, item, index) => CharacterListItem(
-            character: item,
+        builderDelegate: PagedChildBuilderDelegate<BeerSummary>(
+          itemBuilder: (context, item, index) => BeerListItem(
+            beer: item,
           ),
         ),
       );
@@ -63,11 +63,11 @@ class _CharacterListViewState extends State<CharacterListView> {
 ```dart
 @override
 Widget build(BuildContext context) => 
-    PagedListView<int, CharacterSummary>(
+    PagedListView<int, BeerSummary>(
       pagingController: _pagingController,
-      builderDelegate: PagedChildBuilderDelegate<CharacterSummary>(
-        itemBuilder: (context, item, index) => CharacterListItem(
-          character: item,
+      builderDelegate: PagedChildBuilderDelegate<BeerSummary>(
+        itemBuilder: (context, item, index) => BeerListItem(
+          beer: item,
         ),
         firstPageErrorIndicatorBuilder: (_) => FirstPageErrorIndicator(
           error: _pagingController.error,
@@ -89,14 +89,14 @@ Widget build(BuildContext context) =>
 ```dart
 @override
 Widget build(BuildContext context) =>
-    PagedListView<int, CharacterSummary>(
+    PagedListView<int, BeerSummary>(
       pagingController: _pagingController,
-      builderDelegate: PagedChildBuilderDelegate<CharacterSummary>(
+      builderDelegate: PagedChildBuilderDelegate<BeerSummary>(
         animateTransitions: true,
         // [transitionDuration] has a default value of 250 milliseconds.
         transitionDuration: const Duration(milliseconds: 500),
-        itemBuilder: (context, item, index) => CharacterListItem(
-          character: item,
+        itemBuilder: (context, item, index) => BeerListItem(
+          beer: item,
         ),
       ),
     );
@@ -106,11 +106,11 @@ Widget build(BuildContext context) =>
 ```dart
 @override
 Widget build(BuildContext context) =>
-    PagedListView<int, CharacterSummary>.separated(
+    PagedListView<int, BeerSummary>.separated(
       pagingController: _pagingController,
-      builderDelegate: PagedChildBuilderDelegate<CharacterSummary>(
-        itemBuilder: (context, item, index) => CharacterListItem(
-          character: item,
+      builderDelegate: PagedChildBuilderDelegate<BeerSummary>(
+        itemBuilder: (context, item, index) => BeerListItem(
+          beer: item,
         ),
       ),
       separatorBuilder: (context, index) => const Divider(),
@@ -129,11 +129,11 @@ Widget build(BuildContext context) =>
       onRefresh: () => Future.sync(
         () => _pagingController.refresh(),
       ),
-      child: PagedListView<int, CharacterSummary>(
+      child: PagedListView<int, BeerSummary>(
         pagingController: _pagingController,
-        builderDelegate: PagedChildBuilderDelegate<CharacterSummary>(
-          itemBuilder: (context, item, index) => CharacterListItem(
-            character: item,
+        builderDelegate: PagedChildBuilderDelegate<BeerSummary>(
+          itemBuilder: (context, item, index) => BeerListItem(
+            beer: item,
           ),
         ),
       ),
@@ -150,14 +150,14 @@ If you need to place some widgets before or after your list, and expect them to 
 Widget build(BuildContext context) => 
     CustomScrollView(
       slivers: <Widget>[
-        CharacterSearchInputSliver(
+        BeerSearchInputSliver(
           onChanged: _updateSearchTerm,
         ),
-        PagedSliverList<int, CharacterSummary>(
+        PagedSliverList<int, BeerSummary>(
           pagingController: _pagingController,
-          builderDelegate: PagedChildBuilderDelegate<CharacterSummary>(
-            itemBuilder: (context, item, index) => CharacterListItem(
-              character: item,
+          builderDelegate: PagedChildBuilderDelegate<BeerSummary>(
+            itemBuilder: (context, item, index) => BeerListItem(
+              beer: item,
             ),
           ),
         ),
@@ -165,22 +165,22 @@ Widget build(BuildContext context) =>
     );
 ```
 
-Notice that your preceding/following widgets should also be [Sliver](https://flutter.dev/docs/development/ui/advanced/slivers)s. `CharacterSearchInputSliver`, for example, is nothing but a [TextField](https://api.flutter.dev/flutter/material/TextField-class.html) wrapped by a [SliverToBoxAdapter](https://api.flutter.dev/flutter/widgets/SliverToBoxAdapter-class.html).
+Notice that your preceding/following widgets should also be [Sliver](https://flutter.dev/docs/development/ui/advanced/slivers)s. `BeerSearchInputSliver`, for example, is nothing but a [TextField](https://api.flutter.dev/flutter/material/TextField-class.html) wrapped by a [SliverToBoxAdapter](https://api.flutter.dev/flutter/widgets/SliverToBoxAdapter-class.html).
 
 ## Searching/Filtering/Sorting
 
 There are many ways to integrate searching/filtering/sorting with this package. The best one depends on you state management approach. Below you can see a simple example for a vanilla approach:
 
 ```dart
-class CharacterSliverList extends StatefulWidget {
+class BeerSliverList extends StatefulWidget {
   @override
-  _CharacterSliverListState createState() => _CharacterSliverListState();
+  _BeerSliverListState createState() => _BeerSliverListState();
 }
 
-class _CharacterSliverListState extends State<CharacterSliverList> {
+class _BeerSliverListState extends State<BeerSliverList> {
   static const _pageSize = 17;
 
-  final PagingController<int, CharacterSummary> _pagingController =
+  final PagingController<int, BeerSummary> _pagingController =
       PagingController(firstPageKey: 0);
 
   String? _searchTerm;
@@ -196,7 +196,7 @@ class _CharacterSliverListState extends State<CharacterSliverList> {
 
   Future<void> _fetchPage(pageKey) async {
     try {
-      final newItems = await RemoteApi.getCharacterList(
+      final newItems = await RemoteApi.getBeerList(
         pageKey,
         _pageSize,
         searchTerm: _searchTerm,
@@ -218,14 +218,14 @@ class _CharacterSliverListState extends State<CharacterSliverList> {
   Widget build(BuildContext context) => 
       CustomScrollView(
         slivers: <Widget>[
-          CharacterSearchInputSliver(
+          BeerSearchInputSliver(
             onChanged: _updateSearchTerm,
           ),
-          PagedSliverList<int, CharacterSummary>(
+          PagedSliverList<int, BeerSummary>(
             pagingController: _pagingController,
-            builderDelegate: PagedChildBuilderDelegate<CharacterSummary>(
-              itemBuilder: (context, item, index) => CharacterListItem(
-                character: item,
+            builderDelegate: PagedChildBuilderDelegate<BeerSummary>(
+              itemBuilder: (context, item, index) => BeerListItem(
+                beer: item,
               ),
             ),
           ),
@@ -254,7 +254,7 @@ If you want to change that, and instead display the items *below* the grid, as i
 ```dart
 @override
 Widget build(BuildContext context) => 
-    PagedGridView<int, CharacterSummary>(
+    PagedGridView<int, BeerSummary>(
       showNewPageProgressIndicatorAsGridChild: false,
       showNewPageErrorIndicatorAsGridChild: false,
       showNoMoreItemsIndicatorAsGridChild: false,
@@ -265,9 +265,9 @@ Widget build(BuildContext context) =>
         mainAxisSpacing: 10,
         crossAxisCount: 3,
       ),
-      builderDelegate: PagedChildBuilderDelegate<CharacterSummary>(
-        itemBuilder: (context, item, index) => CharacterGridItem(
-          character: item,
+      builderDelegate: PagedChildBuilderDelegate<BeerSummary>(
+        itemBuilder: (context, item, index) => BeerGridItem(
+          beer: item,
         ),
       ),
     );
@@ -308,7 +308,7 @@ void initState() {
 By default, the package asks a new page when there are 3 invisible items left while the user is scrolling. You can change that number in the [PagingController](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagingController-class.html)'s constructor.
 
 ```dart
-final PagingController<int, CharacterSummary> _pagingController =
+final PagingController<int, BeerSummary> _pagingController =
       PagingController(firstPageKey: 0, invisibleItemsThreshold: 5);
 ```
 
@@ -317,14 +317,14 @@ final PagingController<int, CharacterSummary> _pagingController =
 Below you can see one of the possible ways to integrate it with BLoCs:
 
 ```dart
-class CharacterSliverGrid extends StatefulWidget {
+class BeerSliverGrid extends StatefulWidget {
   @override
-  _CharacterSliverGridState createState() => _CharacterSliverGridState();
+  _BeerSliverGridState createState() => _BeerSliverGridState();
 }
 
-class _CharacterSliverGridState extends State<CharacterSliverGrid> {
-  final CharacterSliverGridBloc _bloc = CharacterSliverGridBloc();
-  final PagingController<int, CharacterSummary> _pagingController =
+class _BeerSliverGridState extends State<BeerSliverGrid> {
+  final BeerSliverGridBloc _bloc = BeerSliverGridBloc();
+  final PagingController<int, BeerSummary> _pagingController =
       PagingController(firstPageKey: 0);
   late StreamSubscription _blocListingStateSubscription;
 
@@ -353,11 +353,11 @@ class _CharacterSliverGridState extends State<CharacterSliverGrid> {
   Widget build(BuildContext context) => 
       CustomScrollView(
         slivers: <Widget>[
-          CharacterSearchInputSliver(
+          BeerSearchInputSliver(
             onChanged: (searchTerm) =>
                 _bloc.onSearchInputChangedSink.add(searchTerm),
           ),
-          PagedSliverGrid<int, CharacterSummary>(
+          PagedSliverGrid<int, BeerSummary>(
             pagingController: _pagingController,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               childAspectRatio: 100 / 150,
@@ -365,9 +365,9 @@ class _CharacterSliverGridState extends State<CharacterSliverGrid> {
               mainAxisSpacing: 10,
               crossAxisCount: 3,
             ),
-            builderDelegate: PagedChildBuilderDelegate<CharacterSummary>(
-              itemBuilder: (context, item, index) => CharacterGridItem(
-                character: item,
+            builderDelegate: PagedChildBuilderDelegate<BeerSummary>(
+              itemBuilder: (context, item, index) => BeerGridItem(
+                beer: item,
               ),
             ),
           ),

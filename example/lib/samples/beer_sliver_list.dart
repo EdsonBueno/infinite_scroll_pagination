@@ -1,20 +1,20 @@
-import 'package:breaking_bapp/remote/character_summary.dart';
+import 'package:breaking_bapp/remote/beer_summary.dart';
 import 'package:breaking_bapp/remote/remote_api.dart';
-import 'package:breaking_bapp/samples/common/character_list_item.dart';
-import 'package:breaking_bapp/samples/common/character_search_input_sliver.dart';
+import 'package:breaking_bapp/samples/common/beer_list_item.dart';
+import 'package:breaking_bapp/samples/common/beer_search_input_sliver.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-class CharacterSliverList extends StatefulWidget {
+class BeerSliverList extends StatefulWidget {
   @override
-  _CharacterSliverListState createState() => _CharacterSliverListState();
+  _BeerSliverListState createState() => _BeerSliverListState();
 }
 
-class _CharacterSliverListState extends State<CharacterSliverList> {
+class _BeerSliverListState extends State<BeerSliverList> {
   static const _pageSize = 17;
 
-  final PagingController<int, CharacterSummary> _pagingController =
-      PagingController(firstPageKey: 0);
+  final PagingController<int, BeerSummary> _pagingController =
+      PagingController(firstPageKey: 1);
 
   String? _searchTerm;
 
@@ -45,7 +45,7 @@ class _CharacterSliverListState extends State<CharacterSliverList> {
 
   Future<void> _fetchPage(pageKey) async {
     try {
-      final newItems = await RemoteApi.getCharacterList(
+      final newItems = await RemoteApi.getBeerList(
         pageKey,
         _pageSize,
         searchTerm: _searchTerm,
@@ -55,7 +55,7 @@ class _CharacterSliverListState extends State<CharacterSliverList> {
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
       } else {
-        final nextPageKey = pageKey + newItems.length;
+        final nextPageKey = pageKey + 1;
         _pagingController.appendPage(newItems, nextPageKey);
       }
     } catch (error) {
@@ -66,15 +66,15 @@ class _CharacterSliverListState extends State<CharacterSliverList> {
   @override
   Widget build(BuildContext context) => CustomScrollView(
         slivers: <Widget>[
-          CharacterSearchInputSliver(
+          BeerSearchInputSliver(
             onChanged: (searchTerm) => _updateSearchTerm(searchTerm),
           ),
-          PagedSliverList<int, CharacterSummary>(
+          PagedSliverList<int, BeerSummary>(
             pagingController: _pagingController,
-            builderDelegate: PagedChildBuilderDelegate<CharacterSummary>(
+            builderDelegate: PagedChildBuilderDelegate<BeerSummary>(
               animateTransitions: true,
-              itemBuilder: (context, item, index) => CharacterListItem(
-                character: item,
+              itemBuilder: (context, item, index) => BeerListItem(
+                beer: item,
               ),
             ),
           ),

@@ -1,19 +1,19 @@
-import 'package:breaking_bapp/remote/character_summary.dart';
+import 'package:breaking_bapp/remote/beer_summary.dart';
 import 'package:breaking_bapp/remote/remote_api.dart';
-import 'package:breaking_bapp/samples/common/character_list_item.dart';
+import 'package:breaking_bapp/samples/common/beer_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-class CharacterListView extends StatefulWidget {
+class BeerListView extends StatefulWidget {
   @override
-  _CharacterListViewState createState() => _CharacterListViewState();
+  _BeerListViewState createState() => _BeerListViewState();
 }
 
-class _CharacterListViewState extends State<CharacterListView> {
+class _BeerListViewState extends State<BeerListView> {
   static const _pageSize = 20;
 
-  final PagingController<int, CharacterSummary> _pagingController =
-      PagingController(firstPageKey: 0);
+  final PagingController<int, BeerSummary> _pagingController =
+      PagingController(firstPageKey: 1);
 
   @override
   void initState() {
@@ -25,13 +25,13 @@ class _CharacterListViewState extends State<CharacterListView> {
 
   Future<void> _fetchPage(int pageKey) async {
     try {
-      final newItems = await RemoteApi.getCharacterList(pageKey, _pageSize);
+      final newItems = await RemoteApi.getBeerList(pageKey, _pageSize);
 
       final isLastPage = newItems.length < _pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
       } else {
-        final nextPageKey = pageKey + newItems.length;
+        final nextPageKey = pageKey + 1;
         _pagingController.appendPage(newItems, nextPageKey);
       }
     } catch (error) {
@@ -44,12 +44,12 @@ class _CharacterListViewState extends State<CharacterListView> {
         onRefresh: () => Future.sync(
           () => _pagingController.refresh(),
         ),
-        child: PagedListView<int, CharacterSummary>.separated(
+        child: PagedListView<int, BeerSummary>.separated(
           pagingController: _pagingController,
-          builderDelegate: PagedChildBuilderDelegate<CharacterSummary>(
+          builderDelegate: PagedChildBuilderDelegate<BeerSummary>(
             animateTransitions: true,
-            itemBuilder: (context, item, index) => CharacterListItem(
-              character: item,
+            itemBuilder: (context, item, index) => BeerListItem(
+              beer: item,
             ),
           ),
           separatorBuilder: (context, index) => const Divider(),

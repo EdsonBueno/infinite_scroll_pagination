@@ -1,21 +1,21 @@
 import 'dart:async';
 
-import 'package:breaking_bapp/remote/character_summary.dart';
-import 'package:breaking_bapp/samples/common/character_listing_bloc.dart';
-import 'package:breaking_bapp/samples/common/character_search_input_sliver.dart';
+import 'package:breaking_bapp/remote/beer_summary.dart';
+import 'package:breaking_bapp/samples/common/beer_listing_bloc.dart';
+import 'package:breaking_bapp/samples/common/beer_search_input_sliver.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-class CharacterSliverGrid extends StatefulWidget {
+class BeerSliverGrid extends StatefulWidget {
   @override
-  _CharacterSliverGridState createState() => _CharacterSliverGridState();
+  _BeerSliverGridState createState() => _BeerSliverGridState();
 }
 
-class _CharacterSliverGridState extends State<CharacterSliverGrid> {
-  final CharacterListingBloc _bloc = CharacterListingBloc();
-  final PagingController<int, CharacterSummary> _pagingController =
+class _BeerSliverGridState extends State<BeerSliverGrid> {
+  final BeerListingBloc _bloc = BeerListingBloc();
+  final PagingController<int, BeerSummary> _pagingController =
       PagingController(firstPageKey: 0);
   late StreamSubscription _blocListingStateSubscription;
 
@@ -43,12 +43,12 @@ class _CharacterSliverGridState extends State<CharacterSliverGrid> {
   @override
   Widget build(BuildContext context) => CustomScrollView(
         slivers: <Widget>[
-          CharacterSearchInputSliver(
+          BeerSearchInputSliver(
             onChanged: (searchTerm) => _bloc.onSearchInputChangedSink.add(
               searchTerm,
             ),
           ),
-          PagedSliverGrid<int, CharacterSummary>(
+          PagedSliverGrid<int, BeerSummary>(
             pagingController: _pagingController,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               childAspectRatio: 100 / 150,
@@ -56,9 +56,9 @@ class _CharacterSliverGridState extends State<CharacterSliverGrid> {
               mainAxisSpacing: 10,
               crossAxisCount: 3,
             ),
-            builderDelegate: PagedChildBuilderDelegate<CharacterSummary>(
+            builderDelegate: PagedChildBuilderDelegate<BeerSummary>(
               itemBuilder: (context, item, index) => CachedNetworkImage(
-                imageUrl: item.pictureUrl,
+                imageUrl: item.imageUrl,
               ),
             ),
           ),

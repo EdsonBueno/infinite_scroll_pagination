@@ -1,24 +1,28 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:breaking_bapp/remote/character_summary.dart';
+import 'package:breaking_bapp/remote/beer_summary.dart';
 import 'package:http/http.dart' as http;
 
 // ignore: avoid_classes_with_only_static_members
 class RemoteApi {
-  static Future<List<CharacterSummary>> getCharacterList(
-    int offset,
+  static Future<List<BeerSummary>> getBeerList(
+    int page,
     int limit, {
     String? searchTerm,
   }) async =>
       http
           .get(
-            _ApiUrlBuilder.characterList(offset, limit, searchTerm: searchTerm),
+            _ApiUrlBuilder.beerList(
+              page,
+              limit,
+              searchTerm: searchTerm,
+            ),
           )
-          .mapFromResponse<List<CharacterSummary>, List<dynamic>>(
+          .mapFromResponse<List<BeerSummary>, List<dynamic>>(
             (jsonArray) => _parseItemListFromJsonArray(
               jsonArray,
-              (jsonObject) => CharacterSummary.fromJson(jsonObject),
+              (jsonObject) => BeerSummary.fromJson(jsonObject),
             ),
           );
 
@@ -35,24 +39,24 @@ class NoConnectionException implements Exception {}
 
 // ignore: avoid_classes_with_only_static_members
 class _ApiUrlBuilder {
-  static const _baseUrl = 'https://www.breakingbadapi.com/api/';
-  static const _charactersResource = 'characters/';
+  static const _baseUrl = 'https://api.punkapi.com/v2/';
+  static const _beersResource = 'beers';
 
-  static Uri characterList(
-    int offset,
+  static Uri beerList(
+    int page,
     int limit, {
     String? searchTerm,
   }) =>
       Uri.parse(
-        '$_baseUrl$_charactersResource?'
-        'offset=$offset'
-        '&limit=$limit'
+        '$_baseUrl$_beersResource?'
+        'page=$page'
+        '&per_page=$limit'
         '${_buildSearchTermQuery(searchTerm)}',
       );
 
   static String _buildSearchTermQuery(String? searchTerm) =>
       searchTerm != null && searchTerm.isNotEmpty
-          ? '&name=${searchTerm.replaceAll(' ', '+').toLowerCase()}'
+          ? '&beer_name=${searchTerm.replaceAll(' ', '+').toLowerCase()}'
           : '';
 }
 
