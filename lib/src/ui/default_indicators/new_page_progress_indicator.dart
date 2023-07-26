@@ -4,10 +4,14 @@ import 'package:infinite_scroll_pagination/src/ui/default_indicators/footer_tile
 class NewPageProgressIndicator extends StatelessWidget {
   const NewPageProgressIndicator({
     Key? key,
+    this.adaptive = false,
   }) : super(key: key);
+  final bool adaptive;
 
   @override
-  Widget build(BuildContext context) => const FooterTile(
-        child: CircularProgressIndicator(),
+  Widget build(BuildContext context) => FooterTile(
+        child: adaptive
+            ? const CircularProgressIndicator.adaptive()
+            : const CircularProgressIndicator(),
       );
 }

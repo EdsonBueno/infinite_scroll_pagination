@@ -5,7 +5,9 @@ class NewPageErrorIndicator extends StatelessWidget {
   const NewPageErrorIndicator({
     Key? key,
     this.onTap,
+    this.errorMsg = 'Something went wrong. Tap to try again.',
   }) : super(key: key);
+  final String errorMsg;
   final VoidCallback? onTap;
 
   @override
@@ -14,15 +16,15 @@ class NewPageErrorIndicator extends StatelessWidget {
         child: FooterTile(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
+            children: [
               Text(
-                'Something went wrong. Tap to try again.',
+                errorMsg,
                 textAlign: TextAlign.center,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 4,
               ),
-              Icon(
+              const Icon(
                 Icons.refresh,
                 size: 16,
               ),

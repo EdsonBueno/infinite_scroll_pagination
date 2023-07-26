@@ -4,15 +4,16 @@ import 'package:flutter/material.dart';
 class FirstPageExceptionIndicator extends StatelessWidget {
   const FirstPageExceptionIndicator({
     required this.title,
-    this.message,
+    required this.message,
     this.onTryAgain,
+    this.tryAgainBtnTxt = 'Try Again',
     Key? key,
   }) : super(key: key);
 
   final String title;
   final String? message;
   final VoidCallback? onTryAgain;
-
+  final String tryAgainBtnTxt;
   @override
   Widget build(BuildContext context) {
     final message = this.message;
@@ -49,9 +50,9 @@ class FirstPageExceptionIndicator extends StatelessWidget {
                     Icons.refresh,
                     color: Colors.white,
                   ),
-                  label: const Text(
-                    'Try Again',
-                    style: TextStyle(
+                  label: Text(
+                    tryAgainBtnTxt,
+                    style: const TextStyle(
                       fontSize: 16,
                       color: Colors.white,
                     ),
