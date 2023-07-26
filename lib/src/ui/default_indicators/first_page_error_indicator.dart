@@ -8,7 +8,6 @@ class FirstPageErrorIndicator extends StatelessWidget {
     this.title = 'Something went wrong',
     this.message = 'The application has encountered an unknown error.\n'
         'Please try again later.',
-    this.child,
     Key? key,
   }) : super(key: key);
 
@@ -16,12 +15,9 @@ class FirstPageErrorIndicator extends StatelessWidget {
   final String? tryAgainBtnTxt;
   final String title;
   final String message;
-  final Widget? child;
 
   @override
-  Widget build(BuildContext context) =>
-      child ??
-      FirstPageExceptionIndicator(
+  Widget build(BuildContext context) => FirstPageExceptionIndicator(
         title: title,
         message: message,
         onTryAgain: onTryAgain,

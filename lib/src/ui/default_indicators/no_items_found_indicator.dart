@@ -7,16 +7,12 @@ class NoItemsFoundIndicator extends StatelessWidget {
     Key? key,
     this.title = 'No items found',
     this.message = 'The list is currently empty.',
-    this.child,
   }) : super(key: key);
 
   final String title;
   final String message;
-  final Widget? child;
   @override
-  Widget build(BuildContext context) =>
-      child ??
-      FirstPageExceptionIndicator(
+  Widget build(BuildContext context) => FirstPageExceptionIndicator(
         title: title,
         message: message,
       );
