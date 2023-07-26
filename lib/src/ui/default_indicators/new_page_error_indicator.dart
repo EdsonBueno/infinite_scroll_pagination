@@ -6,12 +6,16 @@ class NewPageErrorIndicator extends StatelessWidget {
     Key? key,
     this.onTap,
     this.errorMsg = 'Something went wrong. Tap to try again.',
+    this.child,
   }) : super(key: key);
   final String errorMsg;
   final VoidCallback? onTap;
+  final Widget? child;
 
   @override
-  Widget build(BuildContext context) => InkWell(
+  Widget build(BuildContext context) =>
+      child ??
+      InkWell(
         onTap: onTap,
         child: FooterTile(
           child: Column(
