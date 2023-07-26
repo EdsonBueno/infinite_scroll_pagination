@@ -6,14 +6,14 @@ class FirstPageExceptionIndicator extends StatelessWidget {
     required this.title,
     required this.message,
     this.onTryAgain,
-    this.tryAgainBtnTxt = 'Try Again',
+    this.tryAgainBtnTxt,
     Key? key,
   }) : super(key: key);
 
   final String title;
   final String? message;
   final VoidCallback? onTryAgain;
-  final String tryAgainBtnTxt;
+  final String? tryAgainBtnTxt;
   @override
   Widget build(BuildContext context) {
     final message = this.message;
@@ -51,7 +51,7 @@ class FirstPageExceptionIndicator extends StatelessWidget {
                     color: Colors.white,
                   ),
                   label: Text(
-                    tryAgainBtnTxt,
+                    tryAgainBtnTxt ?? 'Try Again',
                     style: const TextStyle(
                       fontSize: 16,
                       color: Colors.white,

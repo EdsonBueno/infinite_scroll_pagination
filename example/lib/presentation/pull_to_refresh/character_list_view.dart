@@ -48,6 +48,9 @@ class _CharacterListViewState extends State<CharacterListView> {
           pagingController: _pagingController,
           builderDelegate: PagedChildBuilderDelegate<CharacterSummary>(
             animateTransitions: true,
+            firstPageErrorIndicatorBuilder: (_) => FirstPageErrorIndicator(
+              onTryAgain: () => _pagingController.refresh(),
+            ),
             itemBuilder: (context, item, index) => CharacterListItem(
               character: item,
             ),

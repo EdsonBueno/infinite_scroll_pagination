@@ -21,5 +21,6 @@ class FirstPageErrorIndicator extends StatelessWidget {
         title: title,
         message: message,
         onTryAgain: onTryAgain,
+        tryAgainBtnTxt: tryAgainBtnTxt,
       );
 }
