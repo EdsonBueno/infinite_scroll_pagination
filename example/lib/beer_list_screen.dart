@@ -1,8 +1,8 @@
-import 'package:breaking_bapp/samples/beer_list_view.dart';
-import 'package:breaking_bapp/samples/beer_masonry_grid.dart';
-import 'package:breaking_bapp/samples/beer_page_view.dart';
-import 'package:breaking_bapp/samples/beer_sliver_grid.dart';
-import 'package:breaking_bapp/samples/beer_sliver_list.dart';
+import 'package:brewtiful/samples/beer_list_view.dart';
+import 'package:brewtiful/samples/beer_masonry_grid.dart';
+import 'package:brewtiful/samples/beer_page_view.dart';
+import 'package:brewtiful/samples/beer_sliver_grid.dart';
+import 'package:brewtiful/samples/beer_sliver_list.dart';
 import 'package:flutter/material.dart';
 
 class BeerListScreen extends StatefulWidget {

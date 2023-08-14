@@ -1,4 +1,4 @@
-import 'package:breaking_bapp/beer_list_screen.dart';
+import 'package:brewtiful/beer_list_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());

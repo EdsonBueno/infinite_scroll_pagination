@@ -1,7 +1,7 @@
-import 'package:breaking_bapp/remote/beer_summary.dart';
-import 'package:breaking_bapp/remote/remote_api.dart';
-import 'package:breaking_bapp/samples/common/beer_list_item.dart';
-import 'package:breaking_bapp/samples/common/beer_search_input_sliver.dart';
+import 'package:brewtiful/remote/beer_summary.dart';
+import 'package:brewtiful/remote/remote_api.dart';
+import 'package:brewtiful/samples/common/beer_list_item.dart';
+import 'package:brewtiful/samples/common/beer_search_input_sliver.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 

@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:breaking_bapp/remote/beer_summary.dart';
-import 'package:breaking_bapp/remote/remote_api.dart';
+import 'package:brewtiful/remote/beer_summary.dart';
+import 'package:brewtiful/remote/remote_api.dart';
 import 'package:rxdart/rxdart.dart';
 
 class BeerListingState {

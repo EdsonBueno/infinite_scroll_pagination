@@ -199,4 +199,3 @@ class _AppendedSliverGrid extends StatelessWidget {
         addSemanticIndexes: addSemanticIndexes,
       );
 }
-

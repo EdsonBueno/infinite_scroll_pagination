@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:breaking_bapp/remote/beer_summary.dart';
+import 'package:brewtiful/remote/beer_summary.dart';
 import 'package:http/http.dart' as http;
 
 // ignore: avoid_classes_with_only_static_members

@@ -1,4 +1,4 @@
-package com.edsonbueno.breaking_bapp
+package com.edsonbueno.brewtiful
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

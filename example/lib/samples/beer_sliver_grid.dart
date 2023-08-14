@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:breaking_bapp/remote/beer_summary.dart';
-import 'package:breaking_bapp/samples/common/beer_listing_bloc.dart';
-import 'package:breaking_bapp/samples/common/beer_search_input_sliver.dart';
+import 'package:brewtiful/remote/beer_summary.dart';
+import 'package:brewtiful/samples/common/beer_listing_bloc.dart';
+import 'package:brewtiful/samples/common/beer_search_input_sliver.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
