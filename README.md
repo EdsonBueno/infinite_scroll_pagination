@@ -26,7 +26,7 @@ Designed to feel like part of the Flutter framework.
 
 ## Tutorial
 
-[By raywenderlich.com (step-by-step, hands-on, in-depth and illustrated)](https://www.raywenderlich.com/14214369-infinite-scrolling-pagination-in-flutter).
+[By raywenderlich.com (step-by-step, hands-on, in-depth, and illustrated)](https://www.raywenderlich.com/14214369-infinite-scrolling-pagination-in-flutter).
 
 ## Usage
 

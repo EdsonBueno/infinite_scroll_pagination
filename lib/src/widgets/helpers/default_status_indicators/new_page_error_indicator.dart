@@ -11,10 +11,10 @@ class NewPageErrorIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) => InkWell(
         onTap: onTap,
-        child: FooterTile(
+        child: const FooterTile(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
+            children: [
               Text(
                 'Something went wrong. Tap to try again.',
                 textAlign: TextAlign.center,
