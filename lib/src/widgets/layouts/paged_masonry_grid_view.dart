@@ -2,40 +2,50 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:infinite_scroll_pagination/src/utils/appended_sliver_child_builder_delegate.dart';
-
-typedef SliverSimpleGridDelegateBuilder = SliverSimpleGridDelegate Function(
-  int childCount,
-);
 
 /// A [MasonryGridView] with pagination capabilities.
 ///
 /// You can also see this as a [PagedGridView] that supports rows of varying
 /// sizes.
 ///
-/// This is a wrapper around the [flutter_staggered_grid_view](https://pub.dev/packages/flutter_staggered_grid_view)
-/// package. For more info on how to build staggered grids, check out the
+/// This is a wrapper around the [MasonryGridView]
+/// from the [flutter_staggered_grid_view](https://pub.dev/packages/flutter_staggered_grid_view) package.
+/// For more info on how to build staggered grids, check out the
 /// referred package's documentation and examples.
-class PagedMasonryGridView<PageKeyType, ItemType> extends StatelessWidget {
+class PagedMasonryGridView<PageKeyType, ItemType> extends BoxScrollView {
   const PagedMasonryGridView({
     required this.pagingController,
     required this.builderDelegate,
     required this.gridDelegateBuilder,
-    this.scrollDirection = Axis.vertical,
-    this.reverse = false,
+    // Matches [ScrollView.scrollDirection].
+    Axis scrollDirection = Axis.vertical,
+    // Matches [ScrollView.reverse].
+    bool reverse = false,
+    // Matches [ScrollView.primary].
+    bool? primary,
+    // Matches [ScrollView.physics].
+    ScrollPhysics? physics,
     this.scrollController,
-    this.primary,
-    this.physics,
-    this.padding,
     this.mainAxisSpacing = 0.0,
     this.crossAxisSpacing = 0.0,
-    this.cacheExtent,
-    this.dragStartBehavior = DragStartBehavior.start,
-    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
-    this.restorationId,
-    this.clipBehavior = Clip.hardEdge,
+    // Matches [ScrollView.cacheExtent].
+    double? cacheExtent,
+    this.showNewPageProgressIndicatorAsGridChild = true,
+    this.showNewPageErrorIndicatorAsGridChild = true,
+    this.showNoMoreItemsIndicatorAsGridChild = true,
+    // Matches [ScrollView.dragStartBehavior].
+    DragStartBehavior dragStartBehavior = DragStartBehavior.start,
+    // Matches [ScrollView.keyboardDismissBehavior].
+    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
+        ScrollViewKeyboardDismissBehavior.manual,
+    // Matches [ScrollView.restorationId].
+    String? restorationId,
+    // Matches [ScrollView.clipBehavior].
+    Clip clipBehavior = Clip.hardEdge,
     // Matches [ScrollView.shrinkWrap].
     bool shrinkWrap = false,
+    // Matches [BoxScrollView.padding].
+    EdgeInsetsGeometry? padding,
     this.addAutomaticKeepAlives = true,
     this.addRepaintBoundaries = true,
     this.addSemanticIndexes = true,
@@ -43,6 +53,18 @@ class PagedMasonryGridView<PageKeyType, ItemType> extends StatelessWidget {
   })  : _shrinkWrapFirstPageIndicators = shrinkWrap,
         super(
           key: key,
+          scrollDirection: scrollDirection,
+          reverse: reverse,
+          controller: scrollController,
+          primary: primary,
+          physics: physics,
+          shrinkWrap: shrinkWrap,
+          padding: padding,
+          cacheExtent: cacheExtent,
+          dragStartBehavior: dragStartBehavior,
+          keyboardDismissBehavior: keyboardDismissBehavior,
+          restorationId: restorationId,
+          clipBehavior: clipBehavior,
         );
 
   /// Equivalent to [MasonryGridView.count].
@@ -50,21 +72,34 @@ class PagedMasonryGridView<PageKeyType, ItemType> extends StatelessWidget {
     required this.pagingController,
     required this.builderDelegate,
     required int crossAxisCount,
-    this.scrollDirection = Axis.vertical,
-    this.reverse = false,
+    Axis scrollDirection = Axis.vertical,
+    // Matches [ScrollView.reverse].
+    bool reverse = false,
+    // Matches [ScrollView.primary].
+    bool? primary,
+    // Matches [ScrollView.physics].
+    ScrollPhysics? physics,
     this.scrollController,
-    this.primary,
-    this.physics,
-    this.padding,
     this.mainAxisSpacing = 0.0,
     this.crossAxisSpacing = 0.0,
-    this.cacheExtent,
-    this.dragStartBehavior = DragStartBehavior.start,
-    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
-    this.restorationId,
-    this.clipBehavior = Clip.hardEdge,
+    // Matches [ScrollView.cacheExtent].
+    double? cacheExtent,
+    this.showNewPageProgressIndicatorAsGridChild = true,
+    this.showNewPageErrorIndicatorAsGridChild = true,
+    this.showNoMoreItemsIndicatorAsGridChild = true,
+    // Matches [ScrollView.dragStartBehavior].
+    DragStartBehavior dragStartBehavior = DragStartBehavior.start,
+    // Matches [ScrollView.keyboardDismissBehavior].
+    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
+        ScrollViewKeyboardDismissBehavior.manual,
+    // Matches [ScrollView.restorationId].
+    String? restorationId,
+    // Matches [ScrollView.clipBehavior].
+    Clip clipBehavior = Clip.hardEdge,
     // Matches [ScrollView.shrinkWrap].
     bool shrinkWrap = false,
+    // Matches [BoxScrollView.padding].
+    EdgeInsetsGeometry? padding,
     this.addAutomaticKeepAlives = true,
     this.addRepaintBoundaries = true,
     this.addSemanticIndexes = true,
@@ -76,6 +111,18 @@ class PagedMasonryGridView<PageKeyType, ItemType> extends StatelessWidget {
                 )),
         super(
           key: key,
+          scrollDirection: scrollDirection,
+          reverse: reverse,
+          controller: scrollController,
+          primary: primary,
+          physics: physics,
+          shrinkWrap: shrinkWrap,
+          padding: padding,
+          cacheExtent: cacheExtent,
+          dragStartBehavior: dragStartBehavior,
+          keyboardDismissBehavior: keyboardDismissBehavior,
+          restorationId: restorationId,
+          clipBehavior: clipBehavior,
         );
 
   /// Equivalent to [MasonryGridView.extent].
@@ -83,21 +130,34 @@ class PagedMasonryGridView<PageKeyType, ItemType> extends StatelessWidget {
     required this.pagingController,
     required this.builderDelegate,
     required double maxCrossAxisExtent,
-    this.scrollDirection = Axis.vertical,
-    this.reverse = false,
+    Axis scrollDirection = Axis.vertical,
+    // Matches [ScrollView.reverse].
+    bool reverse = false,
+    // Matches [ScrollView.primary].
+    bool? primary,
+    // Matches [ScrollView.physics].
+    ScrollPhysics? physics,
     this.scrollController,
-    this.primary,
-    this.physics,
-    this.padding,
     this.mainAxisSpacing = 0.0,
     this.crossAxisSpacing = 0.0,
-    this.cacheExtent,
-    this.dragStartBehavior = DragStartBehavior.start,
-    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
-    this.restorationId,
-    this.clipBehavior = Clip.hardEdge,
+    // Matches [ScrollView.cacheExtent].
+    double? cacheExtent,
+    this.showNewPageProgressIndicatorAsGridChild = true,
+    this.showNewPageErrorIndicatorAsGridChild = true,
+    this.showNoMoreItemsIndicatorAsGridChild = true,
+    // Matches [ScrollView.dragStartBehavior].
+    DragStartBehavior dragStartBehavior = DragStartBehavior.start,
+    // Matches [ScrollView.keyboardDismissBehavior].
+    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
+        ScrollViewKeyboardDismissBehavior.manual,
+    // Matches [ScrollView.restorationId].
+    String? restorationId,
+    // Matches [ScrollView.clipBehavior].
+    Clip clipBehavior = Clip.hardEdge,
     // Matches [ScrollView.shrinkWrap].
     bool shrinkWrap = false,
+    // Matches [BoxScrollView.padding].
+    EdgeInsetsGeometry? padding,
     this.addAutomaticKeepAlives = true,
     this.addRepaintBoundaries = true,
     this.addSemanticIndexes = true,
@@ -109,6 +169,18 @@ class PagedMasonryGridView<PageKeyType, ItemType> extends StatelessWidget {
                 )),
         super(
           key: key,
+          scrollDirection: scrollDirection,
+          reverse: reverse,
+          controller: scrollController,
+          primary: primary,
+          physics: physics,
+          shrinkWrap: shrinkWrap,
+          padding: padding,
+          cacheExtent: cacheExtent,
+          dragStartBehavior: dragStartBehavior,
+          keyboardDismissBehavior: keyboardDismissBehavior,
+          restorationId: restorationId,
+          clipBehavior: clipBehavior,
         );
 
   /// Matches [PagedLayoutBuilder.pagingController].
@@ -121,42 +193,12 @@ class PagedMasonryGridView<PageKeyType, ItemType> extends StatelessWidget {
   /// that a [SliverSimpleGridDelegate] can be returned.
   final SliverSimpleGridDelegateBuilder gridDelegateBuilder;
 
-  /// Matches [ScrollView.scrollDirection]
-  final Axis scrollDirection;
-
-  /// Matches [ScrollView.reverse]
-  final bool reverse;
-
   /// Matches [ScrollView.controller]
   final ScrollController? scrollController;
-
-  /// Matches [ScrollView.primary].
-  final bool? primary;
-
-  /// Matches [ScrollView.physics].
-  final ScrollPhysics? physics;
-
-  /// Matches [BoxScrollView.padding].
-  final EdgeInsetsGeometry? padding;
 
   final double mainAxisSpacing;
 
   final double crossAxisSpacing;
-
-  /// Matches [ScrollView.cacheExtent].
-  final double? cacheExtent;
-
-  /// Matches [ScrollView.dragStartBehavior].
-  final DragStartBehavior dragStartBehavior;
-
-  /// Matches [ScrollView.keyboardDismissBehavior].
-  final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
-
-  /// Matches [ScrollView.restorationId].
-  final String? restorationId;
-
-  /// Matches [ScrollView.clipBehavior].
-  final Clip clipBehavior;
 
   /// Matches [SliverChildBuilderDelegate.addAutomaticKeepAlives].
   final bool addAutomaticKeepAlives;
@@ -167,111 +209,33 @@ class PagedMasonryGridView<PageKeyType, ItemType> extends StatelessWidget {
   /// Matches [SliverChildBuilderDelegate.addSemanticIndexes].
   final bool addSemanticIndexes;
 
+  /// Matches [PagedSliverGrid.showNewPageProgressIndicatorAsGridChild].
+  final bool showNewPageProgressIndicatorAsGridChild;
+
+  /// Matches [PagedSliverGrid.showNewPageErrorIndicatorAsGridChild].
+  final bool showNewPageErrorIndicatorAsGridChild;
+
+  /// Matches [PagedSliverGrid.showNoMoreItemsIndicatorAsGridChild].
+  final bool showNoMoreItemsIndicatorAsGridChild;
+
   /// Matches [PagedSliverGrid.shrinkWrapFirstPageIndicators].
   final bool _shrinkWrapFirstPageIndicators;
 
   @override
-  Widget build(BuildContext context) =>
-      PagedLayoutBuilder<PageKeyType, ItemType>(
-        layoutProtocol: PagedLayoutProtocol.box,
-        pagingController: pagingController,
+  Widget buildChildLayout(BuildContext context) =>
+      PagedMasonrySliverGrid<PageKeyType, ItemType>(
         builderDelegate: builderDelegate,
+        pagingController: pagingController,
+        gridDelegateBuilder: gridDelegateBuilder,
+        addAutomaticKeepAlives: addAutomaticKeepAlives,
+        addRepaintBoundaries: addRepaintBoundaries,
+        addSemanticIndexes: addSemanticIndexes,
+        showNewPageProgressIndicatorAsGridChild:
+            showNewPageProgressIndicatorAsGridChild,
+        showNewPageErrorIndicatorAsGridChild:
+            showNewPageErrorIndicatorAsGridChild,
+        showNoMoreItemsIndicatorAsGridChild:
+            showNoMoreItemsIndicatorAsGridChild,
         shrinkWrapFirstPageIndicators: _shrinkWrapFirstPageIndicators,
-        completedListingBuilder: (
-          context,
-          itemBuilder,
-          itemCount,
-          noMoreItemsIndicatorBuilder,
-        ) =>
-            MasonryGridView.custom(
-          scrollDirection: scrollDirection,
-          reverse: reverse,
-          controller: scrollController,
-          primary: primary,
-          physics: physics,
-          padding: padding,
-          mainAxisSpacing: mainAxisSpacing,
-          crossAxisSpacing: crossAxisSpacing,
-          cacheExtent: cacheExtent,
-          dragStartBehavior: dragStartBehavior,
-          keyboardDismissBehavior: keyboardDismissBehavior,
-          restorationId: restorationId,
-          clipBehavior: clipBehavior,
-          gridDelegate: gridDelegateBuilder(
-            itemCount + (noMoreItemsIndicatorBuilder == null ? 0 : 1),
-          ),
-          childrenDelegate: AppendedSliverChildBuilderDelegate(
-            builder: itemBuilder,
-            childCount: itemCount,
-            appendixBuilder: noMoreItemsIndicatorBuilder,
-            addAutomaticKeepAlives: addAutomaticKeepAlives,
-            addRepaintBoundaries: addRepaintBoundaries,
-            addSemanticIndexes: addSemanticIndexes,
-          ),
-        ),
-        loadingListingBuilder: (
-          context,
-          itemBuilder,
-          itemCount,
-          progressIndicatorBuilder,
-        ) =>
-            MasonryGridView.custom(
-          scrollDirection: scrollDirection,
-          reverse: reverse,
-          controller: scrollController,
-          primary: primary,
-          physics: physics,
-          padding: padding,
-          mainAxisSpacing: mainAxisSpacing,
-          crossAxisSpacing: crossAxisSpacing,
-          cacheExtent: cacheExtent,
-          dragStartBehavior: dragStartBehavior,
-          keyboardDismissBehavior: keyboardDismissBehavior,
-          restorationId: restorationId,
-          clipBehavior: clipBehavior,
-          gridDelegate: gridDelegateBuilder(
-            itemCount + 1,
-          ),
-          childrenDelegate: AppendedSliverChildBuilderDelegate(
-            builder: itemBuilder,
-            childCount: itemCount,
-            appendixBuilder: progressIndicatorBuilder,
-            addAutomaticKeepAlives: addAutomaticKeepAlives,
-            addRepaintBoundaries: addRepaintBoundaries,
-            addSemanticIndexes: addSemanticIndexes,
-          ),
-        ),
-        errorListingBuilder: (
-          context,
-          itemBuilder,
-          itemCount,
-          errorIndicatorBuilder,
-        ) =>
-            MasonryGridView.custom(
-          scrollDirection: scrollDirection,
-          reverse: reverse,
-          controller: scrollController,
-          primary: primary,
-          physics: physics,
-          padding: padding,
-          mainAxisSpacing: mainAxisSpacing,
-          crossAxisSpacing: crossAxisSpacing,
-          cacheExtent: cacheExtent,
-          dragStartBehavior: dragStartBehavior,
-          keyboardDismissBehavior: keyboardDismissBehavior,
-          restorationId: restorationId,
-          clipBehavior: clipBehavior,
-          gridDelegate: gridDelegateBuilder(
-            itemCount + 1,
-          ),
-          childrenDelegate: AppendedSliverChildBuilderDelegate(
-            builder: itemBuilder,
-            childCount: itemCount,
-            appendixBuilder: errorIndicatorBuilder,
-            addAutomaticKeepAlives: addAutomaticKeepAlives,
-            addRepaintBoundaries: addRepaintBoundaries,
-            addSemanticIndexes: addSemanticIndexes,
-          ),
-        ),
       );
 }

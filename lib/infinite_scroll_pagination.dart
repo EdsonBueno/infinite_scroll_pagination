@@ -9,3 +9,4 @@ export 'src/widgets/layouts/paged_masonry_grid_view.dart';
 export 'src/widgets/layouts/paged_page_view.dart';
 export 'src/widgets/layouts/paged_sliver_grid.dart';
 export 'src/widgets/layouts/paged_sliver_list.dart';
+export 'src/widgets/layouts/paged_sliver_masonry_grid.dart';
