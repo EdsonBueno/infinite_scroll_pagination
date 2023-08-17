@@ -16,7 +16,7 @@ class BeerSliverGrid extends StatefulWidget {
 class _BeerSliverGridState extends State<BeerSliverGrid> {
   final BeerListingBloc _bloc = BeerListingBloc();
   final PagingController<int, BeerSummary> _pagingController =
-      PagingController(firstPageKey: 0);
+      PagingController(firstPageKey: 1);
   late StreamSubscription _blocListingStateSubscription;
 
   @override
