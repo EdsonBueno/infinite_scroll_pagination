@@ -1,15 +1,9 @@
 import 'package:flutter/widgets.dart';
 import 'package:infinite_scroll_pagination/src/core/paged_child_builder_delegate.dart';
 import 'package:infinite_scroll_pagination/src/core/paging_controller.dart';
-import 'package:infinite_scroll_pagination/src/utils/appended_sliver_child_builder_delegate.dart';
+import 'package:infinite_scroll_pagination/src/utils/appended_sliver_grid.dart';
 import 'package:infinite_scroll_pagination/src/widgets/helpers/paged_layout_builder.dart';
 import 'package:infinite_scroll_pagination/src/widgets/layouts/paged_grid_view.dart';
-import 'package:sliver_tools/sliver_tools.dart';
-
-typedef SliverGridBuilder = SliverWithKeepAliveWidget Function(
-  int childCount,
-  SliverChildDelegate delegate,
-);
 
 /// Paged [SliverGrid] with progress and error indicators displayed as the last
 /// item.
@@ -84,7 +78,7 @@ class PagedSliverGrid<PageKeyType, ItemType> extends StatelessWidget {
           itemCount,
           noMoreItemsIndicatorBuilder,
         ) =>
-            _AppendedSliverGrid(
+            AppendedSliverGrid(
           sliverGridBuilder: (_, delegate) => SliverGrid(
             delegate: delegate,
             gridDelegate: gridDelegate,
@@ -103,7 +97,7 @@ class PagedSliverGrid<PageKeyType, ItemType> extends StatelessWidget {
           itemCount,
           progressIndicatorBuilder,
         ) =>
-            _AppendedSliverGrid(
+            AppendedSliverGrid(
           sliverGridBuilder: (_, delegate) => SliverGrid(
             delegate: delegate,
             gridDelegate: gridDelegate,
@@ -122,7 +116,7 @@ class PagedSliverGrid<PageKeyType, ItemType> extends StatelessWidget {
           itemCount,
           errorIndicatorBuilder,
         ) =>
-            _AppendedSliverGrid(
+            AppendedSliverGrid(
           sliverGridBuilder: (_, delegate) => SliverGrid(
             delegate: delegate,
             gridDelegate: gridDelegate,
@@ -136,66 +130,5 @@ class PagedSliverGrid<PageKeyType, ItemType> extends StatelessWidget {
           addRepaintBoundaries: addRepaintBoundaries,
         ),
         shrinkWrapFirstPageIndicators: shrinkWrapFirstPageIndicators,
-      );
-}
-
-class _AppendedSliverGrid extends StatelessWidget {
-  const _AppendedSliverGrid({
-    required this.itemBuilder,
-    required this.itemCount,
-    required this.sliverGridBuilder,
-    this.showAppendixAsGridChild = true,
-    this.appendixBuilder,
-    this.addAutomaticKeepAlives = true,
-    this.addRepaintBoundaries = true,
-    this.addSemanticIndexes = true,
-    Key? key,
-  }) : super(key: key);
-
-  final IndexedWidgetBuilder itemBuilder;
-  final int itemCount;
-  final SliverGridBuilder sliverGridBuilder;
-  final bool showAppendixAsGridChild;
-  final WidgetBuilder? appendixBuilder;
-  final bool addAutomaticKeepAlives;
-  final bool addRepaintBoundaries;
-  final bool addSemanticIndexes;
-
-  @override
-  Widget build(BuildContext context) {
-    final appendixBuilder = this.appendixBuilder;
-
-    if (showAppendixAsGridChild == true || appendixBuilder == null) {
-      return sliverGridBuilder(
-        itemCount + (appendixBuilder == null ? 0 : 1),
-        _buildSliverDelegate(
-          appendixBuilder: appendixBuilder,
-        ),
-      );
-    } else {
-      return MultiSliver(
-        children: [
-          sliverGridBuilder(
-            itemCount,
-            _buildSliverDelegate(),
-          ),
-          SliverToBoxAdapter(
-            child: appendixBuilder(context),
-          ),
-        ],
-      );
-    }
-  }
-
-  SliverChildBuilderDelegate _buildSliverDelegate({
-    WidgetBuilder? appendixBuilder,
-  }) =>
-      AppendedSliverChildBuilderDelegate(
-        builder: itemBuilder,
-        childCount: itemCount,
-        appendixBuilder: appendixBuilder,
-        addAutomaticKeepAlives: addAutomaticKeepAlives,
-        addRepaintBoundaries: addRepaintBoundaries,
-        addSemanticIndexes: addSemanticIndexes,
       );
 }
