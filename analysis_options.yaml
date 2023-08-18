@@ -19,8 +19,6 @@
 # Android Studio, and the `flutter analyze` command.
 
 analyzer:
-  strong-mode:
-    implicit-dynamic: true
   errors:
     # treat missing required parameters as a warning (not a hint)
     missing_required_param: warning
@@ -47,7 +45,6 @@ linter:
     - always_declare_return_types
     - always_put_control_body_on_new_line
     - always_put_required_named_parameters_first # we prefer having parameters in the same order as fields https://github.com/flutter/flutter/issues/10219
-    - always_require_non_null_named_parameters
 #    - always_specify_types
     - annotate_overrides
 #    - avoid_annotating_with_dynamic # conflicts with always_specify_types
@@ -68,8 +65,6 @@ linter:
     - avoid_relative_lib_imports
     - avoid_renaming_method_parameters
     - avoid_return_types_on_setters
-    - avoid_returning_null # there are plenty of valid reasons to return null
-    - avoid_returning_null_for_future # not yet tested
     - avoid_returning_null_for_void
     - avoid_returning_this # there are plenty of valid reasons to return this
     - avoid_setters_without_getters # not yet tested
@@ -99,12 +94,11 @@ linter:
     - hash_and_equals
     - implementation_imports
     - invariant_booleans # too many false positives: https://github.com/dart-lang/linter/issues/811
-    - iterable_contains_unrelated_type
+    - collection_methods_unrelated_type
     - join_return_with_assignment # not yet tested
     - library_names
     - library_prefixes
     - lines_longer_than_80_chars # not yet tested
-    - list_remove_unrelated_type
     - literal_only_boolean_expressions # too many false positives: https://github.com/dart-lang/sdk/issues/34181
     - no_adjacent_strings_in_list
     - no_duplicate_case_values

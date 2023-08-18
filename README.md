@@ -26,20 +26,20 @@ Designed to feel like part of the Flutter framework.
 
 ## Tutorial
 
-[By raywenderlich.com (step-by-step, hands-on, in-depth and illustrated)](https://www.raywenderlich.com/14214369-infinite-scrolling-pagination-in-flutter).
+[By raywenderlich.com (step-by-step, hands-on, in-depth, and illustrated)](https://www.raywenderlich.com/14214369-infinite-scrolling-pagination-in-flutter).
 
 ## Usage
 
 ```dart
-class CharacterListView extends StatefulWidget {
+class BeerListView extends StatefulWidget {
   @override
-  _CharacterListViewState createState() => _CharacterListViewState();
+  _BeerListViewState createState() => _BeerListViewState();
 }
 
-class _CharacterListViewState extends State<CharacterListView> {
+class _BeerListViewState extends State<BeerListView> {
   static const _pageSize = 20;
 
-  final PagingController<int, CharacterSummary> _pagingController =
+  final PagingController<int, BeerSummary> _pagingController =
       PagingController(firstPageKey: 0);
 
   @override
@@ -52,7 +52,7 @@ class _CharacterListViewState extends State<CharacterListView> {
 
   Future<void> _fetchPage(int pageKey) async {
     try {
-      final newItems = await RemoteApi.getCharacterList(pageKey, _pageSize);
+      final newItems = await RemoteApi.getBeerList(pageKey, _pageSize);
       final isLastPage = newItems.length < _pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
@@ -70,11 +70,11 @@ class _CharacterListViewState extends State<CharacterListView> {
       // Don't worry about displaying progress or error indicators on screen; the 
       // package takes care of that. If you want to customize them, use the 
       // [PagedChildBuilderDelegate] properties.
-      PagedListView<int, CharacterSummary>(
+      PagedListView<int, BeerSummary>(
         pagingController: _pagingController,
-        builderDelegate: PagedChildBuilderDelegate<CharacterSummary>(
-          itemBuilder: (context, item, index) => CharacterListItem(
-            character: item,
+        builderDelegate: PagedChildBuilderDelegate<BeerSummary>(
+          itemBuilder: (context, item, index) => BeerListItem(
+            beer: item,
           ),
         ),
       );

@@ -1,12 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-const screenSize = Size(200, 500);
+const screenSize = Size(
+  200,
+  500,
+);
 
 extension ScreenSizeUtils on WidgetTester {
   void applyPreferredTestScreenSize() {
-    binding.window.devicePixelRatioTestValue = 1.0;
-    binding.window.physicalSizeTestValue = screenSize;
+    view.devicePixelRatio = 1.0;
+    view.physicalSize = screenSize;
   }
 }
 

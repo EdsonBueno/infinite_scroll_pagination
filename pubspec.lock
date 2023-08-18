@@ -158,6 +158,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_staggered_grid_view:
+    dependency: "direct main"
+    description:
+      name: flutter_staggered_grid_view
+      sha256: "19e7abb550c96fbfeb546b23f3ff356ee7c59a019a651f8f102a4ba9b7349395"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.7.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -340,10 +348,10 @@ packages:
     dependency: "direct main"
     description:
       name: sliver_tools
-      sha256: b47498c3fb6b9c07dfcd80e6e9c6a642bb673a5820eb14f3a6c3fcba54b908b0
+      sha256: eae28220badfb9d0559207badcbbc9ad5331aac829a88cb0964d330d2a4636a6
       url: "https://pub.dev"
     source: hosted
-    version: "0.2.6"
+    version: "0.2.12"
   source_gen:
     dependency: transitive
     description:
@@ -490,4 +498,4 @@ packages:
     version: "3.1.1"
 sdks:
   dart: ">=3.0.0 <4.0.0"
-  flutter: ">=1.22.0"
+  flutter: ">=3.7.0"
