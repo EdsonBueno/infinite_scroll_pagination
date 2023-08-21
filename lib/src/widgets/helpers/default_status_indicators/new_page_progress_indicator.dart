@@ -6,6 +6,7 @@ class NewPageProgressIndicator extends StatelessWidget {
     Key? key,
     this.adaptive = false,
   }) : super(key: key);
+
   final bool adaptive;
 
   @override

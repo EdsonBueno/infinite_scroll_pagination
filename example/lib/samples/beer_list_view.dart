@@ -48,9 +48,6 @@ class _BeerListViewState extends State<BeerListView> {
           pagingController: _pagingController,
           builderDelegate: PagedChildBuilderDelegate<BeerSummary>(
             animateTransitions: true,
-            firstPageErrorIndicatorBuilder: (_) => FirstPageErrorIndicator(
-              onTryAgain: () => _pagingController.refresh(),
-            ),
             itemBuilder: (context, item, index) => BeerListItem(
               beer: item,
             ),

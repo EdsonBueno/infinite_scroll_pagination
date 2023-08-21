@@ -4,7 +4,7 @@ import 'package:infinite_scroll_pagination/src/widgets/helpers/default_status_in
 class FirstPageErrorIndicator extends StatelessWidget {
   const FirstPageErrorIndicator({
     this.onTryAgain,
-    this.tryAgainBtnTxt,
+    this.tryAgainText,
     this.title = 'Something went wrong',
     this.message = 'The application has encountered an unknown error.\n'
         'Please try again later.',
@@ -12,7 +12,7 @@ class FirstPageErrorIndicator extends StatelessWidget {
   }) : super(key: key);
 
   final VoidCallback? onTryAgain;
-  final String? tryAgainBtnTxt;
+  final String? tryAgainText;
   final String title;
   final String message;
 
@@ -21,6 +21,6 @@ class FirstPageErrorIndicator extends StatelessWidget {
         title: title,
         message: message,
         onTryAgain: onTryAgain,
-        tryAgainBtnTxt: tryAgainBtnTxt,
+        tryAgainText: tryAgainText,
       );
 }

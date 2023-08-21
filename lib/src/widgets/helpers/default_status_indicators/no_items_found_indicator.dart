@@ -11,6 +11,7 @@ class NoItemsFoundIndicator extends StatelessWidget {
 
   final String title;
   final String message;
+
   @override
   Widget build(BuildContext context) => FirstPageExceptionIndicator(
         title: title,

@@ -5,9 +5,10 @@ class NewPageErrorIndicator extends StatelessWidget {
   const NewPageErrorIndicator({
     Key? key,
     this.onTap,
-    this.errorMsg = 'Something went wrong. Tap to try again.',
+    this.errorMessage = 'Something went wrong. Tap to try again.',
   }) : super(key: key);
-  final String errorMsg;
+
+  final String errorMessage;
   final VoidCallback? onTap;
 
   @override
@@ -18,7 +19,7 @@ class NewPageErrorIndicator extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                errorMsg,
+                errorMessage,
                 textAlign: TextAlign.center,
               ),
               const SizedBox(

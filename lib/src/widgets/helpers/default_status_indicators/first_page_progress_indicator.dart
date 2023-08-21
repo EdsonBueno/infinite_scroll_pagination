@@ -5,7 +5,9 @@ class FirstPageProgressIndicator extends StatelessWidget {
     Key? key,
     this.adaptive = false,
   }) : super(key: key);
+
   final bool adaptive;
+
   @override
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.all(32),
