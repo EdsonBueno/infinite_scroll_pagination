@@ -6,6 +6,7 @@ export 'src/widgets/helpers/paged_layout_builder.dart';
 export 'src/widgets/layouts/paged_grid_view.dart';
 export 'src/widgets/layouts/paged_list_view.dart';
 export 'src/widgets/layouts/paged_masonry_grid_view.dart';
+export 'src/widgets/layouts/paged_masonry_silver_grid_view.dart';
 export 'src/widgets/layouts/paged_page_view.dart';
 export 'src/widgets/layouts/paged_sliver_grid.dart';
 export 'src/widgets/layouts/paged_sliver_list.dart';

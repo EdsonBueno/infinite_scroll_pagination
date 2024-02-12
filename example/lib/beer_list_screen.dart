@@ -1,5 +1,6 @@
 import 'package:brewtiful/samples/beer_list_view.dart';
 import 'package:brewtiful/samples/beer_masonry_grid.dart';
+import 'package:brewtiful/samples/beer_masonry_sliver_grid.dart';
 import 'package:brewtiful/samples/beer_page_view.dart';
 import 'package:brewtiful/samples/beer_sliver_grid.dart';
 import 'package:brewtiful/samples/beer_sliver_list.dart';
@@ -33,6 +34,11 @@ class _BeerListScreenState extends State<BeerListScreen> {
       label: 'MasonryGrid',
       iconData: Icons.view_quilt,
       widgetBuilder: (context) => BeerMasonryGrid(),
+    ),
+    _BottomNavigationItem(
+      label: 'SliverMasonryGrid',
+      iconData: Icons.view_quilt_outlined,
+      widgetBuilder: (context) => BeerMasonrySliverGrid(),
     ),
     _BottomNavigationItem(
       label: 'PageView',
