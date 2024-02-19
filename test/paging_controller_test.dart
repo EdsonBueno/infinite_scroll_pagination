@@ -153,7 +153,7 @@ void main() {
 
     setUp(() {
       pagingController = PagingController(firstPageKey: 1);
-      mockStatusListener = MockStatusListener();
+      mockStatusListener = MockStatusListener().call;
       pagingController.addStatusListener(mockStatusListener);
     });
 
@@ -186,7 +186,7 @@ void main() {
 
     setUp(() {
       pagingController = PagingController(firstPageKey: 1);
-      mockPageRequestListener = MockPageRequestListener();
+      mockPageRequestListener = MockPageRequestListener().call;
       pagingController.addPageRequestListener(mockPageRequestListener);
     });
 

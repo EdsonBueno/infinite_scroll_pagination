@@ -21,7 +21,7 @@ void main() {
         firstPageKey: 1,
       );
 
-      pagingController.addPageRequestListener(mockPageRequestListener);
+      pagingController.addPageRequestListener(mockPageRequestListener.call);
 
       await _pumpPagedGridView(
         tester: tester,
@@ -42,7 +42,7 @@ void main() {
       );
 
       controllerLoadedWithFirstPage.addPageRequestListener(
-        mockPageRequestListener,
+        mockPageRequestListener.call,
       );
 
       await _pumpPagedGridView(
@@ -59,7 +59,7 @@ void main() {
       final pagingController = buildPagingControllerWithPopulatedState(
         PopulatedStateOption.ongoingWithTwoPages,
       );
-      pagingController.addPageRequestListener(mockPageRequestListener);
+      pagingController.addPageRequestListener(mockPageRequestListener.call);
 
       await _pumpPagedGridView(
         tester: tester,
@@ -75,7 +75,7 @@ void main() {
       final pagingController = buildPagingControllerWithPopulatedState(
         PopulatedStateOption.ongoingWithTwoPages,
       );
-      pagingController.addPageRequestListener(mockPageRequestListener);
+      pagingController.addPageRequestListener(mockPageRequestListener.call);
 
       await _pumpPagedGridView(
         tester: tester,
