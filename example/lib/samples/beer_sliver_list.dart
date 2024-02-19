@@ -6,8 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class BeerSliverList extends StatefulWidget {
+  const BeerSliverList({super.key});
+
   @override
-  _BeerSliverListState createState() => _BeerSliverListState();
+  State<BeerSliverList> createState() => _BeerSliverListState();
 }
 
 class _BeerSliverListState extends State<BeerSliverList> {
@@ -20,6 +22,7 @@ class _BeerSliverListState extends State<BeerSliverList> {
 
   @override
   void initState() {
+    super.initState();
     _pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });
@@ -39,8 +42,6 @@ class _BeerSliverListState extends State<BeerSliverList> {
         );
       }
     });
-
-    super.initState();
   }
 
   Future<void> _fetchPage(pageKey) async {

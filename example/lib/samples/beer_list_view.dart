@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class BeerListView extends StatefulWidget {
+  const BeerListView({super.key});
+
   @override
-  _BeerListViewState createState() => _BeerListViewState();
+  State<BeerListView> createState() => _BeerListViewState();
 }
 
 class _BeerListViewState extends State<BeerListView> {
@@ -17,10 +19,10 @@ class _BeerListViewState extends State<BeerListView> {
 
   @override
   void initState() {
+    super.initState();
     _pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });
-    super.initState();
   }
 
   Future<void> _fetchPage(int pageKey) async {
