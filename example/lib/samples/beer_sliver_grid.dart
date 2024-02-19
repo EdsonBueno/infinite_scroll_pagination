@@ -9,8 +9,10 @@ import 'package:flutter/widgets.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class BeerSliverGrid extends StatefulWidget {
+  const BeerSliverGrid({super.key});
+
   @override
-  _BeerSliverGridState createState() => _BeerSliverGridState();
+  State<BeerSliverGrid> createState() => _BeerSliverGridState();
 }
 
 class _BeerSliverGridState extends State<BeerSliverGrid> {
@@ -21,6 +23,7 @@ class _BeerSliverGridState extends State<BeerSliverGrid> {
 
   @override
   void initState() {
+    super.initState();
     _pagingController.addPageRequestListener((pageKey) {
       _bloc.onPageRequestSink.add(pageKey);
     });
@@ -37,7 +40,6 @@ class _BeerSliverGridState extends State<BeerSliverGrid> {
         itemList: listingState.itemList,
       );
     });
-    super.initState();
   }
 
   @override
@@ -50,11 +52,11 @@ class _BeerSliverGridState extends State<BeerSliverGrid> {
           ),
           PagedSliverGrid<int, BeerSummary>(
             pagingController: _pagingController,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
               childAspectRatio: 100 / 150,
               crossAxisSpacing: 10,
               mainAxisSpacing: 10,
-              crossAxisCount: 3,
+              maxCrossAxisExtent: 200,
             ),
             builderDelegate: PagedChildBuilderDelegate<BeerSummary>(
               itemBuilder: (context, item, index) => CachedNetworkImage(

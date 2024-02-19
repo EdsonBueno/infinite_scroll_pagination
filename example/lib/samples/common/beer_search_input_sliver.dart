@@ -5,15 +5,15 @@ import 'package:rxdart/rxdart.dart';
 
 class BeerSearchInputSliver extends StatefulWidget {
   const BeerSearchInputSliver({
-    Key? key,
+    super.key,
     this.onChanged,
     this.debounceTime,
-  }) : super(key: key);
+  });
   final ValueChanged<String>? onChanged;
   final Duration? debounceTime;
 
   @override
-  _BeerSearchInputSliverState createState() => _BeerSearchInputSliverState();
+  State<BeerSearchInputSliver> createState() => _BeerSearchInputSliverState();
 }
 
 class _BeerSearchInputSliverState extends State<BeerSearchInputSliver> {
@@ -23,6 +23,7 @@ class _BeerSearchInputSliverState extends State<BeerSearchInputSliver> {
 
   @override
   void initState() {
+    super.initState();
     _textChangesSubscription = _textChangeStreamController.stream
         .debounceTime(
           widget.debounceTime ??
@@ -37,8 +38,6 @@ class _BeerSearchInputSliverState extends State<BeerSearchInputSliver> {
         onChanged(text);
       }
     });
-
-    super.initState();
   }
 
   @override

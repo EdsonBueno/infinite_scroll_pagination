@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:brewtiful/remote/beer_summary.dart';
 import 'package:http/http.dart' as http;
 
-// ignore: avoid_classes_with_only_static_members
 class RemoteApi {
   static Future<List<BeerSummary>> getBeerList(
     int page,
@@ -37,7 +36,6 @@ class GenericHttpException implements Exception {}
 
 class NoConnectionException implements Exception {}
 
-// ignore: avoid_classes_with_only_static_members
 class _ApiUrlBuilder {
   static const _baseUrl = 'https://api.punkapi.com/v2/';
   static const _beersResource = 'beers';

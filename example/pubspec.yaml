@@ -1,23 +1,28 @@
 name: brewtiful
-description: Sample app for the Infinite Scroll Pagination package.
-publish_to: none
-version: 1.0.0
+description: "Sample app for the Infinite Scroll Pagination package."
+
+publish_to: "none"
+
+version: 1.0.0+1
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: ">=3.3.0 <4.0.0"
+  flutter: ">=3.19.0"
 
 dependencies:
-  cached_network_image: ^3.0.0
   flutter:
     sdk: flutter
   http: ^1.1.0
+  cached_network_image: ^3.0.0
+  rxdart: ^0.27.7
   infinite_scroll_pagination:
     path: ../
-  rxdart: ^0.27.7
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  flutter_lints: ^3.0.0
 
 flutter:
   uses-material-design: true

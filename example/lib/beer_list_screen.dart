@@ -6,8 +6,10 @@ import 'package:brewtiful/samples/beer_sliver_list.dart';
 import 'package:flutter/material.dart';
 
 class BeerListScreen extends StatefulWidget {
+  const BeerListScreen({super.key});
+
   @override
-  _BeerListScreenState createState() => _BeerListScreenState();
+  State<BeerListScreen> createState() => _BeerListScreenState();
 }
 
 class _BeerListScreenState extends State<BeerListScreen> {
@@ -17,27 +19,27 @@ class _BeerListScreenState extends State<BeerListScreen> {
     _BottomNavigationItem(
       label: 'Refresh',
       iconData: Icons.refresh,
-      widgetBuilder: (context) => BeerListView(),
+      widgetBuilder: (context) => const BeerListView(),
     ),
     _BottomNavigationItem(
       label: 'Search',
       iconData: Icons.search,
-      widgetBuilder: (context) => BeerSliverList(),
+      widgetBuilder: (context) => const BeerSliverList(),
     ),
     _BottomNavigationItem(
       label: 'Grid',
       iconData: Icons.grid_on,
-      widgetBuilder: (context) => BeerSliverGrid(),
+      widgetBuilder: (context) => const BeerSliverGrid(),
     ),
     _BottomNavigationItem(
       label: 'MasonryGrid',
       iconData: Icons.view_quilt,
-      widgetBuilder: (context) => BeerMasonryGrid(),
+      widgetBuilder: (context) => const BeerMasonryGrid(),
     ),
     _BottomNavigationItem(
       label: 'PageView',
       iconData: Icons.fullscreen,
-      widgetBuilder: (context) => BeerPageView(),
+      widgetBuilder: (context) => const BeerPageView(),
     ),
   ];
 

@@ -8,8 +8,10 @@ import 'package:flutter/widgets.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class BeerMasonryGrid extends StatefulWidget {
+  const BeerMasonryGrid({super.key});
+
   @override
-  _BeerMasonryGridState createState() => _BeerMasonryGridState();
+  State<BeerMasonryGrid> createState() => _BeerMasonryGridState();
 }
 
 class _BeerMasonryGridState extends State<BeerMasonryGrid> {
@@ -20,6 +22,7 @@ class _BeerMasonryGridState extends State<BeerMasonryGrid> {
 
   @override
   void initState() {
+    super.initState();
     _pagingController.addPageRequestListener((pageKey) {
       _bloc.onPageRequestSink.add(pageKey);
     });
@@ -36,18 +39,17 @@ class _BeerMasonryGridState extends State<BeerMasonryGrid> {
         itemList: listingState.itemList,
       );
     });
-    super.initState();
   }
 
   @override
-  Widget build(BuildContext context) => PagedMasonryGridView.count(
+  Widget build(BuildContext context) => PagedMasonryGridView.extent(
         pagingController: _pagingController,
         builderDelegate: PagedChildBuilderDelegate<BeerSummary>(
           itemBuilder: (context, item, index) => CachedNetworkImage(
             imageUrl: item.imageUrl,
           ),
         ),
-        crossAxisCount: 2,
+        maxCrossAxisExtent: 200,
       );
 
   @override

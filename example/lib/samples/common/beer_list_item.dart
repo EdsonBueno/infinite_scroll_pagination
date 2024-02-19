@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 /// List item representing a single Beer with its image and name.
 class BeerListItem extends StatelessWidget {
   const BeerListItem({
+    super.key,
     required this.beer,
-    Key? key,
-  }) : super(key: key);
+  });
 
   final BeerSummary beer;
 
