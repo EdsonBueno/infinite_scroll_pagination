@@ -40,7 +40,7 @@ class _BeerListViewState extends State<BeerListView> {
   }
 
   @override
-  Widget build(BuildContext context) => 
+  Widget build(BuildContext context) =>
       PagedListView<int, BeerSummary>(
         pagingController: _pagingController,
         builderDelegate: PagedChildBuilderDelegate<BeerSummary>(
@@ -62,7 +62,7 @@ class _BeerListViewState extends State<BeerListView> {
 
 ```dart
 @override
-Widget build(BuildContext context) => 
+Widget build(BuildContext context) =>
     PagedListView<int, BeerSummary>(
       pagingController: _pagingController,
       builderDelegate: PagedChildBuilderDelegate<BeerSummary>(
@@ -86,6 +86,7 @@ Widget build(BuildContext context) =>
 ```
 
 ## Animating Status Transitions
+
 ```dart
 @override
 Widget build(BuildContext context) =>
@@ -103,6 +104,7 @@ Widget build(BuildContext context) =>
 ```
 
 ## Separators
+
 ```dart
 @override
 Widget build(BuildContext context) =>
@@ -120,11 +122,12 @@ Widget build(BuildContext context) =>
 Works for both [PagedListView](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedListView-class.html) and [PagedSliverList](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedSliverList-class.html).
 
 ## Pull-to-Refresh
+
 Wrap your [PagedListView](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedListView-class.html), [PagedGridView](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedGridView-class.html) or [CustomScrollView](https://api.flutter.dev/flutter/widgets/CustomScrollView-class.html) with a [RefreshIndicator](https://api.flutter.dev/flutter/material/RefreshIndicator-class.html) (from the [material library](https://api.flutter.dev/flutter/material/material-library.html)) and inside [onRefresh](https://api.flutter.dev/flutter/material/RefreshIndicator/onRefresh.html), call `refresh` on your [PagingController](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagingController-class.html):
 
 ```dart
 @override
-Widget build(BuildContext context) => 
+Widget build(BuildContext context) =>
     RefreshIndicator(
       onRefresh: () => Future.sync(
         () => _pagingController.refresh(),
@@ -141,13 +144,14 @@ Widget build(BuildContext context) =>
 ```
 
 ## Preceding/Following Items
+
 If you need to place some widgets before or after your list, and expect them to scroll along with the list items, such as a header, footer, search or filter bar, you should use our [Sliver](https://flutter.dev/docs/development/ui/advanced/slivers) widgets.
 
 **Infinite Scroll Pagination** comes with [PagedSliverList](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedSliverList-class.html) and [PagedSliverGrid](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedSliverGrid-class.html), which works almost the same as [PagedListView](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedListView-class.html) or [PagedGridView](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedGridView-class.html), except that they need to be wrapped by a [CustomScrollView](https://api.flutter.dev/flutter/widgets/CustomScrollView-class.html). That allows you to give them siblings, for example:
 
 ```dart
 @override
-Widget build(BuildContext context) => 
+Widget build(BuildContext context) =>
     CustomScrollView(
       slivers: <Widget>[
         BeerSearchInputSliver(
@@ -215,7 +219,7 @@ class _BeerSliverListState extends State<BeerSliverList> {
   }
 
   @override
-  Widget build(BuildContext context) => 
+  Widget build(BuildContext context) =>
       CustomScrollView(
         slivers: <Widget>[
           BeerSearchInputSliver(
@@ -248,12 +252,13 @@ class _BeerSliverListState extends State<BeerSliverList> {
 The same structure can be applied to all kinds of filtering and sorting and works with any layout (not just Slivers).
 
 ## Positioning Grid's Status Indicators
+
 By default, all our paged grid widgets show your indicators as one of the grid children, respecting the same configurations you set for your items on the `gridDelegate`.
-If you want to change that, and instead display the items *below* the grid, as is in the list widgets, you can do so by using these boolean properties:
+If you want to change that, and instead display the items _below_ the grid, as is in the list widgets, you can do so by using these boolean properties:
 
 ```dart
 @override
-Widget build(BuildContext context) => 
+Widget build(BuildContext context) =>
     PagedGridView<int, BeerSummary>(
       showNewPageProgressIndicatorAsGridChild: false,
       showNewPageErrorIndicatorAsGridChild: false,
@@ -305,6 +310,7 @@ void initState() {
 ```
 
 ## Changing the Invisible Items Threshold
+
 By default, the package asks a new page when there are 3 invisible items left while the user is scrolling. You can change that number in the [PagingController](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagingController-class.html)'s constructor.
 
 ```dart
@@ -313,6 +319,7 @@ final PagingController<int, BeerSummary> _pagingController =
 ```
 
 ## BLoC
+
 **Infinite Scroll Pagination** is designed to work with any state management approach you prefer in any way you'd like. Because of that, for each approach, there's not only one, but several ways in which you could work with this package.
 Below you can see one of the possible ways to integrate it with BLoCs:
 
@@ -350,7 +357,7 @@ class _BeerSliverGridState extends State<BeerSliverGrid> {
   }
 
   @override
-  Widget build(BuildContext context) => 
+  Widget build(BuildContext context) =>
       CustomScrollView(
         slivers: <Widget>[
           BeerSearchInputSliver(
@@ -386,59 +393,79 @@ class _BeerSliverGridState extends State<BeerSliverGrid> {
 Check out the [example project](https://github.com/EdsonBueno/infinite_scroll_pagination/tree/master/example) for the complete source code.
 
 ## Custom Layout
-In case [PagedListView](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedListView-class.html), [PagedSliverList](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedSliverList-class.html), [PagedGridView](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedGridView-class.html) and [PagedSliverGrid](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedSliverGrid-class.html) doesn't work for you, you should create a new sliver layout.
 
-Creating a new layout is just a matter of using [PagedSliverBuilder](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedSliverBuilder-class.html) and provide it builders for the completed, in progress with error and in progress with loading layouts. For example, take a look at how [PagedSliverGrid](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedSliverGrid-class.html) is built:
+In case [PagedListView](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedListView-class.html), [PagedSliverList](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedSliverList-class.html), [PagedGridView](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedGridView-class.html) and [PagedSliverGrid](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedSliverGrid-class.html) doesn't work for you, you should create a new paged layout.
+
+Creating a new layout is just a matter of using [PagedLayoutBuilder](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedLayoutBuilder-class.html) and provide it builders for the completed, in progress with error and in progress with loading layouts. For example, take a look at how [PagedSliverGrid](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedSliverGrid-class.html) is built:
 
 ```dart
 @override
-Widget build(BuildContext context) =>
-    PagedSliverBuilder<PageKeyType, ItemType>(
-      pagingController: pagingController,
-      builderDelegate: builderDelegate,
-      completedListingBuilder: (
-        context,
-        itemBuilder,
-        itemCount,
-        noMoreItemsIndicatorBuilder,
-      ) =>
-          SliverGrid(
-        gridDelegate: gridDelegate,
-        delegate: _buildSliverDelegate(
+  @override
+  Widget build(BuildContext context) =>
+      PagedLayoutBuilder<PageKeyType, ItemType>(
+        layoutProtocol: PagedLayoutProtocol.sliver,
+        pagingController: pagingController,
+        builderDelegate: builderDelegate,
+        completedListingBuilder: (
+          context,
           itemBuilder,
           itemCount,
-          statusIndicatorBuilder: noMoreItemsIndicatorBuilder,
+          noMoreItemsIndicatorBuilder,
+        ) =>
+            AppendedSliverGrid(
+          sliverGridBuilder: (_, delegate) => SliverGrid(
+            delegate: delegate,
+            gridDelegate: gridDelegate,
+          ),
+          itemBuilder: itemBuilder,
+          itemCount: itemCount,
+          appendixBuilder: noMoreItemsIndicatorBuilder,
+          showAppendixAsGridChild: showNoMoreItemsIndicatorAsGridChild,
+          addAutomaticKeepAlives: addAutomaticKeepAlives,
+          addSemanticIndexes: addSemanticIndexes,
+          addRepaintBoundaries: addRepaintBoundaries,
         ),
-      ),
-      loadingListingBuilder: (
-        context,
-        itemBuilder,
-        itemCount,
-        progressIndicatorBuilder,
-      ) =>
-          SliverGrid(
-        gridDelegate: gridDelegate,
-        delegate: _buildSliverDelegate(
+        loadingListingBuilder: (
+          context,
           itemBuilder,
           itemCount,
-          statusIndicatorBuilder: progressIndicatorBuilder,
+          progressIndicatorBuilder,
+        ) =>
+            AppendedSliverGrid(
+          sliverGridBuilder: (_, delegate) => SliverGrid(
+            delegate: delegate,
+            gridDelegate: gridDelegate,
+          ),
+          itemBuilder: itemBuilder,
+          itemCount: itemCount,
+          appendixBuilder: progressIndicatorBuilder,
+          showAppendixAsGridChild: showNewPageProgressIndicatorAsGridChild,
+          addAutomaticKeepAlives: addAutomaticKeepAlives,
+          addSemanticIndexes: addSemanticIndexes,
+          addRepaintBoundaries: addRepaintBoundaries,
         ),
-      ),
-      errorListingBuilder: (
-        context,
-        itemBuilder,
-        itemCount,
-        errorIndicatorBuilder,
-      ) =>
-          SliverGrid(
-        gridDelegate: gridDelegate,
-        delegate: _buildSliverDelegate(
+        errorListingBuilder: (
+          context,
           itemBuilder,
           itemCount,
-          statusIndicatorBuilder: errorIndicatorBuilder,
+          errorIndicatorBuilder,
+        ) =>
+            AppendedSliverGrid(
+          sliverGridBuilder: (_, delegate) => SliverGrid(
+            delegate: delegate,
+            gridDelegate: gridDelegate,
+          ),
+          itemBuilder: itemBuilder,
+          itemCount: itemCount,
+          appendixBuilder: errorIndicatorBuilder,
+          showAppendixAsGridChild: showNewPageErrorIndicatorAsGridChild,
+          addAutomaticKeepAlives: addAutomaticKeepAlives,
+          addSemanticIndexes: addSemanticIndexes,
+          addRepaintBoundaries: addRepaintBoundaries,
         ),
-      ),
-    );
+        shrinkWrapFirstPageIndicators: shrinkWrapFirstPageIndicators,
+      );
 ```
 
-Notice that your resulting widget will be a [Sliver](https://flutter.dev/docs/development/ui/advanced/slivers), and as such, you need to wrap it with a [CustomScrollView](https://api.flutter.dev/flutter/widgets/CustomScrollView-class.html) before adding it to the screen.
+Note the usage of [PagedLayoutProtocol.sliver](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedLayoutProtocol/sliver.html) which tells the package that the layout is a [Sliver](https://flutter.dev/docs/development/ui/advanced/slivers).
+For widgets which have no Sliver variant, such as a [PagedPageView](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedPageView-class.html), you should use [PagedLayoutProtocol.box](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedLayoutProtocol/box.html) instead.
