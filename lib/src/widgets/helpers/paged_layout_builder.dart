@@ -94,7 +94,7 @@ class PagedLayoutBuilder<PageKeyType, ItemType> extends StatefulWidget {
   final PagedLayoutProtocol layoutProtocol;
 
   @override
-  _PagedLayoutBuilderState<PageKeyType, ItemType> createState() =>
+  State<PagedLayoutBuilder<PageKeyType, ItemType>> createState() =>
       _PagedLayoutBuilderState<PageKeyType, ItemType>();
 }
 
@@ -125,7 +125,7 @@ class _PagedLayoutBuilderState<PageKeyType, ItemType>
 
   WidgetBuilder get _firstPageProgressIndicatorBuilder =>
       _builderDelegate.firstPageProgressIndicatorBuilder ??
-      (_) => FirstPageProgressIndicator();
+      (_) => const FirstPageProgressIndicator();
 
   WidgetBuilder get _newPageProgressIndicatorBuilder =>
       _builderDelegate.newPageProgressIndicatorBuilder ??
@@ -133,7 +133,7 @@ class _PagedLayoutBuilderState<PageKeyType, ItemType>
 
   WidgetBuilder get _noItemsFoundIndicatorBuilder =>
       _builderDelegate.noItemsFoundIndicatorBuilder ??
-      (_) => NoItemsFoundIndicator();
+      (_) => const NoItemsFoundIndicator();
 
   WidgetBuilder? get _noMoreItemsIndicatorBuilder =>
       _builderDelegate.noMoreItemsIndicatorBuilder;
@@ -269,7 +269,7 @@ class _PagedLayoutBuilderState<PageKeyType, ItemType>
       if (_hasNextPage && isBuildingTriggerIndexItem) {
         // Schedules the request for the end of this frame.
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          _pagingController.notifyPageRequestListeners(_nextKey!);
+          _pagingController.notifyPageRequestListeners(_nextKey as PageKeyType);
         });
         _hasRequestedNextPage = true;
       }

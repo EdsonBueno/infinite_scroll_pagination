@@ -21,7 +21,7 @@ class ListenableListener extends StatefulWidget {
   final Widget child;
 
   @override
-  _ListenableListenerState createState() => _ListenableListenerState();
+  State<ListenableListener> createState() => _ListenableListenerState();
 }
 
 class _ListenableListenerState extends State<ListenableListener> {

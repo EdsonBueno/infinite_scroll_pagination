@@ -38,11 +38,10 @@ class FirstPageExceptionIndicator extends StatelessWidget {
                 message,
                 textAlign: TextAlign.center,
               ),
-            if (onTryAgain != null)
+            if (onTryAgain != null) ...[
               const SizedBox(
                 height: 48,
               ),
-            if (onTryAgain != null)
               SizedBox(
                 height: 50,
                 width: double.infinity,
@@ -61,6 +60,7 @@ class FirstPageExceptionIndicator extends StatelessWidget {
                   ),
                 ),
               ),
+            ],
           ],
         ),
       ),

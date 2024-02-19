@@ -172,11 +172,11 @@ class PagingController<PageKeyType, ItemType>
     }
 
     final localListeners = List<PagingStatusListener>.from(_statusListeners!);
-    localListeners.forEach((listener) {
+    for (final listener in localListeners) {
       if (_statusListeners!.contains(listener)) {
         listener(status);
       }
-    });
+    }
   }
 
   /// Calls listener every time new items are needed.
@@ -209,11 +209,11 @@ class PagingController<PageKeyType, ItemType>
     final localListeners =
         List<PageRequestListener<PageKeyType>>.from(_pageRequestListeners!);
 
-    localListeners.forEach((listener) {
+    for (final listener in localListeners) {
       if (_pageRequestListeners!.contains(listener)) {
         listener(pageKey);
       }
-    });
+    }
   }
 
   @override

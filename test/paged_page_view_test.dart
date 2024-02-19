@@ -22,7 +22,7 @@ void main() {
         firstPageKey: 1,
       );
 
-      pagingController.addPageRequestListener(mockPageRequestListener);
+      pagingController.addPageRequestListener(mockPageRequestListener.call);
 
       await _pumpPagedPageView(
         tester: tester,
@@ -38,7 +38,7 @@ void main() {
       final pagingController = buildPagingControllerWithPopulatedState(
         PopulatedStateOption.ongoingWithTwoPages,
       );
-      pagingController.addPageRequestListener(mockPageRequestListener);
+      pagingController.addPageRequestListener(mockPageRequestListener.call);
 
       await _pumpPagedPageView(
         tester: tester,
@@ -54,7 +54,7 @@ void main() {
       final pagingController = buildPagingControllerWithPopulatedState(
         PopulatedStateOption.ongoingWithOnePage,
       );
-      pagingController.addPageRequestListener(mockPageRequestListener);
+      pagingController.addPageRequestListener(mockPageRequestListener.call);
 
       await _pumpPagedPageView(
         tester: tester,
@@ -71,33 +71,32 @@ void main() {
       verify(mockPageRequestListener(2)).called(1);
     });
 
-    testWidgets('Show the new page error indicator',
-          (tester) async {
-        tester.applyPreferredTestScreenSize();
+    testWidgets('Show the new page error indicator', (tester) async {
+      tester.applyPreferredTestScreenSize();
 
-        final pagingController = buildPagingControllerWithPopulatedState(
-          PopulatedStateOption.errorOnSecondPage,
-        );
+      final pagingController = buildPagingControllerWithPopulatedState(
+        PopulatedStateOption.errorOnSecondPage,
+      );
 
-        final customIndicatorKey = UniqueKey();
-        final customNewPageErrorIndicator = Text(
-          'Error',
-          key: customIndicatorKey,
-        );
+      final customIndicatorKey = UniqueKey();
+      final customNewPageErrorIndicator = Text(
+        'Error',
+        key: customIndicatorKey,
+      );
 
-        await _pumpPagedPageView(
-          tester: tester,
-          pagingController: pagingController,
-          newPageErrorIndicator: customNewPageErrorIndicator,
-        );
+      await _pumpPagedPageView(
+        tester: tester,
+        pagingController: pagingController,
+        newPageErrorIndicator: customNewPageErrorIndicator,
+      );
 
-        await tester.scrollUntilVisible(
-          find.byKey(customIndicatorKey),
-          _itemWidth,
-        );
+      await tester.scrollUntilVisible(
+        find.byKey(customIndicatorKey),
+        _itemWidth,
+      );
 
-        expect(find.byKey(customIndicatorKey), findsOneWidget);
-      });
+      expect(find.byKey(customIndicatorKey), findsOneWidget);
+    });
   });
 }
 
