@@ -227,6 +227,8 @@ class PagedMasonryGridView<PageKeyType, ItemType> extends BoxScrollView {
         builderDelegate: builderDelegate,
         pagingController: pagingController,
         gridDelegateBuilder: gridDelegateBuilder,
+        mainAxisSpacing: mainAxisSpacing,
+        crossAxisSpacing: crossAxisSpacing,
         addAutomaticKeepAlives: addAutomaticKeepAlives,
         addRepaintBoundaries: addRepaintBoundaries,
         addSemanticIndexes: addSemanticIndexes,
