@@ -1,5 +1,4 @@
 import 'package:flutter/widgets.dart';
-import 'package:sliver_tools/sliver_tools.dart';
 
 import 'appended_sliver_child_builder_delegate.dart';
 
@@ -35,8 +34,8 @@ class AppendedSliverGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     final appendixBuilder = this.appendixBuilder;
 
-    return MultiSliver(
-      children: [
+    return SliverMainAxisGroup(
+      slivers: [
         sliverGridBuilder(
           itemCount +
               (showAppendixAsGridChild && appendixBuilder != null ? 1 : 0),
