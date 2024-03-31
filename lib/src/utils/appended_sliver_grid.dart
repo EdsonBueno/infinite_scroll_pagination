@@ -3,7 +3,7 @@ import 'package:sliver_tools/sliver_tools.dart';
 
 import 'appended_sliver_child_builder_delegate.dart';
 
-typedef SliverGridBuilder = SliverWithKeepAliveWidget Function(
+typedef SliverGridBuilder = Widget Function(
   int childCount,
   SliverChildDelegate delegate,
 );
