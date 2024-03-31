@@ -16,8 +16,8 @@ typedef SliverSimpleGridDelegateBuilder = SliverSimpleGridDelegate Function(
 /// from the [flutter_staggered_grid_view](https://pub.dev/packages/flutter_staggered_grid_view) package.
 /// For more info on how to build staggered grids, check out the
 /// referred package's documentation and examples.
-class PagedMasonrySliverGrid<PageKeyType, ItemType> extends StatelessWidget {
-  const PagedMasonrySliverGrid({
+class PagedSliverMasonryGrid<PageKeyType, ItemType> extends StatelessWidget {
+  const PagedSliverMasonryGrid({
     required this.pagingController,
     required this.builderDelegate,
     required this.gridDelegateBuilder,
@@ -36,7 +36,7 @@ class PagedMasonrySliverGrid<PageKeyType, ItemType> extends StatelessWidget {
         );
 
   /// Equivalent to [SliverMasonryGrid.count].
-  PagedMasonrySliverGrid.count({
+  PagedSliverMasonryGrid.count({
     required this.pagingController,
     required this.builderDelegate,
     required int crossAxisCount,
@@ -59,7 +59,7 @@ class PagedMasonrySliverGrid<PageKeyType, ItemType> extends StatelessWidget {
         );
 
   /// Equivalent to [SliverMasonryGrid.extent].
-  PagedMasonrySliverGrid.extent({
+  PagedSliverMasonryGrid.extent({
     required this.pagingController,
     required this.builderDelegate,
     required double maxCrossAxisExtent,

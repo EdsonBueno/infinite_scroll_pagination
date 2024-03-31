@@ -223,7 +223,7 @@ class PagedMasonryGridView<PageKeyType, ItemType> extends BoxScrollView {
 
   @override
   Widget buildChildLayout(BuildContext context) =>
-      PagedMasonrySliverGrid<PageKeyType, ItemType>(
+      PagedSliverMasonryGrid<PageKeyType, ItemType>(
         builderDelegate: builderDelegate,
         pagingController: pagingController,
         gridDelegateBuilder: gridDelegateBuilder,
