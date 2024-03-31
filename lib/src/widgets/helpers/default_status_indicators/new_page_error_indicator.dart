@@ -13,6 +13,7 @@ class NewPageErrorIndicator extends StatelessWidget {
         onTap: onTap,
         child: const FooterTile(
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(

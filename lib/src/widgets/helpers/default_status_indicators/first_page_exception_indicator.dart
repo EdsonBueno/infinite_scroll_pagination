@@ -23,39 +23,35 @@ class FirstPageExceptionIndicator extends StatelessWidget {
           horizontal: 16,
         ),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Text(
               title,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.titleLarge,
             ),
-            if (message != null)
+            if (message != null) ...[
               const SizedBox(
                 height: 16,
               ),
-            if (message != null)
               Text(
                 message,
                 textAlign: TextAlign.center,
               ),
+            ],
             if (onTryAgain != null) ...[
               const SizedBox(
                 height: 48,
               ),
               SizedBox(
-                height: 50,
-                width: double.infinity,
+                width: 200,
                 child: ElevatedButton.icon(
                   onPressed: onTryAgain,
-                  icon: const Icon(
-                    Icons.refresh,
-                    color: Colors.white,
-                  ),
+                  icon: const Icon(Icons.refresh),
                   label: const Text(
                     'Try Again',
                     style: TextStyle(
                       fontSize: 16,
-                      color: Colors.white,
                     ),
                   ),
                 ),
