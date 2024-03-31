@@ -3,21 +3,17 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:infinite_scroll_pagination/src/utils/appended_sliver_grid.dart';
 
-typedef SliverSimpleGridDelegateBuilder = SliverSimpleGridDelegate Function(
-  int childCount,
-);
-
-/// A [SliverMasonryGrid] with pagination capabilities.
+/// A [SliverAlignedGrid] with pagination capabilities.
 ///
-/// You can also see this as a [PagedSliverGrid] that supports rows of varying
-/// sizes.
+/// You can also see this as a [PagedSliverGrid] that ensures that the items
+/// in its rows all have the same size.
 ///
-/// This is a wrapper around the [SliverMasonryGrid]
+/// This is a wrapper around the [SliverAlignedGrid]
 /// from the [flutter_staggered_grid_view](https://pub.dev/packages/flutter_staggered_grid_view) package.
 /// For more info on how to build staggered grids, check out the
 /// referred package's documentation and examples.
-class PagedMasonrySliverGrid<PageKeyType, ItemType> extends StatelessWidget {
-  const PagedMasonrySliverGrid({
+class PagedSliverAlignedGrid<PageKeyType, ItemType> extends StatelessWidget {
+  const PagedSliverAlignedGrid({
     required this.pagingController,
     required this.builderDelegate,
     required this.gridDelegateBuilder,
@@ -31,12 +27,9 @@ class PagedMasonrySliverGrid<PageKeyType, ItemType> extends StatelessWidget {
     this.showNoMoreItemsIndicatorAsGridChild = true,
     this.shrinkWrapFirstPageIndicators = false,
     Key? key,
-  }) : super(
-          key: key,
-        );
+  }) : super(key: key);
 
-  /// Equivalent to [SliverMasonryGrid.count].
-  PagedMasonrySliverGrid.count({
+  PagedSliverAlignedGrid.count({
     required this.pagingController,
     required this.builderDelegate,
     required int crossAxisCount,
@@ -54,12 +47,10 @@ class PagedMasonrySliverGrid<PageKeyType, ItemType> extends StatelessWidget {
             ((childCount) => SliverSimpleGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: crossAxisCount,
                 )),
-        super(
-          key: key,
-        );
+        super(key: key);
 
-  /// Equivalent to [SliverMasonryGrid.extent].
-  PagedMasonrySliverGrid.extent({
+  PagedSliverAlignedGrid.extent({
+    Key? key,
     required this.pagingController,
     required this.builderDelegate,
     required double maxCrossAxisExtent,
@@ -72,14 +63,11 @@ class PagedMasonrySliverGrid<PageKeyType, ItemType> extends StatelessWidget {
     this.showNewPageErrorIndicatorAsGridChild = true,
     this.showNoMoreItemsIndicatorAsGridChild = true,
     this.shrinkWrapFirstPageIndicators = false,
-    Key? key,
   })  : gridDelegateBuilder =
             ((childCount) => SliverSimpleGridDelegateWithMaxCrossAxisExtent(
                   maxCrossAxisExtent: maxCrossAxisExtent,
                 )),
-        super(
-          key: key,
-        );
+        super(key: key);
 
   /// Matches [PagedLayoutBuilder.pagingController].
   final PagingController<PageKeyType, ItemType> pagingController;
@@ -112,10 +100,10 @@ class PagedMasonrySliverGrid<PageKeyType, ItemType> extends StatelessWidget {
   /// Matches [PagedLayoutBuilder.shrinkWrapFirstPageIndicators].
   final bool shrinkWrapFirstPageIndicators;
 
-  /// Matches [SliverMasonryGrid.mainAxisSpacing].
+  /// Matches [SliverAlignedGrid.mainAxisSpacing].
   final double mainAxisSpacing;
 
-  /// Matches [SliverMasonryGrid.mainAxisSpacing].
+  /// Matches [SliverAlignedGrid.crossAxisSpacing].
   final double crossAxisSpacing;
 
   @override
@@ -131,11 +119,14 @@ class PagedMasonrySliverGrid<PageKeyType, ItemType> extends StatelessWidget {
           noMoreItemsIndicatorBuilder,
         ) =>
             AppendedSliverGrid(
-          sliverGridBuilder: (childCount, delegate) => SliverMasonryGrid(
-            delegate: delegate,
+          sliverGridBuilder: (childCount, delegate) => SliverAlignedGrid(
+            itemBuilder: delegate.build,
+            itemCount: childCount,
             gridDelegate: gridDelegateBuilder(childCount),
             mainAxisSpacing: mainAxisSpacing,
             crossAxisSpacing: crossAxisSpacing,
+            addAutomaticKeepAlives: addAutomaticKeepAlives,
+            addRepaintBoundaries: addRepaintBoundaries,
           ),
           itemBuilder: itemBuilder,
           itemCount: itemCount,
@@ -152,11 +143,14 @@ class PagedMasonrySliverGrid<PageKeyType, ItemType> extends StatelessWidget {
           progressIndicatorBuilder,
         ) =>
             AppendedSliverGrid(
-          sliverGridBuilder: (childCount, delegate) => SliverMasonryGrid(
-            delegate: delegate,
+          sliverGridBuilder: (childCount, delegate) => SliverAlignedGrid(
+            itemBuilder: delegate.build,
+            itemCount: childCount,
             gridDelegate: gridDelegateBuilder(childCount),
             mainAxisSpacing: mainAxisSpacing,
             crossAxisSpacing: crossAxisSpacing,
+            addAutomaticKeepAlives: addAutomaticKeepAlives,
+            addRepaintBoundaries: addRepaintBoundaries,
           ),
           itemBuilder: itemBuilder,
           itemCount: itemCount,
@@ -173,11 +167,14 @@ class PagedMasonrySliverGrid<PageKeyType, ItemType> extends StatelessWidget {
           errorIndicatorBuilder,
         ) =>
             AppendedSliverGrid(
-          sliverGridBuilder: (childCount, delegate) => SliverMasonryGrid(
-            delegate: delegate,
+          sliverGridBuilder: (childCount, delegate) => SliverAlignedGrid(
+            itemBuilder: delegate.build,
+            itemCount: childCount,
             gridDelegate: gridDelegateBuilder(childCount),
             mainAxisSpacing: mainAxisSpacing,
             crossAxisSpacing: crossAxisSpacing,
+            addAutomaticKeepAlives: addAutomaticKeepAlives,
+            addRepaintBoundaries: addRepaintBoundaries,
           ),
           itemBuilder: itemBuilder,
           itemCount: itemCount,
