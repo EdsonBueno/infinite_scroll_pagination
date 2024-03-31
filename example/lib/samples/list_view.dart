@@ -86,6 +86,8 @@ class _ListViewScreenState extends State<ListViewScreen> {
               ),
               firstPageErrorIndicatorBuilder: (context) =>
                   CustomFirstPageError(pagingController: _pagingController),
+              newPageErrorIndicatorBuilder: (context) =>
+                  CustomNewPageError(pagingController: _pagingController),
             ),
             separatorBuilder: (context, index) => const Divider(),
           ),

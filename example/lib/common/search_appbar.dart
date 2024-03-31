@@ -25,23 +25,27 @@ class _SearchAppBarState extends State<SearchAppBar> {
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 200),
       child: _isSearchMode
-          ? TextFormField(
-              initialValue: widget.searchTerm,
-              autofocus: true,
-              decoration: InputDecoration(
-                hintText: 'Search...',
-                border: InputBorder.none,
-                contentPadding: const EdgeInsets.all(16),
-                suffix: IconButton(
+          ? AppBar(
+              title: TextFormField(
+                initialValue: widget.searchTerm,
+                autofocus: true,
+                decoration: const InputDecoration(
+                  hintText: 'Search...',
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.all(16),
+                ),
+                style: Theme.of(context).textTheme.titleLarge,
+                onFieldSubmitted: (value) {
+                  widget.onSearch(value);
+                  setState(() => _isSearchMode = false);
+                },
+              ),
+              actions: [
+                IconButton(
                   icon: const Icon(Icons.close),
                   onPressed: () => setState(() => _isSearchMode = false),
                 ),
-              ),
-              style: Theme.of(context).textTheme.titleLarge,
-              onFieldSubmitted: (value) {
-                widget.onSearch(value);
-                setState(() => _isSearchMode = false);
-              },
+              ],
             )
           : AppBar(
               title: const Text('Photos'),
@@ -50,7 +54,6 @@ class _SearchAppBarState extends State<SearchAppBar> {
                   icon: const Icon(Icons.search),
                   onPressed: () => setState(() => _isSearchMode = true),
                 ),
-                const SizedBox(width: 16),
               ],
             ),
     );

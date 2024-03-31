@@ -12,9 +12,8 @@ class RemoteApi {
     int limit = 20,
     String? search,
   }) {
-    // one in ten
     if (Random().nextInt(10) == 0) {
-      throw NoConnectionException();
+      throw RandomChanceException();
     }
 
     return http
@@ -24,24 +23,8 @@ class RemoteApi {
         .mapFromResponse<List<Photo>, List<dynamic>>(
           (jsonArray) => _parseItemListFromJsonArray(
             jsonArray,
-            (jsonObject) => Photo.fromJson(jsonObject),
+            Photo.fromPlaceholderJson,
           ),
-        )
-        .then(
-          (e) => e.map(
-            (e) {
-              final id = e.thumbnailUrl.split('/').last;
-              final width = Random(id.hashCode ^ 1).nextInt(1000) + 300;
-              final height = Random(id.hashCode ^ 2).nextInt(1000) + 300;
-              return Photo(
-                albumId: e.albumId,
-                id: e.id,
-                title: e.title,
-                url: e.url,
-                thumbnailUrl: 'https://picsum.photos/seed/$id/$width/$height',
-              );
-            },
-          ).toList(),
         );
   }
 

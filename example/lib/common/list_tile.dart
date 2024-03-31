@@ -14,7 +14,7 @@ class ImageListTile extends StatelessWidget {
   Widget build(BuildContext context) => ListTile(
         leading: CircleAvatar(
           radius: 20,
-          backgroundImage: CachedNetworkImageProvider(item.thumbnailUrl),
+          backgroundImage: CachedNetworkImageProvider(item.thumbnail),
         ),
         title: Text(item.title),
       );
