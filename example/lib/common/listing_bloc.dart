@@ -1,43 +1,41 @@
 import 'dart:async';
 
-import 'package:brewtiful/remote/beer_summary.dart';
-import 'package:brewtiful/remote/remote_api.dart';
+import 'package:infinite_example/remote/item.dart';
+import 'package:infinite_example/remote/api.dart';
 import 'package:rxdart/rxdart.dart';
 
-class BeerListingState {
-  BeerListingState({
+class ListingState {
+  ListingState({
     this.itemList,
     this.error,
     this.nextPageKey = 1,
   });
 
-  final List<BeerSummary>? itemList;
+  final List<Photo>? itemList;
   final dynamic error;
   final int? nextPageKey;
 }
 
-class BeerListingBloc {
-  BeerListingBloc() {
+class ListingBloc {
+  ListingBloc() {
     _onPageRequest.stream
-        .flatMap(_fetchBeerSummaryList)
+        .flatMap(_fetch)
         .listen(_onNewListingStateController.add)
         .addTo(_subscriptions);
 
     _onSearchInputChangedSubject.stream
-        .flatMap((_) => _resetSearch())
+        .flatMap((_) => _refresh())
         .listen(_onNewListingStateController.add)
         .addTo(_subscriptions);
   }
 
-  static const _pageSize = 10;
-
   final _subscriptions = CompositeSubscription();
 
-  final _onNewListingStateController = BehaviorSubject<BeerListingState>.seeded(
-    BeerListingState(),
+  final _onNewListingStateController = BehaviorSubject<ListingState>.seeded(
+    ListingState(),
   );
 
-  Stream<BeerListingState> get onNewListingState =>
+  Stream<ListingState> get onNewListingState =>
       _onNewListingStateController.stream;
 
   final _onPageRequest = StreamController<int>();
@@ -51,22 +49,21 @@ class BeerListingBloc {
 
   String? get _searchInputValue => _onSearchInputChangedSubject.value;
 
-  Stream<BeerListingState> _resetSearch() async* {
-    yield BeerListingState();
-    yield* _fetchBeerSummaryList(1);
+  Stream<ListingState> _refresh() async* {
+    yield ListingState();
+    yield* _fetch(1);
   }
 
-  Stream<BeerListingState> _fetchBeerSummaryList(int pageKey) async* {
+  Stream<ListingState> _fetch(int pageKey) async* {
     final lastListingState = _onNewListingStateController.value;
     try {
-      final newItems = await RemoteApi.getBeerList(
+      final newItems = await RemoteApi.getPhotos(
         pageKey,
-        _pageSize,
-        searchTerm: _searchInputValue,
+        search: _searchInputValue,
       );
-      final isLastPage = newItems.length < _pageSize;
+      final isLastPage = newItems.isEmpty;
       final nextPageKey = isLastPage ? null : pageKey + 1;
-      yield BeerListingState(
+      yield ListingState(
         error: null,
         nextPageKey: nextPageKey,
         itemList: [
@@ -75,7 +72,7 @@ class BeerListingBloc {
         ],
       );
     } catch (e) {
-      yield BeerListingState(
+      yield ListingState(
         error: e,
         nextPageKey: lastListingState.nextPageKey,
         itemList: lastListingState.itemList,

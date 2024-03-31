@@ -1,13 +1,12 @@
-name: brewtiful
-description: "Sample app for the Infinite Scroll Pagination package."
+name: infinite_example
+description: "A showcase of the infinite_scroll_pagination package"
 
 publish_to: "none"
 
 version: 1.0.0+1
 
 environment:
-  sdk: ">=3.3.0 <4.0.0"
-  flutter: ">=3.19.0"
+  sdk: ">=3.3.3 <4.0.0"
 
 dependencies:
   flutter:

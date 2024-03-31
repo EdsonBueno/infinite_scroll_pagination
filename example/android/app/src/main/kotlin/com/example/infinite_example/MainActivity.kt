@@ -1,4 +1,4 @@
-package com.example.brewtiful
+package com.example.infinite_example
 
 import io.flutter.embedding.android.FlutterActivity
 
