@@ -1,17 +1,24 @@
-import 'package:brewtiful/beer_list_screen.dart';
+import 'package:infinite_example/common/touch_physics.dart';
+import 'package:infinite_example/home_screen.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(const MyApp());
+void main() => runApp(const App());
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class App extends StatelessWidget {
+  const App({super.key});
 
   @override
   Widget build(BuildContext context) => MaterialApp(
         title: 'Infinite Scroll Pagination Sample',
-        theme: ThemeData(
-          primarySwatch: Colors.green,
+        scrollBehavior: const TouchBehaviour(),
+        theme: ThemeData.from(
+          useMaterial3: true,
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.greenAccent,
+            brightness:
+                WidgetsBinding.instance.platformDispatcher.platformBrightness,
+          ),
         ),
-        home: const BeerListScreen(),
+        home: const Home(),
       );
 }

@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
-class BeerSearchInputSliver extends StatefulWidget {
-  const BeerSearchInputSliver({
+class SearchInputSliver extends StatefulWidget {
+  const SearchInputSliver({
     super.key,
     this.onChanged,
     this.debounceTime,
@@ -13,10 +13,10 @@ class BeerSearchInputSliver extends StatefulWidget {
   final Duration? debounceTime;
 
   @override
-  State<BeerSearchInputSliver> createState() => _BeerSearchInputSliverState();
+  State<SearchInputSliver> createState() => _SearchInputSliverState();
 }
 
-class _BeerSearchInputSliverState extends State<BeerSearchInputSliver> {
+class _SearchInputSliverState extends State<SearchInputSliver> {
   final StreamController<String> _textChangeStreamController =
       StreamController();
   late StreamSubscription _textChangesSubscription;
@@ -51,7 +51,7 @@ class _BeerSearchInputSliverState extends State<BeerSearchInputSliver> {
               prefixIcon: Icon(
                 Icons.search,
               ),
-              labelText: 'Beer Name',
+              hintText: 'Search...',
             ),
             onChanged: _textChangeStreamController.add,
           ),
