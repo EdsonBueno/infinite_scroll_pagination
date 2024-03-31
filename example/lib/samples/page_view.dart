@@ -54,7 +54,7 @@ class _PageViewScreenState extends State<PageViewScreen> {
             pagingController: _pagingController,
             builderDelegate: PagedChildBuilderDelegate(
               itemBuilder: (context, item, index) => CachedNetworkImage(
-                imageUrl: item.thumbnailUrl,
+                imageUrl: item.thumbnail,
               ),
             ),
           ),
@@ -79,7 +79,10 @@ class _PageViewScreenState extends State<PageViewScreen> {
                         }
                         return Text(
                           '${_pageController.page?.round()} / ${_pagingController.itemList?.length ?? 0}',
-                          style: Theme.of(context).textTheme.titleLarge,
+                          style:
+                              Theme.of(context).textTheme.titleLarge?.copyWith(
+                                    color: Colors.white,
+                                  ),
                         );
                       },
                     ),

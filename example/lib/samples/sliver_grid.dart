@@ -53,83 +53,85 @@ class _SliverGridScreenState extends State<SliverGridScreen> {
   }
 
   @override
-  Widget build(BuildContext context) => CustomScrollView(
-        slivers: <Widget>[
-          SearchInputSliver(
-            onChanged: (searchTerm) => _bloc.onSearchInputChangedSink.add(
-              searchTerm,
+  Widget build(BuildContext context) => SafeArea(
+        child: CustomScrollView(
+          slivers: [
+            SearchInputSliver(
+              onChanged: (searchTerm) => _bloc.onSearchInputChangedSink.add(
+                searchTerm,
+              ),
             ),
-          ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(8),
-              child: SingleChildScrollView(
-                child: Row(
-                  children: [
-                    for (final gridType in _GridType.values) ...[
-                      ChoiceChip(
-                        selected: _gridType == gridType,
-                        onSelected: (value) =>
-                            setState(() => _gridType = gridType),
-                        label: Text(
-                            gridType.name.split('').first.toUpperCase() +
-                                gridType.name.substring(1)),
-                      ),
-                      const SizedBox(width: 8),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: SingleChildScrollView(
+                  child: Row(
+                    children: [
+                      for (final gridType in _GridType.values) ...[
+                        ChoiceChip(
+                          selected: _gridType == gridType,
+                          onSelected: (value) =>
+                              setState(() => _gridType = gridType),
+                          label: Text(
+                              gridType.name.split('').first.toUpperCase() +
+                                  gridType.name.substring(1)),
+                        ),
+                        const SizedBox(width: 8),
+                      ],
                     ],
-                  ],
+                  ),
                 ),
               ),
             ),
-          ),
-          switch (_gridType) {
-            _GridType.square => PagedSliverGrid<int, Photo>(
-                pagingController: _pagingController,
-                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                  childAspectRatio: 1 / 1.2,
+            switch (_gridType) {
+              _GridType.square => PagedSliverGrid<int, Photo>(
+                  pagingController: _pagingController,
+                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                    childAspectRatio: 1 / 1.2,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    maxCrossAxisExtent: 200,
+                  ),
+                  builderDelegate: PagedChildBuilderDelegate(
+                    itemBuilder: (context, item, index) => CachedNetworkImage(
+                      imageUrl: item.thumbnail,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              _GridType.masonry => PagedSliverMasonryGrid<int, Photo>.extent(
+                  pagingController: _pagingController,
+                  maxCrossAxisExtent: 200,
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10,
+                  builderDelegate: PagedChildBuilderDelegate(
+                    itemBuilder: (context, item, index) => AspectRatio(
+                      aspectRatio: item.width / item.height,
+                      child: CachedNetworkImage(
+                        imageUrl: item.thumbnail,
+                      ),
+                    ),
+                  ),
+                ),
+              _GridType.aligned => PagedSliverAlignedGrid<int, Photo>.extent(
+                  pagingController: _pagingController,
                   maxCrossAxisExtent: 200,
-                ),
-                builderDelegate: PagedChildBuilderDelegate(
-                  itemBuilder: (context, item, index) => CachedNetworkImage(
-                    imageUrl: item.thumbnailUrl,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-            _GridType.masonry => PagedSliverMasonryGrid<int, Photo>.extent(
-                pagingController: _pagingController,
-                maxCrossAxisExtent: 200,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-                builderDelegate: PagedChildBuilderDelegate(
-                  itemBuilder: (context, item, index) => CachedNetworkImage(
-                    imageUrl: item.thumbnailUrl,
-                  ),
-                ),
-              ),
-            _GridType.aligned => PagedSliverAlignedGrid<int, Photo>.extent(
-                pagingController: _pagingController,
-                maxCrossAxisExtent: 200,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-                builderDelegate: PagedChildBuilderDelegate(
-                  itemBuilder: (context, item, index) => ConstrainedBox(
-                    constraints: const BoxConstraints(
-                      maxHeight: 400,
-                      minHeight: 200,
-                    ),
-                    child: CachedNetworkImage(
-                      imageUrl: item.thumbnailUrl,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                  builderDelegate: PagedChildBuilderDelegate(
+                    itemBuilder: (context, item, index) => AspectRatio(
+                      aspectRatio: item.width / item.height,
+                      child: CachedNetworkImage(
+                        imageUrl: item.thumbnail,
+                      ),
                     ),
                   ),
+                  showNewPageErrorIndicatorAsGridChild: false,
+                  showNewPageProgressIndicatorAsGridChild: false,
+                  showNoMoreItemsIndicatorAsGridChild: false,
                 ),
-                showNewPageErrorIndicatorAsGridChild: false,
-                showNewPageProgressIndicatorAsGridChild: false,
-                showNoMoreItemsIndicatorAsGridChild: false,
-              ),
-          },
-        ],
+            },
+          ],
+        ),
       );
 }
