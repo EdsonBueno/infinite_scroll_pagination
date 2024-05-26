@@ -66,9 +66,9 @@ class _BeerListViewState extends State<BeerListView> {
   }
 
   @override
-  Widget build(BuildContext context) => 
-      // Don't worry about displaying progress or error indicators on screen; the 
-      // package takes care of that. If you want to customize them, use the 
+  Widget build(BuildContext context) =>
+      // Don't worry about displaying progress or error indicators on screen; the
+      // package takes care of that. If you want to customize them, use the
       // [PagedChildBuilderDelegate] properties.
       PagedListView<int, BeerSummary>(
         pagingController: _pagingController,
@@ -106,5 +106,5 @@ For more usage examples, please take a look at our [cookbook](https://pub.dev/pa
 ## API Overview
 
 <p align="center">
-	<img src="https://raw.githubusercontent.com/EdsonBueno/infinite_scroll_pagination/master/docs/assets/api-diagram.png" alt="API Diagram" />
+	<img src="https://raw.githubusercontent.com/EdsonBueno/infinite_scroll_pagination/master/docs/assets/overview.png" alt="API Diagram" />
 </p>

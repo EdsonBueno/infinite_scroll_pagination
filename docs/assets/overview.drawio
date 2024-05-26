@@ -1,0 +1,170 @@
+<mxfile host="app.diagrams.net" modified="2024-05-26T20:51:31.280Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36" etag="vvBTHMNhciWj1pMU73DR" version="24.4.4" type="device">
+  <diagram name="Page-1" id="Ja0PciWwKuc3zwULVUes">
+    <mxGraphModel dx="1647" dy="642" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-95" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#050505;arcSize=2;" vertex="1" parent="1">
+          <mxGeometry x="-40" y="230" width="750" height="1130" as="geometry" />
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-67" value="" style="group;fillColor=#FFFFFF;rounded=1;arcSize=2;" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="-30" y="410" width="730" height="940" as="geometry" />
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-68" value="Widgets" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=21;fontStyle=1;fontFamily=Tahoma;" vertex="1" parent="fk73YEOMK82wj3Cn6yjO-67">
+          <mxGeometry x="24.6" y="14.92" width="680.8" height="45.08" as="geometry" />
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-69" value="All widgets have a pagingController and a builderDelegate property." style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;labelPosition=center;verticalLabelPosition=middle;fontFamily=Tahoma;" vertex="1" parent="fk73YEOMK82wj3Cn6yjO-67">
+          <mxGeometry x="24.6" y="60" width="680.8" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-84" value="Low-level" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="fk73YEOMK82wj3Cn6yjO-67">
+          <mxGeometry x="660" y="770.8" width="60" height="28.2" as="geometry" />
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-5" value="" style="group;fillColor=#ed625c;strokeColor=none;gradientColor=none;rounded=1;" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="-10" y="1220" width="694.5" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-3" value="PagedLayoutBuilder" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=21;fontStyle=1;fontFamily=Tahoma;" vertex="1" parent="fk73YEOMK82wj3Cn6yjO-5">
+          <mxGeometry x="231.963" y="10" width="230.5824695121951" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-4" value="The template widget for all other Paged widgets. Use this directly if you need maximum customisation or are implementing a new upper level widget." style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;labelPosition=center;verticalLabelPosition=middle;fontFamily=Tahoma;" vertex="1" parent="fk73YEOMK82wj3Cn6yjO-5">
+          <mxGeometry x="105.86951219512196" y="50" width="482.7621951219512" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-58" value="" style="group;fillColor=#DEDEDE;rounded=1;" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="-17.75" y="530" width="230" height="630" as="geometry" />
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-54" value="List Widgets" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=21;fontStyle=1;fontFamily=Tahoma;" vertex="1" parent="fk73YEOMK82wj3Cn6yjO-58">
+          <mxGeometry x="7.75" y="10" width="214.5" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-57" value="Both list widgets have an alternative .separated constructor, which takes in a separatorBuilder and uses it to insert separators between your list items." style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;labelPosition=center;verticalLabelPosition=middle;fontFamily=Tahoma;" vertex="1" parent="fk73YEOMK82wj3Cn6yjO-58">
+          <mxGeometry x="7.75" y="60" width="214.5" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-21" value="" style="group;fillColor=#B266FF;strokeColor=none;gradientColor=none;rounded=1;" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="-10" y="810" width="214.5" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-23" value="PagedListView" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=21;fontStyle=1;fontFamily=Tahoma;" vertex="1" parent="fk73YEOMK82wj3Cn6yjO-21">
+          <mxGeometry width="214.5" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-24" value="Equivalent to ListView" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;labelPosition=center;verticalLabelPosition=middle;fontFamily=Tahoma;" vertex="1" parent="fk73YEOMK82wj3Cn6yjO-21">
+          <mxGeometry y="50" width="214.5" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-29" value="" style="group;fillColor=#C3ABD0;strokeColor=none;gradientColor=none;rounded=1;" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="-10" y="1020" width="214.5" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-30" value="PagedSliverList" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=21;fontStyle=1;fontFamily=Tahoma;" vertex="1" parent="fk73YEOMK82wj3Cn6yjO-29">
+          <mxGeometry width="214.5" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-85" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="fk73YEOMK82wj3Cn6yjO-29" source="fk73YEOMK82wj3Cn6yjO-31">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="107.20689655172418" y="199.99999999999977" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-31" value="Equivalent to SliverList" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;labelPosition=center;verticalLabelPosition=middle;fontFamily=Tahoma;" vertex="1" parent="fk73YEOMK82wj3Cn6yjO-29">
+          <mxGeometry y="50" width="214.5" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-59" value="" style="group;fillColor=#DEDEDE;rounded=1;" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="220" y="530" width="230" height="630" as="geometry" />
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-61" value="Grid Widgets" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=21;fontStyle=1;fontFamily=Tahoma;" vertex="1" parent="fk73YEOMK82wj3Cn6yjO-59">
+          <mxGeometry x="7.75" y="10" width="214.5" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-62" value="Both grid widgets have bool properties to let you choose whether you want to display the progress, error and completed listing indiactors as grid items or if you want to put them below the grid, as is in the list widgets." style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;labelPosition=center;verticalLabelPosition=middle;fontFamily=Tahoma;" vertex="1" parent="fk73YEOMK82wj3Cn6yjO-59">
+          <mxGeometry x="7.75" y="60" width="214.5" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-32" value="" style="group;fillColor=#66CC00;strokeColor=none;gradientColor=none;rounded=1;" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="230" y="1020" width="214.5" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-33" value="PagedSliverGrid" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=21;fontStyle=1;fontFamily=Tahoma;" vertex="1" parent="fk73YEOMK82wj3Cn6yjO-32">
+          <mxGeometry width="214.5" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-86" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="fk73YEOMK82wj3Cn6yjO-32" source="fk73YEOMK82wj3Cn6yjO-34">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="107.20689655172418" y="199.99999999999977" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-34" value="Equivalent to SliverGrid" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;labelPosition=center;verticalLabelPosition=middle;fontFamily=Tahoma;" vertex="1" parent="fk73YEOMK82wj3Cn6yjO-32">
+          <mxGeometry y="50" width="214.5" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-36" value="" style="group;fillColor=#009900;strokeColor=none;gradientColor=none;rounded=1;" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="230" y="810" width="214.5" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-37" value="PagedGridView" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=21;fontStyle=1;fontFamily=Tahoma;" vertex="1" parent="fk73YEOMK82wj3Cn6yjO-36">
+          <mxGeometry width="214.5" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-38" value="Equivalent to GridView" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;labelPosition=center;verticalLabelPosition=middle;fontFamily=Tahoma;" vertex="1" parent="fk73YEOMK82wj3Cn6yjO-36">
+          <mxGeometry y="50" width="214.5" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-63" value="" style="group;fillColor=#DEDEDE;rounded=1;" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="460" y="530" width="230" height="630" as="geometry" />
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-65" value="Other Widgets" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=21;fontStyle=1;fontFamily=Tahoma;" vertex="1" parent="fk73YEOMK82wj3Cn6yjO-63">
+          <mxGeometry x="7.75" y="10" width="214.5" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-73" value="Top-level" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="fk73YEOMK82wj3Cn6yjO-63">
+          <mxGeometry x="170" y="240" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-83" value="Mid-level" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="fk73YEOMK82wj3Cn6yjO-63">
+          <mxGeometry x="170" y="470" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-39" value="" style="group;fillColor=#994C00;strokeColor=none;gradientColor=none;rounded=1;" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="469" y="810" width="214.5" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-40" value="PagedPageView" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=21;fontStyle=1;fontFamily=Tahoma;" vertex="1" parent="fk73YEOMK82wj3Cn6yjO-39">
+          <mxGeometry width="214.5" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-89" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="fk73YEOMK82wj3Cn6yjO-39" source="fk73YEOMK82wj3Cn6yjO-41">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="107.51724137931046" y="409.9999999999998" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-41" value="Equivalent to PageView" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;labelPosition=center;verticalLabelPosition=middle;fontFamily=Tahoma;" vertex="1" parent="fk73YEOMK82wj3Cn6yjO-39">
+          <mxGeometry y="50" width="214.5" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-42" value="" style="endArrow=none;dashed=1;html=1;dashPattern=12 12;strokeWidth=2;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-30" y="760" as="sourcePoint" />
+            <mxPoint x="710" y="760" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-51" value="" style="endArrow=none;dashed=1;html=1;dashPattern=12 12;strokeWidth=2;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-30" y="990" as="sourcePoint" />
+            <mxPoint x="700" y="990" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-52" value="" style="endArrow=none;dashed=1;html=1;dashPattern=12 12;strokeWidth=2;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-30" y="1170" as="sourcePoint" />
+            <mxPoint x="700" y="1170" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-91" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;strokeColor=#FFFFFF;" edge="1" parent="1" source="fk73YEOMK82wj3Cn6yjO-71">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="141.30303030303048" y="410" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-71" value="PagingController" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Tahoma;fontSize=21;fillColor=#387DC2;" vertex="1" parent="1">
+          <mxGeometry x="-29.999999999999993" y="250" width="342.75" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-92" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;strokeColor=#FFFFFF;" edge="1" parent="1" source="fk73YEOMK82wj3Cn6yjO-72">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="528.5757575757577" y="410" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-72" value="PagedChildBuilderDelegate" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Tahoma;fontSize=21;fillColor=#994C00;fillStyle=auto;" vertex="1" parent="1">
+          <mxGeometry x="357.25" y="250" width="342.75" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-87" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="fk73YEOMK82wj3Cn6yjO-24" target="fk73YEOMK82wj3Cn6yjO-30">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-88" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="fk73YEOMK82wj3Cn6yjO-38" target="fk73YEOMK82wj3Cn6yjO-33">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-96" value="Widgets use a PagingController to get the pagination state and to request items whenever needed." style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Tahoma;fontColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="-30" y="320" width="167.75" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="fk73YEOMK82wj3Cn6yjO-97" value="Widgets use the PagedChildBuilderDelegate to provide builders for individual UI pieces, such as list items and progress and error indicators." style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Tahoma;fontColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="532.25" y="320" width="167.75" height="80" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
