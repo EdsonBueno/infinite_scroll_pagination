@@ -106,5 +106,5 @@ For more usage examples, please take a look at our [cookbook](https://pub.dev/pa
 ## API Overview
 
 <p align="center">
-	<img src="https://raw.githubusercontent.com/EdsonBueno/infinite_scroll_pagination/master/docs/assets/overview.png" alt="API Diagram" />
+	<img src="https://raw.githubusercontent.com/EdsonBueno/infinite_scroll_pagination/master/docs/assets/api-diagram.png" alt="API Diagram" />
 </p>
