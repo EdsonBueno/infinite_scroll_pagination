@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -18,53 +17,40 @@ class PagedMasonryGridView<PageKeyType, ItemType> extends BoxScrollView {
     required this.builderDelegate,
     required this.gridDelegateBuilder,
     // Matches [ScrollView.scrollDirection].
-    Axis scrollDirection = Axis.vertical,
+    super.scrollDirection,
     // Matches [ScrollView.reverse].
-    bool reverse = false,
+    super.reverse,
     // Matches [ScrollView.primary].
-    bool? primary,
+    super.primary,
     // Matches [ScrollView.physics].
-    ScrollPhysics? physics,
+    super.physics,
     this.scrollController,
     this.mainAxisSpacing = 0.0,
     this.crossAxisSpacing = 0.0,
     // Matches [ScrollView.cacheExtent].
-    double? cacheExtent,
+    super.cacheExtent,
     this.showNewPageProgressIndicatorAsGridChild = true,
     this.showNewPageErrorIndicatorAsGridChild = true,
     this.showNoMoreItemsIndicatorAsGridChild = true,
     // Matches [ScrollView.dragStartBehavior].
-    DragStartBehavior dragStartBehavior = DragStartBehavior.start,
+    super.dragStartBehavior,
     // Matches [ScrollView.keyboardDismissBehavior].
-    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
-        ScrollViewKeyboardDismissBehavior.manual,
+    super.keyboardDismissBehavior,
     // Matches [ScrollView.restorationId].
-    String? restorationId,
+    super.restorationId,
     // Matches [ScrollView.clipBehavior].
-    Clip clipBehavior = Clip.hardEdge,
+    super.clipBehavior,
     // Matches [ScrollView.shrinkWrap].
-    bool shrinkWrap = false,
+    super.shrinkWrap,
     // Matches [BoxScrollView.padding].
-    EdgeInsetsGeometry? padding,
+    super.padding,
     this.addAutomaticKeepAlives = true,
     this.addRepaintBoundaries = true,
     this.addSemanticIndexes = true,
-    Key? key,
+    super.key,
   })  : _shrinkWrapFirstPageIndicators = shrinkWrap,
         super(
-          key: key,
-          scrollDirection: scrollDirection,
-          reverse: reverse,
           controller: scrollController,
-          primary: primary,
-          physics: physics,
-          shrinkWrap: shrinkWrap,
-          padding: padding,
-          cacheExtent: cacheExtent,
-          dragStartBehavior: dragStartBehavior,
-          keyboardDismissBehavior: keyboardDismissBehavior,
-          restorationId: restorationId,
-          clipBehavior: clipBehavior,
         );
 
   /// Equivalent to [MasonryGridView.count].
@@ -72,57 +58,44 @@ class PagedMasonryGridView<PageKeyType, ItemType> extends BoxScrollView {
     required this.pagingController,
     required this.builderDelegate,
     required int crossAxisCount,
-    Axis scrollDirection = Axis.vertical,
+    super.scrollDirection,
     // Matches [ScrollView.reverse].
-    bool reverse = false,
+    super.reverse,
     // Matches [ScrollView.primary].
-    bool? primary,
+    super.primary,
     // Matches [ScrollView.physics].
-    ScrollPhysics? physics,
+    super.physics,
     this.scrollController,
     this.mainAxisSpacing = 0.0,
     this.crossAxisSpacing = 0.0,
     // Matches [ScrollView.cacheExtent].
-    double? cacheExtent,
+    super.cacheExtent,
     this.showNewPageProgressIndicatorAsGridChild = true,
     this.showNewPageErrorIndicatorAsGridChild = true,
     this.showNoMoreItemsIndicatorAsGridChild = true,
     // Matches [ScrollView.dragStartBehavior].
-    DragStartBehavior dragStartBehavior = DragStartBehavior.start,
+    super.dragStartBehavior,
     // Matches [ScrollView.keyboardDismissBehavior].
-    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
-        ScrollViewKeyboardDismissBehavior.manual,
+    super.keyboardDismissBehavior,
     // Matches [ScrollView.restorationId].
-    String? restorationId,
+    super.restorationId,
     // Matches [ScrollView.clipBehavior].
-    Clip clipBehavior = Clip.hardEdge,
+    super.clipBehavior,
     // Matches [ScrollView.shrinkWrap].
-    bool shrinkWrap = false,
+    super.shrinkWrap,
     // Matches [BoxScrollView.padding].
-    EdgeInsetsGeometry? padding,
+    super.padding,
     this.addAutomaticKeepAlives = true,
     this.addRepaintBoundaries = true,
     this.addSemanticIndexes = true,
-    Key? key,
+    super.key,
   })  : _shrinkWrapFirstPageIndicators = shrinkWrap,
         gridDelegateBuilder =
             ((childCount) => SliverSimpleGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: crossAxisCount,
                 )),
         super(
-          key: key,
-          scrollDirection: scrollDirection,
-          reverse: reverse,
           controller: scrollController,
-          primary: primary,
-          physics: physics,
-          shrinkWrap: shrinkWrap,
-          padding: padding,
-          cacheExtent: cacheExtent,
-          dragStartBehavior: dragStartBehavior,
-          keyboardDismissBehavior: keyboardDismissBehavior,
-          restorationId: restorationId,
-          clipBehavior: clipBehavior,
         );
 
   /// Equivalent to [MasonryGridView.extent].
@@ -130,57 +103,44 @@ class PagedMasonryGridView<PageKeyType, ItemType> extends BoxScrollView {
     required this.pagingController,
     required this.builderDelegate,
     required double maxCrossAxisExtent,
-    Axis scrollDirection = Axis.vertical,
+    super.scrollDirection,
     // Matches [ScrollView.reverse].
-    bool reverse = false,
+    super.reverse,
     // Matches [ScrollView.primary].
-    bool? primary,
+    super.primary,
     // Matches [ScrollView.physics].
-    ScrollPhysics? physics,
+    super.physics,
     this.scrollController,
     this.mainAxisSpacing = 0.0,
     this.crossAxisSpacing = 0.0,
     // Matches [ScrollView.cacheExtent].
-    double? cacheExtent,
+    super.cacheExtent,
     this.showNewPageProgressIndicatorAsGridChild = true,
     this.showNewPageErrorIndicatorAsGridChild = true,
     this.showNoMoreItemsIndicatorAsGridChild = true,
     // Matches [ScrollView.dragStartBehavior].
-    DragStartBehavior dragStartBehavior = DragStartBehavior.start,
+    super.dragStartBehavior,
     // Matches [ScrollView.keyboardDismissBehavior].
-    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
-        ScrollViewKeyboardDismissBehavior.manual,
+    super.keyboardDismissBehavior,
     // Matches [ScrollView.restorationId].
-    String? restorationId,
+    super.restorationId,
     // Matches [ScrollView.clipBehavior].
-    Clip clipBehavior = Clip.hardEdge,
+    super.clipBehavior,
     // Matches [ScrollView.shrinkWrap].
-    bool shrinkWrap = false,
+    super.shrinkWrap,
     // Matches [BoxScrollView.padding].
-    EdgeInsetsGeometry? padding,
+    super.padding,
     this.addAutomaticKeepAlives = true,
     this.addRepaintBoundaries = true,
     this.addSemanticIndexes = true,
-    Key? key,
+    super.key,
   })  : _shrinkWrapFirstPageIndicators = shrinkWrap,
         gridDelegateBuilder =
             ((childCount) => SliverSimpleGridDelegateWithMaxCrossAxisExtent(
                   maxCrossAxisExtent: maxCrossAxisExtent,
                 )),
         super(
-          key: key,
-          scrollDirection: scrollDirection,
-          reverse: reverse,
           controller: scrollController,
-          primary: primary,
-          physics: physics,
-          shrinkWrap: shrinkWrap,
-          padding: padding,
-          cacheExtent: cacheExtent,
-          dragStartBehavior: dragStartBehavior,
-          keyboardDismissBehavior: keyboardDismissBehavior,
-          restorationId: restorationId,
-          clipBehavior: clipBehavior,
         );
 
   /// Matches [PagedLayoutBuilder.pagingController].

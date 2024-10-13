@@ -6,8 +6,8 @@ class FirstPageExceptionIndicator extends StatelessWidget {
     required this.title,
     this.message,
     this.onTryAgain,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final String title;
   final String? message;

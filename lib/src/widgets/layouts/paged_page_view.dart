@@ -29,8 +29,8 @@ class PagedPageView<PageKeyType, ItemType> extends StatelessWidget {
     this.pageSnapping = true,
     this.padEnds = true,
     this.shrinkWrapFirstPageIndicators = false,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// Matches [PagedLayoutBuilder.pagingController].
   final PagingController<PageKeyType, ItemType> pagingController;

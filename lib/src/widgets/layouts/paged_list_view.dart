@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 import 'package:infinite_scroll_pagination/src/core/paged_child_builder_delegate.dart';
 import 'package:infinite_scroll_pagination/src/core/paging_controller.dart';
@@ -18,34 +17,33 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
     // Matches [ScrollView.controller].
     ScrollController? scrollController,
     // Matches [ScrollView.scrollDirection].
-    Axis scrollDirection = Axis.vertical,
+    super.scrollDirection,
     // Matches [ScrollView.reverse].
-    bool reverse = false,
+    super.reverse,
     // Matches [ScrollView.primary].
-    bool? primary,
+    super.primary,
     // Matches [ScrollView.physics].
-    ScrollPhysics? physics,
+    super.physics,
     // Matches [ScrollView.shrinkWrap].
-    bool shrinkWrap = false,
+    super.shrinkWrap,
     // Matches [BoxScrollView.padding].
-    EdgeInsetsGeometry? padding,
+    super.padding,
     this.itemExtent,
     this.prototypeItem,
     this.addAutomaticKeepAlives = true,
     this.addRepaintBoundaries = true,
     this.addSemanticIndexes = true,
     // Matches [ScrollView.cacheExtent]
-    double? cacheExtent,
+    super.cacheExtent,
     // Matches [ScrollView.dragStartBehavior]
-    DragStartBehavior dragStartBehavior = DragStartBehavior.start,
+    super.dragStartBehavior,
     // Matches [ScrollView.keyboardDismissBehavior]
-    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
-        ScrollViewKeyboardDismissBehavior.manual,
+    super.keyboardDismissBehavior,
     // Matches [ScrollView.restorationId]
-    String? restorationId,
+    super.restorationId,
     // Matches [ScrollView.clipBehavior]
-    Clip clipBehavior = Clip.hardEdge,
-    Key? key,
+    super.clipBehavior,
+    super.key,
   })  : assert(
           itemExtent == null || prototypeItem == null,
           'You can only pass itemExtent or prototypeItem, not both',
@@ -53,19 +51,7 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
         _separatorBuilder = null,
         _shrinkWrapFirstPageIndicators = shrinkWrap,
         super(
-          key: key,
-          scrollDirection: scrollDirection,
-          reverse: reverse,
           controller: scrollController,
-          primary: primary,
-          physics: physics,
-          shrinkWrap: shrinkWrap,
-          padding: padding,
-          cacheExtent: cacheExtent,
-          dragStartBehavior: dragStartBehavior,
-          keyboardDismissBehavior: keyboardDismissBehavior,
-          restorationId: restorationId,
-          clipBehavior: clipBehavior,
         );
 
   const PagedListView.separated({
@@ -75,50 +61,37 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
     // Matches [ScrollView.controller].
     ScrollController? scrollController,
     // Matches [ScrollView.scrollDirection].
-    Axis scrollDirection = Axis.vertical,
+    super.scrollDirection,
     // Matches [ScrollView.reverse].
-    bool reverse = false,
+    super.reverse,
     // Matches [ScrollView.primary].
-    bool? primary,
+    super.primary,
     // Matches [ScrollView.physics].
-    ScrollPhysics? physics,
+    super.physics,
     // Matches [ScrollView.shrinkWrap].
-    bool shrinkWrap = false,
+    super.shrinkWrap,
     // Matches [BoxScrollView.padding].
-    EdgeInsetsGeometry? padding,
+    super.padding,
     this.itemExtent,
     this.addAutomaticKeepAlives = true,
     this.addRepaintBoundaries = true,
     this.addSemanticIndexes = true,
     // Matches [ScrollView.cacheExtent]
-    double? cacheExtent,
+    super.cacheExtent,
     // Matches [ScrollView.dragStartBehavior]
-    DragStartBehavior dragStartBehavior = DragStartBehavior.start,
+    super.dragStartBehavior,
     // Matches [ScrollView.keyboardDismissBehavior]
-    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
-        ScrollViewKeyboardDismissBehavior.manual,
+    super.keyboardDismissBehavior,
     // Matches [ScrollView.restorationId]
-    String? restorationId,
+    super.restorationId,
     // Matches [ScrollView.clipBehavior]
-    Clip clipBehavior = Clip.hardEdge,
-    Key? key,
+    super.clipBehavior,
+    super.key,
   })  : prototypeItem = null,
         _shrinkWrapFirstPageIndicators = shrinkWrap,
         _separatorBuilder = separatorBuilder,
         super(
-          key: key,
-          scrollDirection: scrollDirection,
-          reverse: reverse,
           controller: scrollController,
-          primary: primary,
-          physics: physics,
-          shrinkWrap: shrinkWrap,
-          padding: padding,
-          cacheExtent: cacheExtent,
-          dragStartBehavior: dragStartBehavior,
-          keyboardDismissBehavior: keyboardDismissBehavior,
-          restorationId: restorationId,
-          clipBehavior: clipBehavior,
         );
 
   /// Matches [PagedLayoutBuilder.pagingController].

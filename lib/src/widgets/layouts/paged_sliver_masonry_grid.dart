@@ -30,10 +30,8 @@ class PagedSliverMasonryGrid<PageKeyType, ItemType> extends StatelessWidget {
     this.showNewPageErrorIndicatorAsGridChild = true,
     this.showNoMoreItemsIndicatorAsGridChild = true,
     this.shrinkWrapFirstPageIndicators = false,
-    Key? key,
-  }) : super(
-          key: key,
-        );
+    super.key,
+  });
 
   /// Equivalent to [SliverMasonryGrid.count].
   PagedSliverMasonryGrid.count({
@@ -49,14 +47,11 @@ class PagedSliverMasonryGrid<PageKeyType, ItemType> extends StatelessWidget {
     this.showNewPageErrorIndicatorAsGridChild = true,
     this.showNoMoreItemsIndicatorAsGridChild = true,
     this.shrinkWrapFirstPageIndicators = false,
-    Key? key,
+    super.key,
   })  : gridDelegateBuilder =
             ((childCount) => SliverSimpleGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: crossAxisCount,
-                )),
-        super(
-          key: key,
-        );
+                ));
 
   /// Equivalent to [SliverMasonryGrid.extent].
   PagedSliverMasonryGrid.extent({
@@ -72,14 +67,11 @@ class PagedSliverMasonryGrid<PageKeyType, ItemType> extends StatelessWidget {
     this.showNewPageErrorIndicatorAsGridChild = true,
     this.showNoMoreItemsIndicatorAsGridChild = true,
     this.shrinkWrapFirstPageIndicators = false,
-    Key? key,
+    super.key,
   })  : gridDelegateBuilder =
             ((childCount) => SliverSimpleGridDelegateWithMaxCrossAxisExtent(
                   maxCrossAxisExtent: maxCrossAxisExtent,
-                )),
-        super(
-          key: key,
-        );
+                ));
 
   /// Matches [PagedLayoutBuilder.pagingController].
   final PagingController<PageKeyType, ItemType> pagingController;
