@@ -34,10 +34,10 @@ class PagingController<PageKeyType, ItemType>
   ///
   /// [firstPageKey] is the key to be used in case of a [refresh].
   PagingController.fromValue(
-    PagingState<PageKeyType, ItemType> value, {
+    super.value, {
     required this.firstPageKey,
     this.invisibleItemsThreshold,
-  }) : super(value);
+  });
 
   ObserverList<PagingStatusListener>? _statusListeners =
       ObserverList<PagingStatusListener>();

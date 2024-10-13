@@ -26,8 +26,8 @@ class PagedSliverAlignedGrid<PageKeyType, ItemType> extends StatelessWidget {
     this.showNewPageErrorIndicatorAsGridChild = true,
     this.showNoMoreItemsIndicatorAsGridChild = true,
     this.shrinkWrapFirstPageIndicators = false,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   PagedSliverAlignedGrid.count({
     required this.pagingController,
@@ -42,15 +42,14 @@ class PagedSliverAlignedGrid<PageKeyType, ItemType> extends StatelessWidget {
     this.showNewPageErrorIndicatorAsGridChild = true,
     this.showNoMoreItemsIndicatorAsGridChild = true,
     this.shrinkWrapFirstPageIndicators = false,
-    Key? key,
+    super.key,
   })  : gridDelegateBuilder =
             ((childCount) => SliverSimpleGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: crossAxisCount,
-                )),
-        super(key: key);
+                ));
 
   PagedSliverAlignedGrid.extent({
-    Key? key,
+    super.key,
     required this.pagingController,
     required this.builderDelegate,
     required double maxCrossAxisExtent,
@@ -66,8 +65,7 @@ class PagedSliverAlignedGrid<PageKeyType, ItemType> extends StatelessWidget {
   })  : gridDelegateBuilder =
             ((childCount) => SliverSimpleGridDelegateWithMaxCrossAxisExtent(
                   maxCrossAxisExtent: maxCrossAxisExtent,
-                )),
-        super(key: key);
+                ));
 
   /// Matches [PagedLayoutBuilder.pagingController].
   final PagingController<PageKeyType, ItemType> pagingController;

@@ -24,8 +24,8 @@ class PagedSliverGrid<PageKeyType, ItemType> extends StatelessWidget {
     this.showNewPageErrorIndicatorAsGridChild = true,
     this.showNoMoreItemsIndicatorAsGridChild = true,
     this.shrinkWrapFirstPageIndicators = false,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// Matches [PagedLayoutBuilder.pagingController].
   final PagingController<PageKeyType, ItemType> pagingController;
