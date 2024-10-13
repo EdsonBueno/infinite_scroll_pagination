@@ -18,8 +18,8 @@ class AppendedSliverGrid extends StatelessWidget {
     this.addAutomaticKeepAlives = true,
     this.addRepaintBoundaries = true,
     this.addSemanticIndexes = true,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final IndexedWidgetBuilder itemBuilder;
   final int itemCount;

@@ -3,8 +3,8 @@ import 'package:infinite_scroll_pagination/src/widgets/helpers/default_status_in
 
 class NewPageProgressIndicator extends StatelessWidget {
   const NewPageProgressIndicator({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) => const FooterTile(

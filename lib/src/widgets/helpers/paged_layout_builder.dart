@@ -54,8 +54,8 @@ class PagedLayoutBuilder<PageKeyType, ItemType> extends StatefulWidget {
     required this.completedListingBuilder,
     required this.layoutProtocol,
     this.shrinkWrapFirstPageIndicators = false,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// The controller for paged listings.
   ///
@@ -293,8 +293,7 @@ class _FirstPageStatusIndicatorBuilder extends StatelessWidget {
     required this.builder,
     required this.layoutProtocol,
     this.shrinkWrap = false,
-    Key? key,
-  }) : super(key: key);
+  });
 
   final WidgetBuilder builder;
   final bool shrinkWrap;

@@ -25,13 +25,12 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
     this.prototypeItem,
     this.semanticIndexCallback,
     this.shrinkWrapFirstPageIndicators = false,
-    Key? key,
+    super.key,
   })  : assert(
           itemExtent == null || prototypeItem == null,
           'You can only pass itemExtent or prototypeItem, not both',
         ),
-        _separatorBuilder = null,
-        super(key: key);
+        _separatorBuilder = null;
 
   const PagedSliverList.separated({
     required this.pagingController,
@@ -43,10 +42,9 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
     this.itemExtent,
     this.semanticIndexCallback,
     this.shrinkWrapFirstPageIndicators = false,
-    Key? key,
+    super.key,
   })  : prototypeItem = null,
-        _separatorBuilder = separatorBuilder,
-        super(key: key);
+        _separatorBuilder = separatorBuilder;
 
   /// Matches [PagedLayoutBuilder.pagingController].
   final PagingController<PageKeyType, ItemType> pagingController;
