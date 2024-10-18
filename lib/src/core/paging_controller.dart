@@ -39,10 +39,10 @@ class PagingController<PageKeyType, ItemType>
     this.invisibleItemsThreshold,
   });
 
-  ObserverList<PagingStatusListener>? _statusListeners =
+  final ObserverList<PagingStatusListener> _statusListeners =
       ObserverList<PagingStatusListener>();
 
-  ObserverList<PageRequestListener<PageKeyType>>? _pageRequestListeners =
+  final ObserverList<PageRequestListener<PageKeyType>> _pageRequestListeners =
       ObserverList<PageRequestListener<PageKeyType>>();
 
   /// The number of remaining invisible items that should trigger a new fetch.
@@ -101,9 +101,8 @@ class PagingController<PageKeyType, ItemType>
   /// the next page's key.
   void appendPage(List<ItemType> newItems, PageKeyType? nextPageKey) {
     final previousItems = value.itemList ?? [];
-    final itemList = previousItems + newItems;
     value = PagingState<PageKeyType, ItemType>(
-      itemList: itemList,
+      itemList: [...previousItems, ...newItems],
       error: null,
       nextPageKey: nextPageKey,
     );
@@ -129,13 +128,15 @@ class PagingController<PageKeyType, ItemType>
 
   bool _debugAssertNotDisposed() {
     assert(() {
-      if (_pageRequestListeners == null || _statusListeners == null) {
+      if (_pageRequestListeners.isEmpty || _statusListeners.isEmpty) {
         throw Exception(
-          'A PagingController was used after being disposed.\nOnce you have '
-          'called dispose() on a PagingController, it can no longer be '
-          'used.\nIf you’re using a Future, it probably completed after '
-          'the disposal of the owning widget.\nMake sure dispose() has not '
-          'been called yet before using the PagingController.',
+          'A PagingController was used after being disposed.\n'
+          'Once you have called dispose() on a PagingController, '
+          'it can no longer be used.\n'
+          'If you\'re using a Future, it probably completed after '
+          'the disposal of the owning widget.\n'
+          'Make sure dispose() has not been called yet before '
+          'using the PagingController.',
         );
       }
       return true;
@@ -148,7 +149,7 @@ class PagingController<PageKeyType, ItemType>
   /// Listeners can be removed with [removeStatusListener].
   void addStatusListener(PagingStatusListener listener) {
     assert(_debugAssertNotDisposed());
-    _statusListeners?.add(listener);
+    _statusListeners.add(listener);
   }
 
   /// Stops calling the listener every time the status of the pagination
@@ -157,7 +158,7 @@ class PagingController<PageKeyType, ItemType>
   /// Listeners can be added with [addStatusListener].
   void removeStatusListener(PagingStatusListener listener) {
     assert(_debugAssertNotDisposed());
-    _statusListeners?.remove(listener);
+    _statusListeners.remove(listener);
   }
 
   /// Calls all the status listeners.
@@ -167,13 +168,13 @@ class PagingController<PageKeyType, ItemType>
   void notifyStatusListeners(PagingStatus status) {
     assert(_debugAssertNotDisposed());
 
-    if (_statusListeners?.isEmpty ?? true) {
+    if (_statusListeners.isEmpty) {
       return;
     }
 
-    final localListeners = List<PagingStatusListener>.from(_statusListeners!);
+    final localListeners = List<PagingStatusListener>.from(_statusListeners);
     for (final listener in localListeners) {
-      if (_statusListeners!.contains(listener)) {
+      if (_statusListeners.contains(listener)) {
         listener(status);
       }
     }
@@ -184,7 +185,7 @@ class PagingController<PageKeyType, ItemType>
   /// Listeners can be removed with [removePageRequestListener].
   void addPageRequestListener(PageRequestListener<PageKeyType> listener) {
     assert(_debugAssertNotDisposed());
-    _pageRequestListeners?.add(listener);
+    _pageRequestListeners.add(listener);
   }
 
   /// Stops calling the listener every time new items are needed.
@@ -192,7 +193,7 @@ class PagingController<PageKeyType, ItemType>
   /// Listeners can be added with [addPageRequestListener].
   void removePageRequestListener(PageRequestListener<PageKeyType> listener) {
     assert(_debugAssertNotDisposed());
-    _pageRequestListeners?.remove(listener);
+    _pageRequestListeners.remove(listener);
   }
 
   /// Calls all the page request listeners.
@@ -202,15 +203,15 @@ class PagingController<PageKeyType, ItemType>
   void notifyPageRequestListeners(PageKeyType pageKey) {
     assert(_debugAssertNotDisposed());
 
-    if (_pageRequestListeners?.isEmpty ?? true) {
+    if (_pageRequestListeners.isEmpty) {
       return;
     }
 
     final localListeners =
-        List<PageRequestListener<PageKeyType>>.from(_pageRequestListeners!);
+        List<PageRequestListener<PageKeyType>>.from(_pageRequestListeners);
 
     for (final listener in localListeners) {
-      if (_pageRequestListeners!.contains(listener)) {
+      if (_pageRequestListeners.contains(listener)) {
         listener(pageKey);
       }
     }
@@ -219,8 +220,8 @@ class PagingController<PageKeyType, ItemType>
   @override
   void dispose() {
     assert(_debugAssertNotDisposed());
-    _statusListeners = null;
-    _pageRequestListeners = null;
+    _statusListeners.clear();
+    _pageRequestListeners.clear();
     super.dispose();
   }
 }
