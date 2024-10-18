@@ -9,9 +9,9 @@ typedef ItemWidgetBuilder<ItemType> = Widget Function(
 /// Supplies builders for the visual components of paged views.
 ///
 /// The generic type [ItemType] must be specified in order to properly identify
-/// the list item’s type.
+/// the list item's type.
 class PagedChildBuilderDelegate<ItemType> {
-  PagedChildBuilderDelegate({
+  const PagedChildBuilderDelegate({
     required this.itemBuilder,
     this.firstPageErrorIndicatorBuilder,
     this.newPageErrorIndicatorBuilder,
