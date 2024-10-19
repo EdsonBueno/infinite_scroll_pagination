@@ -2,87 +2,81 @@ import 'dart:async';
 
 import 'package:infinite_example/remote/item.dart';
 import 'package:infinite_example/remote/api.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:rxdart/rxdart.dart';
 
-class ListingState {
-  ListingState({
-    this.itemList,
-    this.error,
-    this.nextPageKey = 1,
-  });
-
-  final List<Photo>? itemList;
-  final dynamic error;
-  final int? nextPageKey;
-}
-
-class ListingBloc {
-  ListingBloc() {
+class PhotoPagesBloc {
+  PhotoPagesBloc() {
     _onPageRequest.stream
-        .flatMap(_fetch)
-        .listen(_onNewListingStateController.add)
+        .flatMap((_) => _fetch((_stateController.value.keys?.last ?? 0) + 1))
+        .listen(_stateController.add)
         .addTo(_subscriptions);
 
-    _onSearchInputChangedSubject.stream
+    _onSearchChanged.stream
         .flatMap((_) => _refresh())
-        .listen(_onNewListingStateController.add)
+        .listen(_stateController.add)
         .addTo(_subscriptions);
   }
 
   final _subscriptions = CompositeSubscription();
 
-  final _onNewListingStateController = BehaviorSubject<ListingState>.seeded(
-    ListingState(),
+  final _stateController = BehaviorSubject<PagingState<int, Photo>>.seeded(
+    PagingState(),
   );
 
-  Stream<ListingState> get onNewListingState =>
-      _onNewListingStateController.stream;
+  PagingState<int, Photo> get state => _stateController.value;
 
-  final _onPageRequest = StreamController<int>();
+  Stream<PagingState<int, Photo>> get onState => _stateController.stream;
 
-  Sink<int> get onPageRequestSink => _onPageRequest.sink;
+  final _onPageRequest = StreamController<void>();
 
-  final _onSearchInputChangedSubject = BehaviorSubject<String?>.seeded(null);
+  void fetchNextPage() => _onPageRequest.add(null);
 
-  Sink<String?> get onSearchInputChangedSink =>
-      _onSearchInputChangedSubject.sink;
+  final _onSearchChanged = BehaviorSubject<String?>.seeded(null);
 
-  String? get _searchInputValue => _onSearchInputChangedSubject.value;
+  void changeSearch(String? value) => _onSearchChanged.add(value);
 
-  Stream<ListingState> _refresh() async* {
-    yield ListingState();
+  String? get _searchInputValue => _onSearchChanged.value;
+
+  Stream<PagingState<int, Photo>> _refresh() async* {
+    yield _stateController.value.reset();
     yield* _fetch(1);
   }
 
-  Stream<ListingState> _fetch(int pageKey) async* {
-    final lastListingState = _onNewListingStateController.value;
+  Stream<PagingState<int, Photo>> _fetch(int pageKey) async* {
+    final lastListingState = _stateController.value;
+    yield lastListingState.copyWith(
+      error: null,
+      isLoading: true,
+    );
     try {
       final newItems = await RemoteApi.getPhotos(
         pageKey,
         search: _searchInputValue,
       );
       final isLastPage = newItems.isEmpty;
-      final nextPageKey = isLastPage ? null : pageKey + 1;
-      yield ListingState(
+      yield lastListingState.copyWith(
         error: null,
-        nextPageKey: nextPageKey,
-        itemList: [
-          ...lastListingState.itemList ?? [],
-          ...newItems,
+        hasNextPage: !isLastPage,
+        pages: [
+          ...lastListingState.pages ?? [],
+          newItems,
+        ],
+        keys: [
+          ...lastListingState.keys ?? [],
+          pageKey,
         ],
       );
     } catch (e) {
-      yield ListingState(
+      yield lastListingState.copyWith(
         error: e,
-        nextPageKey: lastListingState.nextPageKey,
-        itemList: lastListingState.itemList,
       );
     }
   }
 
   void dispose() {
-    _onSearchInputChangedSubject.close();
-    _onNewListingStateController.close();
+    _onSearchChanged.close();
+    _stateController.close();
     _subscriptions.dispose();
     _onPageRequest.close();
   }

@@ -12,3 +12,4 @@ export 'src/widgets/layouts/paged_sliver_grid.dart';
 export 'src/widgets/layouts/paged_sliver_list.dart';
 export 'src/widgets/layouts/paged_sliver_masonry_grid.dart';
 export 'src/widgets/layouts/paged_sliver_aligned_grid.dart';
+export 'src/widgets/state/paging_listener.dart';

@@ -10,7 +10,7 @@ typedef ItemWidgetBuilder<ItemType> = Widget Function(
 ///
 /// The generic type [ItemType] must be specified in order to properly identify
 /// the list item's type.
-class PagedChildBuilderDelegate<ItemType> {
+class PagedChildBuilderDelegate<ItemType extends Object> {
   const PagedChildBuilderDelegate({
     required this.itemBuilder,
     this.firstPageErrorIndicatorBuilder,
@@ -21,6 +21,7 @@ class PagedChildBuilderDelegate<ItemType> {
     this.noMoreItemsIndicatorBuilder,
     this.animateTransitions = false,
     this.transitionDuration = const Duration(milliseconds: 250),
+    this.invisibleItemsThreshold = 3,
   });
 
   /// The builder for list items.
@@ -49,4 +50,7 @@ class PagedChildBuilderDelegate<ItemType> {
 
   /// The duration of animated transitions when [animateTransitions] is `true`.
   final Duration transitionDuration;
+
+  /// The number of remaining invisible items that should trigger a new fetch.
+  final int invisibleItemsThreshold;
 }

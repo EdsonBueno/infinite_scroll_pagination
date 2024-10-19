@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:infinite_scroll_pagination/src/core/paged_child_builder_delegate.dart';
-import 'package:infinite_scroll_pagination/src/core/paging_controller.dart';
+import 'package:infinite_scroll_pagination/src/model/paging_state.dart';
 import 'package:infinite_scroll_pagination/src/widgets/helpers/paged_layout_builder.dart';
 import 'package:infinite_scroll_pagination/src/widgets/layouts/paged_sliver_list.dart';
 
@@ -10,9 +10,11 @@ import 'package:infinite_scroll_pagination/src/widgets/layouts/paged_sliver_list
 ///
 /// Wraps a [PagedSliverList] in a [BoxScrollView] so that it can be
 /// used without the need for a [CustomScrollView]. Similar to a [ListView].
-class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
+class PagedListView<PageKeyType extends Object, ItemType extends Object>
+    extends BoxScrollView {
   const PagedListView({
-    required this.pagingController,
+    required this.state,
+    required this.fetchNextPage,
     required this.builderDelegate,
     // Matches [ScrollView.controller].
     ScrollController? scrollController,
@@ -55,7 +57,8 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
         );
 
   const PagedListView.separated({
-    required this.pagingController,
+    required this.state,
+    required this.fetchNextPage,
     required this.builderDelegate,
     required IndexedWidgetBuilder separatorBuilder,
     // Matches [ScrollView.controller].
@@ -94,8 +97,11 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
           controller: scrollController,
         );
 
-  /// Matches [PagedLayoutBuilder.pagingController].
-  final PagingController<PageKeyType, ItemType> pagingController;
+  /// Matches [PagedLayoutBuilder.state].
+  final PagingState<PageKeyType, ItemType> state;
+
+  /// Matches [PagedLayoutBuilder.onPageRequest].
+  final NextPageCallback fetchNextPage;
 
   /// Matches [PagedLayoutBuilder.builderDelegate].
   final PagedChildBuilderDelegate<ItemType> builderDelegate;
@@ -131,7 +137,8 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
     return separatorBuilder != null
         ? PagedSliverList<PageKeyType, ItemType>.separated(
             builderDelegate: builderDelegate,
-            pagingController: pagingController,
+            state: state,
+            fetchNextPage: fetchNextPage,
             separatorBuilder: separatorBuilder,
             addAutomaticKeepAlives: addAutomaticKeepAlives,
             addRepaintBoundaries: addRepaintBoundaries,
@@ -141,7 +148,8 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
           )
         : PagedSliverList<PageKeyType, ItemType>(
             builderDelegate: builderDelegate,
-            pagingController: pagingController,
+            state: state,
+            fetchNextPage: fetchNextPage,
             addAutomaticKeepAlives: addAutomaticKeepAlives,
             addRepaintBoundaries: addRepaintBoundaries,
             addSemanticIndexes: addSemanticIndexes,

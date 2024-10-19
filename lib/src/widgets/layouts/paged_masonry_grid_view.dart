@@ -11,9 +11,11 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 /// from the [flutter_staggered_grid_view](https://pub.dev/packages/flutter_staggered_grid_view) package.
 /// For more info on how to build staggered grids, check out the
 /// referred package's documentation and examples.
-class PagedMasonryGridView<PageKeyType, ItemType> extends BoxScrollView {
+class PagedMasonryGridView<PageKeyType extends Object, ItemType extends Object>
+    extends BoxScrollView {
   const PagedMasonryGridView({
-    required this.pagingController,
+    required this.state,
+    required this.fetchNextPage,
     required this.builderDelegate,
     required this.gridDelegateBuilder,
     // Matches [ScrollView.scrollDirection].
@@ -55,7 +57,8 @@ class PagedMasonryGridView<PageKeyType, ItemType> extends BoxScrollView {
 
   /// Equivalent to [MasonryGridView.count].
   PagedMasonryGridView.count({
-    required this.pagingController,
+    required this.state,
+    required this.fetchNextPage,
     required this.builderDelegate,
     required int crossAxisCount,
     super.scrollDirection,
@@ -100,7 +103,8 @@ class PagedMasonryGridView<PageKeyType, ItemType> extends BoxScrollView {
 
   /// Equivalent to [MasonryGridView.extent].
   PagedMasonryGridView.extent({
-    required this.pagingController,
+    required this.state,
+    required this.fetchNextPage,
     required this.builderDelegate,
     required double maxCrossAxisExtent,
     super.scrollDirection,
@@ -143,8 +147,11 @@ class PagedMasonryGridView<PageKeyType, ItemType> extends BoxScrollView {
           controller: scrollController,
         );
 
-  /// Matches [PagedLayoutBuilder.pagingController].
-  final PagingController<PageKeyType, ItemType> pagingController;
+  /// Matches [PagedLayoutBuilder.state].
+  final PagingState<PageKeyType, ItemType> state;
+
+  /// Matches [PagedLayoutBuilder.onPageRequest].
+  final NextPageCallback fetchNextPage;
 
   /// Matches [PagedLayoutBuilder.builderDelegate].
   final PagedChildBuilderDelegate<ItemType> builderDelegate;
@@ -185,7 +192,8 @@ class PagedMasonryGridView<PageKeyType, ItemType> extends BoxScrollView {
   Widget buildChildLayout(BuildContext context) =>
       PagedSliverMasonryGrid<PageKeyType, ItemType>(
         builderDelegate: builderDelegate,
-        pagingController: pagingController,
+        state: state,
+        fetchNextPage: fetchNextPage,
         gridDelegateBuilder: gridDelegateBuilder,
         mainAxisSpacing: mainAxisSpacing,
         crossAxisSpacing: crossAxisSpacing,
