@@ -34,12 +34,24 @@ class AppendedSliverGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     final appendixBuilder = this.appendixBuilder;
 
+    SliverChildBuilderDelegate buildSliverDelegate({
+      WidgetBuilder? appendixBuilder,
+    }) =>
+        AppendedSliverChildBuilderDelegate(
+          builder: itemBuilder,
+          childCount: itemCount,
+          appendixBuilder: appendixBuilder,
+          addAutomaticKeepAlives: addAutomaticKeepAlives,
+          addRepaintBoundaries: addRepaintBoundaries,
+          addSemanticIndexes: addSemanticIndexes,
+        );
+
     return SliverMainAxisGroup(
       slivers: [
         sliverGridBuilder(
           itemCount +
               (showAppendixAsGridChild && appendixBuilder != null ? 1 : 0),
-          _buildSliverDelegate(
+          buildSliverDelegate(
             appendixBuilder: showAppendixAsGridChild ? appendixBuilder : null,
           ),
         ),
@@ -50,16 +62,4 @@ class AppendedSliverGrid extends StatelessWidget {
       ],
     );
   }
-
-  SliverChildBuilderDelegate _buildSliverDelegate({
-    WidgetBuilder? appendixBuilder,
-  }) =>
-      AppendedSliverChildBuilderDelegate(
-        builder: itemBuilder,
-        childCount: itemCount,
-        appendixBuilder: appendixBuilder,
-        addAutomaticKeepAlives: addAutomaticKeepAlives,
-        addRepaintBoundaries: addRepaintBoundaries,
-        addSemanticIndexes: addSemanticIndexes,
-      );
 }

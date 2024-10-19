@@ -12,9 +12,7 @@ enum PagingStatus {
 
 /// Extension methods for [PagingState] to determine the current status.
 extension PagingStatusExtension on PagingState {
-  int? get _itemCount => itemList?.length;
-
-  bool get _hasNextPage => nextPageKey != null;
+  int? get _itemCount => items?.length;
 
   bool get _hasItems {
     final itemCount = _itemCount;
@@ -23,11 +21,11 @@ extension PagingStatusExtension on PagingState {
 
   bool get _hasError => error != null;
 
-  bool get _isListingUnfinished => _hasItems && _hasNextPage;
+  bool get _isListingUnfinished => _hasItems && hasNextPage;
 
   bool get _isOngoing => _isListingUnfinished && !_hasError;
 
-  bool get _isCompleted => _hasItems && !_hasNextPage;
+  bool get _isCompleted => _hasItems && !hasNextPage;
 
   bool get _isLoadingFirstPage => _itemCount == null && !_hasError;
 

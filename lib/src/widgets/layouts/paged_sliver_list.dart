@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:infinite_scroll_pagination/src/core/paged_child_builder_delegate.dart';
-import 'package:infinite_scroll_pagination/src/core/paging_controller.dart';
+import 'package:infinite_scroll_pagination/src/model/paging_state.dart';
 import 'package:infinite_scroll_pagination/src/utils/appended_sliver_child_builder_delegate.dart';
 import 'package:infinite_scroll_pagination/src/widgets/helpers/paged_layout_builder.dart';
 import 'package:infinite_scroll_pagination/src/widgets/layouts/paged_list_view.dart';
@@ -14,9 +14,11 @@ import 'package:infinite_scroll_pagination/src/widgets/layouts/paged_list_view.d
 /// [CustomScrollView] when added to the screen.
 /// Useful for combining multiple scrollable pieces in your UI or if you need
 /// to add some widgets preceding or following your paged list.
-class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
+class PagedSliverList<PageKeyType extends Object, ItemType extends Object>
+    extends StatelessWidget {
   const PagedSliverList({
-    required this.pagingController,
+    required this.state,
+    required this.fetchNextPage,
     required this.builderDelegate,
     this.addAutomaticKeepAlives = true,
     this.addRepaintBoundaries = true,
@@ -33,7 +35,8 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
         _separatorBuilder = null;
 
   const PagedSliverList.separated({
-    required this.pagingController,
+    required this.state,
+    required this.fetchNextPage,
     required this.builderDelegate,
     required IndexedWidgetBuilder separatorBuilder,
     this.addAutomaticKeepAlives = true,
@@ -46,8 +49,11 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
   })  : prototypeItem = null,
         _separatorBuilder = separatorBuilder;
 
-  /// Matches [PagedLayoutBuilder.pagingController].
-  final PagingController<PageKeyType, ItemType> pagingController;
+  /// Matches [PagedLayoutBuilder.state].
+  final PagingState<PageKeyType, ItemType> state;
+
+  /// Matches [PagedLayoutBuilder.onPageRequest].
+  final NextPageCallback fetchNextPage;
 
   /// Matches [PagedLayoutBuilder.builderDelegate].
   final PagedChildBuilderDelegate<ItemType> builderDelegate;
@@ -84,7 +90,8 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
   Widget build(BuildContext context) =>
       PagedLayoutBuilder<PageKeyType, ItemType>(
         layoutProtocol: PagedLayoutProtocol.sliver,
-        pagingController: pagingController,
+        state: state,
+        fetchNextPage: fetchNextPage,
         builderDelegate: builderDelegate,
         completedListingBuilder: (
           context,
@@ -95,7 +102,7 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
             _buildSliverList(
           itemBuilder,
           itemCount,
-          statusIndicatorBuilder: noMoreItemsIndicatorBuilder,
+          noMoreItemsIndicatorBuilder,
         ),
         loadingListingBuilder: (
           context,
@@ -106,7 +113,7 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
             _buildSliverList(
           itemBuilder,
           itemCount,
-          statusIndicatorBuilder: progressIndicatorBuilder,
+          progressIndicatorBuilder,
         ),
         errorListingBuilder: (
           context,
@@ -117,16 +124,16 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
             _buildSliverList(
           itemBuilder,
           itemCount,
-          statusIndicatorBuilder: errorIndicatorBuilder,
+          errorIndicatorBuilder,
         ),
         shrinkWrapFirstPageIndicators: shrinkWrapFirstPageIndicators,
       );
 
   SliverMultiBoxAdaptorWidget _buildSliverList(
     IndexedWidgetBuilder itemBuilder,
-    int itemCount, {
+    int itemCount,
     WidgetBuilder? statusIndicatorBuilder,
-  }) {
+  ) {
     final delegate = _buildSliverDelegate(
       itemBuilder,
       itemCount,

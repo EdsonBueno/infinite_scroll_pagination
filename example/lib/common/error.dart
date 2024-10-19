@@ -11,41 +11,44 @@ class CustomFirstPageError extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            'Something went wrong :(',
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-          if (pagingController.error != null) ...[
-            const SizedBox(
-              height: 16,
-            ),
+    return PagingListener(
+      controller: pagingController,
+      builder: (context, state, _) => Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
             Text(
-              pagingController.error.toString(),
+              'Something went wrong :(',
               textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
-          ],
-          const SizedBox(
-            height: 48,
-          ),
-          SizedBox(
-            width: 200,
-            child: ElevatedButton.icon(
-              onPressed: pagingController.refresh,
-              icon: const Icon(Icons.refresh),
-              label: const Text(
-                'Try Again',
-                style: TextStyle(
-                  fontSize: 16,
+            if (state.error != null) ...[
+              const SizedBox(
+                height: 16,
+              ),
+              Text(
+                state.error.toString(),
+                textAlign: TextAlign.center,
+              ),
+            ],
+            const SizedBox(
+              height: 48,
+            ),
+            SizedBox(
+              width: 200,
+              child: ElevatedButton.icon(
+                onPressed: pagingController.refresh,
+                icon: const Icon(Icons.refresh),
+                label: const Text(
+                  'Try Again',
+                  style: TextStyle(
+                    fontSize: 16,
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -62,7 +65,7 @@ class CustomNewPageError extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: pagingController.retryLastFailedRequest,
+      onTap: pagingController.fetchNextPage,
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(

@@ -6,6 +6,7 @@ class NewPageErrorIndicator extends StatelessWidget {
     super.key,
     this.onTap,
   });
+
   final VoidCallback? onTap;
 
   @override
