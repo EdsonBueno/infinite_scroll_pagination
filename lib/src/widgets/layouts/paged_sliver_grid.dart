@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:infinite_scroll_pagination/src/core/paged_child_builder_delegate.dart';
-import 'package:infinite_scroll_pagination/src/core/paging_controller.dart';
+import 'package:infinite_scroll_pagination/src/model/paging_state.dart';
 import 'package:infinite_scroll_pagination/src/utils/appended_sliver_grid.dart';
 import 'package:infinite_scroll_pagination/src/widgets/helpers/paged_layout_builder.dart';
 import 'package:infinite_scroll_pagination/src/widgets/layouts/paged_grid_view.dart';
@@ -12,9 +12,11 @@ import 'package:infinite_scroll_pagination/src/widgets/layouts/paged_grid_view.d
 /// [CustomScrollView] when added to the screen.
 /// Useful for combining multiple scrollable pieces in your UI or if you need
 /// to add some widgets preceding or following your paged grid.
-class PagedSliverGrid<PageKeyType, ItemType> extends StatelessWidget {
+class PagedSliverGrid<PageKeyType extends Object, ItemType extends Object>
+    extends StatelessWidget {
   const PagedSliverGrid({
-    required this.pagingController,
+    required this.state,
+    required this.fetchNextPage,
     required this.builderDelegate,
     required this.gridDelegate,
     this.addAutomaticKeepAlives = true,
@@ -27,8 +29,11 @@ class PagedSliverGrid<PageKeyType, ItemType> extends StatelessWidget {
     super.key,
   });
 
-  /// Matches [PagedLayoutBuilder.pagingController].
-  final PagingController<PageKeyType, ItemType> pagingController;
+  /// Matches [PagedLayoutBuilder.state].
+  final PagingState<PageKeyType, ItemType> state;
+
+  /// Matches [PagedLayoutBuilder.onPageRequest].
+  final NextPageCallback fetchNextPage;
 
   /// Matches [PagedLayoutBuilder.builderDelegate].
   final PagedChildBuilderDelegate<ItemType> builderDelegate;
@@ -70,7 +75,8 @@ class PagedSliverGrid<PageKeyType, ItemType> extends StatelessWidget {
   Widget build(BuildContext context) =>
       PagedLayoutBuilder<PageKeyType, ItemType>(
         layoutProtocol: PagedLayoutProtocol.sliver,
-        pagingController: pagingController,
+        state: state,
+        fetchNextPage: fetchNextPage,
         builderDelegate: builderDelegate,
         completedListingBuilder: (
           context,

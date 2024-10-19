@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:infinite_scroll_pagination/src/core/paged_child_builder_delegate.dart';
-import 'package:infinite_scroll_pagination/src/core/paging_controller.dart';
+import 'package:infinite_scroll_pagination/src/model/paging_state.dart';
 import 'package:infinite_scroll_pagination/src/widgets/helpers/paged_layout_builder.dart';
 import 'package:infinite_scroll_pagination/src/widgets/layouts/paged_sliver_grid.dart';
 
@@ -8,9 +8,11 @@ import 'package:infinite_scroll_pagination/src/widgets/layouts/paged_sliver_grid
 ///
 /// Wraps a [PagedSliverGrid] in a [BoxScrollView] so that it can be
 /// used without the need for a [CustomScrollView]. Similar to a [GridView].
-class PagedGridView<PageKeyType, ItemType> extends BoxScrollView {
+class PagedGridView<PageKeyType extends Object, ItemType extends Object>
+    extends BoxScrollView {
   const PagedGridView({
-    required this.pagingController,
+    required this.state,
+    required this.fetchNextPage,
     required this.builderDelegate,
     required this.gridDelegate,
     // Matches [ScrollView.controller].
@@ -49,8 +51,11 @@ class PagedGridView<PageKeyType, ItemType> extends BoxScrollView {
           controller: scrollController,
         );
 
-  /// Matches [PagedLayoutBuilder.pagingController].
-  final PagingController<PageKeyType, ItemType> pagingController;
+  /// Matches [PagedLayoutBuilder.state].
+  final PagingState<PageKeyType, ItemType> state;
+
+  /// Matches [PagedLayoutBuilder.onPageRequest].
+  final NextPageCallback fetchNextPage;
 
   /// Matches [PagedLayoutBuilder.builderDelegate].
   final PagedChildBuilderDelegate<ItemType> builderDelegate;
@@ -83,7 +88,8 @@ class PagedGridView<PageKeyType, ItemType> extends BoxScrollView {
   Widget buildChildLayout(BuildContext context) =>
       PagedSliverGrid<PageKeyType, ItemType>(
         builderDelegate: builderDelegate,
-        pagingController: pagingController,
+        state: state,
+        fetchNextPage: fetchNextPage,
         gridDelegate: gridDelegate,
         addAutomaticKeepAlives: addAutomaticKeepAlives,
         addRepaintBoundaries: addRepaintBoundaries,

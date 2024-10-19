@@ -14,36 +14,28 @@ class ListViewScreen extends StatefulWidget {
 }
 
 class _ListViewScreenState extends State<ListViewScreen> {
-  final PagingController<int, Photo> _pagingController =
-      PagingController(firstPageKey: 1);
-
   String? _searchTerm;
+
+  /// This example uses a [PagingController] to manage the paging state.
+  ///
+  /// This is a robust inbuilt way to store your pagination state.
+  /// The controller can also be used in multiple Paged layouts simultaneously,
+  /// to share their state.
+  late final _pagingController = PagingController<int, Photo>(
+    getNextPageKey: (state) => (state.keys?.last ?? 0) + 1,
+    fetchPage: (pageKey) => RemoteApi.getPhotos(pageKey, search: _searchTerm),
+  );
 
   @override
   void initState() {
     super.initState();
-    _pagingController.addPageRequestListener(_fetchPage);
-    _pagingController.addStatusListener(_showError);
+    _pagingController.addListener(_showError);
   }
 
-  Future<void> _fetchPage(int pageKey) async {
-    try {
-      final newItems = await RemoteApi.getPhotos(pageKey, search: _searchTerm);
-
-      final isLastPage = newItems.isEmpty;
-      if (isLastPage) {
-        _pagingController.appendLastPage(newItems);
-      } else {
-        final nextPageKey = pageKey + 1;
-        _pagingController.appendPage(newItems, nextPageKey);
-      }
-    } catch (error) {
-      _pagingController.error = error;
-    }
-  }
-
-  Future<void> _showError(PagingStatus status) async {
-    if (status == PagingStatus.subsequentPageError) {
+  /// This method listens to notifications from the [_pagingController] and
+  /// shows a [SnackBar] when an error occurs.
+  Future<void> _showError() async {
+    if (_pagingController.value.status == PagingStatus.subsequentPageError) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: const Text(
@@ -51,18 +43,21 @@ class _ListViewScreenState extends State<ListViewScreen> {
           ),
           action: SnackBarAction(
             label: 'Retry',
-            onPressed: () => _pagingController.retryLastFailedRequest(),
+            onPressed: () => _pagingController.fetchNextPage(),
           ),
         ),
       );
     }
   }
 
+  /// When the search term changes, the controller is refreshed.
+  /// The refresh will remove all existing items and fetch the first page again.
   void _updateSearchTerm(String searchTerm) {
     setState(() => _searchTerm = searchTerm);
     _pagingController.refresh();
   }
 
+  /// The controller needs to be disposed when the widget is removed.
   @override
   void dispose() {
     _pagingController.dispose();
@@ -77,19 +72,32 @@ class _ListViewScreenState extends State<ListViewScreen> {
         ),
         body: RefreshIndicator(
           onRefresh: () async => _pagingController.refresh(),
-          child: PagedListView<int, Photo>.separated(
-            pagingController: _pagingController,
-            builderDelegate: PagedChildBuilderDelegate(
-              animateTransitions: true,
-              itemBuilder: (context, item, index) => ImageListTile(
-                item: item,
+
+          /// The [PagingListener] is a widget that listens to the controller and
+          /// rebuilds the UI based on the state of the controller.
+          /// Its the easiest way to bind your controller to a Paged layout.
+          child: PagingListener(
+            controller: _pagingController,
+            builder: (context, state, fetchNextPage) =>
+
+                /// Paged layouts rely on a [PagingState] and a [fetchNextPage] function.
+                PagedListView<int, Photo>.separated(
+              state: state,
+              fetchNextPage: fetchNextPage,
+              itemExtent: 48,
+              builderDelegate: PagedChildBuilderDelegate(
+                animateTransitions: true,
+                itemBuilder: (context, item, index) => ImageListTile(
+                  key: ValueKey(item.id),
+                  item: item,
+                ),
+                firstPageErrorIndicatorBuilder: (context) =>
+                    CustomFirstPageError(pagingController: _pagingController),
+                newPageErrorIndicatorBuilder: (context) =>
+                    CustomNewPageError(pagingController: _pagingController),
               ),
-              firstPageErrorIndicatorBuilder: (context) =>
-                  CustomFirstPageError(pagingController: _pagingController),
-              newPageErrorIndicatorBuilder: (context) =>
-                  CustomNewPageError(pagingController: _pagingController),
+              separatorBuilder: (context, index) => const Divider(),
             ),
-            separatorBuilder: (context, index) => const Divider(),
           ),
         ),
       );

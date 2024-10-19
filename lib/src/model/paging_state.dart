@@ -1,41 +1,81 @@
-import 'package:flutter/foundation.dart';
+import 'dart:async';
 
-/// The current item's list, error, and next page key
-/// for a paginated widget.
+import 'package:flutter/foundation.dart';
+import 'package:infinite_scroll_pagination/src/model/paging_state_base.dart';
+
+/// Represents the state of a paginated layout.
 @immutable
-class PagingState<PageKeyType, ItemType> {
-  const PagingState({
-    this.nextPageKey,
-    this.itemList,
-    this.error,
+abstract class PagingState<PageKeyType extends Object,
+    ItemType extends Object> {
+  /// Creates a [PagingState] with the given parameters.
+  factory PagingState({
+    List<List<ItemType>>? pages,
+    List<PageKeyType>? keys,
+    Object? error,
+    bool hasNextPage,
+  }) = PagingStateBase<PageKeyType, ItemType>;
+
+  /// The pages fetched so far.
+  ///
+  /// This contains all pages fetched so far.
+  /// The corresponding key for each page is at the same index in [keys].
+  List<List<ItemType>>? get pages;
+
+  /// The keys of the pages fetched so far.
+  ///
+  /// This contains all keys used to fetch pages so far.
+  /// The corresponding page for each key is at the same index in [pages].
+  List<PageKeyType>? get keys;
+
+  /// The last error that occurred while fetching a page.
+  /// This is null if no error occurred.
+  Object? get error;
+
+  /// Will be `true` if there is a next page to be fetched.
+  bool get hasNextPage;
+
+  /// Will be `true` if a page is currently being fetched.
+  bool get isLoading;
+
+  /// Creates a copy of this [PagingState] but with the given fields replaced by the new values.
+  /// If a field is not provided, it will default to the current value.
+  ///
+  /// While this implementation technically accepts Futures, passing a Future is invalid.
+  /// The FutureOr type is used to allow for the Omit sentinel value,
+  /// which is required to distinguish between a parameter being omitted and a parameter being set to null.
+  // copyWith a la Remi Rousselet: https://github.com/dart-lang/language/issues/137#issuecomment-583783054
+  PagingState<PageKeyType, ItemType> copyWith({
+    FutureOr<List<List<ItemType>>?>? pages = const Omit(),
+    FutureOr<List<PageKeyType>?>? keys = const Omit(),
+    FutureOr<Object?>? error = const Omit(),
+    FutureOr<bool>? hasNextPage = const Omit(),
+    FutureOr<bool>? isLoading = const Omit(),
   });
 
-  /// List with all items loaded so far.
-  final List<ItemType>? itemList;
+  /// Returns a copy this [PagingState] but
+  /// all fields are reset to their initial values.
+  ///
+  /// If you are implementing a custom [PagingState], you should override this method
+  /// to reset custom fields as well.
+  ///
+  /// The reason we use this instead of creating a new instance is so that
+  /// a custom [PagingState] can be reset without losing its type.
+  PagingState<PageKeyType, ItemType> reset();
+}
 
-  /// The current error, if any.
-  final dynamic error;
+extension ItemListExtension<PageKeyType extends Object, ItemType extends Object>
+    on PagingState<PageKeyType, ItemType> {
+  /// The list of all items in the pages.
+  List<ItemType>? get items => pages?.expand((e) => e).toList();
+}
 
-  /// The key for the next page to be fetched.
-  final PageKeyType? nextPageKey;
+/// Sentinel value to omit a parameter from a copyWith call.
+/// This is used to distinguish between a parameter being omitted and a parameter
+/// being set to null.
+/// See https://github.com/dart-lang/language/issues/140 for why this is necessary.
+final class Omit<T> implements Future<T> {
+  const Omit();
 
   @override
-  String toString() => '${objectRuntimeType(this, 'PagingState')}'
-      '(itemList: \u2524$itemList\u251C, error: $error, nextPageKey: $nextPageKey)';
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other is PagingState &&
-            other.itemList == itemList &&
-            other.error == error &&
-            other.nextPageKey == nextPageKey);
-  }
-
-  @override
-  int get hashCode => Object.hash(
-        itemList.hashCode,
-        error.hashCode,
-        nextPageKey.hashCode,
-      );
+  noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }

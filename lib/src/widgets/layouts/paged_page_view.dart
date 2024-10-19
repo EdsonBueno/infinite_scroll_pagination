@@ -9,9 +9,11 @@ import 'package:infinite_scroll_pagination/src/utils/appended_sliver_child_build
 ///
 /// Similar to a [PageView].
 /// Useful for combining another paged widget with a page view with details.
-class PagedPageView<PageKeyType, ItemType> extends StatelessWidget {
+class PagedPageView<PageKeyType extends Object, ItemType extends Object>
+    extends StatelessWidget {
   const PagedPageView({
-    required this.pagingController,
+    required this.state,
+    required this.fetchNextPage,
     required this.builderDelegate,
     this.addAutomaticKeepAlives = true,
     this.addRepaintBoundaries = true,
@@ -32,8 +34,11 @@ class PagedPageView<PageKeyType, ItemType> extends StatelessWidget {
     super.key,
   });
 
-  /// Matches [PagedLayoutBuilder.pagingController].
-  final PagingController<PageKeyType, ItemType> pagingController;
+  /// Matches [PagedLayoutBuilder.state].
+  final PagingState<PageKeyType, ItemType> state;
+
+  /// Matches [PagedLayoutBuilder.onPageRequest].
+  final NextPageCallback fetchNextPage;
 
   /// Matches [PagedLayoutBuilder.builderDelegate].
   final PagedChildBuilderDelegate<ItemType> builderDelegate;
@@ -90,7 +95,8 @@ class PagedPageView<PageKeyType, ItemType> extends StatelessWidget {
   Widget build(BuildContext context) =>
       PagedLayoutBuilder<PageKeyType, ItemType>(
         layoutProtocol: PagedLayoutProtocol.box,
-        pagingController: pagingController,
+        state: state,
+        fetchNextPage: fetchNextPage,
         builderDelegate: builderDelegate,
         shrinkWrapFirstPageIndicators: shrinkWrapFirstPageIndicators,
         completedListingBuilder: (

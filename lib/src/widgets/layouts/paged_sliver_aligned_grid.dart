@@ -12,9 +12,11 @@ import 'package:infinite_scroll_pagination/src/utils/appended_sliver_grid.dart';
 /// from the [flutter_staggered_grid_view](https://pub.dev/packages/flutter_staggered_grid_view) package.
 /// For more info on how to build staggered grids, check out the
 /// referred package's documentation and examples.
-class PagedSliverAlignedGrid<PageKeyType, ItemType> extends StatelessWidget {
+class PagedSliverAlignedGrid<PageKeyType extends Object,
+    ItemType extends Object> extends StatelessWidget {
   const PagedSliverAlignedGrid({
-    required this.pagingController,
+    required this.state,
+    required this.fetchNextPage,
     required this.builderDelegate,
     required this.gridDelegateBuilder,
     this.mainAxisSpacing = 0,
@@ -30,7 +32,8 @@ class PagedSliverAlignedGrid<PageKeyType, ItemType> extends StatelessWidget {
   });
 
   PagedSliverAlignedGrid.count({
-    required this.pagingController,
+    required this.state,
+    required this.fetchNextPage,
     required this.builderDelegate,
     required int crossAxisCount,
     this.mainAxisSpacing = 0,
@@ -43,14 +46,15 @@ class PagedSliverAlignedGrid<PageKeyType, ItemType> extends StatelessWidget {
     this.showNoMoreItemsIndicatorAsGridChild = true,
     this.shrinkWrapFirstPageIndicators = false,
     super.key,
-  })  : gridDelegateBuilder =
+  }) : gridDelegateBuilder =
             ((childCount) => SliverSimpleGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: crossAxisCount,
                 ));
 
   PagedSliverAlignedGrid.extent({
     super.key,
-    required this.pagingController,
+    required this.state,
+    required this.fetchNextPage,
     required this.builderDelegate,
     required double maxCrossAxisExtent,
     this.mainAxisSpacing = 0,
@@ -62,13 +66,16 @@ class PagedSliverAlignedGrid<PageKeyType, ItemType> extends StatelessWidget {
     this.showNewPageErrorIndicatorAsGridChild = true,
     this.showNoMoreItemsIndicatorAsGridChild = true,
     this.shrinkWrapFirstPageIndicators = false,
-  })  : gridDelegateBuilder =
+  }) : gridDelegateBuilder =
             ((childCount) => SliverSimpleGridDelegateWithMaxCrossAxisExtent(
                   maxCrossAxisExtent: maxCrossAxisExtent,
                 ));
 
-  /// Matches [PagedLayoutBuilder.pagingController].
-  final PagingController<PageKeyType, ItemType> pagingController;
+  /// Matches [PagedLayoutBuilder.state].
+  final PagingState<PageKeyType, ItemType> state;
+
+  /// Matches [PagedLayoutBuilder.onPageRequest].
+  final NextPageCallback fetchNextPage;
 
   /// Matches [PagedLayoutBuilder.builderDelegate].
   final PagedChildBuilderDelegate<ItemType> builderDelegate;
@@ -108,7 +115,8 @@ class PagedSliverAlignedGrid<PageKeyType, ItemType> extends StatelessWidget {
   Widget build(BuildContext context) =>
       PagedLayoutBuilder<PageKeyType, ItemType>(
         layoutProtocol: PagedLayoutProtocol.sliver,
-        pagingController: pagingController,
+        state: state,
+        fetchNextPage: fetchNextPage,
         builderDelegate: builderDelegate,
         completedListingBuilder: (
           context,
