@@ -13,6 +13,7 @@ class PhotoPagesBloc {
         .addTo(_subscriptions);
 
     _onSearchChanged.stream
+        .distinct()
         .flatMap((_) => _refresh())
         .listen(_stateController.add)
         .addTo(_subscriptions);
@@ -57,6 +58,7 @@ class PhotoPagesBloc {
       final isLastPage = newItems.isEmpty;
       yield lastListingState.copyWith(
         error: null,
+        isLoading: false,
         hasNextPage: !isLastPage,
         pages: [
           ...lastListingState.pages ?? [],
@@ -70,6 +72,7 @@ class PhotoPagesBloc {
     } catch (e) {
       yield lastListingState.copyWith(
         error: e,
+        isLoading: false,
       );
     }
   }
