@@ -16,16 +16,19 @@ class RemoteApi {
       throw RandomChanceException();
     }
 
-    return http
-        .get(
-          _ApiUrlBuilder.photos(page, limit, search),
-        )
-        .mapFromResponse<List<Photo>, List<dynamic>>(
-          (jsonArray) => _parseItemListFromJsonArray(
-            jsonArray,
-            Photo.fromPlaceholderJson,
+    return Future.delayed(
+      const Duration(seconds: 0),
+      () => http
+          .get(
+            _ApiUrlBuilder.photos(page, limit, search),
+          )
+          .mapFromResponse<List<Photo>, List<dynamic>>(
+            (jsonArray) => _parseItemListFromJsonArray(
+              jsonArray,
+              Photo.fromPlaceholderJson,
+            ),
           ),
-        );
+    );
   }
 
   static List<T> _parseItemListFromJsonArray<T>(

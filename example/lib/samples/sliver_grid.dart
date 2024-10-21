@@ -50,6 +50,12 @@ class _SliverGridScreenState extends State<SliverGridScreen> {
                   onChanged: (searchTerm) => _bloc.changeSearch(
                     searchTerm,
                   ),
+                  getSuggestions: (searchTerm) => (_bloc.state.items
+                          ?.expand((photo) => photo.title.split(' '))
+                          .where((e) => e.contains(searchTerm))
+                          .toSet()
+                          .toList() ??
+                      []),
                 ),
                 SliverToBoxAdapter(
                   child: Padding(
