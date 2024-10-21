@@ -1,6 +1,9 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:infinite_scroll_pagination/src/core/paged_child_builder_delegate.dart';
+import 'package:infinite_scroll_pagination/src/model/paging_state.dart';
+import 'package:infinite_scroll_pagination/src/widgets/helpers/paged_layout_builder.dart';
+import 'package:infinite_scroll_pagination/src/widgets/layouts/paged_sliver_masonry_grid.dart';
 
 /// A [MasonryGridView] with pagination capabilities.
 ///
