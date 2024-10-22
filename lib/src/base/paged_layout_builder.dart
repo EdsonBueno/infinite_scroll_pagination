@@ -179,87 +179,62 @@ class _PagedLayoutBuilderState<PageKeyType extends Object,
 
   @override
   Widget build(BuildContext context) {
-    Widget child;
-    final items = _state.items;
-    switch (_state.status) {
-      case PagingStatus.loadingFirstPage:
-        child = _FirstPageStatusIndicatorBuilder(
-          builder: _firstPageProgressIndicatorBuilder,
-          shrinkWrap: _shrinkWrapFirstPageIndicators,
-          layoutProtocol: _layoutProtocol,
-        );
-        break;
-      case PagingStatus.firstPageError:
-        child = _FirstPageStatusIndicatorBuilder(
-          builder: _firstPageErrorIndicatorBuilder,
-          shrinkWrap: _shrinkWrapFirstPageIndicators,
-          layoutProtocol: _layoutProtocol,
-        );
-        break;
-      case PagingStatus.noItemsFound:
-        child = _FirstPageStatusIndicatorBuilder(
-          builder: _noItemsFoundIndicatorBuilder,
-          shrinkWrap: _shrinkWrapFirstPageIndicators,
-          layoutProtocol: _layoutProtocol,
-        );
-        break;
-      case PagingStatus.ongoing:
-        child = widget.loadingListingBuilder(
-          context,
-          // We must create this closure to close over the [itemList]
-          // value. That way, we are safe if [itemList] value changes
-          // while Flutter rebuilds the widget (due to animations, for
-          // example.)
-          (context, index) => _buildListItemWidget(
-            context,
-            index,
-            items!,
+    return _PagedLayoutAnimator(
+      animateTransitions: _builderDelegate.animateTransitions,
+      transitionDuration: _builderDelegate.transitionDuration,
+      layoutProtocol: _layoutProtocol,
+      child: switch (_state.status) {
+        PagingStatus.loadingFirstPage => _FirstPageStatusIndicatorBuilder(
+            builder: _firstPageProgressIndicatorBuilder,
+            shrinkWrap: _shrinkWrapFirstPageIndicators,
+            layoutProtocol: _layoutProtocol,
           ),
-          _itemCount,
-          _newPageProgressIndicatorBuilder,
-        );
-        break;
-      case PagingStatus.subsequentPageError:
-        child = widget.errorListingBuilder(
-          context,
-          (context, index) => _buildListItemWidget(
-            context,
-            index,
-            items!,
+        PagingStatus.firstPageError => _FirstPageStatusIndicatorBuilder(
+            builder: _firstPageErrorIndicatorBuilder,
+            shrinkWrap: _shrinkWrapFirstPageIndicators,
+            layoutProtocol: _layoutProtocol,
           ),
-          _itemCount,
-          (context) => _newPageErrorIndicatorBuilder(context),
-        );
-        break;
-      case PagingStatus.completed:
-        child = widget.completedListingBuilder(
-          context,
-          (context, index) => _buildListItemWidget(
-            context,
-            index,
-            items!,
+        PagingStatus.noItemsFound => _FirstPageStatusIndicatorBuilder(
+            builder: _noItemsFoundIndicatorBuilder,
+            shrinkWrap: _shrinkWrapFirstPageIndicators,
+            layoutProtocol: _layoutProtocol,
           ),
-          _itemCount,
-          _noMoreItemsIndicatorBuilder,
-        );
-        break;
-    }
-
-    if (_builderDelegate.animateTransitions) {
-      if (_layoutProtocol == PagedLayoutProtocol.sliver) {
-        return SliverAnimatedSwitcher(
-          duration: _builderDelegate.transitionDuration,
-          child: child,
-        );
-      } else {
-        return AnimatedSwitcher(
-          duration: _builderDelegate.transitionDuration,
-          child: child,
-        );
-      }
-    } else {
-      return child;
-    }
+        PagingStatus.ongoing => widget.loadingListingBuilder(
+            context,
+            // We must create this closure to close over the [itemList]
+            // value. That way, we are safe if [itemList] value changes
+            // while Flutter rebuilds the widget (due to animations, for
+            // example.)
+            (context, index) => _buildListItemWidget(
+              context,
+              index,
+              _state.items!,
+            ),
+            _itemCount,
+            _newPageProgressIndicatorBuilder,
+          ),
+        PagingStatus.subsequentPageError => widget.errorListingBuilder(
+            context,
+            (context, index) => _buildListItemWidget(
+              context,
+              index,
+              _state.items!,
+            ),
+            _itemCount,
+            (context) => _newPageErrorIndicatorBuilder(context),
+          ),
+        PagingStatus.completed => widget.completedListingBuilder(
+            context,
+            (context, index) => _buildListItemWidget(
+              context,
+              index,
+              _state.items!,
+            ),
+            _itemCount,
+            _noMoreItemsIndicatorBuilder,
+          ),
+      },
+    );
   }
 
   /// Connects the [_pagingController] with the [_builderDelegate] in order to
@@ -289,6 +264,35 @@ class _PagedLayoutBuilderState<PageKeyType extends Object,
   }
 }
 
+class _PagedLayoutAnimator extends StatelessWidget {
+  const _PagedLayoutAnimator({
+    required this.child,
+    required this.animateTransitions,
+    required this.transitionDuration,
+    required this.layoutProtocol,
+  });
+
+  final Widget child;
+  final bool animateTransitions;
+  final Duration transitionDuration;
+  final PagedLayoutProtocol layoutProtocol;
+
+  @override
+  Widget build(BuildContext context) {
+    if (!animateTransitions) return child;
+    return switch (layoutProtocol) {
+      PagedLayoutProtocol.sliver => SliverAnimatedSwitcher(
+          duration: transitionDuration,
+          child: child,
+        ),
+      PagedLayoutProtocol.box => AnimatedSwitcher(
+          duration: transitionDuration,
+          child: child,
+        ),
+    };
+  }
+}
+
 class _FirstPageStatusIndicatorBuilder extends StatelessWidget {
   const _FirstPageStatusIndicatorBuilder({
     required this.builder,
@@ -302,25 +306,15 @@ class _FirstPageStatusIndicatorBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (layoutProtocol == PagedLayoutProtocol.sliver) {
-      if (shrinkWrap) {
-        return SliverToBoxAdapter(
-          child: builder(context),
-        );
-      } else {
-        return SliverFillRemaining(
-          hasScrollBody: false,
-          child: builder(context),
-        );
-      }
-    } else {
-      if (shrinkWrap) {
-        return builder(context);
-      } else {
-        return Center(
-          child: builder(context),
-        );
-      }
-    }
+    return switch (layoutProtocol) {
+      PagedLayoutProtocol.sliver => shrinkWrap
+          ? SliverToBoxAdapter(child: builder(context))
+          : SliverFillRemaining(
+              hasScrollBody: false,
+              child: builder(context),
+            ),
+      PagedLayoutProtocol.box =>
+        shrinkWrap ? builder(context) : Center(child: builder(context)),
+    };
   }
 }
