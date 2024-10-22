@@ -21,13 +21,15 @@ extension PagingStatusExtension on PagingState {
 
   bool get _hasError => error != null;
 
+  bool get _isLoadingFirstPage => _itemCount == null && !_hasError;
+
+  bool get _hasFirstPageError => !_hasItems && _hasError;
+
   bool get _isListingUnfinished => _hasItems && hasNextPage;
 
   bool get _isOngoing => _isListingUnfinished && !_hasError;
 
   bool get _isCompleted => _hasItems && !hasNextPage;
-
-  bool get _isLoadingFirstPage => _itemCount == null && !_hasError;
 
   bool get _hasSubsequentPageError => _isListingUnfinished && _hasError;
 
@@ -35,26 +37,12 @@ extension PagingStatusExtension on PagingState {
 
   /// The current pagination status.
   PagingStatus get status {
-    if (_isOngoing) {
-      return PagingStatus.ongoing;
-    }
-
-    if (_isCompleted) {
-      return PagingStatus.completed;
-    }
-
-    if (_isLoadingFirstPage) {
-      return PagingStatus.loadingFirstPage;
-    }
-
-    if (_hasSubsequentPageError) {
-      return PagingStatus.subsequentPageError;
-    }
-
-    if (_isEmpty) {
-      return PagingStatus.noItemsFound;
-    } else {
-      return PagingStatus.firstPageError;
-    }
+    if (_isLoadingFirstPage) return PagingStatus.loadingFirstPage;
+    if (_hasFirstPageError) return PagingStatus.firstPageError;
+    if (_isEmpty) return PagingStatus.noItemsFound;
+    if (_isOngoing) return PagingStatus.ongoing;
+    if (_hasSubsequentPageError) return PagingStatus.subsequentPageError;
+    if (_isCompleted) return PagingStatus.completed;
+    throw StateError('Unknown status; Did you forget to implement a case?');
   }
 }

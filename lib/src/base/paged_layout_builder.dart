@@ -182,6 +182,27 @@ class _PagedLayoutBuilderState<PageKeyType extends Object,
     Widget child;
     final items = _state.items;
     switch (_state.status) {
+      case PagingStatus.loadingFirstPage:
+        child = _FirstPageStatusIndicatorBuilder(
+          builder: _firstPageProgressIndicatorBuilder,
+          shrinkWrap: _shrinkWrapFirstPageIndicators,
+          layoutProtocol: _layoutProtocol,
+        );
+        break;
+      case PagingStatus.firstPageError:
+        child = _FirstPageStatusIndicatorBuilder(
+          builder: _firstPageErrorIndicatorBuilder,
+          shrinkWrap: _shrinkWrapFirstPageIndicators,
+          layoutProtocol: _layoutProtocol,
+        );
+        break;
+      case PagingStatus.noItemsFound:
+        child = _FirstPageStatusIndicatorBuilder(
+          builder: _noItemsFoundIndicatorBuilder,
+          shrinkWrap: _shrinkWrapFirstPageIndicators,
+          layoutProtocol: _layoutProtocol,
+        );
+        break;
       case PagingStatus.ongoing:
         child = widget.loadingListingBuilder(
           context,
@@ -198,25 +219,6 @@ class _PagedLayoutBuilderState<PageKeyType extends Object,
           _newPageProgressIndicatorBuilder,
         );
         break;
-      case PagingStatus.completed:
-        child = widget.completedListingBuilder(
-          context,
-          (context, index) => _buildListItemWidget(
-            context,
-            index,
-            items!,
-          ),
-          _itemCount,
-          _noMoreItemsIndicatorBuilder,
-        );
-        break;
-      case PagingStatus.loadingFirstPage:
-        child = _FirstPageStatusIndicatorBuilder(
-          builder: _firstPageProgressIndicatorBuilder,
-          shrinkWrap: _shrinkWrapFirstPageIndicators,
-          layoutProtocol: _layoutProtocol,
-        );
-        break;
       case PagingStatus.subsequentPageError:
         child = widget.errorListingBuilder(
           context,
@@ -229,19 +231,18 @@ class _PagedLayoutBuilderState<PageKeyType extends Object,
           (context) => _newPageErrorIndicatorBuilder(context),
         );
         break;
-      case PagingStatus.noItemsFound:
-        child = _FirstPageStatusIndicatorBuilder(
-          builder: _noItemsFoundIndicatorBuilder,
-          shrinkWrap: _shrinkWrapFirstPageIndicators,
-          layoutProtocol: _layoutProtocol,
+      case PagingStatus.completed:
+        child = widget.completedListingBuilder(
+          context,
+          (context, index) => _buildListItemWidget(
+            context,
+            index,
+            items!,
+          ),
+          _itemCount,
+          _noMoreItemsIndicatorBuilder,
         );
         break;
-      default:
-        child = _FirstPageStatusIndicatorBuilder(
-          builder: _firstPageErrorIndicatorBuilder,
-          shrinkWrap: _shrinkWrapFirstPageIndicators,
-          layoutProtocol: _layoutProtocol,
-        );
     }
 
     if (_builderDelegate.animateTransitions) {
