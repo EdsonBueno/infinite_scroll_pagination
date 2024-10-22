@@ -38,17 +38,19 @@ class PagingController<PageKeyType extends Object, ItemType extends Object>
   /// Keeps track of the current operation.
   /// If the operation changes during its execution, the operation is cancelled.
   ///
-  /// In more concrete terms, this cancels old fetch calls.
-  Object? _operation;
+  /// Instead of using this property directly, use [fetchNextPage], [refresh], or [cancel].
+  /// If you are extending this class, check and set this property before and after the fetch operation.
+  @protected
+  Object? operation;
 
   /// Fetches the next page.
   ///
   /// If called while a page is fetching or no more pages are available, this method does nothing.
   void fetchNextPage() async {
     // We are already loading a new page.
-    if (_operation != null) return;
+    if (this.operation != null) return;
 
-    final operation = _operation = Object();
+    final operation = this.operation = Object();
 
     // we use a local copy of value,
     // so that we only send one notification now and at the end of the method.
@@ -79,7 +81,7 @@ class PagingController<PageKeyType extends Object, ItemType extends Object>
         newItems = fetchResult;
       }
 
-      if (operation != _operation) return;
+      if (operation != operation) return;
 
       state = state.copyWith(
         pages: [...?state.pages, newItems],
@@ -96,8 +98,8 @@ class PagingController<PageKeyType extends Object, ItemType extends Object>
       }
     } finally {
       value = state.copyWith(isLoading: false);
-      if (operation == _operation) {
-        _operation = null;
+      if (operation == this.operation) {
+        this.operation = null;
       }
     }
   }
@@ -106,7 +108,7 @@ class PagingController<PageKeyType extends Object, ItemType extends Object>
   ///
   /// This cancels the current fetch operation and resets the state.
   void refresh() {
-    _operation = null;
+    operation = null;
     value = value.reset();
   }
 
@@ -114,7 +116,7 @@ class PagingController<PageKeyType extends Object, ItemType extends Object>
   ///
   /// This can be called right before a call to [fetchNextPage] to force a new fetch.
   void cancel() {
-    _operation = null;
+    operation = null;
     value = value.copyWith(isLoading: false);
   }
 }
