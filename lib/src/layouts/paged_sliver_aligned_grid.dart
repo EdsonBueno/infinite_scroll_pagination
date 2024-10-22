@@ -3,24 +3,21 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:infinite_scroll_pagination/src/core/paged_child_builder_delegate.dart';
 import 'package:infinite_scroll_pagination/src/model/paging_state.dart';
 import 'package:infinite_scroll_pagination/src/utils/appended_sliver_grid.dart';
-import 'package:infinite_scroll_pagination/src/widgets/helpers/paged_layout_builder.dart';
+import 'package:infinite_scroll_pagination/src/base/paged_layout_builder.dart';
+import 'package:infinite_scroll_pagination/src/layouts/paged_sliver_masonry_grid.dart';
 
-typedef SliverSimpleGridDelegateBuilder = SliverSimpleGridDelegate Function(
-  int childCount,
-);
-
-/// A [SliverMasonryGrid] with pagination capabilities.
+/// A [SliverAlignedGrid] with pagination capabilities.
 ///
-/// You can also see this as a [PagedSliverGrid] that supports rows of varying
-/// sizes.
+/// You can also see this as a [PagedSliverGrid] that ensures that the items
+/// in its rows all have the same size.
 ///
-/// This is a wrapper around the [SliverMasonryGrid]
+/// This is a wrapper around the [SliverAlignedGrid]
 /// from the [flutter_staggered_grid_view](https://pub.dev/packages/flutter_staggered_grid_view) package.
 /// For more info on how to build staggered grids, check out the
 /// referred package's documentation and examples.
-class PagedSliverMasonryGrid<PageKeyType extends Object,
+class PagedSliverAlignedGrid<PageKeyType extends Object,
     ItemType extends Object> extends StatelessWidget {
-  const PagedSliverMasonryGrid({
+  const PagedSliverAlignedGrid({
     required this.state,
     required this.fetchNextPage,
     required this.builderDelegate,
@@ -37,8 +34,7 @@ class PagedSliverMasonryGrid<PageKeyType extends Object,
     super.key,
   });
 
-  /// Equivalent to [SliverMasonryGrid.count].
-  PagedSliverMasonryGrid.count({
+  PagedSliverAlignedGrid.count({
     required this.state,
     required this.fetchNextPage,
     required this.builderDelegate,
@@ -58,8 +54,8 @@ class PagedSliverMasonryGrid<PageKeyType extends Object,
                   crossAxisCount: crossAxisCount,
                 ));
 
-  /// Equivalent to [SliverMasonryGrid.extent].
-  PagedSliverMasonryGrid.extent({
+  PagedSliverAlignedGrid.extent({
+    super.key,
     required this.state,
     required this.fetchNextPage,
     required this.builderDelegate,
@@ -73,7 +69,6 @@ class PagedSliverMasonryGrid<PageKeyType extends Object,
     this.showNewPageErrorIndicatorAsGridChild = true,
     this.showNoMoreItemsIndicatorAsGridChild = true,
     this.shrinkWrapFirstPageIndicators = false,
-    super.key,
   }) : gridDelegateBuilder =
             ((childCount) => SliverSimpleGridDelegateWithMaxCrossAxisExtent(
                   maxCrossAxisExtent: maxCrossAxisExtent,
@@ -113,10 +108,10 @@ class PagedSliverMasonryGrid<PageKeyType extends Object,
   /// Matches [PagedLayoutBuilder.shrinkWrapFirstPageIndicators].
   final bool shrinkWrapFirstPageIndicators;
 
-  /// Matches [SliverMasonryGrid.mainAxisSpacing].
+  /// Matches [SliverAlignedGrid.mainAxisSpacing].
   final double mainAxisSpacing;
 
-  /// Matches [SliverMasonryGrid.mainAxisSpacing].
+  /// Matches [SliverAlignedGrid.crossAxisSpacing].
   final double crossAxisSpacing;
 
   @override
@@ -133,19 +128,22 @@ class PagedSliverMasonryGrid<PageKeyType extends Object,
           noMoreItemsIndicatorBuilder,
         ) =>
             AppendedSliverGrid(
-          sliverGridBuilder: (childCount, delegate) => SliverMasonryGrid(
-            delegate: delegate,
+          sliverGridBuilder: (childCount, delegate) => SliverAlignedGrid(
+            itemBuilder: delegate.build,
+            itemCount: childCount,
             gridDelegate: gridDelegateBuilder(childCount),
             mainAxisSpacing: mainAxisSpacing,
             crossAxisSpacing: crossAxisSpacing,
+            addAutomaticKeepAlives: addAutomaticKeepAlives,
+            addRepaintBoundaries: addRepaintBoundaries,
           ),
           itemBuilder: itemBuilder,
           itemCount: itemCount,
           appendixBuilder: noMoreItemsIndicatorBuilder,
           showAppendixAsGridChild: showNoMoreItemsIndicatorAsGridChild,
-          addAutomaticKeepAlives: addAutomaticKeepAlives,
-          addSemanticIndexes: addSemanticIndexes,
-          addRepaintBoundaries: addRepaintBoundaries,
+          addAutomaticKeepAlives: false,
+          addSemanticIndexes: false,
+          addRepaintBoundaries: false,
         ),
         loadingListingBuilder: (
           context,
@@ -154,19 +152,22 @@ class PagedSliverMasonryGrid<PageKeyType extends Object,
           progressIndicatorBuilder,
         ) =>
             AppendedSliverGrid(
-          sliverGridBuilder: (childCount, delegate) => SliverMasonryGrid(
-            delegate: delegate,
+          sliverGridBuilder: (childCount, delegate) => SliverAlignedGrid(
+            itemBuilder: delegate.build,
+            itemCount: childCount,
             gridDelegate: gridDelegateBuilder(childCount),
             mainAxisSpacing: mainAxisSpacing,
             crossAxisSpacing: crossAxisSpacing,
+            addAutomaticKeepAlives: addAutomaticKeepAlives,
+            addRepaintBoundaries: addRepaintBoundaries,
           ),
           itemBuilder: itemBuilder,
           itemCount: itemCount,
           appendixBuilder: progressIndicatorBuilder,
           showAppendixAsGridChild: showNewPageProgressIndicatorAsGridChild,
-          addAutomaticKeepAlives: addAutomaticKeepAlives,
-          addSemanticIndexes: addSemanticIndexes,
-          addRepaintBoundaries: addRepaintBoundaries,
+          addAutomaticKeepAlives: false,
+          addSemanticIndexes: false,
+          addRepaintBoundaries: false,
         ),
         errorListingBuilder: (
           context,
@@ -175,19 +176,22 @@ class PagedSliverMasonryGrid<PageKeyType extends Object,
           errorIndicatorBuilder,
         ) =>
             AppendedSliverGrid(
-          sliverGridBuilder: (childCount, delegate) => SliverMasonryGrid(
-            delegate: delegate,
+          sliverGridBuilder: (childCount, delegate) => SliverAlignedGrid(
+            itemBuilder: delegate.build,
+            itemCount: childCount,
             gridDelegate: gridDelegateBuilder(childCount),
             mainAxisSpacing: mainAxisSpacing,
             crossAxisSpacing: crossAxisSpacing,
+            addAutomaticKeepAlives: addAutomaticKeepAlives,
+            addRepaintBoundaries: addRepaintBoundaries,
           ),
           itemBuilder: itemBuilder,
           itemCount: itemCount,
           appendixBuilder: errorIndicatorBuilder,
           showAppendixAsGridChild: showNewPageErrorIndicatorAsGridChild,
-          addAutomaticKeepAlives: addAutomaticKeepAlives,
-          addSemanticIndexes: addSemanticIndexes,
-          addRepaintBoundaries: addRepaintBoundaries,
+          addAutomaticKeepAlives: false,
+          addSemanticIndexes: false,
+          addRepaintBoundaries: false,
         ),
         shrinkWrapFirstPageIndicators: shrinkWrapFirstPageIndicators,
       );
