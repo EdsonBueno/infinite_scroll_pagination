@@ -47,3 +47,6 @@ app.*.map.json
 /macos/
 /windows/
 /web/
+
+# flutter library
+/pubspec.lock
