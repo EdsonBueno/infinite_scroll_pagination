@@ -2,6 +2,7 @@
 
 - Updates example
 - Introduces [PagedSliverMasonryGrid](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedSliverMasonryGrid-class.html).
+- Removes pubspec.lock from version control.
 
 ## 4.0.0
 
