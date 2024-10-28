@@ -17,5 +17,5 @@ jobs:
         run: dart pub get
       - name: Publish - dry run
         run: dart pub publish --dry-run
-      # - name: Publish to pub.dev
-      #   run: dart pub publish -f
+      - name: Publish to pub.dev
+        run: dart pub publish -f
