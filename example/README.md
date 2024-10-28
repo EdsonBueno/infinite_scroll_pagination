@@ -18,10 +18,10 @@ class _BeerListViewState extends State<BeerListView> {
 
   @override
   void initState() {
+    super.initState();
     _pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });
-    super.initState();
   }
 
   Future<void> _fetchPage(int pageKey) async {
@@ -191,11 +191,10 @@ class _BeerSliverListState extends State<BeerSliverList> {
 
   @override
   void initState() {
+    super.initState();
     _pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });
-
-    super.initState();
   }
 
   Future<void> _fetchPage(pageKey) async {
@@ -285,6 +284,8 @@ If you need to execute some custom action when the list status changes, such as 
 ```dart
 @override
 void initState() {
+  super.initState();
+
   _pagingController.addPageRequestListener((pageKey) {
     _fetchPage(pageKey);
   });
@@ -304,8 +305,6 @@ void initState() {
       );
     }
   });
-
-  super.initState();
 }
 ```
 
@@ -337,6 +336,8 @@ class _BeerSliverGridState extends State<BeerSliverGrid> {
 
   @override
   void initState() {
+    super.initState();
+
     _pagingController.addPageRequestListener((pageKey) {
       _bloc.onPageRequestSink.add(pageKey);
     });
@@ -353,7 +354,6 @@ class _BeerSliverGridState extends State<BeerSliverGrid> {
         itemList: listingState.itemList,
       );
     });
-    super.initState();
   }
 
   @override

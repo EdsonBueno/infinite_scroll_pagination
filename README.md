@@ -44,10 +44,10 @@ class _BeerListViewState extends State<BeerListView> {
 
   @override
   void initState() {
+    super.initState();
     _pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });
-    super.initState();
   }
 
   Future<void> _fetchPage(int pageKey) async {
