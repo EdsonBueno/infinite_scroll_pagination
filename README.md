@@ -1,5 +1,5 @@
 <p align="center">
-	<img src="https://raw.githubusercontent.com/EdsonBueno/infinite_scroll_pagination/master/docs/assets/logo.png" alt="Package Logo with Flutter Favorite Badge" />
+	<img src="https://raw.githubusercontent.com/EdsonBueno/infinite_scroll_pagination/master/assets/logo.png" alt="Package Logo with Flutter Favorite Badge" />
 </p>
 <p align="center">
 	<i>Chosen as a <a href="https://flutter.dev/docs/development/packages-and-plugins/favorites" rel="noopener" target="_blank">Flutter Favorite</a> by the Flutter Ecosystem Committee</i>
@@ -22,7 +22,7 @@ Unopinionated, extensible and highly customizable package to help you lazily loa
 
 Designed to feel like part of the Flutter framework.
 
-<img src="https://raw.githubusercontent.com/EdsonBueno/infinite_scroll_pagination/master/docs/assets/demo.gif" alt="Example Project" />
+<img src="https://raw.githubusercontent.com/EdsonBueno/infinite_scroll_pagination/master/assets/demo.gif" alt="Example Project" />
 
 ## Tutorial
 
@@ -106,5 +106,5 @@ For more usage examples, please take a look at our [cookbook](https://pub.dev/pa
 ## API Overview
 
 <p align="center">
-	<img src="https://raw.githubusercontent.com/EdsonBueno/infinite_scroll_pagination/master/docs/assets/api-diagram.png" alt="API Diagram" />
+	<img src="https://raw.githubusercontent.com/EdsonBueno/infinite_scroll_pagination/master/assets/api-diagram.png" alt="API Diagram" />
 </p>
