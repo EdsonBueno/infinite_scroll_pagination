@@ -1,4 +1,4 @@
-## Unreleased
+## 4.1.0
 
 - Updates example
 - Introduces [PagedSliverMasonryGrid](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedSliverMasonryGrid-class.html).
