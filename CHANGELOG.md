@@ -1,4 +1,4 @@
-## [Unreleased]
+## Unreleased
 
 ### Added
 
@@ -105,13 +105,13 @@
 
 - `shrinkWrapFirstPageIndicators` property to [PagedSliverList](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedSliverList-class.html), [PagedSliverGrid](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedSliverGrid-class.html), and [PagedSliverBuilder](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedSliverBuilder-class.html).
 
-### Improved
-
-- Error message displayed when calling a disposed [PagingController](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagingController-class.html).
-
 ### Fixed
 
 - Separator being displayed on completed lists.
+
+### Changed
+
+- Improve error message displayed when calling a disposed [PagingController](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagingController-class.html).
 
 ## [2.2.0+1] - 2020-10-19
 
@@ -168,27 +168,21 @@
 
 ## [1.0.0+2] - 2020-08-22
 
-### Changed
-
-- README images reference URL.
-
 ### Added
 
 - Documentation to `PagedDataSource` properties.
+
+### Changed
+
+- README images reference URL.
 
 ## [1.0.0+1] - 2020-08-22
 
 ### Added
 
 - Images to README.md.
-
-## [1.0.0] - 2020-08-22
-
-### Added
-
 - Initial release.
 
-[Unreleased]: https://github.com/EdsonBueno/infinite_scroll_pagination/compare/4.0.0..HEAD
 [4.0.0]: https://github.com/EdsonBueno/infinite_scroll_pagination/compare/3.2.0..4.0.0
 [3.2.0]: https://github.com/EdsonBueno/infinite_scroll_pagination/compare/3.1.0..3.2.0
 [3.1.0]: https://github.com/EdsonBueno/infinite_scroll_pagination/compare/3.0.1+1..3.1.0
