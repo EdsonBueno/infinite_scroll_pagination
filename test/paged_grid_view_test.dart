@@ -16,6 +16,71 @@ void main() {
       mockPageRequestListener = MockPageRequestListener();
     });
 
+    testWidgets(
+      // Test Description:
+      // This test verifies that updating list items while a page is still loading
+      // does not inadvertently trigger any additional events. The scenario simulates
+      // a paged grid view where new pages are requested and loaded, and an update
+      // occurs on the item list during a page load.
+      'Should not trigger event when update list items while loading a next page.',
+      (tester) async {
+        // Setting up the test environment with the preferred screen size.
+        tester.applyPreferredTestScreenSize();
+
+        // Creating a paging controller with a predefined state of two pages ongoing.
+        final pagingController = buildPagingControllerWithPopulatedState(
+          PopulatedStateOption.ongoingWithTwoPages,
+        );
+
+        // Adding a page request listener that mocks the behavior of a page request
+        // and introduces a simulated delay of 2 seconds to emulate network latency.
+        pagingController.addPageRequestListener((page) async {
+          mockPageRequestListener(page);
+
+          // Simulate network delay of 2 seconds for the request.
+          await Future.delayed(const Duration(seconds: 2));
+        });
+
+        // Rendering the Paged Grid View with the above-defined paging controller.
+        await _pumpPagedGridView(
+          tester: tester,
+          pagingController: pagingController,
+        );
+
+        // Initial frame pump to start the widget lifecycle.
+        await tester.pump();
+
+        // Scrolling to make a specific item from the second page visible,
+        // simulating user scroll action.
+        await tester.scrollUntilVisible(
+          find.text(secondPageItemList[5]),
+          _itemHeight,
+        );
+
+        // Pumping for 1 second to simulate ongoing request loading.
+        await tester.pump(const Duration(seconds: 1));
+
+        // Act:
+        // Updating the first item of the list and assigning the updated list
+        // to the paging controller, to mimic a list update during loading.
+        final items = [...pagingController.itemList!];
+        items[0] = 'Update Some Item';
+        pagingController.itemList = items;
+        await tester.pump();
+
+        // Assert:
+        // Verifying that the mock page request listener for page number 3
+        // is called exactly once, ensuring no additional events are triggered.
+        verify(mockPageRequestListener(3)).called(1);
+
+        // Completing the first request by pumping for an additional second.
+        await tester.pump(const Duration(seconds: 1));
+
+        // Completing the second request by pumping for two more seconds.
+        await tester.pump(const Duration(seconds: 2));
+      },
+    );
+
     testWidgets('Requests first page only once', (tester) async {
       final pagingController = PagingController<int, String>(
         firstPageKey: 1,
