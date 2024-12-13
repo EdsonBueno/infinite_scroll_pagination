@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:infinite_scroll_pagination/src/core/paged_child_builder_delegate.dart';
-import 'package:infinite_scroll_pagination/src/model/paging_state.dart';
+import 'package:infinite_scroll_pagination/src/base/paged_child_builder_delegate.dart';
+import 'package:infinite_scroll_pagination/src/core/paging_state.dart';
 import 'package:infinite_scroll_pagination/src/base/paged_layout_builder.dart';
 import 'package:infinite_scroll_pagination/src/layouts/paged_sliver_list.dart';
 

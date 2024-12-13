@@ -1,7 +1,8 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
-import 'package:infinite_scroll_pagination/src/model/paging_state.dart';
+import 'package:infinite_scroll_pagination/src/core/paging_state.dart';
 
 /// The default implementation of [PagingState].
 ///
@@ -80,23 +81,27 @@ base class PagingStateBase<PageKeyType extends Object, ItemType extends Object>
       );
 
   @override
-  String toString() => '${objectRuntimeType(this, 'PagingState')}'
-      '(pages: $pages, keys: $keys, error: $error, hasNextPage: $hasNextPage)';
+  String toString() => '${objectRuntimeType(this, 'PagingStateBase')}'
+      '(pages: $pages, keys: $keys, error: $error, hasNextPage: $hasNextPage, '
+      'isLoading: $isLoading)';
+
+  static const _equality = DeepCollectionEquality();
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other is PagingState<PageKeyType, ItemType> &&
-            listEquals(other.pages, pages) &&
-            listEquals(other.keys, keys) &&
+            _equality.equals(other.pages, pages) &&
+            _equality.equals(other.keys, keys) &&
             other.error == error &&
-            other.hasNextPage == hasNextPage);
+            other.hasNextPage == hasNextPage &&
+            other.isLoading == isLoading);
   }
 
   @override
   int get hashCode => Object.hash(
-        pages,
-        keys,
+        _equality.hash(pages),
+        _equality.hash(keys),
         error,
         hasNextPage,
       );

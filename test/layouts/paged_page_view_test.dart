@@ -3,8 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:mockito/mockito.dart';
 
-import 'utils/paging_controller_utils.dart';
-import 'utils/screen_size_utils.dart';
+import '../utils/paging_controller_utils.dart';
+import '../utils/screen_size_utils.dart';
 
 double get _itemHeight => screenSize.height;
 double get _itemWidth => screenSize.width;
@@ -18,31 +18,22 @@ void main() {
     });
 
     testWidgets('Requests first page only once', (tester) async {
-      final pagingController = PagingController<int, String>(
-        firstPageKey: 1,
-      );
-
-      pagingController.addPageRequestListener(mockPageRequestListener.call);
-
       await _pumpPagedPageView(
         tester: tester,
-        pagingController: pagingController,
+        state: TestPagingState.loadingFirstPage(),
+        fetchNextPage: mockPageRequestListener.call,
       );
 
-      verify(mockPageRequestListener(1)).called(1);
+      verify(mockPageRequestListener()).called(1);
     });
 
     testWidgets('Doesn\'t request a page unnecessarily', (tester) async {
       tester.applyPreferredTestScreenSize();
 
-      final pagingController = buildPagingControllerWithPopulatedState(
-        PopulatedStateOption.ongoingWithTwoPages,
-      );
-      pagingController.addPageRequestListener(mockPageRequestListener.call);
-
       await _pumpPagedPageView(
         tester: tester,
-        pagingController: pagingController,
+        state: TestPagingState.ongoing(n: pageSize * 2),
+        fetchNextPage: mockPageRequestListener.call,
       );
 
       verifyZeroInteractions(mockPageRequestListener);
@@ -51,32 +42,22 @@ void main() {
     testWidgets('Requests a new page on scroll', (tester) async {
       tester.applyPreferredTestScreenSize();
 
-      final pagingController = buildPagingControllerWithPopulatedState(
-        PopulatedStateOption.ongoingWithOnePage,
-      );
-      pagingController.addPageRequestListener(mockPageRequestListener.call);
-
       await _pumpPagedPageView(
         tester: tester,
-        pagingController: pagingController,
+        state: TestPagingState.ongoing(n: pageSize * 2),
+        fetchNextPage: mockPageRequestListener.call,
       );
 
       await tester.scrollUntilVisible(
-        find.text(
-          firstPageItemList[8],
-        ),
+        find.text('Item ${pageSize * 2}'),
         250,
       );
 
-      verify(mockPageRequestListener(2)).called(1);
+      verify(mockPageRequestListener()).called(1);
     });
 
     testWidgets('Show the new page error indicator', (tester) async {
       tester.applyPreferredTestScreenSize();
-
-      final pagingController = buildPagingControllerWithPopulatedState(
-        PopulatedStateOption.errorOnSecondPage,
-      );
 
       final customIndicatorKey = UniqueKey();
       final customNewPageErrorIndicator = Text(
@@ -86,7 +67,8 @@ void main() {
 
       await _pumpPagedPageView(
         tester: tester,
-        pagingController: pagingController,
+        state: TestPagingState.subsequentPageError(),
+        fetchNextPage: mockPageRequestListener.call,
         newPageErrorIndicator: customNewPageErrorIndicator,
       );
 
@@ -100,13 +82,10 @@ void main() {
   });
 }
 
-class MockPageRequestListener extends Mock {
-  void call(int pageKey);
-}
-
 Future<void> _pumpPagedPageView({
   required WidgetTester tester,
-  required PagingController<int, String> pagingController,
+  required PagingState<int, String> state,
+  required NextPageCallback fetchNextPage,
   Widget? newPageProgressIndicator,
   Widget? newPageErrorIndicator,
   Widget? noMoreItemsIndicator,
@@ -115,10 +94,11 @@ Future<void> _pumpPagedPageView({
       MaterialApp(
         home: Scaffold(
           body: PagedPageView<int, String>(
-            pagingController: pagingController,
+            state: state,
+            fetchNextPage: fetchNextPage,
             scrollDirection: Axis.vertical,
             builderDelegate: PagedChildBuilderDelegate<String>(
-              itemBuilder: _buildItem,
+              itemBuilder: buildTestTile(_itemHeight),
               newPageProgressIndicatorBuilder: newPageProgressIndicator != null
                   ? (context) => newPageProgressIndicator
                   : null,
@@ -131,17 +111,5 @@ Future<void> _pumpPagedPageView({
             ),
           ),
         ),
-      ),
-    );
-
-Widget _buildItem(
-  BuildContext context,
-  String item,
-  int index,
-) =>
-    SizedBox(
-      height: _itemHeight,
-      child: Text(
-        item,
       ),
     );

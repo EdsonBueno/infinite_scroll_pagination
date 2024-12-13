@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:infinite_scroll_pagination/src/model/paging_state.dart';
+import 'package:infinite_scroll_pagination/src/core/paging_state.dart';
 
 /// A callback to get the next page key.
 /// If this function returns `null`, it indicates that there are no more pages to load.
@@ -41,6 +41,7 @@ class PagingController<PageKeyType extends Object, ItemType extends Object>
   /// Instead of using this property directly, use [fetchNextPage], [refresh], or [cancel].
   /// If you are extending this class, check and set this property before and after the fetch operation.
   @protected
+  @visibleForTesting
   Object? operation;
 
   /// Fetches the next page.
@@ -52,12 +53,14 @@ class PagingController<PageKeyType extends Object, ItemType extends Object>
 
     final operation = this.operation = Object();
 
-    // we use a local copy of value,
-    // so that we only send one notification now and at the end of the method.
-    PagingState<PageKeyType, ItemType> state = value = value.copyWith(
+    value = value.copyWith(
       isLoading: true,
       error: null,
     );
+
+    // we use a local copy of value,
+    // so that we only send one notification now and at the end of the method.
+    PagingState<PageKeyType, ItemType> state = value;
 
     try {
       // There are no more pages to load.

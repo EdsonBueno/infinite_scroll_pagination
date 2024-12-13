@@ -3,12 +3,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:mockito/mockito.dart';
 
-import 'utils/paging_controller_utils.dart';
-import 'utils/screen_size_utils.dart';
+import '../utils/paging_controller_utils.dart';
+import '../utils/screen_size_utils.dart';
 
-const _screenSize = Size(200, 500);
-
-double get _itemHeight => _screenSize.height / pageSize;
+double get _itemHeight => screenSize.height / pageSize;
 
 void main() {
   group('Page requests', () {
@@ -19,51 +17,34 @@ void main() {
     });
 
     testWidgets('Requests first page only once', (tester) async {
-      final pagingController = PagingController<int, String>(
-        firstPageKey: 1,
-      );
-
-      pagingController.addPageRequestListener(mockPageRequestListener.call);
-
       await _pumpPagedSliverList(
         tester: tester,
-        pagingController: pagingController,
+        state: TestPagingState.loadingFirstPage(),
+        fetchNextPage: mockPageRequestListener.call,
       );
 
-      verify(mockPageRequestListener(1)).called(1);
+      verify(mockPageRequestListener()).called(1);
     });
 
     testWidgets(
         'Requests second page immediately if the first page isn\'t enough',
         (tester) async {
-      final controllerLoadedWithFirstPage =
-          buildPagingControllerWithPopulatedState(
-        PopulatedStateOption.ongoingWithOnePage,
-      );
-
-      controllerLoadedWithFirstPage.addPageRequestListener(
-        mockPageRequestListener.call,
-      );
-
       await _pumpPagedSliverList(
         tester: tester,
-        pagingController: controllerLoadedWithFirstPage,
+        state: TestPagingState.ongoing(n: pageSize ~/ 2),
+        fetchNextPage: mockPageRequestListener.call,
       );
 
-      verify(mockPageRequestListener(2)).called(1);
+      verify(mockPageRequestListener()).called(1);
     });
 
     testWidgets('Doesn\'t request a page unnecessarily', (tester) async {
       tester.applyPreferredTestScreenSize();
 
-      final pagingController = buildPagingControllerWithPopulatedState(
-        PopulatedStateOption.ongoingWithTwoPages,
-      );
-      pagingController.addPageRequestListener(mockPageRequestListener.call);
-
       await _pumpPagedSliverList(
         tester: tester,
-        pagingController: pagingController,
+        state: TestPagingState.ongoing(n: pageSize * 2),
+        fetchNextPage: mockPageRequestListener.call,
       );
 
       verifyZeroInteractions(mockPageRequestListener);
@@ -72,39 +53,30 @@ void main() {
     testWidgets('Requests a new page on scroll', (tester) async {
       tester.applyPreferredTestScreenSize();
 
-      final pagingController = buildPagingControllerWithPopulatedState(
-        PopulatedStateOption.ongoingWithTwoPages,
-      );
-      pagingController.addPageRequestListener(mockPageRequestListener.call);
-
       await _pumpPagedSliverList(
         tester: tester,
-        pagingController: pagingController,
+        state: TestPagingState.ongoing(n: pageSize * 2),
+        fetchNextPage: mockPageRequestListener.call,
       );
 
       await tester.scrollUntilVisible(
-        find.text(
-          secondPageItemList[5],
-        ),
+        find.text('Item ${pageSize * 2}'),
         _itemHeight,
       );
 
-      verify(mockPageRequestListener(3)).called(1);
+      verify(mockPageRequestListener()).called(1);
     });
   });
 
   testWidgets(
       'Inserts separators between items if a [separatorBuilder] is specified',
       (tester) async {
-    final controllerLoadedWithFirstPage =
-        buildPagingControllerWithPopulatedState(
-      PopulatedStateOption.ongoingWithOnePage,
-    );
     tester.applyPreferredTestScreenSize();
 
     await _pumpPagedSliverList(
       tester: tester,
-      pagingController: controllerLoadedWithFirstPage,
+      state: TestPagingState.ongoing(),
+      fetchNextPage: () {},
       separatorBuilder: (_, __) => const Divider(
         height: 1,
       ),
@@ -119,10 +91,6 @@ void main() {
         (tester) async {
       tester.applyPreferredTestScreenSize();
 
-      final pagingController = buildPagingControllerWithPopulatedState(
-        PopulatedStateOption.ongoingWithOnePage,
-      );
-
       final customIndicatorKey = UniqueKey();
       final customNewPageProgressIndicator = CircularProgressIndicator(
         key: customIndicatorKey,
@@ -130,7 +98,8 @@ void main() {
 
       await _pumpPagedSliverList(
         tester: tester,
-        pagingController: pagingController,
+        state: TestPagingState.ongoing(),
+        fetchNextPage: () {},
         newPageProgressIndicator: customNewPageProgressIndicator,
       );
 
@@ -149,10 +118,6 @@ void main() {
         (tester) async {
       tester.applyPreferredTestScreenSize();
 
-      final pagingController = buildPagingControllerWithPopulatedState(
-        PopulatedStateOption.errorOnSecondPage,
-      );
-
       final customIndicatorKey = UniqueKey();
       final customNewPageErrorIndicator = Text(
         'Error',
@@ -161,7 +126,8 @@ void main() {
 
       await _pumpPagedSliverList(
         tester: tester,
-        pagingController: pagingController,
+        state: TestPagingState.subsequentPageError(),
+        fetchNextPage: () {},
         newPageErrorIndicator: customNewPageErrorIndicator,
       );
 
@@ -180,10 +146,6 @@ void main() {
         (tester) async {
       tester.applyPreferredTestScreenSize();
 
-      final pagingController = buildPagingControllerWithPopulatedState(
-        PopulatedStateOption.completedWithOnePage,
-      );
-
       final customIndicatorKey = UniqueKey();
       final customNoMoreItemsIndicator = Text(
         'No More Items',
@@ -192,7 +154,8 @@ void main() {
 
       await _pumpPagedSliverList(
         tester: tester,
-        pagingController: pagingController,
+        state: TestPagingState.completed(),
+        fetchNextPage: () {},
         noMoreItemsIndicator: customNoMoreItemsIndicator,
       );
 
@@ -209,13 +172,10 @@ void main() {
   });
 }
 
-class MockPageRequestListener extends Mock {
-  void call(int pageKey);
-}
-
 Future<void> _pumpPagedSliverList({
   required WidgetTester tester,
-  required PagingController<int, String> pagingController,
+  required PagingState<int, String> state,
+  required NextPageCallback fetchNextPage,
   IndexedWidgetBuilder? separatorBuilder,
   Widget? newPageProgressIndicator,
   Widget? newPageErrorIndicator,
@@ -228,9 +188,10 @@ Future<void> _pumpPagedSliverList({
             slivers: [
               if (separatorBuilder == null)
                 PagedSliverList(
-                  pagingController: pagingController,
+                  state: state,
+                  fetchNextPage: fetchNextPage,
                   builderDelegate: PagedChildBuilderDelegate<String>(
-                    itemBuilder: _buildItem,
+                    itemBuilder: buildTestTile(_itemHeight),
                     newPageProgressIndicatorBuilder:
                         newPageProgressIndicator != null
                             ? (context) => newPageProgressIndicator
@@ -245,9 +206,10 @@ Future<void> _pumpPagedSliverList({
                 )
               else
                 PagedSliverList.separated(
-                  pagingController: pagingController,
+                  state: state,
+                  fetchNextPage: fetchNextPage,
                   builderDelegate: PagedChildBuilderDelegate<String>(
-                    itemBuilder: _buildItem,
+                    itemBuilder: buildTestTile(_itemHeight),
                     newPageProgressIndicatorBuilder:
                         newPageProgressIndicator != null
                             ? (context) => newPageProgressIndicator
@@ -264,17 +226,5 @@ Future<void> _pumpPagedSliverList({
             ],
           ),
         ),
-      ),
-    );
-
-Widget _buildItem(
-  BuildContext context,
-  String item,
-  int index,
-) =>
-    SizedBox(
-      height: _itemHeight,
-      child: Text(
-        item,
       ),
     );
