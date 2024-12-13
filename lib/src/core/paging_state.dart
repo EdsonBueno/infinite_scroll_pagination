@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:infinite_scroll_pagination/src/model/paging_state_base.dart';
+import 'package:infinite_scroll_pagination/src/core/paging_state_base.dart';
 
 /// Represents the state of a paginated layout.
 @immutable
@@ -13,6 +13,7 @@ abstract class PagingState<PageKeyType extends Object,
     List<PageKeyType>? keys,
     Object? error,
     bool hasNextPage,
+    bool isLoading,
   }) = PagingStateBase<PageKeyType, ItemType>;
 
   /// The pages fetched so far.
@@ -76,6 +77,10 @@ extension ItemListExtension<PageKeyType extends Object, ItemType extends Object>
 final class Omit<T> implements Future<T> {
   const Omit();
 
+  // coverage:ignore-start
   @override
-  noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+  noSuchMethod(Invocation invocation) => throw UnsupportedError(
+        'It is an error to attempt to use a Omit as a Future.',
+      );
+  // coverage:ignore-end
 }

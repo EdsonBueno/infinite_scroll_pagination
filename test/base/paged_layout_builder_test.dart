@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -7,13 +9,14 @@ import 'package:infinite_scroll_pagination/src/base/default_status_indicators/ne
 import 'package:infinite_scroll_pagination/src/base/default_status_indicators/new_page_progress_indicator.dart';
 import 'package:infinite_scroll_pagination/src/base/default_status_indicators/no_items_found_indicator.dart';
 
-import 'utils/paging_controller_utils.dart';
+import '../utils/paging_controller_utils.dart';
 
 void main() {
   group('PagingStatus.loadingFirstPage', () {
-    late PagingController pagingController;
+    late PagingState<int, String> state;
+
     setUp(() {
-      pagingController = PagingController(firstPageKey: 1);
+      state = TestPagingState.loadingFirstPage();
     });
 
     testWidgets(
@@ -27,7 +30,7 @@ void main() {
       // when
       await _pumpPagedLayoutBuilder(
         tester: tester,
-        pagingController: pagingController,
+        state: state,
         builderDelegate: builderDelegate,
       );
 
@@ -50,7 +53,7 @@ void main() {
       // when
       await _pumpPagedLayoutBuilder(
         tester: tester,
-        pagingController: pagingController,
+        state: state,
         builderDelegate: builderDelegate,
       );
 
@@ -60,12 +63,10 @@ void main() {
   });
 
   group('PagingStatus.firstPageError', () {
-    late PagingController pagingController;
+    late PagingState<int, String> state;
 
     setUp(() {
-      pagingController = buildPagingControllerWithPopulatedState(
-        PopulatedStateOption.errorOnFirstPage,
-      );
+      state = TestPagingState.firstPageError();
     });
 
     testWidgets(
@@ -79,7 +80,7 @@ void main() {
       // when
       await _pumpPagedLayoutBuilder(
         tester: tester,
-        pagingController: pagingController,
+        state: state,
         builderDelegate: builderDelegate,
       );
 
@@ -102,7 +103,7 @@ void main() {
       // when
       await _pumpPagedLayoutBuilder(
         tester: tester,
-        pagingController: pagingController,
+        state: state,
         builderDelegate: builderDelegate,
       );
 
@@ -112,11 +113,10 @@ void main() {
   });
 
   group('PagingStatus.noItemsFound', () {
-    late PagingController pagingController;
+    late PagingState<int, String> state;
+
     setUp(() {
-      pagingController = buildPagingControllerWithPopulatedState(
-        PopulatedStateOption.noItemsFound,
-      );
+      state = TestPagingState.noItemsFound();
     });
 
     testWidgets(
@@ -130,7 +130,7 @@ void main() {
       // when
       await _pumpPagedLayoutBuilder(
         tester: tester,
-        pagingController: pagingController,
+        state: state,
         builderDelegate: builderDelegate,
       );
 
@@ -153,7 +153,7 @@ void main() {
       // when
       await _pumpPagedLayoutBuilder(
         tester: tester,
-        pagingController: pagingController,
+        state: state,
         builderDelegate: builderDelegate,
       );
 
@@ -163,11 +163,10 @@ void main() {
   });
 
   group('PagingStatus.subsequentPageError', () {
-    late PagingController pagingController;
+    late PagingState<int, String> state;
+
     setUp(() {
-      pagingController = buildPagingControllerWithPopulatedState(
-        PopulatedStateOption.errorOnSecondPage,
-      );
+      state = TestPagingState.subsequentPageError();
     });
 
     testWidgets(
@@ -181,7 +180,7 @@ void main() {
       // when
       await _pumpPagedLayoutBuilder(
         tester: tester,
-        pagingController: pagingController,
+        state: state,
         builderDelegate: builderDelegate,
       );
 
@@ -207,7 +206,7 @@ void main() {
       // when
       await _pumpPagedLayoutBuilder(
         tester: tester,
-        pagingController: pagingController,
+        state: state,
         builderDelegate: builderDelegate,
       );
 
@@ -219,11 +218,10 @@ void main() {
   });
 
   group('PagingStatus.ongoing', () {
-    late PagingController pagingController;
+    late PagingState<int, String> state;
+
     setUp(() {
-      pagingController = buildPagingControllerWithPopulatedState(
-        PopulatedStateOption.ongoingWithTwoPages,
-      );
+      state = TestPagingState.ongoing();
     });
 
     testWidgets(
@@ -237,7 +235,7 @@ void main() {
       // when
       await _pumpPagedLayoutBuilder(
         tester: tester,
-        pagingController: pagingController,
+        state: state,
         builderDelegate: builderDelegate,
       );
 
@@ -262,7 +260,7 @@ void main() {
       // when
       await _pumpPagedLayoutBuilder(
         tester: tester,
-        pagingController: pagingController,
+        state: state,
         builderDelegate: builderDelegate,
       );
 
@@ -274,11 +272,10 @@ void main() {
   });
 
   group('PagingStatus.completed', () {
-    late PagingController pagingController;
+    late PagingState<int, String> state;
+
     setUp(() {
-      pagingController = buildPagingControllerWithPopulatedState(
-        PopulatedStateOption.completedWithOnePage,
-      );
+      state = TestPagingState.completed();
     });
 
     testWidgets('Uses the custom no more items indicator when one is provided.',
@@ -296,7 +293,7 @@ void main() {
       // when
       await _pumpPagedLayoutBuilder(
         tester: tester,
-        pagingController: pagingController,
+        state: state,
         builderDelegate: builderDelegate,
       );
 
@@ -308,7 +305,7 @@ void main() {
   });
 
   group('First page indicators\' height', () {
-    final pagingController = PagingController(firstPageKey: 1);
+    final state = PagingState<int, String>();
     const indicatorHeight = 100.0;
     late Key indicatorKey;
     late Widget progressIndicator;
@@ -335,7 +332,7 @@ void main() {
       // when
       await _pumpPagedLayoutBuilder(
         tester: tester,
-        pagingController: pagingController,
+        state: state,
         builderDelegate: builderDelegate,
         shrinkWrapFirstPageIndicators: false,
       );
@@ -351,7 +348,7 @@ void main() {
       // when
       await _pumpPagedLayoutBuilder(
         tester: tester,
-        pagingController: pagingController,
+        state: state,
         builderDelegate: builderDelegate,
         shrinkWrapFirstPageIndicators: true,
       );
@@ -375,14 +372,15 @@ void _expectOneWidgetOfType(Type type) {
 
 Future<void> _pumpPagedLayoutBuilder({
   required WidgetTester tester,
-  required PagingController pagingController,
+  required PagingState<int, String> state,
   required PagedChildBuilderDelegate builderDelegate,
   bool shrinkWrapFirstPageIndicators = false,
 }) =>
     _pumpSliver(
       sliver: PagedLayoutBuilder(
         layoutProtocol: PagedLayoutProtocol.sliver,
-        pagingController: pagingController,
+        state: state,
+        fetchNextPage: () => Completer<void>().future,
         builderDelegate: builderDelegate,
         shrinkWrapFirstPageIndicators: shrinkWrapFirstPageIndicators,
         errorListingBuilder: (

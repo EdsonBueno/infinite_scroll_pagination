@@ -1,34 +1,33 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:mockito/mockito.dart';
 
-import 'utils/paging_controller_utils.dart';
-import 'utils/screen_size_utils.dart';
+import '../utils/paging_controller_utils.dart';
+import '../utils/screen_size_utils.dart';
 
 double get _itemHeight => (screenSize.height / pageSize) * 2;
 
 void main() {
   group('Page requests', () {
-    late MockPageRequestListener mockPageRequestListener;
+    late MockFetchPageRequest mockFetchNextPage;
 
     setUp(() {
-      mockPageRequestListener = MockPageRequestListener();
+      mockFetchNextPage = MockFetchPageRequest();
     });
 
     testWidgets('Requests first page only once', (tester) async {
-      final pagingController = PagingController<int, String>(
-        firstPageKey: 1,
-      );
-
-      pagingController.addPageRequestListener(mockPageRequestListener.call);
+      final state = TestPagingState.loadingFirstPage();
 
       await _pumpPagedGridView(
         tester: tester,
-        pagingController: pagingController,
+        state: state,
+        fetchNextPage: mockFetchNextPage.call,
       );
 
-      verify(mockPageRequestListener(1)).called(1);
+      verify(mockFetchNextPage()).called(1);
     });
 
     testWidgets(
@@ -36,60 +35,48 @@ void main() {
         (tester) async {
       tester.applyPreferredTestScreenSize();
 
-      final controllerLoadedWithFirstPage =
-          buildPagingControllerWithPopulatedState(
-        PopulatedStateOption.ongoingWithOnePage,
-      );
-
-      controllerLoadedWithFirstPage.addPageRequestListener(
-        mockPageRequestListener.call,
-      );
+      final state = TestPagingState.ongoing(n: pageSize ~/ 2);
 
       await _pumpPagedGridView(
         tester: tester,
-        pagingController: controllerLoadedWithFirstPage,
+        state: state,
+        fetchNextPage: mockFetchNextPage.call,
       );
 
-      verify(mockPageRequestListener(2)).called(1);
+      verify(mockFetchNextPage()).called(1);
     });
 
     testWidgets('Doesn\'t request a page unnecessarily', (tester) async {
       tester.applyPreferredTestScreenSize();
 
-      final pagingController = buildPagingControllerWithPopulatedState(
-        PopulatedStateOption.ongoingWithTwoPages,
-      );
-      pagingController.addPageRequestListener(mockPageRequestListener.call);
+      final state = TestPagingState.ongoing(n: pageSize * 2);
 
       await _pumpPagedGridView(
         tester: tester,
-        pagingController: pagingController,
+        state: state,
+        fetchNextPage: () => Completer<void>().future,
       );
 
-      verifyZeroInteractions(mockPageRequestListener);
+      verifyZeroInteractions(mockFetchNextPage);
     });
 
     testWidgets('Requests a new page on scroll', (tester) async {
       tester.applyPreferredTestScreenSize();
 
-      final pagingController = buildPagingControllerWithPopulatedState(
-        PopulatedStateOption.ongoingWithTwoPages,
-      );
-      pagingController.addPageRequestListener(mockPageRequestListener.call);
+      final state = TestPagingState.ongoing(n: pageSize * 2);
 
       await _pumpPagedGridView(
         tester: tester,
-        pagingController: pagingController,
+        state: state,
+        fetchNextPage: mockFetchNextPage.call,
       );
 
       await tester.scrollUntilVisible(
-        find.text(
-          secondPageItemList[5],
-        ),
+        find.text('Item ${pageSize * 2}'),
         _itemHeight,
       );
 
-      verify(mockPageRequestListener(3)).called(1);
+      verify(mockFetchNextPage()).called(1);
     });
 
     group('Displays indicators as grid children', () {
@@ -97,9 +84,7 @@ void main() {
           (tester) async {
         tester.applyPreferredTestScreenSize();
 
-        final pagingController = buildPagingControllerWithPopulatedState(
-          PopulatedStateOption.ongoingWithOnePage,
-        );
+        final state = TestPagingState.ongoing();
 
         final customIndicatorKey = UniqueKey();
         final customNewPageProgressIndicator = CircularProgressIndicator(
@@ -108,7 +93,8 @@ void main() {
 
         await _pumpPagedGridView(
           tester: tester,
-          pagingController: pagingController,
+          state: state,
+          fetchNextPage: () => Completer<void>().future,
           newPageProgressIndicator: customNewPageProgressIndicator,
           crossAxisCount: 2,
         );
@@ -128,9 +114,7 @@ void main() {
           (tester) async {
         tester.applyPreferredTestScreenSize();
 
-        final pagingController = buildPagingControllerWithPopulatedState(
-          PopulatedStateOption.errorOnSecondPage,
-        );
+        final state = TestPagingState.subsequentPageError();
 
         final customIndicatorKey = UniqueKey();
         final customNewPageErrorIndicator = Text(
@@ -140,7 +124,8 @@ void main() {
 
         await _pumpPagedGridView(
           tester: tester,
-          pagingController: pagingController,
+          state: state,
+          fetchNextPage: () => Completer<void>().future,
           newPageErrorIndicator: customNewPageErrorIndicator,
           crossAxisCount: 2,
         );
@@ -160,9 +145,7 @@ void main() {
           (tester) async {
         tester.applyPreferredTestScreenSize();
 
-        final pagingController = buildPagingControllerWithPopulatedState(
-          PopulatedStateOption.completedWithOnePage,
-        );
+        final state = TestPagingState.completed();
 
         final customIndicatorKey = UniqueKey();
         final customNoMoreItemsIndicator = Text(
@@ -172,7 +155,8 @@ void main() {
 
         await _pumpPagedGridView(
           tester: tester,
-          pagingController: pagingController,
+          state: state,
+          fetchNextPage: () => Completer<void>().future,
           noMoreItemsIndicator: customNoMoreItemsIndicator,
           crossAxisCount: 2,
         );
@@ -195,9 +179,7 @@ void main() {
           '[showNewPageProgressIndicatorAsGridChild] is false', (tester) async {
         tester.applyPreferredTestScreenSize();
 
-        final pagingController = buildPagingControllerWithPopulatedState(
-          PopulatedStateOption.ongoingWithOnePage,
-        );
+        final state = TestPagingState.ongoing();
 
         final customIndicatorKey = UniqueKey();
         final customNewPageProgressIndicator = CircularProgressIndicator(
@@ -206,7 +188,8 @@ void main() {
 
         await _pumpPagedGridView(
           tester: tester,
-          pagingController: pagingController,
+          state: state,
+          fetchNextPage: () => Completer<void>().future,
           newPageProgressIndicator: customNewPageProgressIndicator,
           showNewPageProgressIndicatorAsGridChild: false,
         );
@@ -222,9 +205,7 @@ void main() {
           '[showNewPageErrorIndicatorAsGridChild] is false', (tester) async {
         tester.applyPreferredTestScreenSize();
 
-        final pagingController = buildPagingControllerWithPopulatedState(
-          PopulatedStateOption.errorOnSecondPage,
-        );
+        final state = TestPagingState.subsequentPageError();
 
         final customIndicatorKey = UniqueKey();
         final customNewPageErrorIndicator = Text(
@@ -234,7 +215,8 @@ void main() {
 
         await _pumpPagedGridView(
           tester: tester,
-          pagingController: pagingController,
+          state: state,
+          fetchNextPage: () => Completer<void>().future,
           newPageErrorIndicator: customNewPageErrorIndicator,
           showNewPageErrorIndicatorAsGridChild: false,
         );
@@ -250,9 +232,7 @@ void main() {
           '[showNoMoreItemsIndicatorAsGridChild] is false', (tester) async {
         tester.applyPreferredTestScreenSize();
 
-        final pagingController = buildPagingControllerWithPopulatedState(
-          PopulatedStateOption.completedWithOnePage,
-        );
+        final state = TestPagingState.completed();
 
         final customIndicatorKey = UniqueKey();
         final customNoMoreItemsIndicator = Text(
@@ -262,7 +242,8 @@ void main() {
 
         await _pumpPagedGridView(
           tester: tester,
-          pagingController: pagingController,
+          state: state,
+          fetchNextPage: () => Completer<void>().future,
           noMoreItemsIndicator: customNoMoreItemsIndicator,
           showNoMoreItemsIndicatorAsGridChild: false,
         );
@@ -276,13 +257,14 @@ void main() {
   });
 }
 
-class MockPageRequestListener extends Mock {
-  void call(int pageKey);
+class MockFetchPageRequest extends Mock {
+  void call();
 }
 
 Future<void> _pumpPagedGridView({
   required WidgetTester tester,
-  required PagingController<int, String> pagingController,
+  required PagingState<int, String> state,
+  required NextPageCallback fetchNextPage,
   int crossAxisCount = 2,
   Widget? newPageProgressIndicator,
   Widget? newPageErrorIndicator,
@@ -295,9 +277,10 @@ Future<void> _pumpPagedGridView({
       MaterialApp(
         home: Scaffold(
           body: PagedGridView(
-            pagingController: pagingController,
+            state: state,
+            fetchNextPage: fetchNextPage,
             builderDelegate: PagedChildBuilderDelegate<String>(
-              itemBuilder: _buildItem,
+              itemBuilder: buildTestTile(_itemHeight),
               newPageProgressIndicatorBuilder: newPageProgressIndicator != null
                   ? (context) => newPageProgressIndicator
                   : null,
@@ -321,17 +304,5 @@ Future<void> _pumpPagedGridView({
                 showNoMoreItemsIndicatorAsGridChild,
           ),
         ),
-      ),
-    );
-
-Widget _buildItem(
-  BuildContext context,
-  String item,
-  int index,
-) =>
-    SizedBox(
-      height: _itemHeight,
-      child: Text(
-        item,
       ),
     );

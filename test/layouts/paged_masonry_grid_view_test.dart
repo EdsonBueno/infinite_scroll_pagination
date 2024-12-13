@@ -3,8 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:mockito/mockito.dart';
 
-import 'utils/paging_controller_utils.dart';
-import 'utils/screen_size_utils.dart';
+import '../utils/paging_controller_utils.dart';
+import '../utils/screen_size_utils.dart';
 
 double get _itemHeight => (screenSize.height / pageSize) * 2;
 
@@ -17,18 +17,13 @@ void main() {
     });
 
     testWidgets('Requests first page only once', (tester) async {
-      final pagingController = PagingController<int, String>(
-        firstPageKey: 1,
-      );
-
-      pagingController.addPageRequestListener(mockPageRequestListener.call);
-
       await _pumpPagedStaggeredGridView(
         tester: tester,
-        pagingController: pagingController,
+        state: TestPagingState.loadingFirstPage(),
+        fetchNextPage: mockPageRequestListener.call,
       );
 
-      verify(mockPageRequestListener(1)).called(1);
+      verify(mockPageRequestListener()).called(1);
     });
 
     testWidgets(
@@ -36,34 +31,22 @@ void main() {
         (tester) async {
       tester.applyPreferredTestScreenSize();
 
-      final controllerLoadedWithFirstPage =
-          buildPagingControllerWithPopulatedState(
-        PopulatedStateOption.ongoingWithOnePage,
-      );
-
-      controllerLoadedWithFirstPage.addPageRequestListener(
-        mockPageRequestListener.call,
-      );
-
       await _pumpPagedStaggeredGridView(
         tester: tester,
-        pagingController: controllerLoadedWithFirstPage,
+        state: TestPagingState.ongoing(n: pageSize ~/ 2),
+        fetchNextPage: mockPageRequestListener.call,
       );
 
-      verify(mockPageRequestListener(2)).called(1);
+      verify(mockPageRequestListener()).called(1);
     });
 
     testWidgets('Doesn\'t request a page unnecessarily', (tester) async {
       tester.applyPreferredTestScreenSize();
 
-      final pagingController = buildPagingControllerWithPopulatedState(
-        PopulatedStateOption.ongoingWithTwoPages,
-      );
-      pagingController.addPageRequestListener(mockPageRequestListener.call);
-
       await _pumpPagedStaggeredGridView(
         tester: tester,
-        pagingController: pagingController,
+        state: TestPagingState.ongoing(n: pageSize * 2),
+        fetchNextPage: mockPageRequestListener.call,
       );
 
       verifyZeroInteractions(mockPageRequestListener);
@@ -72,34 +55,24 @@ void main() {
     testWidgets('Requests a new page on scroll', (tester) async {
       tester.applyPreferredTestScreenSize();
 
-      final pagingController = buildPagingControllerWithPopulatedState(
-        PopulatedStateOption.ongoingWithTwoPages,
-      );
-      pagingController.addPageRequestListener(mockPageRequestListener.call);
-
       await _pumpPagedStaggeredGridView(
         tester: tester,
-        pagingController: pagingController,
+        state: TestPagingState.ongoing(n: pageSize * 2),
+        fetchNextPage: mockPageRequestListener.call,
       );
 
       await tester.scrollUntilVisible(
-        find.text(
-          secondPageItemList[5],
-        ),
+        find.text('Item ${pageSize * 2}'),
         _itemHeight,
       );
 
-      verify(mockPageRequestListener(3)).called(1);
+      verify(mockPageRequestListener()).called(1);
     });
 
     group('Displays indicators as grid children', () {
       testWidgets('Appends the new page progress indicator to the grid items',
           (tester) async {
         tester.applyPreferredTestScreenSize();
-
-        final pagingController = buildPagingControllerWithPopulatedState(
-          PopulatedStateOption.ongoingWithOnePage,
-        );
 
         final customIndicatorKey = UniqueKey();
         final customNewPageProgressIndicator = CircularProgressIndicator(
@@ -108,7 +81,8 @@ void main() {
 
         await _pumpPagedStaggeredGridView(
           tester: tester,
-          pagingController: pagingController,
+          state: TestPagingState.ongoing(),
+          fetchNextPage: mockPageRequestListener.call,
           newPageProgressIndicator: customNewPageProgressIndicator,
           crossAxisCount: 2,
         );
@@ -128,10 +102,6 @@ void main() {
           (tester) async {
         tester.applyPreferredTestScreenSize();
 
-        final pagingController = buildPagingControllerWithPopulatedState(
-          PopulatedStateOption.errorOnSecondPage,
-        );
-
         final customIndicatorKey = UniqueKey();
         final customNewPageErrorIndicator = Text(
           'Error',
@@ -140,7 +110,8 @@ void main() {
 
         await _pumpPagedStaggeredGridView(
           tester: tester,
-          pagingController: pagingController,
+          state: TestPagingState.subsequentPageError(),
+          fetchNextPage: mockPageRequestListener.call,
           newPageErrorIndicator: customNewPageErrorIndicator,
           crossAxisCount: 2,
         );
@@ -160,10 +131,6 @@ void main() {
           (tester) async {
         tester.applyPreferredTestScreenSize();
 
-        final pagingController = buildPagingControllerWithPopulatedState(
-          PopulatedStateOption.completedWithOnePage,
-        );
-
         final customIndicatorKey = UniqueKey();
         final customNoMoreItemsIndicator = Text(
           'No More Items',
@@ -172,7 +139,8 @@ void main() {
 
         await _pumpPagedStaggeredGridView(
           tester: tester,
-          pagingController: pagingController,
+          state: TestPagingState.completed(),
+          fetchNextPage: mockPageRequestListener.call,
           noMoreItemsIndicator: customNoMoreItemsIndicator,
           crossAxisCount: 2,
         );
@@ -191,13 +159,10 @@ void main() {
   });
 }
 
-class MockPageRequestListener extends Mock {
-  void call(int pageKey);
-}
-
 Future<void> _pumpPagedStaggeredGridView({
   required WidgetTester tester,
-  required PagingController<int, String> pagingController,
+  required PagingState<int, String> state,
+  required NextPageCallback fetchNextPage,
   int crossAxisCount = 2,
   Widget? newPageProgressIndicator,
   Widget? newPageErrorIndicator,
@@ -207,9 +172,10 @@ Future<void> _pumpPagedStaggeredGridView({
       MaterialApp(
         home: Scaffold(
           body: PagedMasonryGridView.count(
-            pagingController: pagingController,
+            state: state,
+            fetchNextPage: fetchNextPage,
             builderDelegate: PagedChildBuilderDelegate<String>(
-              itemBuilder: _buildItem,
+              itemBuilder: buildTestTile(_itemHeight),
               newPageProgressIndicatorBuilder: newPageProgressIndicator != null
                   ? (context) => newPageProgressIndicator
                   : null,
@@ -223,17 +189,5 @@ Future<void> _pumpPagedStaggeredGridView({
             crossAxisCount: 2,
           ),
         ),
-      ),
-    );
-
-Widget _buildItem(
-  BuildContext context,
-  String item,
-  int index,
-) =>
-    SizedBox(
-      height: _itemHeight,
-      child: Text(
-        item,
       ),
     );

@@ -1,4 +1,4 @@
-import 'package:infinite_scroll_pagination/src/model/paging_state.dart';
+import 'package:infinite_scroll_pagination/src/core/paging_state.dart';
 
 /// All possible status for a pagination.
 enum PagingStatus {
@@ -43,6 +43,8 @@ extension PagingStatusExtension on PagingState {
     if (_isOngoing) return PagingStatus.ongoing;
     if (_hasSubsequentPageError) return PagingStatus.subsequentPageError;
     if (_isCompleted) return PagingStatus.completed;
+    // coverage:ignore-start
     throw StateError('Unknown status; Did you forget to implement a case?');
+    // coverage:ignore-end
   }
 }
