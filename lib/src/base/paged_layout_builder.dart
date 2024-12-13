@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:infinite_scroll_pagination/src/base/paged_child_builder_delegate.dart';
 
-import 'package:infinite_scroll_pagination/src/base/default_status_indicators/first_page_error_indicator.dart';
-import 'package:infinite_scroll_pagination/src/base/default_status_indicators/first_page_progress_indicator.dart';
-import 'package:infinite_scroll_pagination/src/base/default_status_indicators/new_page_error_indicator.dart';
-import 'package:infinite_scroll_pagination/src/base/default_status_indicators/new_page_progress_indicator.dart';
-import 'package:infinite_scroll_pagination/src/base/default_status_indicators/no_items_found_indicator.dart';
+import 'package:infinite_scroll_pagination/src/defaults/first_page_error_indicator.dart';
+import 'package:infinite_scroll_pagination/src/defaults/first_page_progress_indicator.dart';
+import 'package:infinite_scroll_pagination/src/defaults/new_page_error_indicator.dart';
+import 'package:infinite_scroll_pagination/src/defaults/new_page_progress_indicator.dart';
+import 'package:infinite_scroll_pagination/src/defaults/no_items_found_indicator.dart';
 import 'package:infinite_scroll_pagination/src/core/paging_state.dart';
 import 'package:infinite_scroll_pagination/src/core/paging_status.dart';
 import 'package:sliver_tools/sliver_tools.dart';

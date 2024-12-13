@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:infinite_scroll_pagination/src/base/default_status_indicators/first_page_error_indicator.dart';
-import 'package:infinite_scroll_pagination/src/base/default_status_indicators/first_page_progress_indicator.dart';
-import 'package:infinite_scroll_pagination/src/base/default_status_indicators/new_page_error_indicator.dart';
-import 'package:infinite_scroll_pagination/src/base/default_status_indicators/new_page_progress_indicator.dart';
-import 'package:infinite_scroll_pagination/src/base/default_status_indicators/no_items_found_indicator.dart';
+import 'package:infinite_scroll_pagination/src/defaults/first_page_error_indicator.dart';
+import 'package:infinite_scroll_pagination/src/defaults/first_page_progress_indicator.dart';
+import 'package:infinite_scroll_pagination/src/defaults/new_page_error_indicator.dart';
+import 'package:infinite_scroll_pagination/src/defaults/new_page_progress_indicator.dart';
+import 'package:infinite_scroll_pagination/src/defaults/no_items_found_indicator.dart';
 
 import '../utils/paging_controller_utils.dart';
 
