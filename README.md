@@ -31,59 +31,36 @@ Designed to feel like part of the Flutter framework.
 ## Usage
 
 ```dart
-class BeerListView extends StatefulWidget {
+class ListViewScreen extends StatefulWidget {
+  const ListViewScreen({super.key});
+
   @override
-  _BeerListViewState createState() => _BeerListViewState();
+  State<ListViewScreen> createState() => _ListViewScreenState();
 }
 
-class _BeerListViewState extends State<BeerListView> {
-  static const _pageSize = 20;
-
-  final PagingController<int, BeerSummary> _pagingController =
-      PagingController(firstPageKey: 0);
-
-  @override
-  void initState() {
-    super.initState();
-    _pagingController.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey);
-    });
-  }
-
-  Future<void> _fetchPage(int pageKey) async {
-    try {
-      final newItems = await RemoteApi.getBeerList(pageKey, _pageSize);
-      final isLastPage = newItems.length < _pageSize;
-      if (isLastPage) {
-        _pagingController.appendLastPage(newItems);
-      } else {
-        final nextPageKey = pageKey + newItems.length;
-        _pagingController.appendPage(newItems, nextPageKey);
-      }
-    } catch (error) {
-      _pagingController.error = error;
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) =>
-      // Don't worry about displaying progress or error indicators on screen; the
-      // package takes care of that. If you want to customize them, use the
-      // [PagedChildBuilderDelegate] properties.
-      PagedListView<int, BeerSummary>(
-        pagingController: _pagingController,
-        builderDelegate: PagedChildBuilderDelegate<BeerSummary>(
-          itemBuilder: (context, item, index) => BeerListItem(
-            beer: item,
-          ),
-        ),
-      );
+class _ListViewScreenState extends State<ListViewScreen> {
+  late final _pagingController = PagingController<int, Photo>(
+    getNextPageKey: (state) => (state.keys?.last ?? 0) + 1,
+    fetchPage: (pageKey) => RemoteApi.getPhotos(pageKey),
+  );
 
   @override
   void dispose() {
     _pagingController.dispose();
     super.dispose();
   }
+
+  @override
+  Widget build(BuildContext context) => PagingListener(
+    controller: _pagingController,
+    builder: (context, state, fetchNextPage) => PagedListView<int, Photo>(
+      state: state,
+      fetchNextPage: fetchNextPage,
+      builderDelegate: PagedChildBuilderDelegate(
+        itemBuilder: (context, item, index) => ImageListTile(item: item),
+      ),
+    ),
+  );
 }
 ```
 
