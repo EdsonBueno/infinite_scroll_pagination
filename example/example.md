@@ -1,122 +1,209 @@
 # Cookbook
 
-All the snippets are from the [example project](https://github.com/EdsonBueno/infinite_scroll_pagination/tree/master/example).
+More extensive examples can be found in the [example project](https://github.com/EdsonBueno/infinite_scroll_pagination/tree/master/example).
 
-## Simple Usage
+## Using PagingController
+
+PagingController is the out-of-the-box solution that comes with the package for managing the PagingState. Using a PagingListener, we connect it to the Paged Widget and we're good to go. You can extend the class to add features you might need, such as filtering, sorting, etc. It can also be connected to multiple Paged Widgets at the same time.
 
 ```dart
-class BeerListView extends StatefulWidget {
-  @override
-  _BeerListViewState createState() => _BeerListViewState();
-}
-
-class _BeerListViewState extends State<BeerListView> {
-  static const _pageSize = 20;
-
-  final PagingController<int, BeerSummary> _pagingController =
-      PagingController(firstPageKey: 0);
-
-  @override
-  void initState() {
-    super.initState();
-    _pagingController.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey);
-    });
-  }
-
-  Future<void> _fetchPage(int pageKey) async {
-    try {
-      final newItems = await RemoteApi.getBeerList(pageKey, _pageSize);
-      final isLastPage = newItems.length < _pageSize;
-      if (isLastPage) {
-        _pagingController.appendLastPage(newItems);
-      } else {
-        final nextPageKey = pageKey + newItems.length;
-        _pagingController.appendPage(newItems, nextPageKey);
-      }
-    } catch (error) {
-      _pagingController.error = error;
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) =>
-      PagedListView<int, BeerSummary>(
-        pagingController: _pagingController,
-        builderDelegate: PagedChildBuilderDelegate<BeerSummary>(
-          itemBuilder: (context, item, index) => BeerListItem(
-            beer: item,
-          ),
-        ),
-      );
+class _ExampleScreenState extends State<ExampleScreen> {
+  late final _pagingController = PagingController<int, Photo>(
+    getNextPageKey: (state) => (state.keys?.last ?? 0) + 1,
+    fetchPage: (pageKey) => RemoteApi.getPhotos(pageKey),
+  );
 
   @override
   void dispose() {
     _pagingController.dispose();
     super.dispose();
   }
+
+  @override
+  Widget build(BuildContext context) => PagingListener(
+    controller: _pagingController,
+    builder: (context, state, fetchNextPage) => PagedListView<int, Photo>(
+      state: state,
+      fetchNextPage: fetchNextPage,
+      builderDelegate: PagedChildBuilderDelegate(
+        itemBuilder: (context, item, index) => ImageListTile(item: item),
+      ),
+    ),
+  );
+}
+```
+
+## Using setState
+
+You can manually manage the PagingState using setState. This is more straightforward when you require more control over your state.
+
+```dart
+class _ExampleScreenState extends State<ExampleScreen> {
+  PagingState<int, Photo> _state = PagingState();
+
+  void _fetchNextPage() async {
+    if (_state.isLoading) return;
+
+    await Future.value();
+
+    setState(() {
+      _state = _state.copyWith(isLoading: true, error: null);
+    });
+
+    try {
+      final newKey = (_state.keys?.last ?? 0) + 1;
+      final newItems = await RemoteApi.getPhotos(newKey);
+      final isLastPage = newItems.isEmpty;
+
+      setState(() {
+        _state = _state.copyWith(
+          pages: [...?_state.pages, newItems],
+          keys: [...?_state.keys, newKey],
+          hasNextPage: !isLastPage,
+          isLoading: false,
+        );
+      });
+    } catch (error) {
+      setState(() {
+        _state = _state.copyWith(
+          error: error,
+          isLoading: false,
+        );
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) => PagedListView<int, Photo>(
+    state: _state,
+    fetchNextPage: _fetchNextPage,
+    builderDelegate: PagedChildBuilderDelegate(
+      itemBuilder: (context, item, index) => ImageListTile(item: item),
+    ),
+  );
+}
+```
+
+## Using a custom State Management
+
+You can use any state managment approach you prefer.
+The only requirements for the Paged Widget to work are that you provide a PagingState and a function to fetch the next page.
+Here is an example in flutter_bloc:
+
+```dart
+sealed class PhotoEvent {}
+
+final class FetchNextPhotoPage extends PhotoEvent {}
+
+class PhotoBoc extends Bloc<PhotoEvent, PagingState<int, Photo>> {
+  PhotoBoc() : super(PagingState()) {
+    on<FetchNextPhotoPage>((event, emit) {
+        final state = state;
+        if (state.isLoading) return;
+
+        emit(state.copyWith(isLoading: true, error: null));
+
+        try {
+          final newKey = (state.keys?.last ?? 0) + 1;
+          final newItems = await RemoteApi.getPhotos(newKey);
+          final isLastPage = newItems.isEmpty;
+
+          emit(state.copyWith(
+            pages: [...?state.pages, newItems],
+            keys: [...?state.keys, newKey],
+            hasNextPage: !isLastPage,
+            isLoading: false,
+          ));
+        } catch (error) {
+          emit(state.copyWith(
+            error: error,
+            isLoading: false,
+          ));
+        }
+      },
+    );
+  }
+}
+```
+
+and then in your screen:
+
+```dart
+class _ExampleScreenState extends State<ExampleScreen> {
+  final _bloc = PhotoBloc();
+
+  @override
+  void dispose() {
+    _bloc.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => BlocBuilder<PhotoBloc, PagingState<int, Photo>>(
+    bloc: _bloc,
+    builder: (context, state) => PagedListView<int, Photo>(
+      state: state,
+      fetchNextPage: _bloc.fetchNextPage,
+      builderDelegate: PagedChildBuilderDelegate(
+        itemBuilder: (context, item, index) => ImageListTile(item: item),
+      ),
+    ),
+  );
 }
 ```
 
 ## Customizing Indicators
 
+You can customize the indicators by providing your own widgets to the builderDelegate. The package comes with default indicators in english.
+
 ```dart
-@override
-Widget build(BuildContext context) =>
-    PagedListView<int, BeerSummary>(
-      pagingController: _pagingController,
-      builderDelegate: PagedChildBuilderDelegate<BeerSummary>(
-        itemBuilder: (context, item, index) => BeerListItem(
-          beer: item,
-        ),
-        firstPageErrorIndicatorBuilder: (_) => FirstPageErrorIndicator(
-          error: _pagingController.error,
-          onTryAgain: () => _pagingController.refresh(),
-        ),
-        newPageErrorIndicatorBuilder: (_) => NewPageErrorIndicator(
-          error: _pagingController.error,
-          onTryAgain: () => _pagingController.retryLastFailedRequest(),
-        ),
-        firstPageProgressIndicatorBuilder: (_) => FirstPageProgressIndicator(),
-        newPageProgressIndicatorBuilder: (_) => NewPageProgressIndicator(),
-        noItemsFoundIndicatorBuilder: (_) => NoItemsFoundIndicator(),
-        noMoreItemsIndicatorBuilder: (_) => NoMoreItemsIndicator(),
-      ),
-    );
+PagedListView<int, Photo>(
+  state: state,
+  fetchNextPage: fetchNextPage,
+  builderDelegate: PagedChildBuilderDelegate(
+    itemBuilder: (context, item, index) => ImageListTile(item: item),
+    firstPageErrorIndicatorBuilder: (_) => FirstPageErrorIndicator(
+      error: state.error,
+      onTryAgain: () => fetchNextPage(),
+    ),
+    newPageErrorIndicatorBuilder: (_) => NewPageErrorIndicator(
+      error: state.error,
+      onTryAgain: () => fetchNextPage(),
+    ),
+    firstPageProgressIndicatorBuilder: (_) => FirstPageProgressIndicator(),
+    newPageProgressIndicatorBuilder: (_) => NewPageProgressIndicator(),
+    noItemsFoundIndicatorBuilder: (_) => NoItemsFoundIndicator(),
+    noMoreItemsIndicatorBuilder: (_) => NoMoreItemsIndicator(),
+  ),
+);
 ```
 
 ## Animating Status Transitions
 
 ```dart
-@override
-Widget build(BuildContext context) =>
-    PagedListView<int, BeerSummary>(
-      pagingController: _pagingController,
-      builderDelegate: PagedChildBuilderDelegate<BeerSummary>(
-        animateTransitions: true,
-        // [transitionDuration] has a default value of 250 milliseconds.
-        transitionDuration: const Duration(milliseconds: 500),
-        itemBuilder: (context, item, index) => BeerListItem(
-          beer: item,
-        ),
-      ),
-    );
+PagedListView<int, Photo>(
+  state: state,
+  fetchNextPage: fetchNextPage,
+  builderDelegate: PagedChildBuilderDelegate(
+    itemBuilder: (context, item, index) => ImageListTile(item: item),
+    animateTransitions: true,
+    // [transitionDuration] has a default value of 250 milliseconds.
+    transitionDuration: const Duration(milliseconds: 500),
+  ),
+);
 ```
 
 ## Separators
 
 ```dart
-@override
-Widget build(BuildContext context) =>
-    PagedListView<int, BeerSummary>.separated(
-      pagingController: _pagingController,
-      builderDelegate: PagedChildBuilderDelegate<BeerSummary>(
-        itemBuilder: (context, item, index) => BeerListItem(
-          beer: item,
-        ),
-      ),
-      separatorBuilder: (context, index) => const Divider(),
-    );
+PagedListView<int, Photo>.separated(
+  state: state,
+  fetchNextPage: fetchNextPage,
+  builderDelegate: PagedChildBuilderDelegate(
+    itemBuilder: (context, item, index) => ImageListTile(item: item),
+  ),
+  separatorBuilder: (context, index) => const Divider(),
+);
 ```
 
 Works for both [PagedListView](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedListView-class.html) and [PagedSliverList](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedSliverList-class.html).
@@ -126,21 +213,18 @@ Works for both [PagedListView](https://pub.dev/documentation/infinite_scroll_pag
 Wrap your [PagedListView](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedListView-class.html), [PagedGridView](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedGridView-class.html) or [CustomScrollView](https://api.flutter.dev/flutter/widgets/CustomScrollView-class.html) with a [RefreshIndicator](https://api.flutter.dev/flutter/material/RefreshIndicator-class.html) (from the [material library](https://api.flutter.dev/flutter/material/material-library.html)) and inside [onRefresh](https://api.flutter.dev/flutter/material/RefreshIndicator/onRefresh.html), call `refresh` on your [PagingController](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagingController-class.html):
 
 ```dart
-@override
-Widget build(BuildContext context) =>
-    RefreshIndicator(
-      onRefresh: () => Future.sync(
-        () => _pagingController.refresh(),
-      ),
-      child: PagedListView<int, BeerSummary>(
-        pagingController: _pagingController,
-        builderDelegate: PagedChildBuilderDelegate<BeerSummary>(
-          itemBuilder: (context, item, index) => BeerListItem(
-            beer: item,
-          ),
-        ),
-      ),
-    );
+RefreshIndicator(
+  onRefresh: () => Future.sync(
+    () => refresh(),
+  ),
+  child: PagedListView<int, Photo>(
+    state: state,
+    fetchNextPage: fetchNextPage,
+    builderDelegate: PagedChildBuilderDelegate(
+      itemBuilder: (context, item, index) => ImageListTile(item: item),
+    ),
+  ),
+);
 ```
 
 ## Preceding/Following Items
@@ -150,95 +234,70 @@ If you need to place some widgets before or after your list, and expect them to 
 **Infinite Scroll Pagination** comes with [PagedSliverList](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedSliverList-class.html) and [PagedSliverGrid](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedSliverGrid-class.html), which works almost the same as [PagedListView](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedListView-class.html) or [PagedGridView](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedGridView-class.html), except that they need to be wrapped by a [CustomScrollView](https://api.flutter.dev/flutter/widgets/CustomScrollView-class.html). That allows you to give them siblings, for example:
 
 ```dart
-@override
-Widget build(BuildContext context) =>
-    CustomScrollView(
-      slivers: <Widget>[
-        BeerSearchInputSliver(
-          onChanged: _updateSearchTerm,
-        ),
-        PagedSliverList<int, BeerSummary>(
-          pagingController: _pagingController,
-          builderDelegate: PagedChildBuilderDelegate<BeerSummary>(
-            itemBuilder: (context, item, index) => BeerListItem(
-              beer: item,
-            ),
-          ),
-        ),
-      ],
-    );
+CustomScrollView(
+  slivers: [
+    SearchInputSliver(
+      onChanged: updateSearchTerm,
+    ),
+    PagedSliverList<int, Photo>(
+      state: state,
+      fetchNextPage: fetchNextPage,
+      builderDelegate: PagedChildBuilderDelegate(
+        itemBuilder: (context, item, index) => ImageListTile(item: item),
+      ),
+    ),
+  ],
+);
 ```
 
-Notice that your preceding/following widgets should also be [Sliver](https://flutter.dev/docs/development/ui/advanced/slivers)s. `BeerSearchInputSliver`, for example, is nothing but a [TextField](https://api.flutter.dev/flutter/material/TextField-class.html) wrapped by a [SliverToBoxAdapter](https://api.flutter.dev/flutter/widgets/SliverToBoxAdapter-class.html).
+Notice that your preceding/following widgets should also be [Sliver](https://flutter.dev/docs/development/ui/advanced/slivers)s. `SearchInputSliver`, for example, is nothing but a [TextField](https://api.flutter.dev/flutter/material/TextField-class.html) wrapped by a [SliverToBoxAdapter](https://api.flutter.dev/flutter/widgets/SliverToBoxAdapter-class.html).
 
 ## Searching/Filtering/Sorting
 
-There are many ways to integrate searching/filtering/sorting with this package. The best one depends on you state management approach. Below you can see a simple example for a vanilla approach:
+There are many ways to integrate searching/filtering/sorting with this package. The best one depends on you state management approach.
+Below you can see a very simple example:
 
 ```dart
-class BeerSliverList extends StatefulWidget {
-  @override
-  _BeerSliverListState createState() => _BeerSliverListState();
-}
-
-class _BeerSliverListState extends State<BeerSliverList> {
-  static const _pageSize = 17;
-
-  final PagingController<int, BeerSummary> _pagingController =
-      PagingController(firstPageKey: 0);
-
+class _ExampleScreenState extends State<ExampleScreen> {
   String? _searchTerm;
 
-  @override
-  void initState() {
-    super.initState();
-    _pagingController.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey);
-    });
-  }
+  late final _pagingController = PagingController<int, Photo>(
+    getNextPageKey: (state) => (state.keys?.last ?? 0) + 1,
+    fetchPage: (pageKey) {
+      final results = RemoteApi.getPhotos(pageKey);
 
-  Future<void> _fetchPage(pageKey) async {
-    try {
-      final newItems = await RemoteApi.getBeerList(
-        pageKey,
-        _pageSize,
-        searchTerm: _searchTerm,
-      );
-
-      final isLastPage = newItems.length < _pageSize;
-      if (isLastPage) {
-        _pagingController.appendLastPage(newItems);
-      } else {
-        final nextPageKey = pageKey + newItems.length;
-        _pagingController.appendPage(newItems, nextPageKey);
-      }
-    } catch (error) {
-      _pagingController.error = error;
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) =>
-      CustomScrollView(
-        slivers: <Widget>[
-          BeerSearchInputSliver(
-            onChanged: _updateSearchTerm,
-          ),
-          PagedSliverList<int, BeerSummary>(
-            pagingController: _pagingController,
-            builderDelegate: PagedChildBuilderDelegate<BeerSummary>(
-              itemBuilder: (context, item, index) => BeerListItem(
-                beer: item,
-              ),
-            ),
-          ),
-        ],
-      );
+      return _searchTerm == null
+          ? results
+          : results.where((photo) => photo.title.contains(_searchTerm!)).toList();
+    },
+  );
 
   void _updateSearchTerm(String searchTerm) {
     _searchTerm = searchTerm;
     _pagingController.refresh();
   }
+
+  @override
+  void dispose() {
+    _pagingController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) =>
+      CustomScrollView(
+        slivers: [
+          SearchInputSliver(
+            onChanged: _updateSearchTerm,
+          ),
+          PagedSliverList<int, Photo>(
+            pagingController: _pagingController,
+            builderDelegate: PagedChildBuilderDelegate<Photo>(
+              itemBuilder: (context, item, index) => ImageListTile(item: item),
+            ),
+          ),
+        ],
+      );
 
   @override
   void dispose() {
@@ -258,7 +317,7 @@ If you want to change that, and instead display the items _below_ the grid, as i
 ```dart
 @override
 Widget build(BuildContext context) =>
-    PagedGridView<int, BeerSummary>(
+    PagedGridView<int, Photo>(
       showNewPageProgressIndicatorAsGridChild: false,
       showNewPageErrorIndicatorAsGridChild: false,
       showNoMoreItemsIndicatorAsGridChild: false,
@@ -269,128 +328,26 @@ Widget build(BuildContext context) =>
         mainAxisSpacing: 10,
         crossAxisCount: 3,
       ),
-      builderDelegate: PagedChildBuilderDelegate<BeerSummary>(
-        itemBuilder: (context, item, index) => BeerGridItem(
-          beer: item,
-        ),
+      builderDelegate: PagedChildBuilderDelegate<Photo>(
+        itemBuilder: (context, item, index) => ImageListTile(item: item),
       ),
     );
 ```
 
-## Listening to Status Changes
-
-If you need to execute some custom action when the list status changes, such as displaying a dialog/snackbar/toast, or sending a custom event to a BLoC or so, add a status listener to your [PagingController](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagingController-class.html). For example:
-
-```dart
-@override
-void initState() {
-  super.initState();
-
-  _pagingController.addPageRequestListener((pageKey) {
-    _fetchPage(pageKey);
-  });
-
-  _pagingController.addStatusListener((status) {
-    if (status == PagingStatus.subsequentPageError) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text(
-            'Something went wrong while fetching a new page.',
-          ),
-          action: SnackBarAction(
-            label: 'Retry',
-            onPressed: () => _pagingController.retryLastFailedRequest(),
-          ),
-        ),
-      );
-    }
-  });
-}
-```
-
 ## Changing the Invisible Items Threshold
 
-By default, the package asks a new page when there are 3 invisible items left while the user is scrolling. You can change that number in the [PagingController](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagingController-class.html)'s constructor.
+By default, the package asks a new page when there are 3 invisible items left while the user is scrolling. You can change that number in the [PagedChildBuilderDelegate](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedChildBuilderDelegate-class.html).
 
 ```dart
-final PagingController<int, BeerSummary> _pagingController =
-      PagingController(firstPageKey: 0, invisibleItemsThreshold: 5);
+PagedListView<int, Photo>(
+  state: state,
+  fetchNextPage: fetchNextPage,
+  builderDelegate: PagedChildBuilderDelegate(
+    itemBuilder: (context, item, index) => ImageListTile(item: item),
+    invisibleItemsThreshold: 5,
+  ),
+);
 ```
-
-## BLoC
-
-**Infinite Scroll Pagination** is designed to work with any state management approach you prefer in any way you'd like. Because of that, for each approach, there's not only one, but several ways in which you could work with this package.
-Below you can see one of the possible ways to integrate it with BLoCs:
-
-```dart
-class BeerSliverGrid extends StatefulWidget {
-  @override
-  _BeerSliverGridState createState() => _BeerSliverGridState();
-}
-
-class _BeerSliverGridState extends State<BeerSliverGrid> {
-  final BeerSliverGridBloc _bloc = BeerSliverGridBloc();
-  final PagingController<int, BeerSummary> _pagingController =
-      PagingController(firstPageKey: 0);
-  late StreamSubscription _blocListingStateSubscription;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _pagingController.addPageRequestListener((pageKey) {
-      _bloc.onPageRequestSink.add(pageKey);
-    });
-
-    // We could've used StreamBuilder, but that would unnecessarily recreate
-    // the entire [PagedSliverGrid] every time the state changes.
-    // Instead, handling the subscription ourselves and updating only the
-    // _pagingController is more efficient.
-    _blocListingStateSubscription =
-        _bloc.onNewListingState.listen((listingState) {
-      _pagingController.value = PagingState(
-        nextPageKey: listingState.nextPageKey,
-        error: listingState.error,
-        itemList: listingState.itemList,
-      );
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) =>
-      CustomScrollView(
-        slivers: <Widget>[
-          BeerSearchInputSliver(
-            onChanged: (searchTerm) =>
-                _bloc.onSearchInputChangedSink.add(searchTerm),
-          ),
-          PagedSliverGrid<int, BeerSummary>(
-            pagingController: _pagingController,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              childAspectRatio: 100 / 150,
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
-              crossAxisCount: 3,
-            ),
-            builderDelegate: PagedChildBuilderDelegate<BeerSummary>(
-              itemBuilder: (context, item, index) => BeerGridItem(
-                beer: item,
-              ),
-            ),
-          ),
-        ],
-      );
-
-  @override
-  void dispose() {
-    _pagingController.dispose();
-    _blocListingStateSubscription.cancel();
-    super.dispose();
-  }
-}
-```
-
-Check out the [example project](https://github.com/EdsonBueno/infinite_scroll_pagination/tree/master/example) for the complete source code.
 
 ## Custom Layout
 
@@ -399,72 +356,69 @@ In case [PagedListView](https://pub.dev/documentation/infinite_scroll_pagination
 Creating a new layout is just a matter of using [PagedLayoutBuilder](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedLayoutBuilder-class.html) and provide it builders for the completed, in progress with error and in progress with loading layouts. For example, take a look at how [PagedSliverGrid](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedSliverGrid-class.html) is built:
 
 ```dart
-@override
-  @override
-  Widget build(BuildContext context) =>
-      PagedLayoutBuilder<PageKeyType, ItemType>(
-        layoutProtocol: PagedLayoutProtocol.sliver,
-        pagingController: pagingController,
-        builderDelegate: builderDelegate,
-        completedListingBuilder: (
-          context,
-          itemBuilder,
-          itemCount,
-          noMoreItemsIndicatorBuilder,
-        ) =>
-            AppendedSliverGrid(
-          sliverGridBuilder: (_, delegate) => SliverGrid(
-            delegate: delegate,
-            gridDelegate: gridDelegate,
-          ),
-          itemBuilder: itemBuilder,
-          itemCount: itemCount,
-          appendixBuilder: noMoreItemsIndicatorBuilder,
-          showAppendixAsGridChild: showNoMoreItemsIndicatorAsGridChild,
-          addAutomaticKeepAlives: addAutomaticKeepAlives,
-          addSemanticIndexes: addSemanticIndexes,
-          addRepaintBoundaries: addRepaintBoundaries,
-        ),
-        loadingListingBuilder: (
-          context,
-          itemBuilder,
-          itemCount,
-          progressIndicatorBuilder,
-        ) =>
-            AppendedSliverGrid(
-          sliverGridBuilder: (_, delegate) => SliverGrid(
-            delegate: delegate,
-            gridDelegate: gridDelegate,
-          ),
-          itemBuilder: itemBuilder,
-          itemCount: itemCount,
-          appendixBuilder: progressIndicatorBuilder,
-          showAppendixAsGridChild: showNewPageProgressIndicatorAsGridChild,
-          addAutomaticKeepAlives: addAutomaticKeepAlives,
-          addSemanticIndexes: addSemanticIndexes,
-          addRepaintBoundaries: addRepaintBoundaries,
-        ),
-        errorListingBuilder: (
-          context,
-          itemBuilder,
-          itemCount,
-          errorIndicatorBuilder,
-        ) =>
-            AppendedSliverGrid(
-          sliverGridBuilder: (_, delegate) => SliverGrid(
-            delegate: delegate,
-            gridDelegate: gridDelegate,
-          ),
-          itemBuilder: itemBuilder,
-          itemCount: itemCount,
-          appendixBuilder: errorIndicatorBuilder,
-          showAppendixAsGridChild: showNewPageErrorIndicatorAsGridChild,
-          addAutomaticKeepAlives: addAutomaticKeepAlives,
-          addSemanticIndexes: addSemanticIndexes,
-          addRepaintBoundaries: addRepaintBoundaries,
-        ),
-        shrinkWrapFirstPageIndicators: shrinkWrapFirstPageIndicators,
-      );
+PagedLayoutBuilder<PageKeyType, ItemType>(
+  layoutProtocol: PagedLayoutProtocol.sliver,
+  pagingController: pagingController,
+  builderDelegate: builderDelegate,
+  completedListingBuilder: (
+    context,
+    itemBuilder,
+    itemCount,
+    noMoreItemsIndicatorBuilder,
+  ) =>
+      AppendedSliverGrid(
+    sliverGridBuilder: (_, delegate) => SliverGrid(
+      delegate: delegate,
+      gridDelegate: gridDelegate,
+    ),
+    itemBuilder: itemBuilder,
+    itemCount: itemCount,
+    appendixBuilder: noMoreItemsIndicatorBuilder,
+    showAppendixAsGridChild: showNoMoreItemsIndicatorAsGridChild,
+    addAutomaticKeepAlives: addAutomaticKeepAlives,
+    addSemanticIndexes: addSemanticIndexes,
+    addRepaintBoundaries: addRepaintBoundaries,
+  ),
+  loadingListingBuilder: (
+    context,
+    itemBuilder,
+    itemCount,
+    progressIndicatorBuilder,
+  ) =>
+      AppendedSliverGrid(
+    sliverGridBuilder: (_, delegate) => SliverGrid(
+      delegate: delegate,
+      gridDelegate: gridDelegate,
+    ),
+    itemBuilder: itemBuilder,
+    itemCount: itemCount,
+    appendixBuilder: progressIndicatorBuilder,
+    showAppendixAsGridChild: showNewPageProgressIndicatorAsGridChild,
+    addAutomaticKeepAlives: addAutomaticKeepAlives,
+    addSemanticIndexes: addSemanticIndexes,
+    addRepaintBoundaries: addRepaintBoundaries,
+  ),
+  errorListingBuilder: (
+    context,
+    itemBuilder,
+    itemCount,
+    errorIndicatorBuilder,
+  ) =>
+      AppendedSliverGrid(
+    sliverGridBuilder: (_, delegate) => SliverGrid(
+      delegate: delegate,
+      gridDelegate: gridDelegate,
+    ),
+    itemBuilder: itemBuilder,
+    itemCount: itemCount,
+    appendixBuilder: errorIndicatorBuilder,
+    showAppendixAsGridChild: showNewPageErrorIndicatorAsGridChild,
+    addAutomaticKeepAlives: addAutomaticKeepAlives,
+    addSemanticIndexes: addSemanticIndexes,
+    addRepaintBoundaries: addRepaintBoundaries,
+  ),
+  shrinkWrapFirstPageIndicators: shrinkWrapFirstPageIndicators,
+);
 ```
 
 Note the usage of [PagedLayoutProtocol.sliver](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedLayoutProtocol/sliver.html) which tells the package that the layout is a [Sliver](https://flutter.dev/docs/development/ui/advanced/slivers).
