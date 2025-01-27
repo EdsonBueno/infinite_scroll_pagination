@@ -123,6 +123,53 @@ void main() {
         expect(pagingController.value.isLoading, isFalse);
         expect(pagingController.value.error, isNull);
       });
+
+      test('cancels previous refresh', () async {
+        bool hasBeenCalled = false;
+        final completer1 = Completer<List<String>>();
+        final completer2 = Completer<List<String>>();
+
+        bool hasFailed = false;
+
+        pagingController = PagingController<int, String>(
+            getNextPageKey: (state) => nextPageKey,
+            fetchPage: (_) {
+              if (hasBeenCalled) {
+                return completer2.future;
+              } else {
+                hasBeenCalled = true;
+                return completer1.future;
+              }
+            });
+
+        final wrongItems = ['Wrong Item 1', 'Wrong Item 2'];
+
+        pagingController.addListener(() {
+          try {
+            expect(pagingController.value.pages, isNot([wrongItems]));
+          } catch (e) {
+            hasFailed = true;
+          }
+        });
+
+        pagingController.fetchNextPage();
+
+        await Future.delayed(Duration.zero);
+
+        pagingController.refresh();
+        pagingController.fetchNextPage();
+
+        await Future.delayed(Duration.zero);
+
+        completer1.complete(wrongItems);
+        completer2.complete(fetchedItems);
+
+        await Future.delayed(Duration.zero);
+
+        expect(pagingController.value.isLoading, isFalse);
+        expect(pagingController.value.pages, [fetchedItems]);
+        expect(hasFailed, isFalse);
+      });
     });
 
     group('cancel', () {

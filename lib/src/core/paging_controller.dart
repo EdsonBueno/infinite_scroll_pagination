@@ -88,8 +88,6 @@ class PagingController<PageKeyType extends Object, ItemType extends Object>
         newItems = fetchResult;
       }
 
-      if (operation != operation) return;
-
       state = state.copyWith(
         pages: [...?state.pages, newItems],
         keys: [...?state.keys, nextPageKey],
@@ -104,8 +102,8 @@ class PagingController<PageKeyType extends Object, ItemType extends Object>
         rethrow;
       }
     } finally {
-      value = state.copyWith(isLoading: false);
       if (operation == this.operation) {
+        value = state.copyWith(isLoading: false);
         this.operation = null;
       }
     }
