@@ -1,3 +1,22 @@
+## UNRELEASED
+### Added
+- `PagingListener` widget to connect a `PagingController` to a `PagedLayoutBuilder`.
+
+### Changed  
+- `PagingController` no longer has `addPageRequestListener` method and `firstPageKey` parameter. Use the `fetchPage` and `getNextPageKey` parameters of the constructor instead.
+- `PagingController` no longer has the `itemList`, `error`, and `nextPageKey` getters and setters. All values are now stored in `PagingState`.  
+- `PagingController` no longer has the `appendPage`, `appendLastPage`, and `retryLastFailedRequest` methods. Use the `copyWith` method of `PagingState` to update its fields.  
+- `PagingController` no longer has the `invisibleItemsThreshold` field. It is now configured in `PagedChildBuilderDelegate`.  
+- `PagedLayoutBuilder` no longer accepts `pagingController` as a parameter. It now takes `PagingState` and `fetchNextPage` instead.  
+- `PagingState` now uses `pages` (`List<List<ItemType>>`) instead of `itemList` (`List<ItemType>`). A new extension getter `items` is provided for flattening.  
+- `PagingState` now features `keys`, a list storing all fetched keys, and `hasNextPage` replacing `nextPageKey`.  
+- `PagingState` now includes `isLoading`, which tracks whether a request is in progress.  
+- `PagingState` now provides `error` as type `Object?` instead of `dynamic`.  
+
+### Fixed  
+- `PagingController` now deduplicates requests.  
+- `PagingController` refresh operations now cancel previous requests.  
+
 ## 4.1.0 - 2024-11-09
 ### Added
 - [PagedSliverMasonryGrid](https://pub.dev/documentation/infinite_scroll_pagination/latest/infinite_scroll_pagination/PagedSliverMasonryGrid-class.html).

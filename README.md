@@ -80,6 +80,10 @@ For more usage examples, please take a look at our [cookbook](https://pub.dev/pa
 
 - **Listen to state changes**: In addition to displaying widgets to inform the current status, such as progress and error indicators, you can also [use a listener](https://pub.dev/packages/infinite_scroll_pagination/example#listening-to-status-changes) to display dialogs/snackbars/toasts or execute any other action.
 
+## Migration
+
+if you are upgrading the package, please check the [migration guide](https://github.com/EdsonBueno/infinite_scroll_pagination/tree/master/MIGRATION.md) for instructions on how to update your code.
+
 ## API Overview
 
 <p align="center">
