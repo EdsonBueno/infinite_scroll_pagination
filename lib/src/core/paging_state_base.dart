@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:infinite_scroll_pagination/src/core/paging_state.dart';
@@ -10,34 +8,23 @@ import 'package:infinite_scroll_pagination/src/core/paging_state.dart';
 /// all of its fields are deeply equal.
 base class PagingStateBase<PageKeyType extends Object, ItemType extends Object>
     implements PagingState<PageKeyType, ItemType> {
-  factory PagingStateBase({
+  /// Creates a [PagingStateBase] with the given parameters.
+  ///
+  /// Ensures that [pages] and [keys] are unmodifiable lists.
+  PagingStateBase({
     List<List<ItemType>>? pages,
     List<PageKeyType>? keys,
-    Object? error,
-    bool hasNextPage = true,
-    bool isLoading = false,
-  }) =>
-      PagingStateBase._(
-        pages: switch (pages) {
+    this.error,
+    this.hasNextPage = true,
+    this.isLoading = false,
+  })  : pages = switch (pages) {
           null => null,
           _ => List.unmodifiable(pages),
         },
-        keys: switch (keys) {
+        keys = switch (keys) {
           null => null,
           _ => List.unmodifiable(keys),
-        },
-        error: error,
-        hasNextPage: hasNextPage,
-        isLoading: isLoading,
-      );
-
-  const PagingStateBase._({
-    required this.pages,
-    required this.keys,
-    required this.error,
-    required this.hasNextPage,
-    required this.isLoading,
-  });
+        };
 
   @override
   final List<List<ItemType>>? pages;
@@ -56,11 +43,11 @@ base class PagingStateBase<PageKeyType extends Object, ItemType extends Object>
 
   @override
   PagingState<PageKeyType, ItemType> copyWith({
-    FutureOr<List<List<ItemType>>?>? pages = const Omit(),
-    FutureOr<List<PageKeyType>?>? keys = const Omit(),
-    FutureOr<Object?>? error = const Omit(),
-    FutureOr<bool>? hasNextPage = const Omit(),
-    FutureOr<bool>? isLoading = const Omit(),
+    Defaulted<List<List<ItemType>>?>? pages = const Omit(),
+    Defaulted<List<PageKeyType>?>? keys = const Omit(),
+    Defaulted<Object?>? error = const Omit(),
+    Defaulted<bool>? hasNextPage = const Omit(),
+    Defaulted<bool>? isLoading = const Omit(),
   }) =>
       PagingStateBase(
         pages: pages is Omit ? this.pages : pages as List<List<ItemType>>?,
