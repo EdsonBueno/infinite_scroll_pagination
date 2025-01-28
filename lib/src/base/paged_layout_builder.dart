@@ -246,7 +246,7 @@ class _PagedLayoutBuilderState<PageKeyType extends Object,
   ) {
     if (!_hasRequestedNextPage) {
       final newPageRequestTriggerIndex =
-          max(0, _itemCount - _invisibleItemsThreshold);
+          max(0, _itemCount - 1 - _invisibleItemsThreshold);
 
       final isBuildingTriggerIndexItem = index == newPageRequestTriggerIndex;
 
