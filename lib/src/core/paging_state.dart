@@ -42,15 +42,15 @@ abstract class PagingState<PageKeyType extends Object,
   /// If a field is not provided, it will default to the current value.
   ///
   /// While this implementation technically accepts Futures, passing a Future is invalid.
-  /// The FutureOr type is used to allow for the Omit sentinel value,
+  /// The Defaulted type is used to allow for the Omit sentinel value,
   /// which is required to distinguish between a parameter being omitted and a parameter being set to null.
   // copyWith a la Remi Rousselet: https://github.com/dart-lang/language/issues/137#issuecomment-583783054
   PagingState<PageKeyType, ItemType> copyWith({
-    FutureOr<List<List<ItemType>>?>? pages = const Omit(),
-    FutureOr<List<PageKeyType>?>? keys = const Omit(),
-    FutureOr<Object?>? error = const Omit(),
-    FutureOr<bool>? hasNextPage = const Omit(),
-    FutureOr<bool>? isLoading = const Omit(),
+    Defaulted<List<List<ItemType>>?>? pages = const Omit(),
+    Defaulted<List<PageKeyType>?>? keys = const Omit(),
+    Defaulted<Object?>? error = const Omit(),
+    Defaulted<bool>? hasNextPage = const Omit(),
+    Defaulted<bool>? isLoading = const Omit(),
   });
 
   /// Returns a copy this [PagingState] but
@@ -69,6 +69,8 @@ extension ItemListExtension<PageKeyType extends Object, ItemType extends Object>
   /// The list of all items in the pages.
   List<ItemType>? get items => pages?.expand((e) => e).toList();
 }
+
+typedef Defaulted<T> = FutureOr<T>;
 
 /// Sentinel value to omit a parameter from a copyWith call.
 /// This is used to distinguish between a parameter being omitted and a parameter
