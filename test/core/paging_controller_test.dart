@@ -86,6 +86,41 @@ void main() {
         expect(fetchCalled, isFalse);
       });
 
+      // We have intentionally broken atomicity of PagingController.
+      // This is because we want users to be able to modify their item list even during a fetch.
+      // It is unclear whether this will come back to bite us.
+      test('allows modifying state during a fetch', () async {
+        pagingController = PagingController<int, String>(
+          getNextPageKey: (state) => (state.keys?.last ?? 0) + 1,
+          fetchPage: (page) => Future.value(['Item $page']),
+        );
+
+        pagingController.fetchNextPage();
+
+        await Future.value(null);
+        await Future.value(null);
+
+        pagingController.fetchNextPage();
+
+        await Future.value(null);
+
+        pagingController.value = pagingController.value.copyWith(
+          pages: pagingController.value.pages
+              ?.map(
+                (a) => a.map((b) => b.toUpperCase()).toList(),
+              )
+              .toList(),
+        );
+
+        await Future.value(null);
+
+        expect(pagingController.value.isLoading, isFalse);
+        expect(pagingController.value.pages, [
+          ['ITEM 1'],
+          ['Item 2'],
+        ]);
+      });
+
       test('catches Exceptions', () async {
         pagingController = PagingController<int, String>(
           getNextPageKey: (state) => nextPageKey,
@@ -184,7 +219,7 @@ void main() {
     group('cancel', () {
       test('resets state and stops fetch', () async {
         pagingController = PagingController<int, String>(
-          getNextPageKey: (state) => nextPageKey,
+          getNextPageKey: (state) => (state.keys?.last ?? 0) + 1,
           fetchPage: (page) => Future.value(['Item $page']),
         );
 
