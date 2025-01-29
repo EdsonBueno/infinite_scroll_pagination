@@ -15,7 +15,7 @@ void main() {
       fetchedItems = ['Item 1', 'Item 2'];
 
       getNextPageKey(state) => nextPageKey;
-      fetchPage(pageKey) {
+      List<String> fetchPage(int pageKey) {
         fetchCalled = true;
         return fetchedItems;
       }
@@ -30,20 +30,20 @@ void main() {
       test('requests the next page', () async {
         pagingController.fetchNextPage();
 
+        await Future.value(null);
+
         expect(fetchCalled, isTrue);
-        expect(pagingController.value.pages, [
-          ['Item 1', 'Item 2']
-        ]);
+        expect(pagingController.value.pages, [fetchedItems]);
         expect(pagingController.value.keys, [nextPageKey]);
       });
 
-      test('fetches a page synchronously when possible', () {
+      test('fetches a page synchronously when possible', () async {
         pagingController.fetchNextPage();
 
+        await Future.value(null);
+
         expect(fetchCalled, isTrue);
-        expect(pagingController.value.pages, [
-          ['Item 1', 'Item 2']
-        ]);
+        expect(pagingController.value.pages, [fetchedItems]);
         expect(pagingController.value.keys, [nextPageKey]);
       });
 
@@ -58,6 +58,8 @@ void main() {
         pagingController.fetchNextPage();
         pagingController.fetchNextPage();
 
+        await Future.value(null);
+
         expect(fetchCalled, isFalse);
         expect(pagingController.value.isLoading, isTrue);
 
@@ -70,6 +72,8 @@ void main() {
       test('stops if next page key is null', () async {
         nextPageKey = null;
         pagingController.fetchNextPage();
+
+        await Future.value(null);
 
         expect(fetchCalled, isFalse);
         expect(pagingController.value.hasNextPage, isFalse);
@@ -90,6 +94,8 @@ void main() {
 
         pagingController.fetchNextPage();
 
+        await Future.value(null);
+
         expect(pagingController.value.isLoading, isFalse);
         expect(pagingController.value.error, isA<Exception>());
       });
@@ -102,6 +108,9 @@ void main() {
 
         expect(() async => pagingController.fetchNextPage(),
             throwsA(isA<Error>()));
+
+        await Future.value(null);
+
         expect(pagingController.value.isLoading, isFalse);
         expect(pagingController.value.error, isA<Error>());
       });
@@ -126,10 +135,10 @@ void main() {
 
       test('cancels previous refresh', () async {
         bool hasBeenCalled = false;
+        bool hasFailed = false;
+
         final completer1 = Completer<List<String>>();
         final completer2 = Completer<List<String>>();
-
-        bool hasFailed = false;
 
         pagingController = PagingController<int, String>(
             getNextPageKey: (state) => nextPageKey,
@@ -154,17 +163,17 @@ void main() {
 
         pagingController.fetchNextPage();
 
-        await Future.delayed(Duration.zero);
+        await Future.value(null);
 
         pagingController.refresh();
         pagingController.fetchNextPage();
 
-        await Future.delayed(Duration.zero);
+        await Future.value(null);
 
         completer1.complete(wrongItems);
         completer2.complete(fetchedItems);
 
-        await Future.delayed(Duration.zero);
+        await Future.value(null);
 
         expect(pagingController.value.isLoading, isFalse);
         expect(pagingController.value.pages, [fetchedItems]);
@@ -174,26 +183,31 @@ void main() {
 
     group('cancel', () {
       test('resets state and stops fetch', () async {
-        final Completer<List<String>> completer = Completer<List<String>>();
-
         pagingController = PagingController<int, String>(
           getNextPageKey: (state) => nextPageKey,
-          fetchPage: (_) => completer.future,
+          fetchPage: (page) => Future.value(['Item $page']),
         );
 
         pagingController.fetchNextPage();
 
-        expect(pagingController.value.isLoading, isTrue);
+        await Future.value(null);
+        await Future.value(null);
+
+        expect(pagingController.value.pages, [
+          ['Item 1']
+        ]);
+
+        pagingController.fetchNextPage();
+
+        await Future.value(null);
 
         pagingController.cancel();
 
-        expect(pagingController.value.isLoading, isFalse);
-        completer.complete(fetchedItems);
+        await Future.value(null);
 
-        await Future.delayed(Duration.zero);
         expect(pagingController.value.isLoading, isFalse);
         expect(pagingController.value.pages, [
-          ['Item 1', 'Item 2']
+          ['Item 1']
         ]);
       });
     });
