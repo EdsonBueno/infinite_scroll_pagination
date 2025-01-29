@@ -1,3 +1,4 @@
+import 'package:infinite_scroll_pagination/src/core/extensions.dart';
 import 'package:infinite_scroll_pagination/src/core/paging_state.dart';
 
 /// All possible status for a pagination.

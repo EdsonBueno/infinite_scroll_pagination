@@ -6,6 +6,7 @@ export 'src/core/paging_controller.dart';
 export 'src/core/paging_state.dart';
 export 'src/core/paging_state_base.dart';
 export 'src/core/paging_status.dart';
+export 'src/core/extensions.dart';
 
 export 'src/helpers/appended_sliver_child_builder_delegate.dart';
 export 'src/helpers/appended_sliver_grid.dart';
