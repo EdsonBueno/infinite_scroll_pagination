@@ -16,6 +16,10 @@ typedef FetchPageCallback<PageKeyType extends Object, ItemType extends Object>
 ///
 /// This is an unopinionated controller implemented through vanilla Flutter's [ValueNotifier].
 /// The controller acts as a mutex to prevent multiple fetches at the same time.
+///
+/// Note that for convenience, fetch operations are not atomic.
+/// The state may be updated during a fetch operation. This should be done fully synchronously,
+/// as otherwise, the state may become desynchronized.
 class PagingController<PageKeyType extends Object, ItemType extends Object>
     extends ValueNotifier<PagingState<PageKeyType, ItemType>> {
   PagingController({
@@ -87,6 +91,10 @@ class PagingController<PageKeyType extends Object, ItemType extends Object>
       } else {
         newItems = fetchResult;
       }
+
+      // Update our state in case it was modified during the fetch operation.
+      // This beaks atomicity, but is necessary to allow users to modify the state during a fetch.
+      state = value;
 
       state = state.copyWith(
         pages: [...?state.pages, newItems],
