@@ -64,12 +64,6 @@ abstract class PagingState<PageKeyType extends Object,
   PagingState<PageKeyType, ItemType> reset();
 }
 
-extension ItemListExtension<PageKeyType extends Object, ItemType extends Object>
-    on PagingState<PageKeyType, ItemType> {
-  /// The list of all items in the pages.
-  List<ItemType>? get items => pages?.expand((e) => e).toList();
-}
-
 typedef Defaulted<T> = FutureOr<T>;
 
 /// Sentinel value to omit a parameter from a copyWith call.
