@@ -24,6 +24,7 @@ void main() {
         () {
       pagingState = PagingState<int, String>(
         pages: const [],
+        keys: const [],
         hasNextPage: false,
       );
       expect(pagingState.status, PagingStatus.noItemsFound);
@@ -36,6 +37,7 @@ void main() {
         pages: const [
           ['Item 1']
         ],
+        keys: const [1],
         hasNextPage: true,
       );
       expect(pagingState.status, PagingStatus.ongoing);
@@ -48,6 +50,7 @@ void main() {
         pages: const [
           ['Item 1']
         ],
+        keys: const [1],
         error: Exception('Error'),
         hasNextPage: true,
       );
@@ -61,6 +64,7 @@ void main() {
         pages: const [
           ['Item 1']
         ],
+        keys: const [1],
         hasNextPage: false,
       );
       expect(pagingState.status, PagingStatus.completed);

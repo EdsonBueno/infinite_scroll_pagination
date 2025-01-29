@@ -21,7 +21,7 @@ extension TestPagingState on PagingState<int, String> {
       PagingState<int, String>(error: TestException());
 
   static PagingState<int, String> noItemsFound() => PagingState<int, String>(
-        pages: const [],
+        pages: const [[]],
         keys: const [1],
         hasNextPage: false,
       );

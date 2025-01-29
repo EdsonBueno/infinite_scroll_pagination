@@ -17,7 +17,11 @@ base class PagingStateBase<PageKeyType extends Object, ItemType extends Object>
     this.error,
     this.hasNextPage = true,
     this.isLoading = false,
-  })  : pages = switch (pages) {
+  })  : assert(
+          pages?.length == keys?.length,
+          'The length of pages and keys must be equal.',
+        ),
+        pages = switch (pages) {
           null => null,
           _ => List.unmodifiable(pages),
         },
