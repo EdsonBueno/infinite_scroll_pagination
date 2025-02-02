@@ -26,9 +26,6 @@ class _PageViewScreenState extends State<PageViewScreen> {
   void fetchNextPage() async {
     if (_state.isLoading) return;
 
-    // we wait one tick to avoid calling setState at the wrong time
-    await Future.value();
-
     setState(() {
       // set loading to true and remove any previous error
       _state = _state.copyWith(isLoading: true, error: null);
