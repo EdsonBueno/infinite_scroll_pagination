@@ -111,7 +111,11 @@ class _PagedLayoutBuilderState<PageKeyType extends Object,
     extends State<PagedLayoutBuilder<PageKeyType, ItemType>> {
   PagingState<PageKeyType, ItemType> get _state => widget.state;
 
-  NextPageCallback get _fetchNextPage => widget.fetchNextPage;
+  NextPageCallback get _fetchNextPage =>
+      // We make sure to only schedule the fetch after the current build is done.
+      // This is important to prevent recursive builds.
+      () => WidgetsBinding.instance
+          .addPostFrameCallback((_) => widget.fetchNextPage());
 
   PagedChildBuilderDelegate<ItemType> get _builderDelegate =>
       widget.builderDelegate;
@@ -257,10 +261,7 @@ class _PagedLayoutBuilderState<PageKeyType extends Object,
 
       if (_hasNextPage && hasPassedTrigger) {
         _hasRequestedNextPage = true;
-        // Schedules the request for the end of this frame.
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          _fetchNextPage();
-        });
+        _fetchNextPage();
       }
     }
 

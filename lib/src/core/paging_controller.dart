@@ -57,10 +57,6 @@ class PagingController<PageKeyType extends Object, ItemType extends Object>
 
     final operation = this.operation = Object();
 
-    // We wait a single ticket to prevent rebuilding during a build.
-    // Preferably, we wouldn't need to do this, but it is unclear how to avoid it.
-    await Future.value(null);
-
     value = value.copyWith(
       isLoading: true,
       error: null,

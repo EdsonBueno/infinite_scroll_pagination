@@ -30,8 +30,6 @@ void main() {
       test('requests the next page', () async {
         pagingController.fetchNextPage();
 
-        await Future.value(null);
-
         expect(fetchCalled, isTrue);
         expect(pagingController.value.pages, [fetchedItems]);
         expect(pagingController.value.keys, [nextPageKey]);
@@ -98,11 +96,8 @@ void main() {
         pagingController.fetchNextPage();
 
         await Future.value(null);
-        await Future.value(null);
 
         pagingController.fetchNextPage();
-
-        await Future.value(null);
 
         pagingController.value = pagingController.value.copyWith(
           pages: pagingController.value.pages
@@ -129,8 +124,6 @@ void main() {
 
         pagingController.fetchNextPage();
 
-        await Future.value(null);
-
         expect(pagingController.value.isLoading, isFalse);
         expect(pagingController.value.error, isA<Exception>());
       });
@@ -143,8 +136,6 @@ void main() {
 
         expect(() async => pagingController.fetchNextPage(),
             throwsA(isA<Error>()));
-
-        await Future.value(null);
 
         expect(pagingController.value.isLoading, isFalse);
         expect(pagingController.value.error, isA<Error>());
@@ -226,15 +217,12 @@ void main() {
         pagingController.fetchNextPage();
 
         await Future.value(null);
-        await Future.value(null);
 
         expect(pagingController.value.pages, [
           ['Item 1']
         ]);
 
         pagingController.fetchNextPage();
-
-        await Future.value(null);
 
         pagingController.cancel();
 
