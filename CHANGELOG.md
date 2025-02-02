@@ -19,6 +19,9 @@
 ### Fixed  
 - `PagingController` now deduplicates requests.  
 - `PagingController` refresh operations now cancel previous requests.  
+- Off-by-one error in `invisibleItemsThreshold` calculation.
+- Failure to trigger page request when `invisibleItemsThreshold` is too large.
+- Animating between states with `animateTransitions`.
 
 ## 4.1.0 - 2024-11-09
 ### Added
