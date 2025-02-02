@@ -190,16 +190,19 @@ class _PagedLayoutBuilderState<PageKeyType extends Object,
       layoutProtocol: _layoutProtocol,
       child: switch (_state.status) {
         PagingStatus.loadingFirstPage => _FirstPageStatusIndicatorBuilder(
+            key: const ValueKey(PagingStatus.loadingFirstPage),
             builder: _firstPageProgressIndicatorBuilder,
             shrinkWrap: _shrinkWrapFirstPageIndicators,
             layoutProtocol: _layoutProtocol,
           ),
         PagingStatus.firstPageError => _FirstPageStatusIndicatorBuilder(
+            key: const ValueKey(PagingStatus.firstPageError),
             builder: _firstPageErrorIndicatorBuilder,
             shrinkWrap: _shrinkWrapFirstPageIndicators,
             layoutProtocol: _layoutProtocol,
           ),
         PagingStatus.noItemsFound => _FirstPageStatusIndicatorBuilder(
+            key: const ValueKey(PagingStatus.noItemsFound),
             builder: _noItemsFoundIndicatorBuilder,
             shrinkWrap: _shrinkWrapFirstPageIndicators,
             layoutProtocol: _layoutProtocol,
@@ -301,6 +304,7 @@ class _PagedLayoutAnimator extends StatelessWidget {
 
 class _FirstPageStatusIndicatorBuilder extends StatelessWidget {
   const _FirstPageStatusIndicatorBuilder({
+    super.key,
     required this.builder,
     required this.layoutProtocol,
     this.shrinkWrap = false,
