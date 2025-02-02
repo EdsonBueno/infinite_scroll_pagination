@@ -246,17 +246,21 @@ class _PagedLayoutBuilderState<PageKeyType extends Object,
     List<ItemType> itemList,
   ) {
     if (!_hasRequestedNextPage) {
-      final newPageRequestTriggerIndex =
-          max(0, _itemCount - 1 - _invisibleItemsThreshold);
+      final maxIndex = max(0, _itemCount - 1);
+      final triggerIndex = max(0, maxIndex - _invisibleItemsThreshold);
 
-      final isBuildingTriggerIndexItem = index == newPageRequestTriggerIndex;
+      // It is important to check whether we are past the trigger, not just at it.
+      // This is because otherwise, large tresholds will place the trigger behind the user,
+      // Leading to the refresh never being triggered.
+      // This behaviour is okay because we make sure not to excessively request pages.
+      final hasPassedTrigger = index >= triggerIndex;
 
-      if (_hasNextPage && isBuildingTriggerIndexItem) {
+      if (_hasNextPage && hasPassedTrigger) {
+        _hasRequestedNextPage = true;
         // Schedules the request for the end of this frame.
         WidgetsBinding.instance.addPostFrameCallback((_) {
           _fetchNextPage();
         });
-        _hasRequestedNextPage = true;
       }
     }
 
