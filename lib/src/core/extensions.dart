@@ -13,12 +13,28 @@ extension PagingStateExtension<PageKeyType extends Object,
   ///
   /// The result of this method is a new [PagingState] with the same properties as the original state
   /// except for the items, which are replaced by the mapped items.
-  @UseResult('Use the returned value as your new state.')
+  @UseResult('Use the returned value as new state.')
   PagingState<PageKeyType, ItemType> mapItems(
     ItemType Function(ItemType item) mapper,
   ) =>
       copyWith(
         pages: pages?.map((page) => page.map(mapper).toList()).toList(),
+      );
+
+  /// Convenience method to filter the items of the state by applying a predicate function to each item.
+  ///
+  /// The result of this method is a new [PagingState] with the same properties as the original state
+  /// except for the items, which are replaced by the filtered items.
+  ///
+  /// It is not recommended to reassign the result of this method back to a state variable, because
+  /// the filtered items will be lost. Instead, use the returned value as computed state only.
+  /// This extension is absent from the [PagingController] extension for this reason.
+  @UseResult('Use the returned value as computed state.')
+  PagingState<PageKeyType, ItemType> filterItems(
+    bool Function(ItemType item) predicate,
+  ) =>
+      copyWith(
+        pages: pages?.map((page) => page.where(predicate).toList()).toList(),
       );
 }
 
