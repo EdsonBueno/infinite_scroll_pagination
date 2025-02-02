@@ -7,8 +7,9 @@ This is a large breaking change and will require refactoring in your code.
 
 The package was upgraded to a newer modern flutter major version.
 
-- Newly requires `dart: ">=3.4.0"` and `flutter: ">=3.0.0"`
-- Newly depends on `collection: ">=1.15.0"`
+- Newly requires `dart: ">=3.4.0"` and `flutter: ">=3.0.0"` for modern language features.
+- Newly depends on `collection: ">=1.15.0"` for deep collection equality on `PagingState`.
+- Newly depends on `meta: ">=1.8.0"` for annotations on `PagingState` extension methods.
 
 ## PagingController
 
@@ -44,13 +45,18 @@ This fixes several issues of the past:
 The PagingController can also be arbitrarily extended to include additional functionality that you might require.
 The source code explains how to structure new code.
 
+Lastly, the various getter and setter methods previously featured to modify the state have been removed.
+New getters have been added, however, setters have been left out since it should not be necessary to modify the state often.
+One exception is the newly provided `mapItems` extension method, which can be used to modify the items in a convenient way, while retaining their page structure.
+
 ### API Changes
 
-- No longer features `itemList`, `error` and `nextPageKey` getters and setters. All values are directly stored in the `PagingState`.
+- `itemList` and `nextPageKey` properties have been removed.
+- `pages`, `items`, `keys`, `error`, `hasNextPage` and `isLoading` extension getters as well as `mapItems` to modify the items have been added.
 - `addPageRequestListener` was removed. Use the `fetchPage` parameter of the constructor instead.
-- `appendPage` and `appendLastPage` were removed. Use the `copyWith` method of the `PagingState` to update the `pages`, `keys` and `hasNextPage` fields.
+- `appendPage` and `appendLastPage` have been removed. Use the `copyWith` method of the `PagingState` to update the `pages`, `keys` and `hasNextPage` fields.
 - `retryLastFailedRequest` was removed. You can simply call `fetchNextPage` to try again.
-- No longer accepts `invisibleItemsThreshold`. To configure the `invisibleItemsThreshold` of a layout, use the corresponding parameter of its `PagedChildBuilderDelegate`.
+- `invisibleItemsThreshold` parameter has been removed. To configure the `invisibleItemsThreshold` of a layout, use the corresponding parameter of its `PagedChildBuilderDelegate`.
 
 ## PagedLayoutBuilder
 
@@ -108,61 +114,15 @@ Examples of using a custom state management solution can be found in the example
 
 ## PagingState
 
-The PagingState in v5 has been updated to be more flexible:
+The PagingState has been updated to be more flexible:
 
 - It now includes a List of all keys, `keys`, that have been fetched, each index corresponding to a page of items.
 - Instead of storing the next page key, it now includes a boolean `hasNextPage` to indicate if there are more pages to fetch.
 - Lastly it now also includes a loading state, in `isLoading`.
 
-Most users probably do not directly interact with PagingState beyond reading it.
-However, the PagingState was also changed to allow customisation of its fields.
-
-Instead of storing your Query parameters externally, you can now extend the PagingState to include them:
-
-```dart
-final class MyPagingState<PageKeyType extends Object, ItemType extends Object>
-    extends PagingStateBase<PageKeyType, ItemType> {
-  MyPagingState({
-    super.pages,
-    // ...
-    this.query,
-  });
-
-  final String? query;
-
-  @override
-  PagingState<PageKeyType, ItemType> copyWith({
-    Defaulted<List<List<ItemType>>?>? pages = const Omit(),
-    // ...
-    Defaulted<String?>? query = const Omit(),
-  }) {
-    final partial = super.copyWith(
-      pages: pages,
-      // ...
-      isLoading: isLoading,
-    );
-
-    return MyPagingState(
-      pages: partial.pages,
-      // ...
-      query: query is Omit ? this.query : query as String?,
-    );
-  }
-
-  @override
-  PagingState<PageKeyType, ItemType> reset() {
-    final partial = super.reset();
-
-    return MyPagingState(
-      pages: partial.pages,
-      // ...
-      query: null,
-    );
-  }
-}
-```
-
-Extended PagingStates will correctly work with PagingController, thanks to the `copyWith` and `reset` methods. For a better understanding of how this works, check out the source code.
+Because Items are now stored within pages, it is more difficult to modify the items directly.
+To make this easier, a `mapItems` extension method has been added to modify the items by iterating over them.
+Additionally, a `filterItems` extension method has been added to filter the items. This is useful for creating locally filtered computed states.
 
 ### API Changes
 
@@ -171,3 +131,4 @@ Extended PagingStates will correctly work with PagingController, thanks to the `
 - `error` is now type Object? instead of dynamic.
 - `nextPageKey` was removed. You can use the `keys` field to compute the next page and `hasNextPage` to determine if there are more pages.
 - `isLoading` is a new field that indicates if a request is currently in progress.
+- `mapItems` and `filterItems` have been added to modify the items in a convenient way.
