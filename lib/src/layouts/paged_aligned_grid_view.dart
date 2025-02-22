@@ -152,7 +152,7 @@ class PagedAlignedGridView<PageKeyType, ItemType> extends BoxScrollView {
   /// Matches [PagedLayoutBuilder.state].
   final PagingState<PageKeyType, ItemType> state;
 
-  /// Matches [PagedLayoutBuilder.onPageRequest].
+  /// Matches [PagedLayoutBuilder.fetchNextPage].
   final NextPageCallback fetchNextPage;
 
   /// Matches [PagedLayoutBuilder.builderDelegate].
