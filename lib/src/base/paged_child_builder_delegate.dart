@@ -10,7 +10,7 @@ typedef ItemWidgetBuilder<ItemType> = Widget Function(
 ///
 /// The generic type [ItemType] must be specified in order to properly identify
 /// the list item's type.
-class PagedChildBuilderDelegate<ItemType extends Object> {
+class PagedChildBuilderDelegate<ItemType> {
   const PagedChildBuilderDelegate({
     required this.itemBuilder,
     this.firstPageErrorIndicatorBuilder,

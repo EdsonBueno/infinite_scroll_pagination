@@ -5,8 +5,7 @@ import 'package:infinite_scroll_pagination/src/core/paging_state_base.dart';
 
 /// Represents the state of a paginated layout.
 @immutable
-abstract class PagingState<PageKeyType extends Object,
-    ItemType extends Object> {
+abstract class PagingState<PageKeyType, ItemType> {
   /// Creates a [PagingState] with the given parameters.
   factory PagingState({
     List<List<ItemType>>? pages,

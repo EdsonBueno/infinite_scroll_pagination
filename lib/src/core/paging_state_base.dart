@@ -6,7 +6,7 @@ import 'package:infinite_scroll_pagination/src/core/paging_state.dart';
 ///
 /// This class is equal to another instance of [PagingStateBase] if
 /// all of its fields are deeply equal.
-base class PagingStateBase<PageKeyType extends Object, ItemType extends Object>
+base class PagingStateBase<PageKeyType, ItemType>
     implements PagingState<PageKeyType, ItemType> {
   /// Creates a [PagingStateBase] with the given parameters.
   ///

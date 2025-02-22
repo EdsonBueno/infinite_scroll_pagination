@@ -11,8 +11,7 @@ import 'package:infinite_scroll_pagination/src/base/paged_layout_builder.dart';
 ///
 /// Similar to a [PageView].
 /// Useful for combining another paged widget with a page view with details.
-class PagedPageView<PageKeyType extends Object, ItemType extends Object>
-    extends StatelessWidget {
+class PagedPageView<PageKeyType, ItemType> extends StatelessWidget {
   const PagedPageView({
     required this.state,
     required this.fetchNextPage,

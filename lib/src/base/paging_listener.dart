@@ -4,8 +4,7 @@ import 'package:infinite_scroll_pagination/src/core/paging_controller.dart';
 import 'package:infinite_scroll_pagination/src/core/paging_state.dart';
 import 'package:infinite_scroll_pagination/src/base/paged_layout_builder.dart';
 
-class PagingListener<PageKeyType extends Object, ItemType extends Object>
-    extends StatelessWidget {
+class PagingListener<PageKeyType, ItemType> extends StatelessWidget {
   const PagingListener({
     super.key,
     required this.controller,
