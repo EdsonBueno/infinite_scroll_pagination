@@ -8,8 +8,7 @@ import 'package:infinite_scroll_pagination/src/layouts/paged_sliver_grid.dart';
 ///
 /// Wraps a [PagedSliverGrid] in a [BoxScrollView] so that it can be
 /// used without the need for a [CustomScrollView]. Similar to a [GridView].
-class PagedGridView<PageKeyType extends Object, ItemType extends Object>
-    extends BoxScrollView {
+class PagedGridView<PageKeyType, ItemType> extends BoxScrollView {
   const PagedGridView({
     required this.state,
     required this.fetchNextPage,

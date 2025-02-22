@@ -14,8 +14,7 @@ import 'package:infinite_scroll_pagination/src/layouts/paged_sliver_masonry_grid
 /// from the [flutter_staggered_grid_view](https://pub.dev/packages/flutter_staggered_grid_view) package.
 /// For more info on how to build staggered grids, check out the
 /// referred package's documentation and examples.
-class PagedMasonryGridView<PageKeyType extends Object, ItemType extends Object>
-    extends BoxScrollView {
+class PagedMasonryGridView<PageKeyType, ItemType> extends BoxScrollView {
   const PagedMasonryGridView({
     required this.state,
     required this.fetchNextPage,

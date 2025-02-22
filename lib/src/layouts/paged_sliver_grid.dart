@@ -12,8 +12,7 @@ import 'package:infinite_scroll_pagination/src/layouts/paged_grid_view.dart';
 /// [CustomScrollView] when added to the screen.
 /// Useful for combining multiple scrollable pieces in your UI or if you need
 /// to add some widgets preceding or following your paged grid.
-class PagedSliverGrid<PageKeyType extends Object, ItemType extends Object>
-    extends StatelessWidget {
+class PagedSliverGrid<PageKeyType, ItemType> extends StatelessWidget {
   const PagedSliverGrid({
     required this.state,
     required this.fetchNextPage,

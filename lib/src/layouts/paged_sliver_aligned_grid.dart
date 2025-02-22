@@ -14,8 +14,7 @@ import 'package:infinite_scroll_pagination/src/helpers/flutter_staggered_grid_vi
 /// from the [flutter_staggered_grid_view](https://pub.dev/packages/flutter_staggered_grid_view) package.
 /// For more info on how to build staggered grids, check out the
 /// referred package's documentation and examples.
-class PagedSliverAlignedGrid<PageKeyType extends Object,
-    ItemType extends Object> extends StatelessWidget {
+class PagedSliverAlignedGrid<PageKeyType, ItemType> extends StatelessWidget {
   const PagedSliverAlignedGrid({
     required this.state,
     required this.fetchNextPage,

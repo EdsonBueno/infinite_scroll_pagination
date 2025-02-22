@@ -3,8 +3,8 @@ import 'package:infinite_scroll_pagination/src/core/paging_state.dart';
 import 'package:infinite_scroll_pagination/src/core/paging_status.dart';
 import 'package:meta/meta.dart';
 
-extension PagingStateExtension<PageKeyType extends Object,
-    ItemType extends Object> on PagingState<PageKeyType, ItemType> {
+extension PagingStateExtension<PageKeyType, ItemType>
+    on PagingState<PageKeyType, ItemType> {
   /// The list of items fetched so far. A flattened version of [pages].
   List<ItemType>? get items =>
       pages != null ? List.unmodifiable(pages!.expand((e) => e)) : null;
@@ -39,8 +39,8 @@ extension PagingStateExtension<PageKeyType extends Object,
 }
 
 /// Helper extensions to quickly access the state of a [PagingController].
-extension PagingControllerExtension<PageKeyType extends Object,
-    ItemType extends Object> on PagingController<PageKeyType, ItemType> {
+extension PagingControllerExtension<PageKeyType, ItemType>
+    on PagingController<PageKeyType, ItemType> {
   /// The pages fetched so far.
   List<List<ItemType>>? get pages => value.pages;
 
