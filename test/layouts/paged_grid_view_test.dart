@@ -179,7 +179,7 @@ void main() {
           '[showNewPageProgressIndicatorAsGridChild] is false', (tester) async {
         tester.applyPreferredTestScreenSize();
 
-        final state = TestPagingState.ongoing();
+        final state = TestPagingState.ongoing(n: 1);
 
         final customIndicatorKey = UniqueKey();
         final customNewPageProgressIndicator = CircularProgressIndicator(
@@ -205,7 +205,7 @@ void main() {
           '[showNewPageErrorIndicatorAsGridChild] is false', (tester) async {
         tester.applyPreferredTestScreenSize();
 
-        final state = TestPagingState.subsequentPageError();
+        final state = TestPagingState.subsequentPageError(n: 1);
 
         final customIndicatorKey = UniqueKey();
         final customNewPageErrorIndicator = Text(
@@ -232,7 +232,7 @@ void main() {
           '[showNoMoreItemsIndicatorAsGridChild] is false', (tester) async {
         tester.applyPreferredTestScreenSize();
 
-        final state = TestPagingState.completed();
+        final state = TestPagingState.completed(n: 1);
 
         final customIndicatorKey = UniqueKey();
         final customNoMoreItemsIndicator = Text(
