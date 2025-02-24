@@ -44,7 +44,8 @@ extension PagingStatusExtension on PagingState {
     if (_isOngoing) return PagingStatus.ongoing;
     if (_hasSubsequentPageError) return PagingStatus.subsequentPageError;
     if (_isCompleted) return PagingStatus.completed;
-    // coverage:ignore-start // This can never happen under normal circumstances.
+    // This can never happen under normal circumstances.
+    // coverage:ignore-start
     throw StateError('Unknown status; Did you forget to implement a case?');
     // coverage:ignore-end
   }
