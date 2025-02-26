@@ -44,8 +44,6 @@ class _ExampleScreenState extends State<ExampleScreen> {
   void _fetchNextPage() async {
     if (_state.isLoading) return;
 
-    await Future.value();
-
     setState(() {
       _state = _state.copyWith(isLoading: true, error: null);
     });
