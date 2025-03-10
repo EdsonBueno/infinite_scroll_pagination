@@ -22,7 +22,14 @@ class _ListViewScreenState extends State<ListViewScreen> {
   /// The controller can also be used in multiple Paged layouts simultaneously,
   /// to share their state.
   late final _pagingController = PagingController<int, Photo>(
-    getNextPageKey: (state) => (state.keys?.last ?? 0) + 1,
+    getNextPageKey: (state) {
+      // This convenience getter checks if the last returned page is empty.
+      // You can replace this with a check if the last page has returned less items than expected,
+      // for a more efficient implementation.
+      if (state.lastPageIsEmpty) return null;
+      // This convenience getter increments the page key by 1, assuming keys start at 1.
+      return state.nextIntPageKey;
+    },
     fetchPage: (pageKey) => RemoteApi.getPhotos(pageKey, search: _searchTerm),
   );
 

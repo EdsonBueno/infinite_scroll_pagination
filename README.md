@@ -40,7 +40,7 @@ class ListViewScreen extends StatefulWidget {
 
 class _ListViewScreenState extends State<ListViewScreen> {
   late final _pagingController = PagingController<int, Photo>(
-    getNextPageKey: (state) => (state.keys?.last ?? 0) + 1,
+    getNextPageKey: (state) => state.lastPageIsEmpty ? null : state.nextIntPageKey,
     fetchPage: (pageKey) => RemoteApi.getPhotos(pageKey),
   );
 

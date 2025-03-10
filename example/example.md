@@ -9,7 +9,7 @@ PagingController is the out-of-the-box solution that comes with the package for 
 ```dart
 class _ExampleScreenState extends State<ExampleScreen> {
   late final _pagingController = PagingController<int, Photo>(
-    getNextPageKey: (state) => (state.keys?.last ?? 0) + 1,
+    getNextPageKey: (state) => state.lastPageIsEmpty ? null : state.nextIntPageKey,
     fetchPage: (pageKey) => RemoteApi.getPhotos(pageKey),
   );
 

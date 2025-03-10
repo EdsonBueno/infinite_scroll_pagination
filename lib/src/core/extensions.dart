@@ -3,6 +3,7 @@ import 'package:infinite_scroll_pagination/src/core/paging_state.dart';
 import 'package:infinite_scroll_pagination/src/core/paging_status.dart';
 import 'package:meta/meta.dart';
 
+/// Helper extensions to make working with [PagingState] easier.
 extension PagingStateExtension<PageKeyType, ItemType>
     on PagingState<PageKeyType, ItemType> {
   /// The list of items fetched so far. A flattened version of [pages].
@@ -36,6 +37,22 @@ extension PagingStateExtension<PageKeyType, ItemType>
       copyWith(
         pages: pages?.map((page) => page.where(predicate).toList()).toList(),
       );
+
+  /// Convenience getter to check if the last page is empty.
+  /// This is useful if your API returns an empty page when there are no more items to fetch.
+  ///
+  /// Checking for the last page in this manner is more robust than checking if the returned page
+  /// has less than the expected number of items, because it does not require knowing the page size.
+  /// However, it can be potentially wasteful, since one additional empty page will be fetched.
+  bool get lastPageIsEmpty => pages?.lastOrNull?.isEmpty ?? false;
+}
+
+/// Helper extensions to make working with [PagingState] with integer keys easier.
+extension IntPagingStateExtension<ItemType> on PagingState<int, ItemType> {
+  /// Convenience method to get the next page key.
+  ///
+  /// Assumes that keys start at 1 and increment by 1.
+  int get nextIntPageKey => (keys?.lastOrNull ?? 0) + 1;
 }
 
 /// Helper extensions to quickly access the state of a [PagingController].
