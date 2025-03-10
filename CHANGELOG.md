@@ -3,6 +3,9 @@
 - nextIntPageKey convenience getter for int pages starting at 1
 - lastPageIsEmpty convenience getter for APIs which return empty pages when no more data is available
 
+### Fixed
+- disposing PagingController cancels fetch
+
 ## 5.0.0 - 2025-02-24
 ### Added
 - `PagingListener` widget to connect a `PagingController` to a `PagedLayoutBuilder`.

@@ -128,4 +128,10 @@ class PagingController<PageKeyType, ItemType>
     operation = null;
     value = value.copyWith(isLoading: false);
   }
+
+  @override
+  void dispose() {
+    operation = null;
+    super.dispose();
+  }
 }
