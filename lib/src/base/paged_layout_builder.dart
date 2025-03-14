@@ -162,7 +162,7 @@ class _PagedLayoutBuilderState<PageKeyType, ItemType>
   @override
   void initState() {
     super.initState();
-    if (_state.status == PagingStatus.loadingFirstPage) {
+    if (_state.status == PagingStatus.loadingFirstPage && !_state.isLoading) {
       _fetchNextPage();
     }
   }
@@ -172,7 +172,8 @@ class _PagedLayoutBuilderState<PageKeyType, ItemType>
       covariant PagedLayoutBuilder<PageKeyType, ItemType> oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.state != widget.state) {
-      if (_state.status == PagingStatus.loadingFirstPage) {
+      if (_state.status == PagingStatus.loadingFirstPage
+          && !_state.isLoading) {
         _fetchNextPage();
       } else if (_state.status == PagingStatus.ongoing) {
         _hasRequestedNextPage = false;
@@ -260,7 +261,7 @@ class _PagedLayoutBuilderState<PageKeyType, ItemType>
       // This behaviour is okay because we make sure not to excessively request pages.
       final hasPassedTrigger = index >= triggerIndex;
 
-      if (_hasNextPage && hasPassedTrigger) {
+      if (_hasNextPage && hasPassedTrigger && !_state.isLoading) {
         _hasRequestedNextPage = true;
         _fetchNextPage();
       }
