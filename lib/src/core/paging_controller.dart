@@ -97,7 +97,7 @@ class PagingController<PageKeyType, ItemType>
       state = value;
 
       // Check if there is no more items left / reached last page
-      bool isLastPage = newItems.isEmpty || newItems.length < limit;
+      bool isLastPage = newItems.isEmpty || newItems.length < limitPerPage;
 
       state = state.copyWith(
         pages: [...?state.pages, newItems],
