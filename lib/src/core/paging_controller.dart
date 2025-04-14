@@ -24,7 +24,7 @@ class PagingController<PageKeyType, ItemType>
     extends ValueNotifier<PagingState<PageKeyType, ItemType>> {
   PagingController({
     PagingState<PageKeyType, ItemType>? value,
-    required int limitPerPage;
+    required int limitPerPage,
     required NextPageKeyCallback<PageKeyType, ItemType> getNextPageKey,
     required FetchPageCallback<PageKeyType, ItemType> fetchPage,
   })  : _getNextPageKey = getNextPageKey,
