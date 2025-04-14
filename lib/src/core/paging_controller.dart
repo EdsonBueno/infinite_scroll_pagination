@@ -24,6 +24,7 @@ class PagingController<PageKeyType, ItemType>
     extends ValueNotifier<PagingState<PageKeyType, ItemType>> {
   PagingController({
     PagingState<PageKeyType, ItemType>? value,
+    required int limitPerPage;
     required NextPageKeyCallback<PageKeyType, ItemType> getNextPageKey,
     required FetchPageCallback<PageKeyType, ItemType> fetchPage,
   })  : _getNextPageKey = getNextPageKey,
@@ -31,6 +32,9 @@ class PagingController<PageKeyType, ItemType>
         super(
           value ?? PagingState<PageKeyType, ItemType>(),
         );
+
+  /// Variable for checking if already reached the last page
+  final int limitPerPage;
 
   /// The function to get the next page key.
   /// If this function returns `null`, it indicates that there are no more pages to load.
@@ -92,9 +96,13 @@ class PagingController<PageKeyType, ItemType>
       // This beaks atomicity, but is necessary to allow users to modify the state during a fetch.
       state = value;
 
+      // Check if there is no more items left / reached last page
+      bool isLastPage = newItems.isEmpty || newItems.length < limit;
+
       state = state.copyWith(
         pages: [...?state.pages, newItems],
         keys: [...?state.keys, nextPageKey],
+        hasNextPage: !isLastPage,
       );
     } catch (error) {
       state = state.copyWith(error: error);
