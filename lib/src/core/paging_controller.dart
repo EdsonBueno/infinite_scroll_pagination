@@ -34,7 +34,7 @@ class PagingController<PageKeyType, ItemType>
         );
 
   /// Variable for checking if already reached the last page
-  final int limitPerPage;
+  late final int limitPerPage;
 
   /// The function to get the next page key.
   /// If this function returns `null`, it indicates that there are no more pages to load.
