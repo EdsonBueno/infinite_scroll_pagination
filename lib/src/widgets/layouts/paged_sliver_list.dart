@@ -24,14 +24,14 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
     this.itemExtent,
     this.prototypeItem,
     this.semanticIndexCallback,
+    this.customItemCount,
     this.shrinkWrapFirstPageIndicators = false,
-    Key? key,
+    super.key,
   })  : assert(
           itemExtent == null || prototypeItem == null,
           'You can only pass itemExtent or prototypeItem, not both',
         ),
-        _separatorBuilder = null,
-        super(key: key);
+        _separatorBuilder = null;
 
   const PagedSliverList.separated({
     required this.pagingController,
@@ -40,13 +40,13 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
     this.addAutomaticKeepAlives = true,
     this.addRepaintBoundaries = true,
     this.addSemanticIndexes = true,
+    this.customItemCount,
     this.itemExtent,
     this.semanticIndexCallback,
     this.shrinkWrapFirstPageIndicators = false,
-    Key? key,
+    super.key,
   })  : prototypeItem = null,
-        _separatorBuilder = separatorBuilder,
-        super(key: key);
+        _separatorBuilder = separatorBuilder;
 
   /// Matches [PagedLayoutBuilder.pagingController].
   final PagingController<PageKeyType, ItemType> pagingController;
@@ -82,6 +82,8 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
   /// Matches [PagedLayoutBuilder.shrinkWrapFirstPageIndicators].
   final bool shrinkWrapFirstPageIndicators;
 
+  final int? customItemCount;
+
   @override
   Widget build(BuildContext context) =>
       PagedLayoutBuilder<PageKeyType, ItemType>(
@@ -96,7 +98,7 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
         ) =>
             _buildSliverList(
           itemBuilder,
-          itemCount,
+          customItemCount ?? itemCount,
           statusIndicatorBuilder: noMoreItemsIndicatorBuilder,
         ),
         loadingListingBuilder: (
@@ -107,7 +109,7 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
         ) =>
             _buildSliverList(
           itemBuilder,
-          itemCount,
+          customItemCount ?? itemCount,
           statusIndicatorBuilder: progressIndicatorBuilder,
         ),
         errorListingBuilder: (
@@ -118,7 +120,7 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
         ) =>
             _buildSliverList(
           itemBuilder,
-          itemCount,
+          customItemCount ?? itemCount,
           statusIndicatorBuilder: errorIndicatorBuilder,
         ),
         shrinkWrapFirstPageIndicators: shrinkWrapFirstPageIndicators,
@@ -131,7 +133,7 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
   }) {
     final delegate = _buildSliverDelegate(
       itemBuilder,
-      itemCount,
+      customItemCount ?? itemCount,
       statusIndicatorBuilder: statusIndicatorBuilder,
     );
 
@@ -162,7 +164,7 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
     return separatorBuilder == null
         ? AppendedSliverChildBuilderDelegate(
             builder: itemBuilder,
-            childCount: itemCount,
+            childCount: customItemCount ?? itemCount,
             appendixBuilder: statusIndicatorBuilder,
             addAutomaticKeepAlives: addAutomaticKeepAlives,
             addRepaintBoundaries: addRepaintBoundaries,
@@ -171,7 +173,7 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
           )
         : AppendedSliverChildBuilderDelegate.separated(
             builder: itemBuilder,
-            childCount: itemCount,
+            childCount: customItemCount ?? itemCount,
             appendixBuilder: statusIndicatorBuilder,
             separatorBuilder: separatorBuilder,
             addAutomaticKeepAlives: addAutomaticKeepAlives,
