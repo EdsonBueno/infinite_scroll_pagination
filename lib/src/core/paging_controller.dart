@@ -51,7 +51,7 @@ class PagingController<PageKeyType, ItemType>
   /// Fetches the next page.
   ///
   /// If called while a page is fetching or no more pages are available, this method does nothing.
-  void fetchNextPage() async {
+  Future<void> fetchNextPage() async {
     // We are already loading a new page.
     if (this.operation != null) return;
 
