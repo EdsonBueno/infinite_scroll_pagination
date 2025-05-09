@@ -114,9 +114,7 @@ class _PagedLayoutBuilderState<PageKeyType, ItemType>
       // This is important to prevent recursive builds.
       () => WidgetsBinding.instance
           .addPostFrameCallback((_) {
-            if(!mounted) {
-              return;
-            }
+            if(!mounted) return;
             widget.fetchNextPage();
           });
 
