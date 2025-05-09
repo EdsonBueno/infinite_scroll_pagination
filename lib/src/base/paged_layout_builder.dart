@@ -113,7 +113,10 @@ class _PagedLayoutBuilderState<PageKeyType, ItemType>
       // We make sure to only schedule the fetch after the current build is done.
       // This is important to prevent recursive builds.
       () => WidgetsBinding.instance
-          .addPostFrameCallback((_) => widget.fetchNextPage());
+          .addPostFrameCallback((_) {
+            if(!mounted) return;
+            widget.fetchNextPage();
+          });
 
   PagedChildBuilderDelegate<ItemType> get _builderDelegate =>
       widget.builderDelegate;
