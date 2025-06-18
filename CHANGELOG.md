@@ -1,3 +1,11 @@
+## Unreleased
+### Changed
+- Update example widget usage
+
+### Fixed
+- Bloc example state equality
+- Paging state hash code
+
 ## 5.1.0 - 2025-06-18
 ### Added
 - nextIntPageKey convenience getter for int pages starting at 1
