@@ -1,4 +1,4 @@
-## Unreleased
+## 5.1.0 - 2025-06-18
 ### Added
 - nextIntPageKey convenience getter for int pages starting at 1
 - lastPageIsEmpty convenience getter for APIs which return empty pages when no more data is available
