@@ -1,7 +1,4 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:rxdart/rxdart.dart';
 
 class SearchInputSliver extends StatefulWidget {
   const SearchInputSliver({
@@ -20,25 +17,7 @@ class SearchInputSliver extends StatefulWidget {
 }
 
 class _SearchInputSliverState extends State<SearchInputSliver> {
-  final StreamController<String> _textChangeStreamController =
-      StreamController();
-  late StreamSubscription _textChangesSubscription;
-
   final SearchController _searchController = SearchController();
-
-  @override
-  void initState() {
-    super.initState();
-    _textChangesSubscription = _textChangeStreamController.stream
-        .debounceTime(
-          widget.debounceTime ??
-              const Duration(
-                seconds: 1,
-              ),
-        )
-        .distinct()
-        .listen(widget.onChanged?.call);
-  }
 
   @override
   Widget build(BuildContext context) => SliverToBoxAdapter(
@@ -84,11 +63,4 @@ class _SearchInputSliverState extends State<SearchInputSliver> {
           ),
         ),
       );
-
-  @override
-  void dispose() {
-    _textChangeStreamController.close();
-    _textChangesSubscription.cancel();
-    super.dispose();
-  }
 }
