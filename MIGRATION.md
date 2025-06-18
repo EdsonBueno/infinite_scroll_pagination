@@ -32,10 +32,14 @@ PagingController now directly takes and controls the fetching process:
 
 ```dart
 late final pagingController = PagingController<int, Photo>(
-  getNextPageKey: (state) => (state.keys?.last ?? 0) + 1,
+  getNextPageKey: (state) => state.lastPageIsEmpty ? null : state.nextIntPageKey,
   fetchPage: (pageKey) => fetchPage(pageKey),
 );
 ```
+
+Fetching the next page is handled via the `fetchPage` parameter.
+The result is automatically merged with the current state. To indicate whether a page is the last page, `getNextPageKey` should return `null` on its next call.
+If you have complicated custom logic for computing the next page key, consider writing your own Controller or extending the PagingController.
 
 This fixes several issues of the past:
 
@@ -123,6 +127,11 @@ The PagingState has been updated to be more flexible:
 Because Items are now stored within pages, it is more difficult to modify the items directly.
 To make this easier, a `mapItems` extension method has been added to modify the items by iterating over them.
 Additionally, a `filterItems` extension method has been added to filter the items. This is useful for creating locally filtered computed states.
+
+To allow for easy retrieval of the next page key, the `lastPageIsEmpty` and `nextIntPageKey` getters have been added.
+
+The internals of PagingState have been restructured to allow directly extending it, without breaking its interface.
+You can see an example of this in the PagingStateBase class.
 
 ### API Changes
 
