@@ -285,13 +285,15 @@ class _ExampleScreenState extends State<ExampleScreen> {
   Widget build(BuildContext context) =>
       CustomScrollView(
         slivers: [
-          SearchInputSliver(
-            onChanged: _updateSearchTerm,
-          ),
-          PagedSliverList<int, Photo>(
-            pagingController: _pagingController,
-            builderDelegate: PagedChildBuilderDelegate<Photo>(
-              itemBuilder: (context, item, index) => ImageListTile(item: item),
+          SearchInputSliver(onChanged: _updateSearchTerm),
+          PagingListener(
+            controller: _pagingController,
+            builder: (context, state, fetchNextPage) => PagedSliverList<int, Photo>(
+              state: state,
+              fetchNextPage: fetchNextPage,
+              builderDelegate: PagedChildBuilderDelegate<Photo>(
+                itemBuilder: (context, item, index) => ImageListTile(item: item),
+              ),
             ),
           ),
         ],
@@ -319,7 +321,8 @@ Widget build(BuildContext context) =>
       showNewPageProgressIndicatorAsGridChild: false,
       showNewPageErrorIndicatorAsGridChild: false,
       showNoMoreItemsIndicatorAsGridChild: false,
-      pagingController: _pagingController,
+      state: state,
+      fetchNextPage: fetchNextPage,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         childAspectRatio: 100 / 150,
         crossAxisSpacing: 10,
@@ -356,7 +359,8 @@ Creating a new layout is just a matter of using [PagedLayoutBuilder](https://pub
 ```dart
 PagedLayoutBuilder<PageKeyType, ItemType>(
   layoutProtocol: PagedLayoutProtocol.sliver,
-  pagingController: pagingController,
+  state: state,
+  fetchNextPage: fetchNextPage,
   builderDelegate: builderDelegate,
   completedListingBuilder: (
     context,
