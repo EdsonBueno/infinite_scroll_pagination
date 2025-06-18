@@ -95,5 +95,6 @@ base class PagingStateBase<PageKeyType, ItemType>
         _equality.hash(keys),
         error,
         hasNextPage,
+        isLoading,
       );
 }
