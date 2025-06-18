@@ -21,34 +21,19 @@ final class PagingChangeSearch extends PagingEvent {
 }
 
 @immutable
-class BlocPagingState<T> implements PagingState<int, T> {
+final class BlocPagingState<T> extends PagingStateBase<int, T> {
   /// A custom implementation of [PagingState].
   /// It features an additional [search] field for search functionality,
   /// and a [cancelToken] to manage cancellation of ongoing fetch operations.
-  const BlocPagingState({
-    this.pages,
-    this.keys,
-    this.error,
-    this.hasNextPage = true,
-    this.isLoading = false,
+  BlocPagingState({
+    super.pages,
+    super.keys,
+    super.error,
+    super.hasNextPage,
+    super.isLoading,
     this.search,
     this.cancelToken,
   });
-
-  @override
-  final List<List<T>>? pages;
-
-  @override
-  final List<int>? keys;
-
-  @override
-  final Object? error;
-
-  @override
-  final bool hasNextPage;
-
-  @override
-  final bool isLoading;
 
   final String? search;
 
@@ -83,6 +68,20 @@ class BlocPagingState<T> implements PagingState<int, T> {
         isLoading: false,
         search: this.search,
         cancelToken: BlocCancelToken(),
+      );
+
+  @override
+  bool operator ==(Object other) =>
+      other is BlocPagingState<T> &&
+      super == (other) &&
+      search == other.search &&
+      cancelToken == other.cancelToken;
+
+  @override
+  int get hashCode => Object.hash(
+        super.hashCode,
+        search,
+        cancelToken,
       );
 }
 
