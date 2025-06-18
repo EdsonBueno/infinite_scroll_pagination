@@ -6,7 +6,7 @@ import 'dart:math';
 import 'package:infinite_example/remote/item.dart';
 import 'package:http/http.dart' as http;
 
-class RemoteApi {
+sealed class RemoteApi {
   static Future<List<Photo>> getPhotos(
     int page, {
     int limit = 20,
@@ -18,16 +18,14 @@ class RemoteApi {
 
     return Future.delayed(
       const Duration(seconds: 0),
-      () => http
-          .get(
-            _ApiUrlBuilder.photos(page, limit, search),
-          )
-          .mapFromResponse<List<Photo>, List<dynamic>>(
-            (jsonArray) => _parseItemListFromJsonArray(
-              jsonArray,
-              Photo.fromPlaceholderJson,
-            ),
-          ),
+      () => http.get(_ApiUrlBuilder.photos(page, limit, search), headers: {
+        HttpHeaders.acceptHeader: 'application/json',
+      }).mapFromResponse<List<Photo>, List<dynamic>>(
+        (jsonArray) => _parseItemListFromJsonArray(
+          jsonArray,
+          Photo.fromPlaceholderJson,
+        ),
+      ),
     );
   }
 
