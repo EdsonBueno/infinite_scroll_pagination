@@ -2,6 +2,7 @@
 ### Added
 - nextIntPageKey convenience getter for int pages starting at 1
 - lastPageIsEmpty convenience getter for APIs which return empty pages when no more data is available
+- flutter bloc example
 
 ### Fixed
 - disposing PagingController cancels fetch
