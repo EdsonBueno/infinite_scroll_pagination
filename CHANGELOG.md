@@ -4,6 +4,9 @@
 - lastPageIsEmpty convenience getter for APIs which return empty pages when no more data is available
 - flutter bloc example
 
+### Changed
+- Updated migration guide on how to handle final page
+
 ### Fixed
 - disposing PagingController cancels fetch
 
