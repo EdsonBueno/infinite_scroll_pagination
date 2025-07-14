@@ -57,6 +57,9 @@ final class BlocPagingState<T> extends PagingStateBase<int, T> {
             hasNextPage is Omit ? this.hasNextPage : hasNextPage as bool,
         isLoading: isLoading is Omit ? this.isLoading : isLoading as bool,
         search: search is Omit ? this.search : search as String?,
+        cancelToken: cancelToken is Omit
+            ? this.cancelToken
+            : cancelToken as BlocCancelToken?,
       );
 
   @override
