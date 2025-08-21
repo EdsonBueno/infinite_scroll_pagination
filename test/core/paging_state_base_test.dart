@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:infinite_scroll_pagination/src/core/paging_state.dart';
 import 'package:infinite_scroll_pagination/src/core/paging_state_base.dart';
 
 void main() {
@@ -72,7 +71,28 @@ void main() {
       expect(newState.isLoading, isTrue);
     });
 
-    test('copyWith retains values when Omit is passed', () {
+    test('copyWith retains values when no parameters are passed', () {
+      final state = PagingStateBase<int, String>(
+        pages: [
+          ['Item 1']
+        ],
+        keys: [1],
+        error: 'Initial error',
+        hasNextPage: false,
+        isLoading: true,
+      );
+
+      final newState = state.copyWith();
+
+      expect(newState.pages, state.pages);
+      expect(newState.keys, state.keys);
+      expect(newState.error, state.error);
+      expect(newState.hasNextPage, state.hasNextPage);
+      expect(newState.isLoading, state.isLoading);
+    });
+
+    test('copyWith replaces values with null when null is passed explicitly',
+        () {
       final state = PagingStateBase<int, String>(
         pages: [
           ['Item 1']
@@ -84,18 +104,19 @@ void main() {
       );
 
       final newState = state.copyWith(
-        pages: const Omit(),
-        keys: const Omit(),
-        error: const Omit(),
-        hasNextPage: const Omit(),
-        isLoading: const Omit(),
+        pages: null,
+        keys: null,
+        error: null,
+        hasNextPage: null,
+        isLoading: null,
       );
 
-      expect(newState.pages, state.pages);
-      expect(newState.keys, state.keys);
-      expect(newState.error, state.error);
-      expect(newState.hasNextPage, state.hasNextPage);
-      expect(newState.isLoading, state.isLoading);
+      expect(newState.pages, isNull);
+      expect(newState.keys, isNull);
+      expect(newState.error, isNull);
+      // these values cannot be null, so they retain their previous values
+      expect(newState.hasNextPage, isFalse);
+      expect(newState.isLoading, isTrue);
     });
 
     test('reset creates a default state', () {

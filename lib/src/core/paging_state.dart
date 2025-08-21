@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/foundation.dart';
 import 'package:infinite_scroll_pagination/src/core/paging_state_base.dart';
 
@@ -37,20 +35,17 @@ abstract class PagingState<PageKeyType, ItemType> {
   /// Will be `true` if a page is currently being fetched.
   bool get isLoading;
 
-  /// Creates a copy of this [PagingState] but with the given fields replaced by the new values.
-  /// If a field is not provided, it will default to the current value.
+  /// Create a copy of this [PagingState] with the given parameters.
   ///
-  /// While this implementation technically accepts Futures, passing a Future is invalid.
-  /// The Defaulted type is used to allow for the Omit sentinel value,
-  /// which is required to distinguish between a parameter being omitted and a parameter being set to null.
-  // copyWith a la Remi Rousselet: https://github.com/dart-lang/language/issues/137#issuecomment-583783054
-  PagingState<PageKeyType, ItemType> copyWith({
-    Defaulted<List<List<ItemType>>?>? pages = const Omit(),
-    Defaulted<List<PageKeyType>?>? keys = const Omit(),
-    Defaulted<Object?>? error = const Omit(),
-    Defaulted<bool>? hasNextPage = const Omit(),
-    Defaulted<bool>? isLoading = const Omit(),
-  });
+  /// This is a getter to allow a copyWith sentinel pattern.
+  /// for more information, see https://github.com/dart-lang/language/issues/140#issuecomment-3070719142
+  PagingState<PageKeyType, ItemType> Function({
+    List<List<ItemType>>? pages,
+    List<PageKeyType>? keys,
+    Object? error,
+    bool? hasNextPage,
+    bool? isLoading,
+  }) get copyWith;
 
   /// Returns a copy this [PagingState] but
   /// all fields are reset to their initial values.
@@ -61,21 +56,4 @@ abstract class PagingState<PageKeyType, ItemType> {
   /// The reason we use this instead of creating a new instance is so that
   /// a custom [PagingState] can be reset without losing its type.
   PagingState<PageKeyType, ItemType> reset();
-}
-
-typedef Defaulted<T> = FutureOr<T>;
-
-/// Sentinel value to omit a parameter from a copyWith call.
-/// This is used to distinguish between a parameter being omitted and a parameter
-/// being set to null.
-/// See https://github.com/dart-lang/language/issues/140 for why this is necessary.
-final class Omit<T> implements Future<T> {
-  const Omit();
-
-  // coverage:ignore-start
-  @override
-  noSuchMethod(Invocation invocation) => throw UnsupportedError(
-        'It is an error to attempt to use a Omit as a Future.',
-      );
-  // coverage:ignore-end
 }

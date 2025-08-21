@@ -39,28 +39,41 @@ final class BlocPagingState<T> extends PagingStateBase<int, T> {
 
   final BlocCancelToken? cancelToken;
 
+  static const _sentinel = Object();
+
   @override
-  BlocPagingState<T> copyWith({
-    Defaulted<List<List<T>>?>? pages = const Omit(),
-    Defaulted<List<int>?>? keys = const Omit(),
-    Defaulted<Object?>? error = const Omit(),
-    Defaulted<bool>? hasNextPage = const Omit(),
-    Defaulted<bool>? isLoading = const Omit(),
-    Defaulted<String?> search = const Omit(),
-    Defaulted<BlocCancelToken?> cancelToken = const Omit(),
-  }) =>
-      BlocPagingState<T>(
-        pages: pages is Omit ? this.pages : pages as List<List<T>>?,
-        keys: keys is Omit ? this.keys : keys as List<int>?,
-        error: error is Omit ? this.error : error,
-        hasNextPage:
-            hasNextPage is Omit ? this.hasNextPage : hasNextPage as bool,
-        isLoading: isLoading is Omit ? this.isLoading : isLoading as bool,
-        search: search is Omit ? this.search : search as String?,
-        cancelToken: cancelToken is Omit
-            ? this.cancelToken
-            : cancelToken as BlocCancelToken?,
-      );
+  BlocPagingState<T> Function({
+    List<List<T>>? pages,
+    List<int>? keys,
+    Object? error,
+    bool? hasNextPage,
+    bool? isLoading,
+    String? search,
+    BlocCancelToken? cancelToken,
+  }) get copyWith => ({
+        Object? pages = _sentinel,
+        Object? keys = _sentinel,
+        Object? error = _sentinel,
+        Object? hasNextPage = _sentinel,
+        Object? isLoading = _sentinel,
+        Object? search = _sentinel,
+        Object? cancelToken = _sentinel,
+      }) =>
+          BlocPagingState<T>(
+            pages: pages == _sentinel ? this.pages : pages as List<List<T>>?,
+            keys: keys == _sentinel ? this.keys : keys as List<int>?,
+            error: error == _sentinel ? this.error : error,
+            hasNextPage: hasNextPage == _sentinel
+                ? this.hasNextPage
+                : (hasNextPage as bool?) ?? this.hasNextPage,
+            isLoading: isLoading == _sentinel
+                ? this.isLoading
+                : (isLoading as bool?) ?? this.isLoading,
+            search: search == _sentinel ? this.search : search as String?,
+            cancelToken: cancelToken == _sentinel
+                ? this.cancelToken
+                : cancelToken as BlocCancelToken?,
+          );
 
   @override
   BlocPagingState<T> reset() => BlocPagingState<T>(

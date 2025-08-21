@@ -45,22 +45,35 @@ base class PagingStateBase<PageKeyType, ItemType>
   @override
   final bool isLoading;
 
+  static const _sentinel = Object();
+
   @override
-  PagingState<PageKeyType, ItemType> copyWith({
-    Defaulted<List<List<ItemType>>?>? pages = const Omit(),
-    Defaulted<List<PageKeyType>?>? keys = const Omit(),
-    Defaulted<Object?>? error = const Omit(),
-    Defaulted<bool>? hasNextPage = const Omit(),
-    Defaulted<bool>? isLoading = const Omit(),
-  }) =>
-      PagingStateBase(
-        pages: pages is Omit ? this.pages : pages as List<List<ItemType>>?,
-        keys: keys is Omit ? this.keys : keys as List<PageKeyType>?,
-        error: error is Omit ? this.error : error as Object?,
-        hasNextPage:
-            hasNextPage is Omit ? this.hasNextPage : hasNextPage as bool,
-        isLoading: isLoading is Omit ? this.isLoading : isLoading as bool,
-      );
+  PagingState<PageKeyType, ItemType> Function({
+    List<List<ItemType>>? pages,
+    List<PageKeyType>? keys,
+    Object? error,
+    bool? hasNextPage,
+    bool? isLoading,
+  }) get copyWith => ({
+        Object? pages = _sentinel,
+        Object? keys = _sentinel,
+        Object? error = _sentinel,
+        Object? hasNextPage = _sentinel,
+        Object? isLoading = _sentinel,
+      }) =>
+          PagingStateBase(
+            pages: pages == _sentinel
+                ? this.pages
+                : pages as List<List<ItemType>>?,
+            keys: keys == _sentinel ? this.keys : keys as List<PageKeyType>?,
+            error: error == _sentinel ? this.error : error,
+            hasNextPage: hasNextPage == _sentinel
+                ? this.hasNextPage
+                : (hasNextPage as bool?) ?? this.hasNextPage,
+            isLoading: isLoading == _sentinel
+                ? this.isLoading
+                : (isLoading as bool?) ?? this.isLoading,
+          );
 
   @override
   PagingState<PageKeyType, ItemType> reset() => PagingStateBase(
