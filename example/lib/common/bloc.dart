@@ -69,7 +69,7 @@ final class BlocPagingState<T> extends PagingStateBase<int, T> {
         error: null,
         hasNextPage: true,
         isLoading: false,
-        search: this.search,
+        search: search,
         cancelToken: BlocCancelToken(),
       );
 
