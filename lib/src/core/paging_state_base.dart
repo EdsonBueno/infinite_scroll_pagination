@@ -23,7 +23,7 @@ base class PagingStateBase<PageKeyType, ItemType>
         ),
         pages = switch (pages) {
           null => null,
-          _ => List.unmodifiable(pages),
+          _ => List.unmodifiable(pages.map<List<ItemType>>(List.unmodifiable)),
         },
         keys = switch (keys) {
           null => null,
