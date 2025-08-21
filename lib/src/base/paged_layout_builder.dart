@@ -112,9 +112,8 @@ class _PagedLayoutBuilderState<PageKeyType, ItemType>
   NextPageCallback get _fetchNextPage =>
       // We make sure to only schedule the fetch after the current build is done.
       // This is important to prevent recursive builds.
-      () => WidgetsBinding.instance
-          .addPostFrameCallback((_) {
-            if(!mounted) return;
+      () => WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (!mounted) return;
             widget.fetchNextPage();
           });
 
@@ -155,10 +154,6 @@ class _PagedLayoutBuilderState<PageKeyType, ItemType>
 
   int get _invisibleItemsThreshold => _builderDelegate.invisibleItemsThreshold;
 
-  int get _itemCount => _state.items?.length ?? 0;
-
-  bool get _hasNextPage => _state.hasNextPage;
-
   /// Avoids duplicate requests on rebuilds.
   bool _hasRequestedNextPage = false;
 
@@ -185,11 +180,13 @@ class _PagedLayoutBuilderState<PageKeyType, ItemType>
 
   @override
   Widget build(BuildContext context) {
+    final PagingState(:status, :items, :hasNextPage) = _state;
+    final int itemCount = items?.length ?? 0;
     return _PagedLayoutAnimator(
       animateTransitions: _builderDelegate.animateTransitions,
       transitionDuration: _builderDelegate.transitionDuration,
       layoutProtocol: _layoutProtocol,
-      child: switch (_state.status) {
+      child: switch (status) {
         PagingStatus.loadingFirstPage => _FirstPageStatusIndicatorBuilder(
             key: const ValueKey(PagingStatus.loadingFirstPage),
             builder: _firstPageProgressIndicatorBuilder,
@@ -210,16 +207,13 @@ class _PagedLayoutBuilderState<PageKeyType, ItemType>
           ),
         PagingStatus.ongoing => widget.loadingListingBuilder(
             context,
-            // We must create this closure to close over the [itemList]
-            // value. That way, we are safe if [itemList] value changes
-            // while Flutter rebuilds the widget (due to animations, for
-            // example.)
             (context, index) => _buildListItemWidget(
               context,
               index,
-              _state.items!,
+              items!,
+              hasNextPage,
             ),
-            _itemCount,
+            itemCount,
             _newPageProgressIndicatorBuilder,
           ),
         PagingStatus.subsequentPageError => widget.errorListingBuilder(
@@ -227,9 +221,10 @@ class _PagedLayoutBuilderState<PageKeyType, ItemType>
             (context, index) => _buildListItemWidget(
               context,
               index,
-              _state.items!,
+              items!,
+              hasNextPage,
             ),
-            _itemCount,
+            itemCount,
             (context) => _newPageErrorIndicatorBuilder(context),
           ),
         PagingStatus.completed => widget.completedListingBuilder(
@@ -237,9 +232,10 @@ class _PagedLayoutBuilderState<PageKeyType, ItemType>
             (context, index) => _buildListItemWidget(
               context,
               index,
-              _state.items!,
+              items!,
+              hasNextPage,
             ),
-            _itemCount,
+            itemCount,
             _noMoreItemsIndicatorBuilder,
           ),
       },
@@ -252,9 +248,10 @@ class _PagedLayoutBuilderState<PageKeyType, ItemType>
     BuildContext context,
     int index,
     List<ItemType> itemList,
+    bool hasNextPage,
   ) {
     if (!_hasRequestedNextPage) {
-      final maxIndex = max(0, _itemCount - 1);
+      final maxIndex = max(0, itemList.length - 1);
       final triggerIndex = max(0, maxIndex - _invisibleItemsThreshold);
 
       // It is important to check whether we are past the trigger, not just at it.
@@ -263,7 +260,7 @@ class _PagedLayoutBuilderState<PageKeyType, ItemType>
       // This behaviour is okay because we make sure not to excessively request pages.
       final hasPassedTrigger = index >= triggerIndex;
 
-      if (_hasNextPage && hasPassedTrigger) {
+      if (hasNextPage && hasPassedTrigger) {
         _hasRequestedNextPage = true;
         _fetchNextPage();
       }
