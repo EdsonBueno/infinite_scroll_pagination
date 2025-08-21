@@ -155,7 +155,7 @@ class _PagedLayoutBuilderState<PageKeyType, ItemType>
 
   int get _invisibleItemsThreshold => _builderDelegate.invisibleItemsThreshold;
 
-  int get _itemCount => _state.items?.length ?? 0;
+  int _itemCount(PagingState state) => state.items?.length ?? 0;
 
   bool get _hasNextPage => _state.hasNextPage;
 
@@ -185,11 +185,12 @@ class _PagedLayoutBuilderState<PageKeyType, ItemType>
 
   @override
   Widget build(BuildContext context) {
+    final state = _state;
     return _PagedLayoutAnimator(
       animateTransitions: _builderDelegate.animateTransitions,
       transitionDuration: _builderDelegate.transitionDuration,
       layoutProtocol: _layoutProtocol,
-      child: switch (_state.status) {
+      child: switch (state.status) {
         PagingStatus.loadingFirstPage => _FirstPageStatusIndicatorBuilder(
             key: const ValueKey(PagingStatus.loadingFirstPage),
             builder: _firstPageProgressIndicatorBuilder,
@@ -208,52 +209,40 @@ class _PagedLayoutBuilderState<PageKeyType, ItemType>
             shrinkWrap: _shrinkWrapFirstPageIndicators,
             layoutProtocol: _layoutProtocol,
           ),
-        PagingStatus.ongoing => () {
-            final items = _state.items ?? [];
-            final itemCount = items.length;
-            return widget.loadingListingBuilder(
+        PagingStatus.ongoing => widget.loadingListingBuilder(
+            context,
+            // We must create this closure to close over the [itemList]
+            // value. That way, we are safe if [itemList] value changes
+            // while Flutter rebuilds the widget (due to animations, for
+            // example.)
+            (context, index) => _buildListItemWidget(
               context,
-              // We must create this closure to close over the [itemList]
-              // value. That way, we are safe if [itemList] value changes
-              // while Flutter rebuilds the widget (due to animations, for
-              // example.)
-              (context, index) => _buildListItemWidget(
-                context,
-                index,
-                items,
-              ),
-              itemCount,
-              _newPageProgressIndicatorBuilder,
-            );
-          }(),
-        PagingStatus.subsequentPageError => () {
-            final items = _state.items ?? [];
-            final itemCount = items.length;
-            return widget.errorListingBuilder(
+              index,
+              state.items!,
+            ),
+            _itemCount(state),
+            _newPageProgressIndicatorBuilder,
+          ),
+        PagingStatus.subsequentPageError => widget.errorListingBuilder(
+            context,
+            (context, index) => _buildListItemWidget(
               context,
-              (context, index) => _buildListItemWidget(
-                context,
-                index,
-                items,
-              ),
-              itemCount,
-              (context) => _newPageErrorIndicatorBuilder(context),
-            );
-          }(),
-        PagingStatus.completed => () {
-            final items = _state.items ?? [];
-            final itemCount = items.length;
-            return widget.completedListingBuilder(
+              index,
+              state.items!,
+            ),
+            _itemCount(state),
+            (context) => _newPageErrorIndicatorBuilder(context),
+          ),
+        PagingStatus.completed => widget.completedListingBuilder(
+            context,
+            (context, index) => _buildListItemWidget(
               context,
-              (context, index) => _buildListItemWidget(
-                context,
-                index,
-                items,
-              ),
-              itemCount,
-              _noMoreItemsIndicatorBuilder,
-            );
-          }(),
+              index,
+              state.items!,
+            ),
+            _itemCount(state),
+            _noMoreItemsIndicatorBuilder,
+          ),
       },
     );
   }
@@ -266,7 +255,7 @@ class _PagedLayoutBuilderState<PageKeyType, ItemType>
     List<ItemType> itemList,
   ) {
     if (!_hasRequestedNextPage) {
-      final maxIndex = max(0, _itemCount - 1);
+      final maxIndex = max(0, itemList.length - 1);
       final triggerIndex = max(0, maxIndex - _invisibleItemsThreshold);
 
       // It is important to check whether we are past the trigger, not just at it.
