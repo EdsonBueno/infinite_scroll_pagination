@@ -21,20 +21,15 @@ base class PagingStateBase<PageKeyType, ItemType>
           pages?.length == keys?.length,
           'The length of pages and keys must be equal.',
         ),
-        pages = switch (pages) {
-          null => null,
-          _ => List.unmodifiable(pages.map<List<ItemType>>(List.unmodifiable)),
-        },
-        keys = switch (keys) {
-          null => null,
-          _ => List.unmodifiable(keys),
-        };
+        pages = List.unmodifiable(
+            pages?.map<List<ItemType>>(List.unmodifiable) ?? []),
+        keys = List.unmodifiable(keys ?? []);
 
   @override
-  final List<List<ItemType>>? pages;
+  final List<List<ItemType>> pages;
 
   @override
-  final List<PageKeyType>? keys;
+  final List<PageKeyType> keys;
 
   @override
   final Object? error;
@@ -62,23 +57,32 @@ base class PagingStateBase<PageKeyType, ItemType>
         Object? isLoading = _sentinel,
       }) =>
           PagingStateBase(
-            pages: pages == _sentinel
-                ? this.pages
-                : pages as List<List<ItemType>>?,
-            keys: keys == _sentinel ? this.keys : keys as List<PageKeyType>?,
-            error: error == _sentinel ? this.error : error,
-            hasNextPage: hasNextPage == _sentinel
-                ? this.hasNextPage
-                : (hasNextPage as bool?) ?? this.hasNextPage,
-            isLoading: isLoading == _sentinel
-                ? this.isLoading
-                : (isLoading as bool?) ?? this.isLoading,
+            pages: switch (pages) {
+              _sentinel || null => this.pages,
+              _ => pages as List<List<ItemType>>,
+            },
+            keys: switch (keys) {
+              _sentinel || null => this.keys,
+              _ => keys as List<PageKeyType>,
+            },
+            error: switch (error) {
+              _sentinel => this.error,
+              _ => error,
+            },
+            hasNextPage: switch (hasNextPage) {
+              _sentinel || null => this.hasNextPage,
+              _ => hasNextPage as bool,
+            },
+            isLoading: switch (isLoading) {
+              _sentinel || null => this.isLoading,
+              _ => isLoading as bool,
+            },
           );
 
   @override
   PagingState<PageKeyType, ItemType> reset() => PagingStateBase(
-        pages: null,
-        keys: null,
+        pages: [],
+        keys: [],
         error: null,
         hasNextPage: true,
         isLoading: false,

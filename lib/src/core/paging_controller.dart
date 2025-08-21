@@ -93,8 +93,8 @@ class PagingController<PageKeyType, ItemType>
       state = value;
 
       state = state.copyWith(
-        pages: [...?state.pages, newItems],
-        keys: [...?state.keys, nextPageKey],
+        pages: [...state.pages, newItems],
+        keys: [...state.keys, nextPageKey],
       );
     } catch (error) {
       state = state.copyWith(error: error);

@@ -60,25 +60,40 @@ final class BlocPagingState<T> extends PagingStateBase<int, T> {
         Object? cancelToken = _sentinel,
       }) =>
           BlocPagingState<T>(
-            pages: pages == _sentinel ? this.pages : pages as List<List<T>>?,
-            keys: keys == _sentinel ? this.keys : keys as List<int>?,
-            error: error == _sentinel ? this.error : error,
-            hasNextPage: hasNextPage == _sentinel
-                ? this.hasNextPage
-                : (hasNextPage as bool?) ?? this.hasNextPage,
-            isLoading: isLoading == _sentinel
-                ? this.isLoading
-                : (isLoading as bool?) ?? this.isLoading,
-            search: search == _sentinel ? this.search : search as String?,
-            cancelToken: cancelToken == _sentinel
-                ? this.cancelToken
-                : cancelToken as BlocCancelToken?,
+            pages: switch (pages) {
+              _sentinel || null => this.pages,
+              _ => pages as List<List<T>>,
+            },
+            keys: switch (keys) {
+              _sentinel || null => this.keys,
+              _ => keys as List<int>,
+            },
+            error: switch (error) {
+              _sentinel => this.error,
+              _ => error,
+            },
+            hasNextPage: switch (hasNextPage) {
+              _sentinel || null => this.hasNextPage,
+              _ => hasNextPage as bool,
+            },
+            isLoading: switch (isLoading) {
+              _sentinel || null => this.isLoading,
+              _ => isLoading as bool,
+            },
+            search: switch (search) {
+              _sentinel => this.search,
+              _ => search as String?,
+            },
+            cancelToken: switch (cancelToken) {
+              _sentinel => this.cancelToken,
+              _ => cancelToken as BlocCancelToken?,
+            },
           );
 
   @override
   BlocPagingState<T> reset() => BlocPagingState<T>(
-        pages: null,
-        keys: null,
+        pages: const [],
+        keys: const [],
         error: null,
         hasNextPage: true,
         isLoading: false,
@@ -165,8 +180,8 @@ class PagingBloc<T> extends Bloc<PagingEvent, BlocPagingState<T>> {
         isLoading: false,
         error: null,
         hasNextPage: !isLastPage,
-        pages: [...?state.pages, result],
-        keys: [...?state.keys, pageKey],
+        pages: [...state.pages, result],
+        keys: [...state.keys, pageKey],
         cancelToken: null,
       ));
     } catch (e) {

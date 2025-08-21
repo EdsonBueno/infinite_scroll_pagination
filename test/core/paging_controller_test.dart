@@ -89,7 +89,7 @@ void main() {
       // It is unclear whether this will come back to bite us.
       test('allows modifying state during a fetch', () async {
         pagingController = PagingController<int, String>(
-          getNextPageKey: (state) => (state.keys?.last ?? 0) + 1,
+          getNextPageKey: (state) => (state.keys.lastOrNull ?? 0) + 1,
           fetchPage: (page) => Future.value(['Item $page']),
         );
 
@@ -101,7 +101,7 @@ void main() {
 
         pagingController.value = pagingController.value.copyWith(
           pages: pagingController.value.pages
-              ?.map(
+              .map(
                 (a) => a.map((b) => b.toUpperCase()).toList(),
               )
               .toList(),
@@ -153,8 +153,8 @@ void main() {
 
         pagingController.refresh();
 
-        expect(pagingController.value.pages, isNull);
-        expect(pagingController.value.keys, isNull);
+        expect(pagingController.value.pages, isEmpty);
+        expect(pagingController.value.keys, isEmpty);
         expect(pagingController.value.isLoading, isFalse);
         expect(pagingController.value.error, isNull);
       });
@@ -210,7 +210,7 @@ void main() {
     group('cancel', () {
       test('resets state and stops fetch', () async {
         pagingController = PagingController<int, String>(
-          getNextPageKey: (state) => (state.keys?.last ?? 0) + 1,
+          getNextPageKey: (state) => (state.keys.lastOrNull ?? 0) + 1,
           fetchPage: (page) => Future.value(['Item $page']),
         );
 

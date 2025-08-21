@@ -6,8 +6,8 @@ void main() {
     test('constructs with default values', () {
       final state = PagingStateBase<int, String>();
 
-      expect(state.pages, isNull);
-      expect(state.keys, isNull);
+      expect(state.pages, isEmpty);
+      expect(state.keys, isEmpty);
       expect(state.error, isNull);
       expect(state.hasNextPage, isTrue);
       expect(state.isLoading, isFalse);
@@ -41,9 +41,8 @@ void main() {
         keys: [1],
       );
 
-      expect(() => (state.pages as List<List<String>>).add(['Item 2']),
-          throwsUnsupportedError);
-      expect(() => (state.keys as List<int>).add(2), throwsUnsupportedError);
+      expect(() => state.pages.add(['Item 2']), throwsUnsupportedError);
+      expect(() => state.keys.add(2), throwsUnsupportedError);
     });
 
     test('copyWith creates a copy with updated values', () {
@@ -94,29 +93,14 @@ void main() {
     test('copyWith replaces values with null when null is passed explicitly',
         () {
       final state = PagingStateBase<int, String>(
-        pages: [
-          ['Item 1']
-        ],
-        keys: [1],
         error: 'Initial error',
-        hasNextPage: false,
-        isLoading: true,
       );
 
       final newState = state.copyWith(
-        pages: null,
-        keys: null,
         error: null,
-        hasNextPage: null,
-        isLoading: null,
       );
 
-      expect(newState.pages, isNull);
-      expect(newState.keys, isNull);
       expect(newState.error, isNull);
-      // these values cannot be null, so they retain their previous values
-      expect(newState.hasNextPage, isFalse);
-      expect(newState.isLoading, isTrue);
     });
 
     test('reset creates a default state', () {
@@ -132,8 +116,8 @@ void main() {
 
       final resetState = state.reset();
 
-      expect(resetState.pages, isNull);
-      expect(resetState.keys, isNull);
+      expect(resetState.pages, isEmpty);
+      expect(resetState.keys, isEmpty);
       expect(resetState.error, isNull);
       expect(resetState.hasNextPage, isTrue);
       expect(resetState.isLoading, isFalse);
