@@ -25,6 +25,11 @@ abstract class PagingState<PageKeyType, ItemType> {
   /// The corresponding page for each key is at the same index in [pages].
   List<PageKeyType> get keys;
 
+  /// The list of items fetched so far. A flattened version of [pages]. Cannot be modified directly.
+  ///
+  /// Implementers should compute this property once, lazily if possible, and omit it from copyWith.
+  List<ItemType>? get items;
+
   /// The last error that occurred while fetching a page.
   /// This is null if no error occurred.
   Object? get error;

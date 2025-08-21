@@ -31,6 +31,20 @@ base class PagingStateBase<PageKeyType, ItemType>
   @override
   final List<PageKeyType> keys;
 
+  /// Composes the items from all pages into a single list.
+  /// We use this instead of an IIEF for readability.
+  List<ItemType>? _constructItems() {
+    final result = pages.expand((e) => e);
+    if (result.isEmpty) return null;
+    return List.unmodifiable(result);
+  }
+
+  /// Private lazy backing variable for [items].
+  late final List<ItemType>? _items = _constructItems();
+
+  @override
+  List<ItemType>? get items => _items;
+
   @override
   final Object? error;
 

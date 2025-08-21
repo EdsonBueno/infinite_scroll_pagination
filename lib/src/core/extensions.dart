@@ -6,13 +6,6 @@ import 'package:meta/meta.dart';
 /// Helper extensions to make working with [PagingState] easier.
 extension PagingStateExtension<PageKeyType, ItemType>
     on PagingState<PageKeyType, ItemType> {
-  /// The list of items fetched so far. A flattened version of [pages].
-  List<ItemType>? get items {
-    final result = pages.expand((e) => e);
-    if (result.isEmpty) return null;
-    return List.unmodifiable(result);
-  }
-
   /// Convenience method to update the items of the state by applying a mapper function to each item.
   ///
   /// The result of this method is a new [PagingState] with the same properties as the original state
