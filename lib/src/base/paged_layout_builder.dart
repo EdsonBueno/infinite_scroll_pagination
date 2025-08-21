@@ -208,40 +208,52 @@ class _PagedLayoutBuilderState<PageKeyType, ItemType>
             shrinkWrap: _shrinkWrapFirstPageIndicators,
             layoutProtocol: _layoutProtocol,
           ),
-        PagingStatus.ongoing => widget.loadingListingBuilder(
-            context,
-            // We must create this closure to close over the [itemList]
-            // value. That way, we are safe if [itemList] value changes
-            // while Flutter rebuilds the widget (due to animations, for
-            // example.)
-            (context, index) => _buildListItemWidget(
+        PagingStatus.ongoing => () {
+            final items = _state.items ?? [];
+            final itemCount = items.length;
+            return widget.loadingListingBuilder(
               context,
-              index,
-              _state.items!,
-            ),
-            _itemCount,
-            _newPageProgressIndicatorBuilder,
-          ),
-        PagingStatus.subsequentPageError => widget.errorListingBuilder(
-            context,
-            (context, index) => _buildListItemWidget(
+              // We must create this closure to close over the [itemList]
+              // value. That way, we are safe if [itemList] value changes
+              // while Flutter rebuilds the widget (due to animations, for
+              // example.)
+              (context, index) => _buildListItemWidget(
+                context,
+                index,
+                items,
+              ),
+              itemCount,
+              _newPageProgressIndicatorBuilder,
+            );
+          }(),
+        PagingStatus.subsequentPageError => () {
+            final items = _state.items ?? [];
+            final itemCount = items.length;
+            return widget.errorListingBuilder(
               context,
-              index,
-              _state.items!,
-            ),
-            _itemCount,
-            (context) => _newPageErrorIndicatorBuilder(context),
-          ),
-        PagingStatus.completed => widget.completedListingBuilder(
-            context,
-            (context, index) => _buildListItemWidget(
+              (context, index) => _buildListItemWidget(
+                context,
+                index,
+                items,
+              ),
+              itemCount,
+              (context) => _newPageErrorIndicatorBuilder(context),
+            );
+          }(),
+        PagingStatus.completed => () {
+            final items = _state.items ?? [];
+            final itemCount = items.length;
+            return widget.completedListingBuilder(
               context,
-              index,
-              _state.items!,
-            ),
-            _itemCount,
-            _noMoreItemsIndicatorBuilder,
-          ),
+              (context, index) => _buildListItemWidget(
+                context,
+                index,
+                items,
+              ),
+              itemCount,
+              _noMoreItemsIndicatorBuilder,
+            );
+          }(),
       },
     );
   }
