@@ -1,4 +1,4 @@
-## Unreleased
+## 5.1.1 - 2025-08-28
 ### Changed
 - Update example widget usage
 
