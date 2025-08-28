@@ -3,6 +3,7 @@
 - Update example widget usage
 
 ### Fixed
+- Null check error in pagedlayoutbuilder
 - Bloc example state equality
 - Paging state hash code
 
