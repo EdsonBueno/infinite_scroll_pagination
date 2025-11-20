@@ -93,8 +93,8 @@ sealed class PhotoEvent {}
 
 final class FetchNextPhotoPage extends PhotoEvent {}
 
-class PhotoBoc extends Bloc<PhotoEvent, PagingState<int, Photo>> {
-  PhotoBoc() : super(PagingState()) {
+class PhotoBloc extends Bloc<PhotoEvent, PagingState<int, Photo>> {
+  PhotoBloc() : super(PagingState()) {
     on<FetchNextPhotoPage>((event, emit) {
         final state = state;
         if (state.isLoading) return;
