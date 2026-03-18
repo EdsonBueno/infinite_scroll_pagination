@@ -172,6 +172,7 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
             addRepaintBoundaries: addRepaintBoundaries,
             addSemanticIndexes: addSemanticIndexes,
             semanticIndexCallback: semanticIndexCallback,
+            findChildIndexCallback: builderDelegate.findChildIndexCallback,
           )
         : AppendedSliverChildBuilderDelegate.separated(
             builder: itemBuilder,
@@ -181,6 +182,7 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
             addAutomaticKeepAlives: addAutomaticKeepAlives,
             addRepaintBoundaries: addRepaintBoundaries,
             addSemanticIndexes: addSemanticIndexes,
+            findChildIndexCallback: builderDelegate.findChildIndexCallback,
           );
   }
 }

@@ -18,6 +18,7 @@ class PagedChildBuilderDelegate<ItemType> {
     this.firstPageProgressIndicatorBuilder,
     this.newPageProgressIndicatorBuilder,
     this.noItemsFoundIndicatorBuilder,
+    this.findChildIndexCallback,
     this.noMoreItemsIndicatorBuilder,
     this.animateTransitions = false,
     this.transitionDuration = const Duration(milliseconds: 250),
@@ -53,4 +54,6 @@ class PagedChildBuilderDelegate<ItemType> {
 
   /// The number of remaining invisible items that should trigger a new fetch.
   final int invisibleItemsThreshold;
+
+  final int? Function(Key)? findChildIndexCallback;
 }
