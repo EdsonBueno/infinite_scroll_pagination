@@ -156,6 +156,46 @@ void main() {
         );
       });
     });
+
+    testWidgets(
+        'Does not keep an offstage new page progress indicator when '
+        '[showNewPageProgressIndicatorAsGridChild] is false', (tester) async {
+      tester.applyPreferredTestScreenSize();
+
+      final customIndicatorKey = UniqueKey();
+      final customNewPageProgressIndicator = CircularProgressIndicator(
+        key: customIndicatorKey,
+      );
+
+      await _pumpPagedStaggeredGridView(
+        tester: tester,
+        state: TestPagingState.ongoing(n: pageSize * 2),
+        fetchNextPage: mockPageRequestListener.call,
+        newPageProgressIndicator: customNewPageProgressIndicator,
+        showNewPageProgressIndicatorAsGridChild: false,
+      );
+
+      expect(find.byKey(customIndicatorKey), findsNothing);
+      expect(
+        find.byKey(customIndicatorKey, skipOffstage: false),
+        findsNothing,
+      );
+
+      await tester.scrollUntilVisible(
+        find.text('Item ${pageSize * 2}'),
+        _itemHeight,
+      );
+      await tester.pump();
+
+      expect(
+        find.byKey(customIndicatorKey, skipOffstage: false),
+        findsOneWidget,
+      );
+      expectWidgetToHaveScreenWidth(
+        customIndicatorKey,
+        tester,
+      );
+    });
   });
 }
 
@@ -167,6 +207,7 @@ Future<void> _pumpPagedStaggeredGridView({
   Widget? newPageProgressIndicator,
   Widget? newPageErrorIndicator,
   Widget? noMoreItemsIndicator,
+  bool showNewPageProgressIndicatorAsGridChild = true,
 }) =>
     tester.pumpWidget(
       MaterialApp(
@@ -187,6 +228,8 @@ Future<void> _pumpPagedStaggeredGridView({
                   : null,
             ),
             crossAxisCount: 2,
+            showNewPageProgressIndicatorAsGridChild:
+                showNewPageProgressIndicatorAsGridChild,
           ),
         ),
       ),

@@ -55,9 +55,17 @@ class AppendedSliverGrid extends StatelessWidget {
             appendixBuilder: showAppendixAsGridChild ? appendixBuilder : null,
           ),
         ),
-        if (!showAppendixAsGridChild)
-          SliverToBoxAdapter(
-            child: appendixBuilder?.call(context),
+        if (!showAppendixAsGridChild && appendixBuilder != null)
+          SliverLayoutBuilder(
+            builder: (context, constraints) {
+              if (constraints.remainingPaintExtent <= 0 &&
+                  constraints.remainingCacheExtent <= 0) {
+                return const SliverToBoxAdapter(child: SizedBox.shrink());
+              }
+              return SliverToBoxAdapter(
+                child: appendixBuilder(context),
+              );
+            },
           ),
       ],
     );
