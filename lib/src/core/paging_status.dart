@@ -1,4 +1,3 @@
-import 'package:infinite_scroll_pagination/src/core/extensions.dart';
 import 'package:infinite_scroll_pagination/src/core/paging_state.dart';
 
 /// All possible status for a pagination.
@@ -13,16 +12,11 @@ enum PagingStatus {
 
 /// Extension methods for [PagingState] to determine the current status.
 extension PagingStatusExtension on PagingState {
-  int? get _itemCount => items?.length;
-
-  bool get _hasItems {
-    final itemCount = _itemCount;
-    return itemCount != null && itemCount > 0;
-  }
+  bool get _hasItems => pages?.any((page) => page.isNotEmpty) ?? false;
 
   bool get _hasError => error != null;
 
-  bool get _isLoadingFirstPage => _itemCount == null && !_hasError;
+  bool get _isLoadingFirstPage => pages == null && !_hasError;
 
   bool get _hasFirstPageError => !_hasItems && _hasError;
 
@@ -34,7 +28,7 @@ extension PagingStatusExtension on PagingState {
 
   bool get _hasSubsequentPageError => _isListingUnfinished && _hasError;
 
-  bool get _isEmpty => _itemCount != null && _itemCount == 0;
+  bool get _isEmpty => pages != null && !_hasItems;
 
   /// The current pagination status.
   PagingStatus get status {
