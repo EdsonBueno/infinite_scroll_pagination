@@ -12,29 +12,23 @@ base class PagingStateBase<PageKeyType, ItemType>
   ///
   /// Ensures that [pages] and [keys] are unmodifiable lists.
   PagingStateBase({
-    List<List<ItemType>>? pages,
-    List<PageKeyType>? keys,
+    List<List<ItemType>> pages = const [],
+    List<PageKeyType> keys = const [],
     this.error,
     this.hasNextPage = true,
     this.isLoading = false,
   }) : assert(
-         pages?.length == keys?.length,
+         pages.length == keys.length,
          'The length of pages and keys must be equal.',
        ),
-       pages = switch (pages) {
-         null => null,
-         _ => List.unmodifiable(pages.map<List<ItemType>>(List.unmodifiable)),
-       },
-       keys = switch (keys) {
-         null => null,
-         _ => List.unmodifiable(keys),
-       };
+       pages = List.unmodifiable(pages.map<List<ItemType>>(List.unmodifiable)),
+       keys = List.unmodifiable(keys);
 
   @override
-  final List<List<ItemType>>? pages;
+  final List<List<ItemType>> pages;
 
   @override
-  final List<PageKeyType>? keys;
+  final List<PageKeyType> keys;
 
   @override
   final Object? error;
@@ -47,14 +41,14 @@ base class PagingStateBase<PageKeyType, ItemType>
 
   @override
   PagingState<PageKeyType, ItemType> copyWith({
-    Defaulted<List<List<ItemType>>?>? pages = const Omit(),
-    Defaulted<List<PageKeyType>?>? keys = const Omit(),
+    Defaulted<List<List<ItemType>>> pages = const Omit(),
+    Defaulted<List<PageKeyType>> keys = const Omit(),
     Defaulted<Object?>? error = const Omit(),
     Defaulted<bool>? hasNextPage = const Omit(),
     Defaulted<bool>? isLoading = const Omit(),
   }) => PagingStateBase(
-    pages: pages is Omit ? this.pages : pages as List<List<ItemType>>?,
-    keys: keys is Omit ? this.keys : keys as List<PageKeyType>?,
+    pages: pages is Omit ? this.pages : pages as List<List<ItemType>>,
+    keys: keys is Omit ? this.keys : keys as List<PageKeyType>,
     error: error is Omit ? this.error : error as Object?,
     hasNextPage: hasNextPage is Omit ? this.hasNextPage : hasNextPage as bool,
     isLoading: isLoading is Omit ? this.isLoading : isLoading as bool,
@@ -62,8 +56,8 @@ base class PagingStateBase<PageKeyType, ItemType>
 
   @override
   PagingState<PageKeyType, ItemType> reset() => PagingStateBase(
-    pages: null,
-    keys: null,
+    pages: const [],
+    keys: const [],
     error: null,
     hasNextPage: true,
     isLoading: false,

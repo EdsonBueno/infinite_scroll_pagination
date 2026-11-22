@@ -12,11 +12,11 @@ enum PagingStatus {
 
 /// Extension methods for [PagingState] to determine the current status.
 extension PagingStatusExtension on PagingState {
-  bool get _hasItems => pages?.any((page) => page.isNotEmpty) ?? false;
+  bool get _hasItems => pages.any((page) => page.isNotEmpty);
 
   bool get _hasError => error != null;
 
-  bool get _isLoadingFirstPage => pages == null && !_hasError && hasNextPage;
+  bool get _isLoadingFirstPage => pages.isEmpty && !_hasError && hasNextPage;
 
   bool get _hasFirstPageError => !_hasItems && _hasError;
 
@@ -28,7 +28,7 @@ extension PagingStatusExtension on PagingState {
 
   bool get _hasSubsequentPageError => _isListingUnfinished && _hasError;
 
-  bool get _isEmpty => !_hasItems && (pages != null || !hasNextPage);
+  bool get _isEmpty => !_hasItems && (pages.isNotEmpty || !hasNextPage);
 
   /// The current pagination status.
   PagingStatus get status {

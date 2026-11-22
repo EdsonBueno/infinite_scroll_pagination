@@ -8,8 +8,8 @@ import 'package:infinite_scroll_pagination/src/core/paging_state_base.dart';
 abstract class PagingState<PageKeyType, ItemType> {
   /// Creates a [PagingState] with the given parameters.
   factory PagingState({
-    List<List<ItemType>>? pages,
-    List<PageKeyType>? keys,
+    List<List<ItemType>> pages,
+    List<PageKeyType> keys,
     Object? error,
     bool hasNextPage,
     bool isLoading,
@@ -19,13 +19,13 @@ abstract class PagingState<PageKeyType, ItemType> {
   ///
   /// This contains all pages fetched so far.
   /// The corresponding key for each page is at the same index in [keys].
-  List<List<ItemType>>? get pages;
+  List<List<ItemType>> get pages;
 
   /// The keys of the pages fetched so far.
   ///
   /// This contains all keys used to fetch pages so far.
   /// The corresponding page for each key is at the same index in [pages].
-  List<PageKeyType>? get keys;
+  List<PageKeyType> get keys;
 
   /// The last error that occurred while fetching a page.
   /// This is null if no error occurred.
@@ -45,8 +45,8 @@ abstract class PagingState<PageKeyType, ItemType> {
   /// which is required to distinguish between a parameter being omitted and a parameter being set to null.
   // copyWith a la Remi Rousselet: https://github.com/dart-lang/language/issues/137#issuecomment-583783054
   PagingState<PageKeyType, ItemType> copyWith({
-    Defaulted<List<List<ItemType>>?>? pages = const Omit(),
-    Defaulted<List<PageKeyType>?>? keys = const Omit(),
+    Defaulted<List<List<ItemType>>> pages = const Omit(),
+    Defaulted<List<PageKeyType>> keys = const Omit(),
     Defaulted<Object?>? error = const Omit(),
     Defaulted<bool>? hasNextPage = const Omit(),
     Defaulted<bool>? isLoading = const Omit(),

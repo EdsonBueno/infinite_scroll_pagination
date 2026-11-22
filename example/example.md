@@ -49,14 +49,14 @@ class _ExampleScreenState extends State<ExampleScreen> {
     });
 
     try {
-      final newKey = (_state.keys?.last ?? 0) + 1;
+      final newKey = (_state.keys.lastOrNull ?? 0) + 1;
       final newItems = await RemoteApi.getPhotos(newKey);
       final isLastPage = newItems.isEmpty;
 
       setState(() {
         _state = _state.copyWith(
-          pages: [...?_state.pages, newItems],
-          keys: [...?_state.keys, newKey],
+          pages: [..._state.pages, newItems],
+          keys: [..._state.keys, newKey],
           hasNextPage: !isLastPage,
           isLoading: false,
         );
@@ -102,13 +102,13 @@ class PhotoBloc extends Bloc<PhotoEvent, PagingState<int, Photo>> {
         emit(state.copyWith(isLoading: true, error: null));
 
         try {
-          final newKey = (state.keys?.last ?? 0) + 1;
+          final newKey = (state.keys.lastOrNull ?? 0) + 1;
           final newItems = await RemoteApi.getPhotos(newKey);
           final isLastPage = newItems.isEmpty;
 
           emit(state.copyWith(
-            pages: [...?state.pages, newItems],
-            keys: [...?state.keys, newKey],
+            pages: [...state.pages, newItems],
+            keys: [...state.keys, newKey],
             hasNextPage: !isLastPage,
             isLoading: false,
           ));
@@ -260,7 +260,7 @@ class _ExampleScreenState extends State<ExampleScreen> {
   String? _searchTerm;
 
   late final _pagingController = PagingController<int, Photo>(
-    getNextPageKey: (state) => (state.keys?.last ?? 0) + 1,
+    getNextPageKey: (state) => (state.keys.lastOrNull ?? 0) + 1,
     fetchPage: (pageKey) {
       final results = RemoteApi.getPhotos(pageKey);
 

@@ -181,7 +181,7 @@ class _PagedLayoutBuilderState<PageKeyType, ItemType>
   @override
   Widget build(BuildContext context) {
     final PagingState(:status, :items, :hasNextPage) = _state;
-    final int itemCount = items?.length ?? 0;
+    final int itemCount = items.length;
     return _PagedLayoutAnimator(
       animateTransitions: _builderDelegate.animateTransitions,
       transitionDuration: _builderDelegate.transitionDuration,
@@ -208,21 +208,21 @@ class _PagedLayoutBuilderState<PageKeyType, ItemType>
         PagingStatus.ongoing => widget.loadingListingBuilder(
           context,
           (context, index) =>
-              _buildListItemWidget(context, index, items!, hasNextPage),
+              _buildListItemWidget(context, index, items, hasNextPage),
           itemCount,
           _newPageProgressIndicatorBuilder,
         ),
         PagingStatus.subsequentPageError => widget.errorListingBuilder(
           context,
           (context, index) =>
-              _buildListItemWidget(context, index, items!, hasNextPage),
+              _buildListItemWidget(context, index, items, hasNextPage),
           itemCount,
           (context) => _newPageErrorIndicatorBuilder(context),
         ),
         PagingStatus.completed => widget.completedListingBuilder(
           context,
           (context, index) =>
-              _buildListItemWidget(context, index, items!, hasNextPage),
+              _buildListItemWidget(context, index, items, hasNextPage),
           itemCount,
           _noMoreItemsIndicatorBuilder,
         ),

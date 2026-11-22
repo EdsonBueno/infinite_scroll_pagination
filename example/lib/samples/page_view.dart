@@ -33,7 +33,7 @@ class _PageViewScreenState extends State<PageViewScreen> {
 
     try {
       // in our simple setup, keys are sequential numbers
-      final newKey = (_state.keys?.last ?? 0) + 1;
+      final newKey = (_state.keys.lastOrNull ?? 0) + 1;
       // we fetch the next page of items
       final newItems = await RemoteApi.getPhotos(newKey);
       // if the new page is empty, we reached the end
@@ -42,9 +42,9 @@ class _PageViewScreenState extends State<PageViewScreen> {
       setState(() {
         _state = _state.copyWith(
           // append our new page to the existing pages
-          pages: [...?_state.pages, newItems],
+          pages: [..._state.pages, newItems],
           // append the new key to the existing keys
-          keys: [...?_state.keys, newKey],
+          keys: [..._state.keys, newKey],
           // signal if we reached the end
           hasNextPage: !isLastPage,
           // set loading back to false
@@ -95,7 +95,7 @@ class _PageViewScreenState extends State<PageViewScreen> {
                         vertical: 2,
                       ),
                       child: Text(
-                        '${(_pageController.page ?? 0).round()} / ${_state.items?.length ?? 0}',
+                        '${(_pageController.page ?? 0).round()} / ${_state.items.length}',
                         style: Theme.of(
                           context,
                         ).textTheme.titleLarge?.copyWith(color: Colors.white),

@@ -36,13 +36,11 @@ class _SliverGridScreenState extends State<SliverGridScreen> {
                   SearchInputSliver(
                     onChanged: (searchTerm) =>
                         bloc.add(PagingChangeSearch(searchTerm)),
-                    getSuggestions: (searchTerm) =>
-                        (state.items
-                            ?.expand((photo) => photo.title.split(' '))
-                            .where((e) => e.contains(searchTerm))
-                            .toSet()
-                            .toList() ??
-                        []),
+                    getSuggestions: (searchTerm) => state.items
+                        .expand((photo) => photo.title.split(' '))
+                        .where((e) => e.contains(searchTerm))
+                        .toSet()
+                        .toList(),
                   ),
                   SliverToBoxAdapter(
                     child: Padding(
@@ -110,10 +108,10 @@ class _SliverGridScreenState extends State<SliverGridScreen> {
                         builderDelegate: PagedChildBuilderDelegate(
                           itemBuilder: (context, item, index) {
                             final rowCount = constraints.maxWidth ~/ 200;
-                            final rowItems = state.items!.sublist(
+                            final rowItems = state.items.sublist(
                               max(0, index - index % rowCount),
                               min(
-                                state.items!.length,
+                                state.items.length,
                                 index - index % rowCount + rowCount,
                               ),
                             );

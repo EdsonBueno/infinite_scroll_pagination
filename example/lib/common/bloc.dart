@@ -41,16 +41,16 @@ final class BlocPagingState<T> extends PagingStateBase<int, T> {
 
   @override
   BlocPagingState<T> copyWith({
-    Defaulted<List<List<T>>?>? pages = const Omit(),
-    Defaulted<List<int>?>? keys = const Omit(),
+    Defaulted<List<List<T>>> pages = const Omit(),
+    Defaulted<List<int>> keys = const Omit(),
     Defaulted<Object?>? error = const Omit(),
     Defaulted<bool>? hasNextPage = const Omit(),
     Defaulted<bool>? isLoading = const Omit(),
     Defaulted<String?> search = const Omit(),
     Defaulted<BlocCancelToken?> cancelToken = const Omit(),
   }) => BlocPagingState<T>(
-    pages: pages is Omit ? this.pages : pages as List<List<T>>?,
-    keys: keys is Omit ? this.keys : keys as List<int>?,
+    pages: pages is Omit ? this.pages : pages as List<List<T>>,
+    keys: keys is Omit ? this.keys : keys as List<int>,
     error: error is Omit ? this.error : error,
     hasNextPage: hasNextPage is Omit ? this.hasNextPage : hasNextPage as bool,
     isLoading: isLoading is Omit ? this.isLoading : isLoading as bool,
@@ -62,8 +62,8 @@ final class BlocPagingState<T> extends PagingStateBase<int, T> {
 
   @override
   BlocPagingState<T> reset() => BlocPagingState<T>(
-    pages: null,
-    keys: null,
+    pages: const [],
+    keys: const [],
     error: null,
     hasNextPage: true,
     isLoading: false,
@@ -143,8 +143,8 @@ class PagingBloc<T> extends Bloc<PagingEvent, BlocPagingState<T>> {
           isLoading: false,
           error: null,
           hasNextPage: !isLastPage,
-          pages: [...?state.pages, result],
-          keys: [...?state.keys, pageKey],
+          pages: [...state.pages, result],
+          keys: [...state.keys, pageKey],
           cancelToken: null,
         ),
       );
