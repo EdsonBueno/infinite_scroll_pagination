@@ -12,7 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   http: ^1.1.0
-  cached_network_image: ^3.0.0
+  cached_network_image: ^4.0.7
   infinite_scroll_pagination:
     path: ../
   flutter_bloc: ^9.0.0
@@ -21,7 +21,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^3.0.0
+  flutter_lints: ^6.0.0
 
 flutter:
   uses-material-design: true
