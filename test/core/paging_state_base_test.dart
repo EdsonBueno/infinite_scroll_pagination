@@ -4,6 +4,13 @@ import 'package:infinite_scroll_pagination/src/core/paging_state_base.dart';
 
 void main() {
   group('PagingStateBase', () {
+    test('initial is a constant equal to the default state', () {
+      const state = PagingState<int, String>.initial();
+
+      expect(state, PagingState<int, String>());
+      expect(state.hashCode, PagingState<int, String>().hashCode);
+    });
+
     test('constructs with default values', () {
       final state = PagingStateBase<int, String>();
 

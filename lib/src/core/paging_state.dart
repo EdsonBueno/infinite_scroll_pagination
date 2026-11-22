@@ -15,6 +15,10 @@ abstract class PagingState<PageKeyType, ItemType> {
     bool isLoading,
   }) = PagingStateBase<PageKeyType, ItemType>;
 
+  /// Creates the [PagingState] before the first fetch, as a constant.
+  const factory PagingState.initial() =
+      PagingStateBase<PageKeyType, ItemType>.initial;
+
   /// The pages fetched so far.
   ///
   /// This contains all pages fetched so far.

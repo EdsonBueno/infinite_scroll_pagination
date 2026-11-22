@@ -24,6 +24,14 @@ base class PagingStateBase<PageKeyType, ItemType>
        pages = List.unmodifiable(pages.map<List<ItemType>>(List.unmodifiable)),
        keys = List.unmodifiable(keys);
 
+  /// Creates the [PagingStateBase] before the first fetch, as a constant.
+  const PagingStateBase.initial()
+    : pages = const [],
+      keys = const [],
+      error = null,
+      hasNextPage = true,
+      isLoading = false;
+
   @override
   final List<List<ItemType>> pages;
 
