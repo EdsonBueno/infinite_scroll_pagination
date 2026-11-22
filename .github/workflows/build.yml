@@ -16,4 +16,6 @@ jobs:
       - run: flutter pub get
       - run: flutter analyze
       - run: flutter test --coverage --coverage-path coverage/lcov.info
-      - uses: codecov/codecov-action@v1
+      - uses: coverallsapp/github-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
