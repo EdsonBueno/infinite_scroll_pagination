@@ -55,11 +55,29 @@ class AppendedSliverGrid extends StatelessWidget {
             appendixBuilder: showAppendixAsGridChild ? appendixBuilder : null,
           ),
         ),
-        if (!showAppendixAsGridChild)
-          SliverToBoxAdapter(
-            child: appendixBuilder?.call(context),
+        if (!showAppendixAsGridChild && appendixBuilder != null)
+          _OffscreenMutedSliver(
+            sliver: SliverToBoxAdapter(child: appendixBuilder(context)),
           ),
       ],
+    );
+  }
+}
+
+class _OffscreenMutedSliver extends StatelessWidget {
+  const _OffscreenMutedSliver({required this.sliver});
+
+  final Widget sliver;
+
+  @override
+  Widget build(BuildContext context) {
+    final enabled = TickerMode(enabled: true, child: sliver);
+    final muted = TickerMode(enabled: false, child: sliver);
+    return SliverLayoutBuilder(
+      builder: (context, constraints) => constraints.remainingPaintExtent > 0 ||
+              constraints.remainingCacheExtent > 0
+          ? enabled
+          : muted,
     );
   }
 }
