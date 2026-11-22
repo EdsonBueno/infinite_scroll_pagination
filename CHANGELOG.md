@@ -1,4 +1,4 @@
-## Unreleased
+## 5.2.0 - 2026-11-22
 ### Added
 - `findChildIndexCallback` in `PagedChildBuilderDelegate`
 
