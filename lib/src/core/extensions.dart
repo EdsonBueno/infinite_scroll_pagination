@@ -40,6 +40,9 @@ extension PagingStateExtension<PageKeyType, ItemType>
   /// has less than the expected number of items, because it does not require knowing the page size.
   /// However, it can be potentially wasteful, since one additional empty page will be fetched.
   bool get lastPageIsEmpty => pages.lastOrNull?.isEmpty ?? false;
+
+  /// Will be `true` if at least one page has been fetched, even an empty one.
+  bool get hasFetched => keys.isNotEmpty;
 }
 
 /// Helper extensions to make working with [PagingState] with integer keys easier.
