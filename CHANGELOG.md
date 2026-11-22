@@ -1,3 +1,15 @@
+## Unreleased
+### Added
+- `findChildIndexCallback` in `PagedChildBuilderDelegate`
+
+### Changed
+- Minimum Flutter version is 3.22
+
+### Fixed
+- Grid indicators below the grid animating while offscreen
+- Endless first page progress when the first page key is null
+- Paging status copying all items on every check
+
 ## 5.1.1 - 2025-08-28
 ### Changed
 - Update example widget usage
