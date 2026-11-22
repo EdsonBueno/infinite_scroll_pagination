@@ -1,4 +1,4 @@
-## Unreleased
+## 6.0.0 - 2026-11-22
 ### Added
 - `hitTestBehavior` in scroll views and `PagedPageView`
 - `hasFetched` extension on `PagingState`
