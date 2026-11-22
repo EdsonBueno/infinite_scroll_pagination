@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class CustomFirstPageError extends StatelessWidget {

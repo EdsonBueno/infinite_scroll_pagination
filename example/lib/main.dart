@@ -1,6 +1,6 @@
 import 'package:infinite_example/common/touch_physics.dart';
 import 'package:infinite_example/home_screen.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 void main() => runApp(const App());
 

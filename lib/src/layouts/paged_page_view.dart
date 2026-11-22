@@ -1,5 +1,4 @@
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:infinite_scroll_pagination/src/base/paged_child_builder_delegate.dart';
 import 'package:infinite_scroll_pagination/src/core/paging_state.dart';

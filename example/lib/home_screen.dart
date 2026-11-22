@@ -1,7 +1,7 @@
 import 'package:infinite_example/samples/list_view.dart';
 import 'package:infinite_example/samples/page_view.dart';
 import 'package:infinite_example/samples/sliver_grid.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});

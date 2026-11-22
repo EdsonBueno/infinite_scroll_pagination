@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Basic layout for indicating that an exception occurred.
 class FirstPageExceptionIndicator extends StatelessWidget {

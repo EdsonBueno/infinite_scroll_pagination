@@ -1,6 +1,6 @@
 import 'package:infinite_example/remote/item.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class ImageListTile extends StatelessWidget {
   const ImageListTile({

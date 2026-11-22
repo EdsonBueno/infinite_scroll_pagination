@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Allows any device to scroll via touch.
 class TouchBehaviour extends ScrollBehavior {

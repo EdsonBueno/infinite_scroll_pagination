@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 /// A [SliverChildBuilderDelegate] with an extra item (appendixBuilder) added
 /// to the end.

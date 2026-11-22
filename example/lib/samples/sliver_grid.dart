@@ -5,7 +5,7 @@ import 'package:infinite_example/common/bloc.dart';
 import 'package:infinite_example/remote/remote.dart';
 import 'package:infinite_example/common/search_input.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 enum _GridType {

@@ -1,7 +1,7 @@
 import 'package:infinite_example/remote/item.dart';
 import 'package:infinite_example/remote/api.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'list_view.dart';
 import 'sliver_grid.dart';

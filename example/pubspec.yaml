@@ -6,11 +6,13 @@ publish_to: "none"
 version: 1.0.0+1
 
 environment:
-  sdk: ">=3.3.3 <4.0.0"
+  sdk: ">=3.12.0 <4.0.0"
+  flutter: ">=3.44.0"
 
 dependencies:
   flutter:
     sdk: flutter
+  material_ui: ^1.0.0
   http: ^1.1.0
   cached_network_image: ^4.0.7
   infinite_scroll_pagination:

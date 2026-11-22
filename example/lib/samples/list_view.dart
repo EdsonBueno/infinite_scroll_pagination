@@ -3,7 +3,7 @@ import 'package:infinite_example/remote/api.dart';
 import 'package:infinite_example/common/error.dart';
 import 'package:infinite_example/common/list_tile.dart';
 import 'package:infinite_example/common/search_appbar.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class ListViewScreen extends StatefulWidget {
