@@ -1,3 +1,54 @@
+# From v5 to v6
+
+## Dependencies
+
+The package now uses [`material_ui`](https://pub.dev/packages/material_ui) instead of `package:flutter/material.dart`, and requires Flutter 3.44.
+
+Your app needs to migrate to `material_ui` as well. Follow [Flutter's migration guide](https://docs.flutter.dev/release/breaking-changes/material-ui-and-cupertino-ui) to migrate your app. If your app cannot migrate yet, keep using v5.
+
+## PagingState
+
+`pages`, `keys` and `items` are non-nullable. Before the first page is fetched, they are empty lists.
+Empty `pages` and `keys` mean that no page was fetched, so a state cleared to empty lists starts the first fetch again while `hasNextPage` is `true`.
+
+```dart
+// v5
+if (state.pages == null) return;
+final lastKey = state.keys?.last ?? 0;
+
+// v6
+if (!state.hasFetched) return;
+final lastKey = state.keys.lastOrNull ?? 0;
+```
+
+Custom implementations of `PagingState` change the types of `pages` and `keys`, and the `pages` and `keys` parameters of `copyWith`, to their non-nullable forms.
+
+## PagedChildBuilderDelegate
+
+`firstPageErrorIndicatorBuilder` and `newPageErrorIndicatorBuilder` receive the error of the state.
+
+```dart
+// v5
+firstPageErrorIndicatorBuilder: (context) => MyErrorIndicator(),
+
+// v6
+firstPageErrorIndicatorBuilder: (context, error) => MyErrorIndicator(error: error),
+```
+
+## Layouts
+
+`cacheExtent` is now `scrollCacheExtent`, which takes a `ScrollCacheExtent` from `package:flutter/rendering.dart`, as in Flutter's scroll views.
+
+```dart
+// v5
+cacheExtent: 500,
+
+// v6
+scrollCacheExtent: const ScrollCacheExtent.pixels(500),
+```
+
+`PagedSliverList.separated` no longer takes `semanticIndexCallback`, which it ignored.
+
 # From v4 to v5
 
 In v5, the package decouples the PagingController from PagedLayoutBuilder and its descendants, to allow greater freedom in how a PagingState is managed.
