@@ -25,6 +25,7 @@ class PagedPageView<PageKeyType, ItemType> extends StatelessWidget {
     this.scrollDirection = Axis.horizontal,
     this.dragStartBehavior = DragStartBehavior.start,
     this.clipBehavior = Clip.hardEdge,
+    this.hitTestBehavior = HitTestBehavior.opaque,
     this.reverse = false,
     this.physics,
     this.onPageChanged,
@@ -73,6 +74,9 @@ class PagedPageView<PageKeyType, ItemType> extends StatelessWidget {
   /// Matches [PageView.clipBehavior].
   final Clip clipBehavior;
 
+  /// Matches [PageView.hitTestBehavior].
+  final HitTestBehavior hitTestBehavior;
+
   /// Matches [PageView.reverse].
   final bool reverse;
 
@@ -111,6 +115,7 @@ class PagedPageView<PageKeyType, ItemType> extends StatelessWidget {
               scrollDirection: scrollDirection,
               dragStartBehavior: dragStartBehavior,
               clipBehavior: clipBehavior,
+              hitTestBehavior: hitTestBehavior,
               allowImplicitScrolling: allowImplicitScrolling,
               reverse: reverse,
               physics: physics,
@@ -137,6 +142,7 @@ class PagedPageView<PageKeyType, ItemType> extends StatelessWidget {
               scrollDirection: scrollDirection,
               dragStartBehavior: dragStartBehavior,
               clipBehavior: clipBehavior,
+              hitTestBehavior: hitTestBehavior,
               allowImplicitScrolling: allowImplicitScrolling,
               reverse: reverse,
               physics: physics,
@@ -163,6 +169,7 @@ class PagedPageView<PageKeyType, ItemType> extends StatelessWidget {
               scrollDirection: scrollDirection,
               dragStartBehavior: dragStartBehavior,
               clipBehavior: clipBehavior,
+              hitTestBehavior: hitTestBehavior,
               allowImplicitScrolling: allowImplicitScrolling,
               reverse: reverse,
               physics: physics,

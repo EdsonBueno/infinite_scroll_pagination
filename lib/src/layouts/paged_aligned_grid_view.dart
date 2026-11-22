@@ -44,6 +44,7 @@ class PagedAlignedGridView<PageKeyType, ItemType> extends BoxScrollView {
     super.restorationId,
     // Matches [ScrollView.clipBehavior].
     super.clipBehavior,
+    super.hitTestBehavior,
     // Matches [ScrollView.shrinkWrap].
     super.shrinkWrap,
     // Matches [BoxScrollView.padding].
@@ -84,6 +85,7 @@ class PagedAlignedGridView<PageKeyType, ItemType> extends BoxScrollView {
     super.restorationId,
     // Matches [ScrollView.clipBehavior].
     super.clipBehavior,
+    super.hitTestBehavior,
     // Matches [ScrollView.shrinkWrap].
     super.shrinkWrap,
     // Matches [BoxScrollView.padding].
@@ -128,6 +130,7 @@ class PagedAlignedGridView<PageKeyType, ItemType> extends BoxScrollView {
     super.restorationId,
     // Matches [ScrollView.clipBehavior].
     super.clipBehavior,
+    super.hitTestBehavior,
     // Matches [ScrollView.shrinkWrap].
     super.shrinkWrap,
     // Matches [BoxScrollView.padding].

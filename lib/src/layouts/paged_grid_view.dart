@@ -44,6 +44,7 @@ class PagedGridView<PageKeyType, ItemType> extends BoxScrollView {
     super.restorationId,
     // Matches [ScrollView.clipBehavior].
     super.clipBehavior,
+    super.hitTestBehavior,
     super.key,
   }) : _shrinkWrapFirstPageIndicators = shrinkWrap,
        super(controller: scrollController);

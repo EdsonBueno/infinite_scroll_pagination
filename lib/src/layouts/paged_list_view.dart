@@ -44,6 +44,7 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
     super.restorationId,
     // Matches [ScrollView.clipBehavior]
     super.clipBehavior,
+    super.hitTestBehavior,
     super.key,
   }) : assert(
          itemExtent == null || prototypeItem == null,
@@ -86,6 +87,7 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
     super.restorationId,
     // Matches [ScrollView.clipBehavior]
     super.clipBehavior,
+    super.hitTestBehavior,
     super.key,
   }) : prototypeItem = null,
        _shrinkWrapFirstPageIndicators = shrinkWrap,
