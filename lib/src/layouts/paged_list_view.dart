@@ -34,8 +34,8 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
     this.addAutomaticKeepAlives = true,
     this.addRepaintBoundaries = true,
     this.addSemanticIndexes = true,
-    // Matches [ScrollView.cacheExtent]
-    super.cacheExtent,
+    // Matches [ScrollView.scrollCacheExtent]
+    super.scrollCacheExtent,
     // Matches [ScrollView.dragStartBehavior]
     super.dragStartBehavior,
     // Matches [ScrollView.keyboardDismissBehavior]
@@ -76,8 +76,8 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
     this.addAutomaticKeepAlives = true,
     this.addRepaintBoundaries = true,
     this.addSemanticIndexes = true,
-    // Matches [ScrollView.cacheExtent]
-    super.cacheExtent,
+    // Matches [ScrollView.scrollCacheExtent]
+    super.scrollCacheExtent,
     // Matches [ScrollView.dragStartBehavior]
     super.dragStartBehavior,
     // Matches [ScrollView.keyboardDismissBehavior]

@@ -31,8 +31,8 @@ class PagedGridView<PageKeyType, ItemType> extends BoxScrollView {
     this.addAutomaticKeepAlives = true,
     this.addRepaintBoundaries = true,
     this.addSemanticIndexes = true,
-    // Matches [ScrollView.cacheExtent].
-    super.cacheExtent,
+    // Matches [ScrollView.scrollCacheExtent].
+    super.scrollCacheExtent,
     this.showNewPageProgressIndicatorAsGridChild = true,
     this.showNewPageErrorIndicatorAsGridChild = true,
     this.showNoMoreItemsIndicatorAsGridChild = true,

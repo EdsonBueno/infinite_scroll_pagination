@@ -31,8 +31,8 @@ class PagedMasonryGridView<PageKeyType, ItemType> extends BoxScrollView {
     this.scrollController,
     this.mainAxisSpacing = 0.0,
     this.crossAxisSpacing = 0.0,
-    // Matches [ScrollView.cacheExtent].
-    super.cacheExtent,
+    // Matches [ScrollView.scrollCacheExtent].
+    super.scrollCacheExtent,
     this.showNewPageProgressIndicatorAsGridChild = true,
     this.showNewPageErrorIndicatorAsGridChild = true,
     this.showNoMoreItemsIndicatorAsGridChild = true,
@@ -71,8 +71,8 @@ class PagedMasonryGridView<PageKeyType, ItemType> extends BoxScrollView {
     this.scrollController,
     this.mainAxisSpacing = 0.0,
     this.crossAxisSpacing = 0.0,
-    // Matches [ScrollView.cacheExtent].
-    super.cacheExtent,
+    // Matches [ScrollView.scrollCacheExtent].
+    super.scrollCacheExtent,
     this.showNewPageProgressIndicatorAsGridChild = true,
     this.showNewPageErrorIndicatorAsGridChild = true,
     this.showNoMoreItemsIndicatorAsGridChild = true,
@@ -115,8 +115,8 @@ class PagedMasonryGridView<PageKeyType, ItemType> extends BoxScrollView {
     this.scrollController,
     this.mainAxisSpacing = 0.0,
     this.crossAxisSpacing = 0.0,
-    // Matches [ScrollView.cacheExtent].
-    super.cacheExtent,
+    // Matches [ScrollView.scrollCacheExtent].
+    super.scrollCacheExtent,
     this.showNewPageProgressIndicatorAsGridChild = true,
     this.showNewPageErrorIndicatorAsGridChild = true,
     this.showNoMoreItemsIndicatorAsGridChild = true,

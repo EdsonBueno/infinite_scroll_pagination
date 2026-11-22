@@ -1,3 +1,4 @@
+import 'package:flutter/rendering.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -185,7 +186,7 @@ void main() {
     });
 
     testWidgets('Reaches the no more items indicator below the grid '
-        'when [cacheExtent] is 0', (tester) async {
+        'when [scrollCacheExtent] is 0', (tester) async {
       tester.applyPreferredTestScreenSize();
 
       final customIndicatorKey = UniqueKey();
@@ -196,7 +197,7 @@ void main() {
         fetchNextPage: mockPageRequestListener.call,
         noMoreItemsIndicator: SizedBox(key: customIndicatorKey, height: 50),
         showNoMoreItemsIndicatorAsGridChild: false,
-        cacheExtent: 0,
+        scrollCacheExtent: const ScrollCacheExtent.pixels(0),
       );
 
       await tester.scrollUntilVisible(
@@ -219,7 +220,7 @@ Future<void> _pumpPagedStaggeredGridView({
   Widget? noMoreItemsIndicator,
   bool showNewPageProgressIndicatorAsGridChild = true,
   bool showNoMoreItemsIndicatorAsGridChild = true,
-  double? cacheExtent,
+  ScrollCacheExtent? scrollCacheExtent,
 }) => tester.pumpWidget(
   MaterialApp(
     home: Scaffold(
@@ -243,7 +244,7 @@ Future<void> _pumpPagedStaggeredGridView({
             showNewPageProgressIndicatorAsGridChild,
         showNoMoreItemsIndicatorAsGridChild:
             showNoMoreItemsIndicatorAsGridChild,
-        cacheExtent: cacheExtent,
+        scrollCacheExtent: scrollCacheExtent,
       ),
     ),
   ),

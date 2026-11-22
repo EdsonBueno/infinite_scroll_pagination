@@ -406,9 +406,8 @@ Future<void> _pumpPagedLayoutBuilder({
     shrinkWrapFirstPageIndicators: shrinkWrapFirstPageIndicators,
     errorListingBuilder: (context, _, _, newPageErrorIndicatorBuilder) =>
         SliverToBoxAdapter(child: newPageErrorIndicatorBuilder(context)),
-    loadingListingBuilder:
-        (context, _, _, newPageProgressIndicatorBuilder) =>
-            SliverToBoxAdapter(child: newPageProgressIndicatorBuilder(context)),
+    loadingListingBuilder: (context, _, _, newPageProgressIndicatorBuilder) =>
+        SliverToBoxAdapter(child: newPageProgressIndicatorBuilder(context)),
     completedListingBuilder: (context, _, _, noMoreItemsIndicatorBuilder) =>
         SliverToBoxAdapter(child: noMoreItemsIndicatorBuilder?.call(context)),
   ),
