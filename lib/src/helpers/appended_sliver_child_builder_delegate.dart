@@ -12,9 +12,9 @@ class AppendedSliverChildBuilderDelegate extends SliverChildBuilderDelegate {
     required IndexedWidgetBuilder builder,
     required int childCount,
     WidgetBuilder? appendixBuilder,
-    bool addAutomaticKeepAlives = true,
-    bool addRepaintBoundaries = true,
-    bool addSemanticIndexes = true,
+    super.addAutomaticKeepAlives,
+    super.addRepaintBoundaries,
+    super.addSemanticIndexes,
     SemanticIndexCallback? semanticIndexCallback,
   }) : super(
           appendixBuilder == null
@@ -26,9 +26,6 @@ class AppendedSliverChildBuilderDelegate extends SliverChildBuilderDelegate {
                   return builder(context, index);
                 },
           childCount: appendixBuilder == null ? childCount : childCount + 1,
-          addAutomaticKeepAlives: addAutomaticKeepAlives,
-          addRepaintBoundaries: addRepaintBoundaries,
-          addSemanticIndexes: addSemanticIndexes,
           semanticIndexCallback: semanticIndexCallback ?? (_, index) => index,
         );
 
