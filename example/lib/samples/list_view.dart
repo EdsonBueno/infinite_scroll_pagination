@@ -92,9 +92,9 @@ class _ListViewScreenState extends State<ListViewScreen> {
                 animateTransitions: true,
                 itemBuilder: (context, item, index) =>
                     ImageListTile(key: ValueKey(item.id), item: item),
-                firstPageErrorIndicatorBuilder: (context) =>
+                firstPageErrorIndicatorBuilder: (context, _) =>
                     CustomFirstPageError(pagingController: _pagingController),
-                newPageErrorIndicatorBuilder: (context) =>
+                newPageErrorIndicatorBuilder: (context, _) =>
                     CustomNewPageError(pagingController: _pagingController),
               ),
               separatorBuilder: (context, index) => const Divider(),

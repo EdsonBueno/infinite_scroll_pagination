@@ -128,12 +128,18 @@ class _PagedLayoutBuilderState<PageKeyType, ItemType>
 
   PagedLayoutProtocol get _layoutProtocol => widget.layoutProtocol;
 
+  WidgetBuilder? _withStateError(ErrorIndicatorBuilder? builder) {
+    final error = _state.error;
+    if (builder == null || error == null) return null;
+    return (context) => builder(context, error);
+  }
+
   WidgetBuilder get _firstPageErrorIndicatorBuilder =>
-      _builderDelegate.firstPageErrorIndicatorBuilder ??
+      _withStateError(_builderDelegate.firstPageErrorIndicatorBuilder) ??
       (_) => FirstPageErrorIndicator(onTryAgain: _fetchNextPage);
 
   WidgetBuilder get _newPageErrorIndicatorBuilder =>
-      _builderDelegate.newPageErrorIndicatorBuilder ??
+      _withStateError(_builderDelegate.newPageErrorIndicatorBuilder) ??
       (_) => NewPageErrorIndicator(onTap: _fetchNextPage);
 
   WidgetBuilder get _firstPageProgressIndicatorBuilder =>
@@ -217,7 +223,7 @@ class _PagedLayoutBuilderState<PageKeyType, ItemType>
           (context, index) =>
               _buildListItemWidget(context, index, items, hasNextPage),
           itemCount,
-          (context) => _newPageErrorIndicatorBuilder(context),
+          _newPageErrorIndicatorBuilder,
         ),
         PagingStatus.completed => widget.completedListingBuilder(
           context,

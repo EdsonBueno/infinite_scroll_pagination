@@ -68,6 +68,27 @@ void main() {
       state = TestPagingState.firstPageError();
     });
 
+    testWidgets('Passes the state error to the custom indicator.', (
+      tester,
+    ) async {
+      Object? receivedError;
+      final builderDelegate = PagedChildBuilderDelegate<int>(
+        itemBuilder: (_, _, _) => Container(),
+        firstPageErrorIndicatorBuilder: (context, error) {
+          receivedError = error;
+          return Container();
+        },
+      );
+
+      await _pumpPagedLayoutBuilder(
+        tester: tester,
+        state: state,
+        builderDelegate: builderDelegate,
+      );
+
+      expect(receivedError, same(state.error));
+    });
+
     testWidgets('When no custom first page error indicator is provided, '
         'a FirstPageErrorIndicator widget is shown.', (tester) async {
       // given
@@ -93,7 +114,7 @@ void main() {
         final customIndicatorKey = UniqueKey();
         final builderDelegate = PagedChildBuilderDelegate<int>(
           itemBuilder: (_, _, _) => Container(),
-          firstPageErrorIndicatorBuilder: (context) =>
+          firstPageErrorIndicatorBuilder: (context, _) =>
               Container(key: customIndicatorKey),
         );
 
@@ -199,6 +220,27 @@ void main() {
       state = TestPagingState.subsequentPageError();
     });
 
+    testWidgets('Passes the state error to the custom indicator.', (
+      tester,
+    ) async {
+      Object? receivedError;
+      final builderDelegate = PagedChildBuilderDelegate<int>(
+        itemBuilder: (_, _, _) => Container(),
+        newPageErrorIndicatorBuilder: (context, error) {
+          receivedError = error;
+          return Container();
+        },
+      );
+
+      await _pumpPagedLayoutBuilder(
+        tester: tester,
+        state: state,
+        builderDelegate: builderDelegate,
+      );
+
+      expect(receivedError, same(state.error));
+    });
+
     testWidgets('When no custom new page error indicator is provided, '
         'a NewPageErrorIndicator widget is shown.', (tester) async {
       // given
@@ -226,7 +268,7 @@ void main() {
         final customIndicatorKey = UniqueKey();
         final builderDelegate = PagedChildBuilderDelegate<int>(
           itemBuilder: (_, _, _) => Container(),
-          newPageErrorIndicatorBuilder: (context) =>
+          newPageErrorIndicatorBuilder: (context, _) =>
               Text('Error', key: customIndicatorKey),
         );
 
@@ -380,6 +422,44 @@ void main() {
       expect(indicatorSize.height, indicatorHeight);
     });
   });
+
+  group('Error indicators fading out', () {
+    testWidgets(
+      'The first page error indicator rebuilds after the error is cleared.',
+      (tester) async {
+        await _rebuildErrorIndicatorWhileFadingOut(
+          tester: tester,
+          errorState: TestPagingState.firstPageError(),
+          nextState: TestPagingState.loadingFirstPage(),
+          delegateWith: (builder) => PagedChildBuilderDelegate<String>(
+            animateTransitions: true,
+            itemBuilder: (_, item, _) => Text(item),
+            firstPageErrorIndicatorBuilder: builder,
+          ),
+        );
+
+        expect(tester.takeException(), isNull);
+      },
+    );
+
+    testWidgets(
+      'The new page error indicator rebuilds after the error is cleared.',
+      (tester) async {
+        await _rebuildErrorIndicatorWhileFadingOut(
+          tester: tester,
+          errorState: TestPagingState.subsequentPageError(),
+          nextState: TestPagingState.ongoing(),
+          delegateWith: (builder) => PagedChildBuilderDelegate<String>(
+            animateTransitions: true,
+            itemBuilder: (_, item, _) => Text(item),
+            newPageErrorIndicatorBuilder: builder,
+          ),
+        );
+
+        expect(tester.takeException(), isNull);
+      },
+    );
+  });
 }
 
 void _expectWidgetWithKey(Key key) {
@@ -422,3 +502,34 @@ Future<void> _pumpSliver({
     home: Scaffold(body: CustomScrollView(slivers: [sliver])),
   ),
 );
+
+Future<void> _rebuildErrorIndicatorWhileFadingOut({
+  required WidgetTester tester,
+  required PagingState<int, String> errorState,
+  required PagingState<int, String> nextState,
+  required PagedChildBuilderDelegate<String> Function(
+    ErrorIndicatorBuilder builder,
+  )
+  delegateWith,
+}) async {
+  Widget app(PagingState<int, String> state, double textScale) => MaterialApp(
+    home: MediaQuery(
+      data: MediaQueryData(textScaler: TextScaler.linear(textScale)),
+      child: Scaffold(
+        body: PagedListView<int, String>(
+          state: state,
+          fetchNextPage: () {},
+          builderDelegate: delegateWith((context, error) {
+            MediaQuery.textScalerOf(context);
+            return Text('$error');
+          }),
+        ),
+      ),
+    ),
+  );
+
+  await tester.pumpWidget(app(errorState, 1));
+  await tester.pumpWidget(app(nextState, 1));
+  await tester.pump(const Duration(milliseconds: 50));
+  await tester.pumpWidget(app(nextState, 2));
+}

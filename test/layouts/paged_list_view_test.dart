@@ -188,7 +188,7 @@ Future<void> _pumpPagedListView({
                     ? (context) => newPageProgressIndicator
                     : null,
                 newPageErrorIndicatorBuilder: newPageErrorIndicator != null
-                    ? (context) => newPageErrorIndicator
+                    ? (context, _) => newPageErrorIndicator
                     : null,
                 noMoreItemsIndicatorBuilder: noMoreItemsIndicator != null
                     ? (context) => noMoreItemsIndicator
@@ -205,7 +205,7 @@ Future<void> _pumpPagedListView({
                     ? (context) => newPageProgressIndicator
                     : null,
                 newPageErrorIndicatorBuilder: newPageErrorIndicator != null
-                    ? (context) => newPageErrorIndicator
+                    ? (context, _) => newPageErrorIndicator
                     : null,
                 noMoreItemsIndicatorBuilder: noMoreItemsIndicator != null
                     ? (context) => noMoreItemsIndicator

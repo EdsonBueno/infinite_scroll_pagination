@@ -267,7 +267,7 @@ Future<void> _pumpPagedGridView({
               ? (context) => newPageProgressIndicator
               : null,
           newPageErrorIndicatorBuilder: newPageErrorIndicator != null
-              ? (context) => newPageErrorIndicator
+              ? (context, _) => newPageErrorIndicator
               : null,
           noMoreItemsIndicatorBuilder: noMoreItemsIndicator != null
               ? (context) => noMoreItemsIndicator

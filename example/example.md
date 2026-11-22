@@ -160,12 +160,12 @@ PagedListView<int, Photo>(
   fetchNextPage: fetchNextPage,
   builderDelegate: PagedChildBuilderDelegate(
     itemBuilder: (context, item, index) => ImageListTile(item: item),
-    firstPageErrorIndicatorBuilder: (_) => FirstPageErrorIndicator(
-      error: state.error,
+    firstPageErrorIndicatorBuilder: (_, error) => CustomFirstPageErrorIndicator(
+      error: error,
       onTryAgain: () => fetchNextPage(),
     ),
-    newPageErrorIndicatorBuilder: (_) => NewPageErrorIndicator(
-      error: state.error,
+    newPageErrorIndicatorBuilder: (_, error) => CustomNewPageErrorIndicator(
+      error: error,
       onTryAgain: () => fetchNextPage(),
     ),
     firstPageProgressIndicatorBuilder: (_) => FirstPageProgressIndicator(),

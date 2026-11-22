@@ -3,6 +3,9 @@ import 'package:flutter/widgets.dart';
 typedef ItemWidgetBuilder<ItemType> =
     Widget Function(BuildContext context, ItemType item, int index);
 
+typedef ErrorIndicatorBuilder =
+    Widget Function(BuildContext context, Object error);
+
 /// Supplies builders for the visual components of paged views.
 ///
 /// The generic type [ItemType] must be specified in order to properly identify
@@ -32,10 +35,10 @@ class PagedChildBuilderDelegate<ItemType> {
   final ChildIndexGetter? findChildIndexCallback;
 
   /// The builder for the first page's error indicator.
-  final WidgetBuilder? firstPageErrorIndicatorBuilder;
+  final ErrorIndicatorBuilder? firstPageErrorIndicatorBuilder;
 
   /// The builder for a new page's error indicator.
-  final WidgetBuilder? newPageErrorIndicatorBuilder;
+  final ErrorIndicatorBuilder? newPageErrorIndicatorBuilder;
 
   /// The builder for the first page's progress indicator.
   final WidgetBuilder? firstPageProgressIndicatorBuilder;
