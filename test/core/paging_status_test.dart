@@ -30,6 +30,27 @@ void main() {
       expect(pagingState.status, PagingStatus.noItemsFound);
     });
 
+    test('returns noItemsFound status when every fetched page is empty', () {
+      pagingState = PagingState<int, String>(
+        pages: const [[], []],
+        keys: const [1, 2],
+        hasNextPage: false,
+      );
+      expect(pagingState.status, PagingStatus.noItemsFound);
+    });
+
+    test('returns ongoing status when only a later page has items', () {
+      pagingState = PagingState<int, String>(
+        pages: const [
+          [],
+          ['Item 1']
+        ],
+        keys: const [1, 2],
+        hasNextPage: true,
+      );
+      expect(pagingState.status, PagingStatus.ongoing);
+    });
+
     test(
         'returns ongoing status when items exist, there is no error, and more pages are available',
         () {
