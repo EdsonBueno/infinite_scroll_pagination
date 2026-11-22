@@ -21,46 +21,45 @@ class _SearchInputSliverState extends State<SearchInputSliver> {
 
   @override
   Widget build(BuildContext context) => SliverToBoxAdapter(
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(8),
-            child: SearchAnchor(
-              searchController: _searchController,
-              viewOnSubmitted: (value) {
-                widget.onChanged?.call(value);
-                _searchController.closeView(value);
-              },
-              suggestionsBuilder: (context, controller) =>
-                  widget.getSuggestions(controller.text).map(
-                        (suggestion) => ListTile(
-                          title: Text(suggestion),
-                          onTap: () {
-                            controller.closeView(suggestion);
-                            widget.onChanged?.call(suggestion);
-                          },
-                        ),
-                      ),
-              viewShape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              builder: (context, controller) => SearchBar(
-                shape: WidgetStatePropertyAll(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+    child: SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(8),
+        child: SearchAnchor(
+          searchController: _searchController,
+          viewOnSubmitted: (value) {
+            widget.onChanged?.call(value);
+            _searchController.closeView(value);
+          },
+          suggestionsBuilder: (context, controller) => widget
+              .getSuggestions(controller.text)
+              .map(
+                (suggestion) => ListTile(
+                  title: Text(suggestion),
+                  onTap: () {
+                    controller.closeView(suggestion);
+                    widget.onChanged?.call(suggestion);
+                  },
                 ),
-                controller: controller,
-                hintText: 'Search...',
-                onTap: () {
-                  controller.openView();
-                },
-                onChanged: (_) {
-                  controller.openView();
-                },
-                leading: const Icon(Icons.search),
               ),
+          viewShape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          builder: (context, controller) => SearchBar(
+            shape: WidgetStatePropertyAll(
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             ),
+            controller: controller,
+            hintText: 'Search...',
+            onTap: () {
+              controller.openView();
+            },
+            onChanged: (_) {
+              controller.openView();
+            },
+            leading: const Icon(Icons.search),
           ),
         ),
-      );
+      ),
+    ),
+  );
 }

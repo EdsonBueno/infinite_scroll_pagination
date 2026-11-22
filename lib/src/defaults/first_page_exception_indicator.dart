@@ -18,10 +18,7 @@ class FirstPageExceptionIndicator extends StatelessWidget {
     final message = this.message;
     return Center(
       child: Padding(
-        padding: const EdgeInsets.symmetric(
-          vertical: 32,
-          horizontal: 16,
-        ),
+        padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -31,18 +28,11 @@ class FirstPageExceptionIndicator extends StatelessWidget {
               style: Theme.of(context).textTheme.titleLarge,
             ),
             if (message != null) ...[
-              const SizedBox(
-                height: 16,
-              ),
-              Text(
-                message,
-                textAlign: TextAlign.center,
-              ),
+              const SizedBox(height: 16),
+              Text(message, textAlign: TextAlign.center),
             ],
             if (onTryAgain != null) ...[
-              const SizedBox(
-                height: 48,
-              ),
+              const SizedBox(height: 48),
               SizedBox(
                 width: 200,
                 child: ElevatedButton.icon(
@@ -50,9 +40,7 @@ class FirstPageExceptionIndicator extends StatelessWidget {
                   icon: const Icon(Icons.refresh),
                   label: const Text(
                     'Try Again',
-                    style: TextStyle(
-                      fontSize: 16,
-                    ),
+                    style: TextStyle(fontSize: 16),
                   ),
                 ),
               ),

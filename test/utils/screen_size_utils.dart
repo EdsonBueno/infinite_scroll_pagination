@@ -1,10 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-const screenSize = Size(
-  200,
-  500,
-);
+const screenSize = Size(200, 500);
 
 extension ScreenSizeUtils on WidgetTester {
   void applyPreferredTestScreenSize() {
@@ -13,16 +10,10 @@ extension ScreenSizeUtils on WidgetTester {
   }
 }
 
-void expectWidgetToHaveScreenWidth(
-  Key widgetKey,
-  WidgetTester tester,
-) {
+void expectWidgetToHaveScreenWidth(Key widgetKey, WidgetTester tester) {
   final widgetFinder = find.byKey(widgetKey);
   final widgetSize = tester.getSize(widgetFinder);
-  expect(
-    widgetSize.width,
-    screenSize.width,
-  );
+  expect(widgetSize.width, screenSize.width);
 }
 
 void expectWidgetToHaveHalfOfTheScreenWidth(

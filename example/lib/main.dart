@@ -9,16 +9,16 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => MaterialApp(
-        title: 'Infinite Scroll Pagination Sample',
-        scrollBehavior: const TouchBehaviour(),
-        theme: ThemeData.from(
-          useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.greenAccent,
-            brightness:
-                WidgetsBinding.instance.platformDispatcher.platformBrightness,
-          ),
-        ),
-        home: const Home(),
-      );
+    title: 'Infinite Scroll Pagination Sample',
+    scrollBehavior: const TouchBehaviour(),
+    theme: ThemeData.from(
+      useMaterial3: true,
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: Colors.greenAccent,
+        brightness:
+            WidgetsBinding.instance.platformDispatcher.platformBrightness,
+      ),
+    ),
+    home: const Home(),
+  );
 }

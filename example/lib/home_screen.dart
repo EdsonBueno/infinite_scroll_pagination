@@ -46,9 +46,8 @@ class _HomeState extends State<Home> {
               ),
             )
             .toList(),
-        onTap: (newIndex) => setState(
-          () => _selectedBottomNavigationIndex = newIndex,
-        ),
+        onTap: (newIndex) =>
+            setState(() => _selectedBottomNavigationIndex = newIndex),
       ),
       body: ScaffoldMessenger(
         child: IndexedStack(

@@ -45,10 +45,8 @@ class PagedGridView<PageKeyType, ItemType> extends BoxScrollView {
     // Matches [ScrollView.clipBehavior].
     super.clipBehavior,
     super.key,
-  })  : _shrinkWrapFirstPageIndicators = shrinkWrap,
-        super(
-          controller: scrollController,
-        );
+  }) : _shrinkWrapFirstPageIndicators = shrinkWrap,
+       super(controller: scrollController);
 
   /// Matches [PagedLayoutBuilder.state].
   final PagingState<PageKeyType, ItemType> state;
@@ -84,21 +82,20 @@ class PagedGridView<PageKeyType, ItemType> extends BoxScrollView {
   final bool _shrinkWrapFirstPageIndicators;
 
   @override
-  Widget buildChildLayout(BuildContext context) =>
-      PagedSliverGrid<PageKeyType, ItemType>(
-        builderDelegate: builderDelegate,
-        state: state,
-        fetchNextPage: fetchNextPage,
-        gridDelegate: gridDelegate,
-        addAutomaticKeepAlives: addAutomaticKeepAlives,
-        addRepaintBoundaries: addRepaintBoundaries,
-        addSemanticIndexes: addSemanticIndexes,
-        showNewPageProgressIndicatorAsGridChild:
-            showNewPageProgressIndicatorAsGridChild,
-        showNewPageErrorIndicatorAsGridChild:
-            showNewPageErrorIndicatorAsGridChild,
-        showNoMoreItemsIndicatorAsGridChild:
-            showNoMoreItemsIndicatorAsGridChild,
-        shrinkWrapFirstPageIndicators: _shrinkWrapFirstPageIndicators,
-      );
+  Widget buildChildLayout(
+    BuildContext context,
+  ) => PagedSliverGrid<PageKeyType, ItemType>(
+    builderDelegate: builderDelegate,
+    state: state,
+    fetchNextPage: fetchNextPage,
+    gridDelegate: gridDelegate,
+    addAutomaticKeepAlives: addAutomaticKeepAlives,
+    addRepaintBoundaries: addRepaintBoundaries,
+    addSemanticIndexes: addSemanticIndexes,
+    showNewPageProgressIndicatorAsGridChild:
+        showNewPageProgressIndicatorAsGridChild,
+    showNewPageErrorIndicatorAsGridChild: showNewPageErrorIndicatorAsGridChild,
+    showNoMoreItemsIndicatorAsGridChild: showNoMoreItemsIndicatorAsGridChild,
+    shrinkWrapFirstPageIndicators: _shrinkWrapFirstPageIndicators,
+  );
 }

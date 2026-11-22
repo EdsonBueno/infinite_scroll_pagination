@@ -3,19 +3,16 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:material_ui/material_ui.dart';
 
 class ImageListTile extends StatelessWidget {
-  const ImageListTile({
-    super.key,
-    required this.item,
-  });
+  const ImageListTile({super.key, required this.item});
 
   final Photo item;
 
   @override
   Widget build(BuildContext context) => ListTile(
-        leading: CircleAvatar(
-          radius: 20,
-          backgroundImage: CachedNetworkImageProvider(item.thumbnail),
-        ),
-        title: Text(item.title),
-      );
+    leading: CircleAvatar(
+      radius: 20,
+      backgroundImage: CachedNetworkImageProvider(item.thumbnail),
+    ),
+    title: Text(item.title),
+  );
 }

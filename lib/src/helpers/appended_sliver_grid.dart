@@ -3,10 +3,8 @@ import 'package:flutter/widgets.dart';
 import 'appended_sliver_child_builder_delegate.dart';
 
 /// Usually returns a SliverWithKeepAliveWidget
-typedef SliverGridBuilder = Widget Function(
-  int childCount,
-  SliverChildDelegate delegate,
-);
+typedef SliverGridBuilder =
+    Widget Function(int childCount, SliverChildDelegate delegate);
 
 class AppendedSliverGrid extends StatelessWidget {
   const AppendedSliverGrid({
@@ -38,16 +36,15 @@ class AppendedSliverGrid extends StatelessWidget {
 
     SliverChildBuilderDelegate buildSliverDelegate({
       WidgetBuilder? appendixBuilder,
-    }) =>
-        AppendedSliverChildBuilderDelegate(
-          builder: itemBuilder,
-          childCount: itemCount,
-          appendixBuilder: appendixBuilder,
-          addAutomaticKeepAlives: addAutomaticKeepAlives,
-          addRepaintBoundaries: addRepaintBoundaries,
-          addSemanticIndexes: addSemanticIndexes,
-          findChildIndexCallback: findChildIndexCallback,
-        );
+    }) => AppendedSliverChildBuilderDelegate(
+      builder: itemBuilder,
+      childCount: itemCount,
+      appendixBuilder: appendixBuilder,
+      addAutomaticKeepAlives: addAutomaticKeepAlives,
+      addRepaintBoundaries: addRepaintBoundaries,
+      addSemanticIndexes: addSemanticIndexes,
+      findChildIndexCallback: findChildIndexCallback,
+    );
 
     return SliverMainAxisGroup(
       slivers: [
@@ -77,7 +74,8 @@ class _OffscreenMutedSliver extends StatelessWidget {
     final enabled = TickerMode(enabled: true, child: sliver);
     final muted = TickerMode(enabled: false, child: sliver);
     return SliverLayoutBuilder(
-      builder: (context, constraints) => constraints.remainingPaintExtent > 0 ||
+      builder: (context, constraints) =>
+          constraints.remainingPaintExtent > 0 ||
               constraints.remainingCacheExtent > 0
           ? enabled
           : muted,

@@ -21,10 +21,10 @@ extension TestPagingState on PagingState<int, String> {
       PagingState<int, String>(error: TestException());
 
   static PagingState<int, String> noItemsFound() => PagingState<int, String>(
-        pages: const [[]],
-        keys: const [1],
-        hasNextPage: false,
-      );
+    pages: const [[]],
+    keys: const [1],
+    hasNextPage: false,
+  );
 
   static PagingState<int, String> ongoing({int n = pageSize}) =>
       PagingState<int, String>(
@@ -50,16 +50,7 @@ extension TestPagingState on PagingState<int, String> {
 }
 
 Widget Function(BuildContext, String, int) buildTestTile(double itemHeight) {
-  return (
-    BuildContext context,
-    String item,
-    int index,
-  ) {
-    return SizedBox(
-      height: itemHeight,
-      child: Text(
-        item,
-      ),
-    );
+  return (BuildContext context, String item, int index) {
+    return SizedBox(height: itemHeight, child: Text(item));
   };
 }

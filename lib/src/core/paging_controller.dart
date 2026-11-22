@@ -5,12 +5,12 @@ import 'package:infinite_scroll_pagination/src/core/paging_state.dart';
 
 /// A callback to get the next page key.
 /// If this function returns `null`, it indicates that there are no more pages to load.
-typedef NextPageKeyCallback<PageKeyType, ItemType> = PageKeyType? Function(
-    PagingState<PageKeyType, ItemType> state);
+typedef NextPageKeyCallback<PageKeyType, ItemType> =
+    PageKeyType? Function(PagingState<PageKeyType, ItemType> state);
 
 /// A callback to fetch a page.
-typedef FetchPageCallback<PageKeyType, ItemType> = FutureOr<List<ItemType>>
-    Function(PageKeyType pageKey);
+typedef FetchPageCallback<PageKeyType, ItemType> =
+    FutureOr<List<ItemType>> Function(PageKeyType pageKey);
 
 /// A controller to handle a [PagingState].
 ///
@@ -26,11 +26,9 @@ class PagingController<PageKeyType, ItemType>
     PagingState<PageKeyType, ItemType>? value,
     required NextPageKeyCallback<PageKeyType, ItemType> getNextPageKey,
     required FetchPageCallback<PageKeyType, ItemType> fetchPage,
-  })  : _getNextPageKey = getNextPageKey,
-        _fetchPage = fetchPage,
-        super(
-          value ?? PagingState<PageKeyType, ItemType>(),
-        );
+  }) : _getNextPageKey = getNextPageKey,
+       _fetchPage = fetchPage,
+       super(value ?? PagingState<PageKeyType, ItemType>());
 
   /// The function to get the next page key.
   /// If this function returns `null`, it indicates that there are no more pages to load.
@@ -57,10 +55,7 @@ class PagingController<PageKeyType, ItemType>
 
     final operation = this.operation = Object();
 
-    value = value.copyWith(
-      isLoading: true,
-      error: null,
-    );
+    value = value.copyWith(isLoading: true, error: null);
 
     // we use a local copy of value,
     // so that we only send one notification now and at the end of the method.

@@ -42,15 +42,9 @@ class _PageViewScreenState extends State<PageViewScreen> {
       setState(() {
         _state = _state.copyWith(
           // append our new page to the existing pages
-          pages: [
-            ...?_state.pages,
-            newItems,
-          ],
+          pages: [...?_state.pages, newItems],
           // append the new key to the existing keys
-          keys: [
-            ...?_state.keys,
-            newKey,
-          ],
+          keys: [...?_state.keys, newKey],
           // signal if we reached the end
           hasNextPage: !isLastPage,
           // set loading back to false
@@ -78,9 +72,8 @@ class _PageViewScreenState extends State<PageViewScreen> {
           state: _state,
           fetchNextPage: fetchNextPage,
           builderDelegate: PagedChildBuilderDelegate(
-            itemBuilder: (context, item, index) => CachedNetworkImage(
-              imageUrl: item.thumbnail,
-            ),
+            itemBuilder: (context, item, index) =>
+                CachedNetworkImage(imageUrl: item.thumbnail),
           ),
         ),
         Positioned(
@@ -103,13 +96,12 @@ class _PageViewScreenState extends State<PageViewScreen> {
                       ),
                       child: Text(
                         '${(_pageController.page ?? 0).round()} / ${_state.items?.length ?? 0}',
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleLarge
-                            ?.copyWith(color: Colors.white),
+                        style: Theme.of(
+                          context,
+                        ).textTheme.titleLarge?.copyWith(color: Colors.white),
                       ),
                     ),
-                  )
+                  ),
               ],
             ),
           ),

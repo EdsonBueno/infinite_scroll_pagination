@@ -2,10 +2,11 @@ import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-typedef _LayoutBuilder = Widget Function(
-  PagingState<int, String> state,
-  PagedChildBuilderDelegate<String> builderDelegate,
-);
+typedef _LayoutBuilder =
+    Widget Function(
+      PagingState<int, String> state,
+      PagedChildBuilderDelegate<String> builderDelegate,
+    );
 
 PagingState<int, String> _completed(List<String> items) =>
     PagingState<int, String>(
@@ -36,22 +37,22 @@ Future<void> _expectStateKeptOnInsert(
   var items = ['A', 'B', 'C'];
 
   Future<void> pump() => tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: buildLayout(
-              _completed(items),
-              PagedChildBuilderDelegate<String>(
-                itemBuilder: (context, item, index) =>
-                    _Tile(key: ValueKey(item), item: item),
-                findChildIndexCallback: (key) {
-                  final index = items.indexOf((key as ValueKey<String>).value);
-                  return index < 0 ? null : index;
-                },
-              ),
-            ),
+    MaterialApp(
+      home: Scaffold(
+        body: buildLayout(
+          _completed(items),
+          PagedChildBuilderDelegate<String>(
+            itemBuilder: (context, item, index) =>
+                _Tile(key: ValueKey(item), item: item),
+            findChildIndexCallback: (key) {
+              final index = items.indexOf((key as ValueKey<String>).value);
+              return index < 0 ? null : index;
+            },
           ),
         ),
-      );
+      ),
+    ),
+  );
 
   final finder = find.byKey(const ValueKey('A'), skipOffstage: false);
 
@@ -112,8 +113,8 @@ void main() {
           builderDelegate: builderDelegate,
           gridDelegateBuilder: (childCount) =>
               const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-          ),
+                crossAxisCount: 2,
+              ),
         ),
       );
     });

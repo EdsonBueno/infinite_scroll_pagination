@@ -27,18 +27,19 @@ void main() {
     });
 
     testWidgets(
-        'Requests second page immediately if the first page isn\'t enough',
-        (tester) async {
-      tester.applyPreferredTestScreenSize();
+      'Requests second page immediately if the first page isn\'t enough',
+      (tester) async {
+        tester.applyPreferredTestScreenSize();
 
-      await _pumpPagedStaggeredGridView(
-        tester: tester,
-        state: TestPagingState.ongoing(n: pageSize ~/ 2),
-        fetchNextPage: mockPageRequestListener.call,
-      );
+        await _pumpPagedStaggeredGridView(
+          tester: tester,
+          state: TestPagingState.ongoing(n: pageSize ~/ 2),
+          fetchNextPage: mockPageRequestListener.call,
+        );
 
-      verify(mockPageRequestListener()).called(1);
-    });
+        verify(mockPageRequestListener()).called(1);
+      },
+    );
 
     testWidgets('Doesn\'t request a page unnecessarily', (tester) async {
       tester.applyPreferredTestScreenSize();
@@ -70,8 +71,9 @@ void main() {
     });
 
     group('Displays indicators as grid children', () {
-      testWidgets('Appends the new page progress indicator to the grid items',
-          (tester) async {
+      testWidgets('Appends the new page progress indicator to the grid items', (
+        tester,
+      ) async {
         tester.applyPreferredTestScreenSize();
 
         final customIndicatorKey = UniqueKey();
@@ -92,14 +94,12 @@ void main() {
           _itemHeight,
         );
 
-        expectWidgetToHaveHalfOfTheScreenWidth(
-          customIndicatorKey,
-          tester,
-        );
+        expectWidgetToHaveHalfOfTheScreenWidth(customIndicatorKey, tester);
       });
 
-      testWidgets('Appends the new page error indicator to the grid items',
-          (tester) async {
+      testWidgets('Appends the new page error indicator to the grid items', (
+        tester,
+      ) async {
         tester.applyPreferredTestScreenSize();
 
         final customIndicatorKey = UniqueKey();
@@ -121,14 +121,12 @@ void main() {
           _itemHeight,
         );
 
-        expectWidgetToHaveHalfOfTheScreenWidth(
-          customIndicatorKey,
-          tester,
-        );
+        expectWidgetToHaveHalfOfTheScreenWidth(customIndicatorKey, tester);
       });
 
-      testWidgets('Appends the no more items indicator to the grid items',
-          (tester) async {
+      testWidgets('Appends the no more items indicator to the grid items', (
+        tester,
+      ) async {
         tester.applyPreferredTestScreenSize();
 
         final customIndicatorKey = UniqueKey();
@@ -150,15 +148,11 @@ void main() {
           _itemHeight,
         );
 
-        expectWidgetToHaveHalfOfTheScreenWidth(
-          customIndicatorKey,
-          tester,
-        );
+        expectWidgetToHaveHalfOfTheScreenWidth(customIndicatorKey, tester);
       });
     });
 
-    testWidgets(
-        'Does not tick an offstage new page progress indicator when '
+    testWidgets('Does not tick an offstage new page progress indicator when '
         '[showNewPageProgressIndicatorAsGridChild] is false', (tester) async {
       tester.applyPreferredTestScreenSize();
 
@@ -187,14 +181,10 @@ void main() {
       await tester.pump(const Duration(seconds: 1));
 
       expect(tester.binding.transientCallbackCount, greaterThan(0));
-      expectWidgetToHaveScreenWidth(
-        customIndicatorKey,
-        tester,
-      );
+      expectWidgetToHaveScreenWidth(customIndicatorKey, tester);
     });
 
-    testWidgets(
-        'Reaches the no more items indicator below the grid '
+    testWidgets('Reaches the no more items indicator below the grid '
         'when [cacheExtent] is 0', (tester) async {
       tester.applyPreferredTestScreenSize();
 
@@ -230,32 +220,31 @@ Future<void> _pumpPagedStaggeredGridView({
   bool showNewPageProgressIndicatorAsGridChild = true,
   bool showNoMoreItemsIndicatorAsGridChild = true,
   double? cacheExtent,
-}) =>
-    tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: PagedMasonryGridView.count(
-            state: state,
-            fetchNextPage: fetchNextPage,
-            builderDelegate: PagedChildBuilderDelegate<String>(
-              itemBuilder: buildTestTile(_itemHeight),
-              newPageProgressIndicatorBuilder: newPageProgressIndicator != null
-                  ? (context) => newPageProgressIndicator
-                  : null,
-              newPageErrorIndicatorBuilder: newPageErrorIndicator != null
-                  ? (context) => newPageErrorIndicator
-                  : null,
-              noMoreItemsIndicatorBuilder: noMoreItemsIndicator != null
-                  ? (context) => noMoreItemsIndicator
-                  : null,
-            ),
-            crossAxisCount: 2,
-            showNewPageProgressIndicatorAsGridChild:
-                showNewPageProgressIndicatorAsGridChild,
-            showNoMoreItemsIndicatorAsGridChild:
-                showNoMoreItemsIndicatorAsGridChild,
-            cacheExtent: cacheExtent,
-          ),
+}) => tester.pumpWidget(
+  MaterialApp(
+    home: Scaffold(
+      body: PagedMasonryGridView.count(
+        state: state,
+        fetchNextPage: fetchNextPage,
+        builderDelegate: PagedChildBuilderDelegate<String>(
+          itemBuilder: buildTestTile(_itemHeight),
+          newPageProgressIndicatorBuilder: newPageProgressIndicator != null
+              ? (context) => newPageProgressIndicator
+              : null,
+          newPageErrorIndicatorBuilder: newPageErrorIndicator != null
+              ? (context) => newPageErrorIndicator
+              : null,
+          noMoreItemsIndicatorBuilder: noMoreItemsIndicator != null
+              ? (context) => noMoreItemsIndicator
+              : null,
         ),
+        crossAxisCount: 2,
+        showNewPageProgressIndicatorAsGridChild:
+            showNewPageProgressIndicatorAsGridChild,
+        showNoMoreItemsIndicatorAsGridChild:
+            showNoMoreItemsIndicatorAsGridChild,
+        cacheExtent: cacheExtent,
       ),
-    );
+    ),
+  ),
+);

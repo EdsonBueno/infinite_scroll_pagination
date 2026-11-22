@@ -17,18 +17,18 @@ base class PagingStateBase<PageKeyType, ItemType>
     this.error,
     this.hasNextPage = true,
     this.isLoading = false,
-  })  : assert(
-          pages?.length == keys?.length,
-          'The length of pages and keys must be equal.',
-        ),
-        pages = switch (pages) {
-          null => null,
-          _ => List.unmodifiable(pages.map<List<ItemType>>(List.unmodifiable)),
-        },
-        keys = switch (keys) {
-          null => null,
-          _ => List.unmodifiable(keys),
-        };
+  }) : assert(
+         pages?.length == keys?.length,
+         'The length of pages and keys must be equal.',
+       ),
+       pages = switch (pages) {
+         null => null,
+         _ => List.unmodifiable(pages.map<List<ItemType>>(List.unmodifiable)),
+       },
+       keys = switch (keys) {
+         null => null,
+         _ => List.unmodifiable(keys),
+       };
 
   @override
   final List<List<ItemType>>? pages;
@@ -52,27 +52,26 @@ base class PagingStateBase<PageKeyType, ItemType>
     Defaulted<Object?>? error = const Omit(),
     Defaulted<bool>? hasNextPage = const Omit(),
     Defaulted<bool>? isLoading = const Omit(),
-  }) =>
-      PagingStateBase(
-        pages: pages is Omit ? this.pages : pages as List<List<ItemType>>?,
-        keys: keys is Omit ? this.keys : keys as List<PageKeyType>?,
-        error: error is Omit ? this.error : error as Object?,
-        hasNextPage:
-            hasNextPage is Omit ? this.hasNextPage : hasNextPage as bool,
-        isLoading: isLoading is Omit ? this.isLoading : isLoading as bool,
-      );
+  }) => PagingStateBase(
+    pages: pages is Omit ? this.pages : pages as List<List<ItemType>>?,
+    keys: keys is Omit ? this.keys : keys as List<PageKeyType>?,
+    error: error is Omit ? this.error : error as Object?,
+    hasNextPage: hasNextPage is Omit ? this.hasNextPage : hasNextPage as bool,
+    isLoading: isLoading is Omit ? this.isLoading : isLoading as bool,
+  );
 
   @override
   PagingState<PageKeyType, ItemType> reset() => PagingStateBase(
-        pages: null,
-        keys: null,
-        error: null,
-        hasNextPage: true,
-        isLoading: false,
-      );
+    pages: null,
+    keys: null,
+    error: null,
+    hasNextPage: true,
+    isLoading: false,
+  );
 
   @override
-  String toString() => '${objectRuntimeType(this, 'PagingStateBase')}'
+  String toString() =>
+      '${objectRuntimeType(this, 'PagingStateBase')}'
       '(pages: $pages, keys: $keys, error: $error, hasNextPage: $hasNextPage, '
       'isLoading: $isLoading)';
 
@@ -91,10 +90,10 @@ base class PagingStateBase<PageKeyType, ItemType>
 
   @override
   int get hashCode => Object.hash(
-        _equality.hash(pages),
-        _equality.hash(keys),
-        error,
-        hasNextPage,
-        isLoading,
-      );
+    _equality.hash(pages),
+    _equality.hash(keys),
+    error,
+    hasNextPage,
+    isLoading,
+  );
 }

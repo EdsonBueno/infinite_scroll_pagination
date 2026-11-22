@@ -18,17 +18,17 @@ class AppendedSliverChildBuilderDelegate extends SliverChildBuilderDelegate {
     SemanticIndexCallback? semanticIndexCallback,
     super.findChildIndexCallback,
   }) : super(
-          appendixBuilder == null
-              ? builder
-              : (context, index) {
-                  if (index == childCount) {
-                    return appendixBuilder(context);
-                  }
-                  return builder(context, index);
-                },
-          childCount: appendixBuilder == null ? childCount : childCount + 1,
-          semanticIndexCallback: semanticIndexCallback ?? (_, index) => index,
-        );
+         appendixBuilder == null
+             ? builder
+             : (context, index) {
+                 if (index == childCount) {
+                   return appendixBuilder(context);
+                 }
+                 return builder(context, index);
+               },
+         childCount: appendixBuilder == null ? childCount : childCount + 1,
+         semanticIndexCallback: semanticIndexCallback ?? (_, index) => index,
+       );
 
   AppendedSliverChildBuilderDelegate.separated({
     required IndexedWidgetBuilder builder,
@@ -40,28 +40,28 @@ class AppendedSliverChildBuilderDelegate extends SliverChildBuilderDelegate {
     bool addSemanticIndexes = true,
     ChildIndexGetter? findChildIndexCallback,
   }) : this(
-          builder: (context, index) {
-            final itemIndex = index ~/ 2;
-            if (index.isEven) {
-              return builder(context, itemIndex);
-            }
+         builder: (context, index) {
+           final itemIndex = index ~/ 2;
+           if (index.isEven) {
+             return builder(context, itemIndex);
+           }
 
-            return separatorBuilder(context, itemIndex);
-          },
-          childCount: math.max(
-            0,
-            childCount * 2 - (appendixBuilder != null ? 0 : 1),
-          ),
-          appendixBuilder: appendixBuilder,
-          addAutomaticKeepAlives: addAutomaticKeepAlives,
-          addRepaintBoundaries: addRepaintBoundaries,
-          addSemanticIndexes: addSemanticIndexes,
-          semanticIndexCallback: (_, index) => index.isEven ? index ~/ 2 : null,
-          findChildIndexCallback: findChildIndexCallback == null
-              ? null
-              : (key) => switch (findChildIndexCallback(key)) {
-                    final itemIndex? => itemIndex * 2,
-                    null => null,
-                  },
-        );
+           return separatorBuilder(context, itemIndex);
+         },
+         childCount: math.max(
+           0,
+           childCount * 2 - (appendixBuilder != null ? 0 : 1),
+         ),
+         appendixBuilder: appendixBuilder,
+         addAutomaticKeepAlives: addAutomaticKeepAlives,
+         addRepaintBoundaries: addRepaintBoundaries,
+         addSemanticIndexes: addSemanticIndexes,
+         semanticIndexCallback: (_, index) => index.isEven ? index ~/ 2 : null,
+         findChildIndexCallback: findChildIndexCallback == null
+             ? null
+             : (key) => switch (findChildIndexCallback(key)) {
+                 final itemIndex? => itemIndex * 2,
+                 null => null,
+               },
+       );
 }

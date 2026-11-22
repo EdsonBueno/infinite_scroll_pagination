@@ -78,8 +78,9 @@ void main() {
       });
 
       test('stops if no more pages are available', () async {
-        pagingController.value =
-            pagingController.value.copyWith(hasNextPage: false);
+        pagingController.value = pagingController.value.copyWith(
+          hasNextPage: false,
+        );
         pagingController.fetchNextPage();
         expect(fetchCalled, isFalse);
       });
@@ -101,9 +102,7 @@ void main() {
 
         pagingController.value = pagingController.value.copyWith(
           pages: pagingController.value.pages
-              ?.map(
-                (a) => a.map((b) => b.toUpperCase()).toList(),
-              )
+              ?.map((a) => a.map((b) => b.toUpperCase()).toList())
               .toList(),
         );
 
@@ -134,8 +133,10 @@ void main() {
           fetchPage: (_) => throw Error(),
         );
 
-        expect(() async => pagingController.fetchNextPage(),
-            throwsA(isA<Error>()));
+        expect(
+          () async => pagingController.fetchNextPage(),
+          throwsA(isA<Error>()),
+        );
 
         expect(pagingController.value.isLoading, isFalse);
         expect(pagingController.value.error, isA<Error>());
@@ -146,7 +147,7 @@ void main() {
       test('resets state', () async {
         pagingController.value = PagingState<int, String>(
           pages: const [
-            ['Item 1']
+            ['Item 1'],
           ],
           keys: const [1],
         );
@@ -167,15 +168,16 @@ void main() {
         final completer2 = Completer<List<String>>();
 
         pagingController = PagingController<int, String>(
-            getNextPageKey: (state) => nextPageKey,
-            fetchPage: (_) {
-              if (hasBeenCalled) {
-                return completer2.future;
-              } else {
-                hasBeenCalled = true;
-                return completer1.future;
-              }
-            });
+          getNextPageKey: (state) => nextPageKey,
+          fetchPage: (_) {
+            if (hasBeenCalled) {
+              return completer2.future;
+            } else {
+              hasBeenCalled = true;
+              return completer1.future;
+            }
+          },
+        );
 
         final wrongItems = ['Wrong Item 1', 'Wrong Item 2'];
 
@@ -219,7 +221,7 @@ void main() {
         await Future.value(null);
 
         expect(pagingController.value.pages, [
-          ['Item 1']
+          ['Item 1'],
         ]);
 
         pagingController.fetchNextPage();
@@ -230,7 +232,7 @@ void main() {
 
         expect(pagingController.value.isLoading, isFalse);
         expect(pagingController.value.pages, [
-          ['Item 1']
+          ['Item 1'],
         ]);
       });
     });

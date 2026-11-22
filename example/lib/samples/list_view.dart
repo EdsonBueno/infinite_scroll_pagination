@@ -73,31 +73,25 @@ class _ListViewScreenState extends State<ListViewScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: SearchAppBar(
-          searchTerm: _searchTerm,
-          onSearch: _updateSearchTerm,
-        ),
-        body: RefreshIndicator(
-          onRefresh: () async => _pagingController.refresh(),
+    appBar: SearchAppBar(searchTerm: _searchTerm, onSearch: _updateSearchTerm),
+    body: RefreshIndicator(
+      onRefresh: () async => _pagingController.refresh(),
 
-          /// The [PagingListener] is a widget that listens to the controller and
-          /// rebuilds the UI based on the state of the controller.
-          /// Its the easiest way to bind your controller to a Paged layout.
-          child: PagingListener(
-            controller: _pagingController,
-            builder: (context, state, fetchNextPage) =>
-
-                /// Paged layouts rely on a [PagingState] and a [fetchNextPage] function.
-                PagedListView<int, Photo>.separated(
+      /// The [PagingListener] is a widget that listens to the controller and
+      /// rebuilds the UI based on the state of the controller.
+      /// Its the easiest way to bind your controller to a Paged layout.
+      child: PagingListener(
+        controller: _pagingController,
+        builder: (context, state, fetchNextPage) =>
+            /// Paged layouts rely on a [PagingState] and a [fetchNextPage] function.
+            PagedListView<int, Photo>.separated(
               state: state,
               fetchNextPage: fetchNextPage,
               itemExtent: 48,
               builderDelegate: PagedChildBuilderDelegate(
                 animateTransitions: true,
-                itemBuilder: (context, item, index) => ImageListTile(
-                  key: ValueKey(item.id),
-                  item: item,
-                ),
+                itemBuilder: (context, item, index) =>
+                    ImageListTile(key: ValueKey(item.id), item: item),
                 firstPageErrorIndicatorBuilder: (context) =>
                     CustomFirstPageError(pagingController: _pagingController),
                 newPageErrorIndicatorBuilder: (context) =>
@@ -105,7 +99,7 @@ class _ListViewScreenState extends State<ListViewScreen> {
               ),
               separatorBuilder: (context, index) => const Divider(),
             ),
-          ),
-        ),
-      );
+      ),
+    ),
+  );
 }

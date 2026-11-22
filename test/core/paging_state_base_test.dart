@@ -17,7 +17,7 @@ void main() {
     test('constructs with given values', () {
       final state = PagingStateBase<int, String>(
         pages: [
-          ['Item 1']
+          ['Item 1'],
         ],
         keys: [1],
         error: 'Error message',
@@ -26,7 +26,7 @@ void main() {
       );
 
       expect(state.pages, [
-        ['Item 1']
+        ['Item 1'],
       ]);
       expect(state.keys, [1]);
       expect(state.error, 'Error message');
@@ -37,20 +37,22 @@ void main() {
     test('creates immutable lists for pages and keys', () {
       final state = PagingStateBase<int, String>(
         pages: [
-          ['Item 1']
+          ['Item 1'],
         ],
         keys: [1],
       );
 
-      expect(() => (state.pages as List<List<String>>).add(['Item 2']),
-          throwsUnsupportedError);
+      expect(
+        () => (state.pages as List<List<String>>).add(['Item 2']),
+        throwsUnsupportedError,
+      );
       expect(() => (state.keys as List<int>).add(2), throwsUnsupportedError);
     });
 
     test('copyWith creates a copy with updated values', () {
       final state = PagingStateBase<int, String>(
         pages: [
-          ['Item 1']
+          ['Item 1'],
         ],
         keys: [1],
         hasNextPage: false,
@@ -59,13 +61,13 @@ void main() {
 
       final newState = state.copyWith(
         pages: [
-          ['Item 2']
+          ['Item 2'],
         ],
         hasNextPage: true,
       );
 
       expect(newState.pages, [
-        ['Item 2']
+        ['Item 2'],
       ]);
       expect(newState.keys, [1]);
       expect(newState.hasNextPage, isTrue);
@@ -75,7 +77,7 @@ void main() {
     test('copyWith retains values when Omit is passed', () {
       final state = PagingStateBase<int, String>(
         pages: [
-          ['Item 1']
+          ['Item 1'],
         ],
         keys: [1],
         error: 'Initial error',
@@ -101,7 +103,7 @@ void main() {
     test('reset creates a default state', () {
       final state = PagingStateBase<int, String>(
         pages: [
-          ['Item 1']
+          ['Item 1'],
         ],
         keys: [1],
         error: 'Error message',
@@ -121,7 +123,7 @@ void main() {
     test('toString outputs expected format', () {
       final state = PagingStateBase<int, String>(
         pages: [
-          ['Item 1']
+          ['Item 1'],
         ],
         keys: [1],
         error: 'Error message',
@@ -129,32 +131,17 @@ void main() {
         isLoading: true,
       );
 
-      expect(
-        state.toString(),
-        contains('pages: [[Item 1]]'),
-      );
-      expect(
-        state.toString(),
-        contains('keys: [1]'),
-      );
-      expect(
-        state.toString(),
-        contains('error: Error message'),
-      );
-      expect(
-        state.toString(),
-        contains('hasNextPage: false'),
-      );
-      expect(
-        state.toString(),
-        contains('isLoading: true'),
-      );
+      expect(state.toString(), contains('pages: [[Item 1]]'));
+      expect(state.toString(), contains('keys: [1]'));
+      expect(state.toString(), contains('error: Error message'));
+      expect(state.toString(), contains('hasNextPage: false'));
+      expect(state.toString(), contains('isLoading: true'));
     });
 
     test('equality works correctly', () {
       final state1 = PagingStateBase<int, String>(
         pages: [
-          ['Item 1']
+          ['Item 1'],
         ],
         keys: [1],
         error: 'Error message',
@@ -164,7 +151,7 @@ void main() {
 
       final state2 = PagingStateBase<int, String>(
         pages: [
-          ['Item 1']
+          ['Item 1'],
         ],
         keys: [1],
         error: 'Error message',
@@ -174,7 +161,7 @@ void main() {
 
       final state3 = PagingStateBase<int, String>(
         pages: [
-          ['Item 2']
+          ['Item 2'],
         ],
         keys: [2],
         error: 'Different error',
@@ -189,7 +176,7 @@ void main() {
     test('hashCode works correctly', () {
       final state1 = PagingStateBase<int, String>(
         pages: [
-          ['Item 1']
+          ['Item 1'],
         ],
         keys: [1],
         error: 'Error message',
@@ -199,7 +186,7 @@ void main() {
 
       final state2 = PagingStateBase<int, String>(
         pages: [
-          ['Item 1']
+          ['Item 1'],
         ],
         keys: [1],
         error: 'Error message',

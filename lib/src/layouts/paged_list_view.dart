@@ -45,15 +45,13 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
     // Matches [ScrollView.clipBehavior]
     super.clipBehavior,
     super.key,
-  })  : assert(
-          itemExtent == null || prototypeItem == null,
-          'You can only pass itemExtent or prototypeItem, not both',
-        ),
-        _separatorBuilder = null,
-        _shrinkWrapFirstPageIndicators = shrinkWrap,
-        super(
-          controller: scrollController,
-        );
+  }) : assert(
+         itemExtent == null || prototypeItem == null,
+         'You can only pass itemExtent or prototypeItem, not both',
+       ),
+       _separatorBuilder = null,
+       _shrinkWrapFirstPageIndicators = shrinkWrap,
+       super(controller: scrollController);
 
   const PagedListView.separated({
     required this.state,
@@ -89,12 +87,10 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
     // Matches [ScrollView.clipBehavior]
     super.clipBehavior,
     super.key,
-  })  : prototypeItem = null,
-        _shrinkWrapFirstPageIndicators = shrinkWrap,
-        _separatorBuilder = separatorBuilder,
-        super(
-          controller: scrollController,
-        );
+  }) : prototypeItem = null,
+       _shrinkWrapFirstPageIndicators = shrinkWrap,
+       _separatorBuilder = separatorBuilder,
+       super(controller: scrollController);
 
   /// Matches [PagedLayoutBuilder.state].
   final PagingState<PageKeyType, ItemType> state;

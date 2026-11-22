@@ -71,72 +71,55 @@ class PagedSliverGrid<PageKeyType, ItemType> extends StatelessWidget {
   final bool shrinkWrapFirstPageIndicators;
 
   @override
-  Widget build(BuildContext context) =>
-      PagedLayoutBuilder<PageKeyType, ItemType>(
-        layoutProtocol: PagedLayoutProtocol.sliver,
-        state: state,
-        fetchNextPage: fetchNextPage,
-        builderDelegate: builderDelegate,
-        completedListingBuilder: (
-          context,
-          itemBuilder,
-          itemCount,
-          noMoreItemsIndicatorBuilder,
-        ) =>
+  Widget build(
+    BuildContext context,
+  ) => PagedLayoutBuilder<PageKeyType, ItemType>(
+    layoutProtocol: PagedLayoutProtocol.sliver,
+    state: state,
+    fetchNextPage: fetchNextPage,
+    builderDelegate: builderDelegate,
+    completedListingBuilder:
+        (context, itemBuilder, itemCount, noMoreItemsIndicatorBuilder) =>
             AppendedSliverGrid(
-          sliverGridBuilder: (_, delegate) => SliverGrid(
-            delegate: delegate,
-            gridDelegate: gridDelegate,
-          ),
-          itemBuilder: itemBuilder,
-          itemCount: itemCount,
-          appendixBuilder: noMoreItemsIndicatorBuilder,
-          showAppendixAsGridChild: showNoMoreItemsIndicatorAsGridChild,
-          addAutomaticKeepAlives: addAutomaticKeepAlives,
-          addSemanticIndexes: addSemanticIndexes,
-          addRepaintBoundaries: addRepaintBoundaries,
-          findChildIndexCallback: builderDelegate.findChildIndexCallback,
-        ),
-        loadingListingBuilder: (
-          context,
-          itemBuilder,
-          itemCount,
-          progressIndicatorBuilder,
-        ) =>
+              sliverGridBuilder: (_, delegate) =>
+                  SliverGrid(delegate: delegate, gridDelegate: gridDelegate),
+              itemBuilder: itemBuilder,
+              itemCount: itemCount,
+              appendixBuilder: noMoreItemsIndicatorBuilder,
+              showAppendixAsGridChild: showNoMoreItemsIndicatorAsGridChild,
+              addAutomaticKeepAlives: addAutomaticKeepAlives,
+              addSemanticIndexes: addSemanticIndexes,
+              addRepaintBoundaries: addRepaintBoundaries,
+              findChildIndexCallback: builderDelegate.findChildIndexCallback,
+            ),
+    loadingListingBuilder:
+        (context, itemBuilder, itemCount, progressIndicatorBuilder) =>
             AppendedSliverGrid(
-          sliverGridBuilder: (_, delegate) => SliverGrid(
-            delegate: delegate,
-            gridDelegate: gridDelegate,
-          ),
-          itemBuilder: itemBuilder,
-          itemCount: itemCount,
-          appendixBuilder: progressIndicatorBuilder,
-          showAppendixAsGridChild: showNewPageProgressIndicatorAsGridChild,
-          addAutomaticKeepAlives: addAutomaticKeepAlives,
-          addSemanticIndexes: addSemanticIndexes,
-          addRepaintBoundaries: addRepaintBoundaries,
-          findChildIndexCallback: builderDelegate.findChildIndexCallback,
-        ),
-        errorListingBuilder: (
-          context,
-          itemBuilder,
-          itemCount,
-          errorIndicatorBuilder,
-        ) =>
+              sliverGridBuilder: (_, delegate) =>
+                  SliverGrid(delegate: delegate, gridDelegate: gridDelegate),
+              itemBuilder: itemBuilder,
+              itemCount: itemCount,
+              appendixBuilder: progressIndicatorBuilder,
+              showAppendixAsGridChild: showNewPageProgressIndicatorAsGridChild,
+              addAutomaticKeepAlives: addAutomaticKeepAlives,
+              addSemanticIndexes: addSemanticIndexes,
+              addRepaintBoundaries: addRepaintBoundaries,
+              findChildIndexCallback: builderDelegate.findChildIndexCallback,
+            ),
+    errorListingBuilder:
+        (context, itemBuilder, itemCount, errorIndicatorBuilder) =>
             AppendedSliverGrid(
-          sliverGridBuilder: (_, delegate) => SliverGrid(
-            delegate: delegate,
-            gridDelegate: gridDelegate,
-          ),
-          itemBuilder: itemBuilder,
-          itemCount: itemCount,
-          appendixBuilder: errorIndicatorBuilder,
-          showAppendixAsGridChild: showNewPageErrorIndicatorAsGridChild,
-          addAutomaticKeepAlives: addAutomaticKeepAlives,
-          addSemanticIndexes: addSemanticIndexes,
-          addRepaintBoundaries: addRepaintBoundaries,
-          findChildIndexCallback: builderDelegate.findChildIndexCallback,
-        ),
-        shrinkWrapFirstPageIndicators: shrinkWrapFirstPageIndicators,
-      );
+              sliverGridBuilder: (_, delegate) =>
+                  SliverGrid(delegate: delegate, gridDelegate: gridDelegate),
+              itemBuilder: itemBuilder,
+              itemCount: itemCount,
+              appendixBuilder: errorIndicatorBuilder,
+              showAppendixAsGridChild: showNewPageErrorIndicatorAsGridChild,
+              addAutomaticKeepAlives: addAutomaticKeepAlives,
+              addSemanticIndexes: addSemanticIndexes,
+              addRepaintBoundaries: addRepaintBoundaries,
+              findChildIndexCallback: builderDelegate.findChildIndexCallback,
+            ),
+    shrinkWrapFirstPageIndicators: shrinkWrapFirstPageIndicators,
+  );
 }

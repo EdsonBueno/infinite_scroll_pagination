@@ -48,10 +48,7 @@ void main() {
         fetchNextPage: mockPageRequestListener.call,
       );
 
-      await tester.scrollUntilVisible(
-        find.text('Item ${pageSize * 2}'),
-        250,
-      );
+      await tester.scrollUntilVisible(find.text('Item ${pageSize * 2}'), 250);
 
       verify(mockPageRequestListener()).called(1);
     });
@@ -89,27 +86,26 @@ Future<void> _pumpPagedPageView({
   Widget? newPageProgressIndicator,
   Widget? newPageErrorIndicator,
   Widget? noMoreItemsIndicator,
-}) =>
-    tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: PagedPageView<int, String>(
-            state: state,
-            fetchNextPage: fetchNextPage,
-            scrollDirection: Axis.vertical,
-            builderDelegate: PagedChildBuilderDelegate<String>(
-              itemBuilder: buildTestTile(_itemHeight),
-              newPageProgressIndicatorBuilder: newPageProgressIndicator != null
-                  ? (context) => newPageProgressIndicator
-                  : null,
-              newPageErrorIndicatorBuilder: newPageErrorIndicator != null
-                  ? (context) => newPageErrorIndicator
-                  : null,
-              noMoreItemsIndicatorBuilder: noMoreItemsIndicator != null
-                  ? (context) => noMoreItemsIndicator
-                  : null,
-            ),
-          ),
+}) => tester.pumpWidget(
+  MaterialApp(
+    home: Scaffold(
+      body: PagedPageView<int, String>(
+        state: state,
+        fetchNextPage: fetchNextPage,
+        scrollDirection: Axis.vertical,
+        builderDelegate: PagedChildBuilderDelegate<String>(
+          itemBuilder: buildTestTile(_itemHeight),
+          newPageProgressIndicatorBuilder: newPageProgressIndicator != null
+              ? (context) => newPageProgressIndicator
+              : null,
+          newPageErrorIndicatorBuilder: newPageErrorIndicator != null
+              ? (context) => newPageErrorIndicator
+              : null,
+          noMoreItemsIndicatorBuilder: noMoreItemsIndicator != null
+              ? (context) => noMoreItemsIndicator
+              : null,
         ),
       ),
-    );
+    ),
+  ),
+);

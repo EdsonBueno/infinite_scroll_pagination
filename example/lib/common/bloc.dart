@@ -48,30 +48,28 @@ final class BlocPagingState<T> extends PagingStateBase<int, T> {
     Defaulted<bool>? isLoading = const Omit(),
     Defaulted<String?> search = const Omit(),
     Defaulted<BlocCancelToken?> cancelToken = const Omit(),
-  }) =>
-      BlocPagingState<T>(
-        pages: pages is Omit ? this.pages : pages as List<List<T>>?,
-        keys: keys is Omit ? this.keys : keys as List<int>?,
-        error: error is Omit ? this.error : error,
-        hasNextPage:
-            hasNextPage is Omit ? this.hasNextPage : hasNextPage as bool,
-        isLoading: isLoading is Omit ? this.isLoading : isLoading as bool,
-        search: search is Omit ? this.search : search as String?,
-        cancelToken: cancelToken is Omit
-            ? this.cancelToken
-            : cancelToken as BlocCancelToken?,
-      );
+  }) => BlocPagingState<T>(
+    pages: pages is Omit ? this.pages : pages as List<List<T>>?,
+    keys: keys is Omit ? this.keys : keys as List<int>?,
+    error: error is Omit ? this.error : error,
+    hasNextPage: hasNextPage is Omit ? this.hasNextPage : hasNextPage as bool,
+    isLoading: isLoading is Omit ? this.isLoading : isLoading as bool,
+    search: search is Omit ? this.search : search as String?,
+    cancelToken: cancelToken is Omit
+        ? this.cancelToken
+        : cancelToken as BlocCancelToken?,
+  );
 
   @override
   BlocPagingState<T> reset() => BlocPagingState<T>(
-        pages: null,
-        keys: null,
-        error: null,
-        hasNextPage: true,
-        isLoading: false,
-        search: search,
-        cancelToken: BlocCancelToken(),
-      );
+    pages: null,
+    keys: null,
+    error: null,
+    hasNextPage: true,
+    isLoading: false,
+    search: search,
+    cancelToken: BlocCancelToken(),
+  );
 
   @override
   bool operator ==(Object other) =>
@@ -81,11 +79,7 @@ final class BlocPagingState<T> extends PagingStateBase<int, T> {
       cancelToken == other.cancelToken;
 
   @override
-  int get hashCode => Object.hash(
-        super.hashCode,
-        search,
-        cancelToken,
-      );
+  int get hashCode => Object.hash(super.hashCode, search, cancelToken);
 }
 
 /// A simple implementation of a cancel token.
@@ -110,9 +104,7 @@ class BlocCancelToken {
 }
 
 class PagingBloc<T> extends Bloc<PagingEvent, BlocPagingState<T>> {
-  PagingBloc({
-    required this.fetchFn,
-  }) : super(BlocPagingState<T>()) {
+  PagingBloc({required this.fetchFn}) : super(BlocPagingState<T>()) {
     on<PagingFetchNext>(_onFetchNext);
     on<PagingRefresh>(_onRefresh);
     on<PagingCancel>(_onCancel);
@@ -137,25 +129,25 @@ class PagingBloc<T> extends Bloc<PagingEvent, BlocPagingState<T>> {
     current.cancelToken?.cancel();
     final cancelToken = BlocCancelToken();
 
-    emit(current.copyWith(
-      isLoading: true,
-      error: null,
-      cancelToken: cancelToken,
-    ));
+    emit(
+      current.copyWith(isLoading: true, error: null, cancelToken: cancelToken),
+    );
 
     try {
       final result = await fetchFn!(pageKey, current.search);
       if (cancelToken.isCancelled) return;
 
       final isLastPage = result.isEmpty;
-      emit(state.copyWith(
-        isLoading: false,
-        error: null,
-        hasNextPage: !isLastPage,
-        pages: [...?state.pages, result],
-        keys: [...?state.keys, pageKey],
-        cancelToken: null,
-      ));
+      emit(
+        state.copyWith(
+          isLoading: false,
+          error: null,
+          hasNextPage: !isLastPage,
+          pages: [...?state.pages, result],
+          keys: [...?state.keys, pageKey],
+          cancelToken: null,
+        ),
+      );
     } catch (e) {
       if (!cancelToken.isCancelled) {
         emit(state.copyWith(isLoading: false, error: e, cancelToken: null));

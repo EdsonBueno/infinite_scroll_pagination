@@ -19,8 +19,7 @@ void main() {
       state = TestPagingState.loadingFirstPage();
     });
 
-    testWidgets(
-        'When no custom first page progress indicator is provided, '
+    testWidgets('When no custom first page progress indicator is provided, '
         'a FirstPageProgressIndicator widget is shown.', (tester) async {
       // given
       final builderDelegate = PagedChildBuilderDelegate<int>(
@@ -39,27 +38,27 @@ void main() {
     });
 
     testWidgets(
-        'Uses the custom first page progress indicator when one is provided.',
-        (tester) async {
-      // given
-      final customIndicatorKey = UniqueKey();
-      final builderDelegate = PagedChildBuilderDelegate<int>(
-        itemBuilder: (_, __, ___) => Container(),
-        firstPageProgressIndicatorBuilder: (context) => Container(
-          key: customIndicatorKey,
-        ),
-      );
+      'Uses the custom first page progress indicator when one is provided.',
+      (tester) async {
+        // given
+        final customIndicatorKey = UniqueKey();
+        final builderDelegate = PagedChildBuilderDelegate<int>(
+          itemBuilder: (_, __, ___) => Container(),
+          firstPageProgressIndicatorBuilder: (context) =>
+              Container(key: customIndicatorKey),
+        );
 
-      // when
-      await _pumpPagedLayoutBuilder(
-        tester: tester,
-        state: state,
-        builderDelegate: builderDelegate,
-      );
+        // when
+        await _pumpPagedLayoutBuilder(
+          tester: tester,
+          state: state,
+          builderDelegate: builderDelegate,
+        );
 
-      // then
-      _expectWidgetWithKey(customIndicatorKey);
-    });
+        // then
+        _expectWidgetWithKey(customIndicatorKey);
+      },
+    );
   });
 
   group('PagingStatus.firstPageError', () {
@@ -69,8 +68,7 @@ void main() {
       state = TestPagingState.firstPageError();
     });
 
-    testWidgets(
-        'When no custom first page error indicator is provided, '
+    testWidgets('When no custom first page error indicator is provided, '
         'a FirstPageErrorIndicator widget is shown.', (tester) async {
       // given
       final builderDelegate = PagedChildBuilderDelegate<int>(
@@ -89,27 +87,27 @@ void main() {
     });
 
     testWidgets(
-        'Uses the custom first page error indicator when one is provided.',
-        (tester) async {
-      // given
-      final customIndicatorKey = UniqueKey();
-      final builderDelegate = PagedChildBuilderDelegate<int>(
-        itemBuilder: (_, __, ___) => Container(),
-        firstPageErrorIndicatorBuilder: (context) => Container(
-          key: customIndicatorKey,
-        ),
-      );
+      'Uses the custom first page error indicator when one is provided.',
+      (tester) async {
+        // given
+        final customIndicatorKey = UniqueKey();
+        final builderDelegate = PagedChildBuilderDelegate<int>(
+          itemBuilder: (_, __, ___) => Container(),
+          firstPageErrorIndicatorBuilder: (context) =>
+              Container(key: customIndicatorKey),
+        );
 
-      // when
-      await _pumpPagedLayoutBuilder(
-        tester: tester,
-        state: state,
-        builderDelegate: builderDelegate,
-      );
+        // when
+        await _pumpPagedLayoutBuilder(
+          tester: tester,
+          state: state,
+          builderDelegate: builderDelegate,
+        );
 
-      // then
-      _expectWidgetWithKey(customIndicatorKey);
-    });
+        // then
+        _expectWidgetWithKey(customIndicatorKey);
+      },
+    );
   });
 
   group('PagingStatus.noItemsFound', () {
@@ -119,8 +117,7 @@ void main() {
       state = TestPagingState.noItemsFound();
     });
 
-    testWidgets(
-        'When no custom no items found indicator is provided, '
+    testWidgets('When no custom no items found indicator is provided, '
         'a NoItemsFoundIndicator widget is shown.', (tester) async {
       // given
       final builderDelegate = PagedChildBuilderDelegate<int>(
@@ -139,59 +136,60 @@ void main() {
     });
 
     testWidgets(
-        'A NoItemsFoundIndicator widget is shown when the first page key is null.',
-        (tester) async {
-      final controller = PagingController<int, String>(
-        getNextPageKey: (_) => null,
-        fetchPage: (_) => [],
-      );
+      'A NoItemsFoundIndicator widget is shown when the first page key is null.',
+      (tester) async {
+        final controller = PagingController<int, String>(
+          getNextPageKey: (_) => null,
+          fetchPage: (_) => [],
+        );
 
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: PagingListener(
-              controller: controller,
-              builder: (context, state, fetchNextPage) =>
-                  PagedListView<int, String>(
-                state: state,
-                fetchNextPage: fetchNextPage,
-                builderDelegate: PagedChildBuilderDelegate<String>(
-                  itemBuilder: (_, __, ___) => Container(),
-                ),
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: PagingListener(
+                controller: controller,
+                builder: (context, state, fetchNextPage) =>
+                    PagedListView<int, String>(
+                      state: state,
+                      fetchNextPage: fetchNextPage,
+                      builderDelegate: PagedChildBuilderDelegate<String>(
+                        itemBuilder: (_, __, ___) => Container(),
+                      ),
+                    ),
               ),
             ),
           ),
-        ),
-      );
-      await tester.pump();
-      await tester.pump();
+        );
+        await tester.pump();
+        await tester.pump();
 
-      _expectOneWidgetOfType(NoItemsFoundIndicator);
-      expect(find.byType(FirstPageProgressIndicator), findsNothing);
-    });
+        _expectOneWidgetOfType(NoItemsFoundIndicator);
+        expect(find.byType(FirstPageProgressIndicator), findsNothing);
+      },
+    );
 
     testWidgets(
-        'Uses the custom no items found indicator when one is provided.',
-        (tester) async {
-      // given
-      final customIndicatorKey = UniqueKey();
-      final builderDelegate = PagedChildBuilderDelegate<int>(
-        itemBuilder: (_, __, ___) => Container(),
-        noItemsFoundIndicatorBuilder: (context) => Container(
-          key: customIndicatorKey,
-        ),
-      );
+      'Uses the custom no items found indicator when one is provided.',
+      (tester) async {
+        // given
+        final customIndicatorKey = UniqueKey();
+        final builderDelegate = PagedChildBuilderDelegate<int>(
+          itemBuilder: (_, __, ___) => Container(),
+          noItemsFoundIndicatorBuilder: (context) =>
+              Container(key: customIndicatorKey),
+        );
 
-      // when
-      await _pumpPagedLayoutBuilder(
-        tester: tester,
-        state: state,
-        builderDelegate: builderDelegate,
-      );
+        // when
+        await _pumpPagedLayoutBuilder(
+          tester: tester,
+          state: state,
+          builderDelegate: builderDelegate,
+        );
 
-      // then
-      _expectWidgetWithKey(customIndicatorKey);
-    });
+        // then
+        _expectWidgetWithKey(customIndicatorKey);
+      },
+    );
   });
 
   group('PagingStatus.subsequentPageError', () {
@@ -201,8 +199,7 @@ void main() {
       state = TestPagingState.subsequentPageError();
     });
 
-    testWidgets(
-        'When no custom new page error indicator is provided, '
+    testWidgets('When no custom new page error indicator is provided, '
         'a NewPageErrorIndicator widget is shown.', (tester) async {
       // given
       final builderDelegate = PagedChildBuilderDelegate<int>(
@@ -223,30 +220,29 @@ void main() {
     });
 
     testWidgets(
-        'Uses the custom new page error indicator when one is provided.',
-        (tester) async {
-      // given
-      final customIndicatorKey = UniqueKey();
-      final builderDelegate = PagedChildBuilderDelegate<int>(
-        itemBuilder: (_, __, ___) => Container(),
-        newPageErrorIndicatorBuilder: (context) => Text(
-          'Error',
-          key: customIndicatorKey,
-        ),
-      );
+      'Uses the custom new page error indicator when one is provided.',
+      (tester) async {
+        // given
+        final customIndicatorKey = UniqueKey();
+        final builderDelegate = PagedChildBuilderDelegate<int>(
+          itemBuilder: (_, __, ___) => Container(),
+          newPageErrorIndicatorBuilder: (context) =>
+              Text('Error', key: customIndicatorKey),
+        );
 
-      // when
-      await _pumpPagedLayoutBuilder(
-        tester: tester,
-        state: state,
-        builderDelegate: builderDelegate,
-      );
+        // when
+        await _pumpPagedLayoutBuilder(
+          tester: tester,
+          state: state,
+          builderDelegate: builderDelegate,
+        );
 
-      await tester.pump();
+        await tester.pump();
 
-      // then
-      _expectWidgetWithKey(customIndicatorKey);
-    });
+        // then
+        _expectWidgetWithKey(customIndicatorKey);
+      },
+    );
   });
 
   group('PagingStatus.ongoing', () {
@@ -256,8 +252,7 @@ void main() {
       state = TestPagingState.ongoing();
     });
 
-    testWidgets(
-        'When no custom new page progress indicator is provided, '
+    testWidgets('When no custom new page progress indicator is provided, '
         'a NewPageProgressIndicator widget is shown.', (tester) async {
       // given
       final builderDelegate = PagedChildBuilderDelegate<int>(
@@ -278,29 +273,29 @@ void main() {
     });
 
     testWidgets(
-        'Uses the custom new page progress indicator when one is provided.',
-        (tester) async {
-      // given
-      final customIndicatorKey = UniqueKey();
-      final builderDelegate = PagedChildBuilderDelegate<int>(
-        itemBuilder: (_, __, ___) => Container(),
-        newPageProgressIndicatorBuilder: (context) => CircularProgressIndicator(
-          key: customIndicatorKey,
-        ),
-      );
+      'Uses the custom new page progress indicator when one is provided.',
+      (tester) async {
+        // given
+        final customIndicatorKey = UniqueKey();
+        final builderDelegate = PagedChildBuilderDelegate<int>(
+          itemBuilder: (_, __, ___) => Container(),
+          newPageProgressIndicatorBuilder: (context) =>
+              CircularProgressIndicator(key: customIndicatorKey),
+        );
 
-      // when
-      await _pumpPagedLayoutBuilder(
-        tester: tester,
-        state: state,
-        builderDelegate: builderDelegate,
-      );
+        // when
+        await _pumpPagedLayoutBuilder(
+          tester: tester,
+          state: state,
+          builderDelegate: builderDelegate,
+        );
 
-      await tester.pump();
+        await tester.pump();
 
-      // then
-      _expectWidgetWithKey(customIndicatorKey);
-    });
+        // then
+        _expectWidgetWithKey(customIndicatorKey);
+      },
+    );
   });
 
   group('PagingStatus.completed', () {
@@ -310,30 +305,30 @@ void main() {
       state = TestPagingState.completed();
     });
 
-    testWidgets('Uses the custom no more items indicator when one is provided.',
-        (tester) async {
-      // given
-      final customIndicatorKey = UniqueKey();
-      final builderDelegate = PagedChildBuilderDelegate<int>(
-        itemBuilder: (_, __, ___) => Container(),
-        noMoreItemsIndicatorBuilder: (context) => Text(
-          'No more items.',
-          key: customIndicatorKey,
-        ),
-      );
+    testWidgets(
+      'Uses the custom no more items indicator when one is provided.',
+      (tester) async {
+        // given
+        final customIndicatorKey = UniqueKey();
+        final builderDelegate = PagedChildBuilderDelegate<int>(
+          itemBuilder: (_, __, ___) => Container(),
+          noMoreItemsIndicatorBuilder: (context) =>
+              Text('No more items.', key: customIndicatorKey),
+        );
 
-      // when
-      await _pumpPagedLayoutBuilder(
-        tester: tester,
-        state: state,
-        builderDelegate: builderDelegate,
-      );
+        // when
+        await _pumpPagedLayoutBuilder(
+          tester: tester,
+          state: state,
+          builderDelegate: builderDelegate,
+        );
 
-      await tester.pump();
+        await tester.pump();
 
-      // then
-      _expectWidgetWithKey(customIndicatorKey);
-    });
+        // then
+        _expectWidgetWithKey(customIndicatorKey);
+      },
+    );
   });
 
   group('First page indicators\' height', () {
@@ -346,10 +341,7 @@ void main() {
 
     setUp(() {
       indicatorKey = UniqueKey();
-      progressIndicator = SizedBox(
-        height: indicatorHeight,
-        key: indicatorKey,
-      );
+      progressIndicator = SizedBox(height: indicatorHeight, key: indicatorKey);
       indicatorFinder = find.byKey(indicatorKey);
 
       builderDelegate = PagedChildBuilderDelegate<int>(
@@ -358,8 +350,7 @@ void main() {
       );
     });
 
-    testWidgets(
-        'By default, first page indicators are expanded to fill the '
+    testWidgets('By default, first page indicators are expanded to fill the '
         'remaining space', (tester) async {
       // when
       await _pumpPagedLayoutBuilder(
@@ -374,8 +365,7 @@ void main() {
       expect(indicatorSize.height, isNot(indicatorHeight));
     });
 
-    testWidgets(
-        'Setting [shrinkWrapFirstPageIndicators] to true '
+    testWidgets('Setting [shrinkWrapFirstPageIndicators] to true '
         'preserves the indicator height', (tester) async {
       // when
       await _pumpPagedLayoutBuilder(
@@ -407,63 +397,29 @@ Future<void> _pumpPagedLayoutBuilder({
   required PagingState<int, String> state,
   required PagedChildBuilderDelegate builderDelegate,
   bool shrinkWrapFirstPageIndicators = false,
-}) =>
-    _pumpSliver(
-      sliver: PagedLayoutBuilder(
-        layoutProtocol: PagedLayoutProtocol.sliver,
-        state: state,
-        fetchNextPage: () => Completer<void>().future,
-        builderDelegate: builderDelegate,
-        shrinkWrapFirstPageIndicators: shrinkWrapFirstPageIndicators,
-        errorListingBuilder: (
-          context,
-          __,
-          ___,
-          newPageErrorIndicatorBuilder,
-        ) =>
-            SliverToBoxAdapter(
-          child: newPageErrorIndicatorBuilder(
-            context,
-          ),
-        ),
-        loadingListingBuilder: (
-          context,
-          __,
-          ___,
-          newPageProgressIndicatorBuilder,
-        ) =>
-            SliverToBoxAdapter(
-          child: newPageProgressIndicatorBuilder(
-            context,
-          ),
-        ),
-        completedListingBuilder: (
-          context,
-          __,
-          ___,
-          noMoreItemsIndicatorBuilder,
-        ) =>
-            SliverToBoxAdapter(
-          child: noMoreItemsIndicatorBuilder?.call(
-            context,
-          ),
-        ),
-      ),
-      tester: tester,
-    );
+}) => _pumpSliver(
+  sliver: PagedLayoutBuilder(
+    layoutProtocol: PagedLayoutProtocol.sliver,
+    state: state,
+    fetchNextPage: () => Completer<void>().future,
+    builderDelegate: builderDelegate,
+    shrinkWrapFirstPageIndicators: shrinkWrapFirstPageIndicators,
+    errorListingBuilder: (context, __, ___, newPageErrorIndicatorBuilder) =>
+        SliverToBoxAdapter(child: newPageErrorIndicatorBuilder(context)),
+    loadingListingBuilder:
+        (context, __, ___, newPageProgressIndicatorBuilder) =>
+            SliverToBoxAdapter(child: newPageProgressIndicatorBuilder(context)),
+    completedListingBuilder: (context, __, ___, noMoreItemsIndicatorBuilder) =>
+        SliverToBoxAdapter(child: noMoreItemsIndicatorBuilder?.call(context)),
+  ),
+  tester: tester,
+);
 
 Future<void> _pumpSliver({
   required Widget sliver,
   required WidgetTester tester,
-}) =>
-    tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: CustomScrollView(
-            slivers: [
-              sliver,
-            ],
-          ),
-        ),
-      ),
-    );
+}) => tester.pumpWidget(
+  MaterialApp(
+    home: Scaffold(body: CustomScrollView(slivers: [sliver])),
+  ),
+);

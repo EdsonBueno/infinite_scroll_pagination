@@ -75,7 +75,7 @@ final class Omit<T> implements Future<T> {
   // coverage:ignore-start
   @override
   noSuchMethod(Invocation invocation) => throw UnsupportedError(
-        'It is an error to attempt to use a Omit as a Future.',
-      );
+    'It is an error to attempt to use a Omit as a Future.',
+  );
   // coverage:ignore-end
 }

@@ -52,10 +52,8 @@ class PagedMasonryGridView<PageKeyType, ItemType> extends BoxScrollView {
     this.addRepaintBoundaries = true,
     this.addSemanticIndexes = true,
     super.key,
-  })  : _shrinkWrapFirstPageIndicators = shrinkWrap,
-        super(
-          controller: scrollController,
-        );
+  }) : _shrinkWrapFirstPageIndicators = shrinkWrap,
+       super(controller: scrollController);
 
   /// Equivalent to [MasonryGridView.count].
   PagedMasonryGridView.count({
@@ -94,14 +92,12 @@ class PagedMasonryGridView<PageKeyType, ItemType> extends BoxScrollView {
     this.addRepaintBoundaries = true,
     this.addSemanticIndexes = true,
     super.key,
-  })  : _shrinkWrapFirstPageIndicators = shrinkWrap,
-        gridDelegateBuilder =
-            ((childCount) => SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: crossAxisCount,
-                )),
-        super(
-          controller: scrollController,
-        );
+  }) : _shrinkWrapFirstPageIndicators = shrinkWrap,
+       gridDelegateBuilder = ((childCount) =>
+           SliverSimpleGridDelegateWithFixedCrossAxisCount(
+             crossAxisCount: crossAxisCount,
+           )),
+       super(controller: scrollController);
 
   /// Equivalent to [MasonryGridView.extent].
   PagedMasonryGridView.extent({
@@ -140,14 +136,12 @@ class PagedMasonryGridView<PageKeyType, ItemType> extends BoxScrollView {
     this.addRepaintBoundaries = true,
     this.addSemanticIndexes = true,
     super.key,
-  })  : _shrinkWrapFirstPageIndicators = shrinkWrap,
-        gridDelegateBuilder =
-            ((childCount) => SliverSimpleGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: maxCrossAxisExtent,
-                )),
-        super(
-          controller: scrollController,
-        );
+  }) : _shrinkWrapFirstPageIndicators = shrinkWrap,
+       gridDelegateBuilder = ((childCount) =>
+           SliverSimpleGridDelegateWithMaxCrossAxisExtent(
+             maxCrossAxisExtent: maxCrossAxisExtent,
+           )),
+       super(controller: scrollController);
 
   /// Matches [PagedLayoutBuilder.state].
   final PagingState<PageKeyType, ItemType> state;
@@ -191,23 +185,22 @@ class PagedMasonryGridView<PageKeyType, ItemType> extends BoxScrollView {
   final bool _shrinkWrapFirstPageIndicators;
 
   @override
-  Widget buildChildLayout(BuildContext context) =>
-      PagedSliverMasonryGrid<PageKeyType, ItemType>(
-        builderDelegate: builderDelegate,
-        state: state,
-        fetchNextPage: fetchNextPage,
-        gridDelegateBuilder: gridDelegateBuilder,
-        mainAxisSpacing: mainAxisSpacing,
-        crossAxisSpacing: crossAxisSpacing,
-        addAutomaticKeepAlives: addAutomaticKeepAlives,
-        addRepaintBoundaries: addRepaintBoundaries,
-        addSemanticIndexes: addSemanticIndexes,
-        showNewPageProgressIndicatorAsGridChild:
-            showNewPageProgressIndicatorAsGridChild,
-        showNewPageErrorIndicatorAsGridChild:
-            showNewPageErrorIndicatorAsGridChild,
-        showNoMoreItemsIndicatorAsGridChild:
-            showNoMoreItemsIndicatorAsGridChild,
-        shrinkWrapFirstPageIndicators: _shrinkWrapFirstPageIndicators,
-      );
+  Widget buildChildLayout(
+    BuildContext context,
+  ) => PagedSliverMasonryGrid<PageKeyType, ItemType>(
+    builderDelegate: builderDelegate,
+    state: state,
+    fetchNextPage: fetchNextPage,
+    gridDelegateBuilder: gridDelegateBuilder,
+    mainAxisSpacing: mainAxisSpacing,
+    crossAxisSpacing: crossAxisSpacing,
+    addAutomaticKeepAlives: addAutomaticKeepAlives,
+    addRepaintBoundaries: addRepaintBoundaries,
+    addSemanticIndexes: addSemanticIndexes,
+    showNewPageProgressIndicatorAsGridChild:
+        showNewPageProgressIndicatorAsGridChild,
+    showNewPageErrorIndicatorAsGridChild: showNewPageErrorIndicatorAsGridChild,
+    showNoMoreItemsIndicatorAsGridChild: showNoMoreItemsIndicatorAsGridChild,
+    shrinkWrapFirstPageIndicators: _shrinkWrapFirstPageIndicators,
+  );
 }

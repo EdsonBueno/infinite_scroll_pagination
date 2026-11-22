@@ -2,10 +2,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class CustomFirstPageError extends StatelessWidget {
-  const CustomFirstPageError({
-    super.key,
-    required this.pagingController,
-  });
+  const CustomFirstPageError({super.key, required this.pagingController});
 
   final PagingController<Object, Object> pagingController;
 
@@ -23,28 +20,16 @@ class CustomFirstPageError extends StatelessWidget {
               style: Theme.of(context).textTheme.titleLarge,
             ),
             if (state.error != null) ...[
-              const SizedBox(
-                height: 16,
-              ),
-              Text(
-                state.error.toString(),
-                textAlign: TextAlign.center,
-              ),
+              const SizedBox(height: 16),
+              Text(state.error.toString(), textAlign: TextAlign.center),
             ],
-            const SizedBox(
-              height: 48,
-            ),
+            const SizedBox(height: 48),
             SizedBox(
               width: 200,
               child: ElevatedButton.icon(
                 onPressed: pagingController.refresh,
                 icon: const Icon(Icons.refresh),
-                label: const Text(
-                  'Try Again',
-                  style: TextStyle(
-                    fontSize: 16,
-                  ),
-                ),
+                label: const Text('Try Again', style: TextStyle(fontSize: 16)),
               ),
             ),
           ],
@@ -55,10 +40,7 @@ class CustomFirstPageError extends StatelessWidget {
 }
 
 class CustomNewPageError extends StatelessWidget {
-  const CustomNewPageError({
-    super.key,
-    required this.pagingController,
-  });
+  const CustomNewPageError({super.key, required this.pagingController});
 
   final PagingController<Object, Object> pagingController;
 
@@ -78,10 +60,7 @@ class CustomNewPageError extends StatelessWidget {
               style: Theme.of(context).textTheme.titleSmall,
             ),
             const SizedBox(height: 4),
-            const Icon(
-              Icons.refresh,
-              size: 20,
-            ),
+            const Icon(Icons.refresh, size: 20),
           ],
         ),
       ),

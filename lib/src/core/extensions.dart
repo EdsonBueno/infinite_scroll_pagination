@@ -18,9 +18,7 @@ extension PagingStateExtension<PageKeyType, ItemType>
   PagingState<PageKeyType, ItemType> mapItems(
     ItemType Function(ItemType item) mapper,
   ) =>
-      copyWith(
-        pages: pages?.map((page) => page.map(mapper).toList()).toList(),
-      );
+      copyWith(pages: pages?.map((page) => page.map(mapper).toList()).toList());
 
   /// Convenience method to filter the items of the state by applying a predicate function to each item.
   ///
@@ -33,10 +31,9 @@ extension PagingStateExtension<PageKeyType, ItemType>
   @UseResult('Use the returned value as computed state.')
   PagingState<PageKeyType, ItemType> filterItems(
     bool Function(ItemType item) predicate,
-  ) =>
-      copyWith(
-        pages: pages?.map((page) => page.where(predicate).toList()).toList(),
-      );
+  ) => copyWith(
+    pages: pages?.map((page) => page.where(predicate).toList()).toList(),
+  );
 
   /// Convenience getter to check if the last page is empty.
   /// This is useful if your API returns an empty page when there are no more items to fetch.

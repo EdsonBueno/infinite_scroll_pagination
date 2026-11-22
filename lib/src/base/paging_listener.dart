@@ -16,17 +16,15 @@ class PagingListener<PageKeyType, ItemType> extends StatelessWidget {
     BuildContext context,
     PagingState<PageKeyType, ItemType> state,
     NextPageCallback fetchNextPage,
-  ) builder;
+  )
+  builder;
 
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<PagingState<PageKeyType, ItemType>>(
       valueListenable: controller,
-      builder: (context, state, _) => builder(
-        context,
-        state,
-        controller.fetchNextPage,
-      ),
+      builder: (context, state, _) =>
+          builder(context, state, controller.fetchNextPage),
     );
   }
 }

@@ -6,7 +6,7 @@ class NoItemsFoundIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => const FirstPageExceptionIndicator(
-        title: 'No items found',
-        message: 'The list is currently empty.',
-      );
+    title: 'No items found',
+    message: 'The list is currently empty.',
+  );
 }
