@@ -127,6 +127,7 @@ class PagedPageView<PageKeyType, ItemType> extends StatelessWidget {
             addAutomaticKeepAlives: addAutomaticKeepAlives,
             addRepaintBoundaries: addRepaintBoundaries,
             addSemanticIndexes: addSemanticIndexes,
+            findChildIndexCallback: builderDelegate.findChildIndexCallback,
           ),
         ),
         loadingListingBuilder: (
@@ -156,6 +157,7 @@ class PagedPageView<PageKeyType, ItemType> extends StatelessWidget {
             addAutomaticKeepAlives: addAutomaticKeepAlives,
             addRepaintBoundaries: addRepaintBoundaries,
             addSemanticIndexes: addSemanticIndexes,
+            findChildIndexCallback: builderDelegate.findChildIndexCallback,
           ),
         ),
         errorListingBuilder: (
@@ -185,6 +187,7 @@ class PagedPageView<PageKeyType, ItemType> extends StatelessWidget {
             addAutomaticKeepAlives: addAutomaticKeepAlives,
             addRepaintBoundaries: addRepaintBoundaries,
             addSemanticIndexes: addSemanticIndexes,
+            findChildIndexCallback: builderDelegate.findChildIndexCallback,
           ),
         ),
       );

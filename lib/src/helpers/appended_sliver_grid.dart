@@ -18,6 +18,7 @@ class AppendedSliverGrid extends StatelessWidget {
     this.addAutomaticKeepAlives = true,
     this.addRepaintBoundaries = true,
     this.addSemanticIndexes = true,
+    this.findChildIndexCallback,
     super.key,
   });
 
@@ -29,6 +30,7 @@ class AppendedSliverGrid extends StatelessWidget {
   final bool addAutomaticKeepAlives;
   final bool addRepaintBoundaries;
   final bool addSemanticIndexes;
+  final ChildIndexGetter? findChildIndexCallback;
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +46,7 @@ class AppendedSliverGrid extends StatelessWidget {
           addAutomaticKeepAlives: addAutomaticKeepAlives,
           addRepaintBoundaries: addRepaintBoundaries,
           addSemanticIndexes: addSemanticIndexes,
+          findChildIndexCallback: findChildIndexCallback,
         );
 
     return SliverMainAxisGroup(

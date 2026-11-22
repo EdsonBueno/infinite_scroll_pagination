@@ -13,6 +13,7 @@ typedef ItemWidgetBuilder<ItemType> = Widget Function(
 class PagedChildBuilderDelegate<ItemType> {
   const PagedChildBuilderDelegate({
     required this.itemBuilder,
+    this.findChildIndexCallback,
     this.firstPageErrorIndicatorBuilder,
     this.newPageErrorIndicatorBuilder,
     this.firstPageProgressIndicatorBuilder,
@@ -26,6 +27,12 @@ class PagedChildBuilderDelegate<ItemType> {
 
   /// The builder for list items.
   final ItemWidgetBuilder<ItemType> itemBuilder;
+
+  /// Matches [SliverChildBuilderDelegate.findChildIndexCallback], with an
+  /// index that counts items and skips separators and status indicators.
+  ///
+  /// [PagedAlignedGridView] and [PagedSliverAlignedGrid] ignore it.
+  final ChildIndexGetter? findChildIndexCallback;
 
   /// The builder for the first page's error indicator.
   final WidgetBuilder? firstPageErrorIndicatorBuilder;

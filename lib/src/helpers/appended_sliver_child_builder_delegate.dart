@@ -16,6 +16,7 @@ class AppendedSliverChildBuilderDelegate extends SliverChildBuilderDelegate {
     super.addRepaintBoundaries,
     super.addSemanticIndexes,
     SemanticIndexCallback? semanticIndexCallback,
+    super.findChildIndexCallback,
   }) : super(
           appendixBuilder == null
               ? builder
@@ -37,6 +38,7 @@ class AppendedSliverChildBuilderDelegate extends SliverChildBuilderDelegate {
     bool addAutomaticKeepAlives = true,
     bool addRepaintBoundaries = true,
     bool addSemanticIndexes = true,
+    ChildIndexGetter? findChildIndexCallback,
   }) : this(
           builder: (context, index) {
             final itemIndex = index ~/ 2;
@@ -55,5 +57,11 @@ class AppendedSliverChildBuilderDelegate extends SliverChildBuilderDelegate {
           addRepaintBoundaries: addRepaintBoundaries,
           addSemanticIndexes: addSemanticIndexes,
           semanticIndexCallback: (_, index) => index.isEven ? index ~/ 2 : null,
+          findChildIndexCallback: findChildIndexCallback == null
+              ? null
+              : (key) => switch (findChildIndexCallback(key)) {
+                    final itemIndex? => itemIndex * 2,
+                    null => null,
+                  },
         );
 }

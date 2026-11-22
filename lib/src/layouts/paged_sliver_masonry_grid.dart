@@ -141,6 +141,7 @@ class PagedSliverMasonryGrid<PageKeyType, ItemType> extends StatelessWidget {
           addAutomaticKeepAlives: addAutomaticKeepAlives,
           addSemanticIndexes: addSemanticIndexes,
           addRepaintBoundaries: addRepaintBoundaries,
+          findChildIndexCallback: builderDelegate.findChildIndexCallback,
         ),
         loadingListingBuilder: (
           context,
@@ -162,6 +163,7 @@ class PagedSliverMasonryGrid<PageKeyType, ItemType> extends StatelessWidget {
           addAutomaticKeepAlives: addAutomaticKeepAlives,
           addSemanticIndexes: addSemanticIndexes,
           addRepaintBoundaries: addRepaintBoundaries,
+          findChildIndexCallback: builderDelegate.findChildIndexCallback,
         ),
         errorListingBuilder: (
           context,
@@ -183,6 +185,7 @@ class PagedSliverMasonryGrid<PageKeyType, ItemType> extends StatelessWidget {
           addAutomaticKeepAlives: addAutomaticKeepAlives,
           addSemanticIndexes: addSemanticIndexes,
           addRepaintBoundaries: addRepaintBoundaries,
+          findChildIndexCallback: builderDelegate.findChildIndexCallback,
         ),
         shrinkWrapFirstPageIndicators: shrinkWrapFirstPageIndicators,
       );
