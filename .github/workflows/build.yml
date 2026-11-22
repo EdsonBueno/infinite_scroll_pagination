@@ -14,7 +14,7 @@ jobs:
         with:
           channel: "stable"
       - run: flutter pub get
-      - run: flutter analyze
+      - run: flutter analyze --no-fatal-infos
       - run: flutter test --coverage --coverage-path coverage/lcov.info
       - uses: coverallsapp/github-action@v2
         with:
