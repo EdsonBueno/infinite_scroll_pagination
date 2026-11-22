@@ -16,7 +16,7 @@ extension PagingStatusExtension on PagingState {
 
   bool get _hasError => error != null;
 
-  bool get _isLoadingFirstPage => pages == null && !_hasError;
+  bool get _isLoadingFirstPage => pages == null && !_hasError && hasNextPage;
 
   bool get _hasFirstPageError => !_hasItems && _hasError;
 
@@ -28,7 +28,7 @@ extension PagingStatusExtension on PagingState {
 
   bool get _hasSubsequentPageError => _isListingUnfinished && _hasError;
 
-  bool get _isEmpty => pages != null && !_hasItems;
+  bool get _isEmpty => !_hasItems && (pages != null || !hasNextPage);
 
   /// The current pagination status.
   PagingStatus get status {

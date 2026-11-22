@@ -30,6 +30,13 @@ void main() {
       expect(pagingState.status, PagingStatus.noItemsFound);
     });
 
+    test(
+        'returns noItemsFound status when no page was fetched and there is no next page',
+        () {
+      pagingState = PagingState<int, String>(hasNextPage: false);
+      expect(pagingState.status, PagingStatus.noItemsFound);
+    });
+
     test('returns noItemsFound status when every fetched page is empty', () {
       pagingState = PagingState<int, String>(
         pages: const [[], []],

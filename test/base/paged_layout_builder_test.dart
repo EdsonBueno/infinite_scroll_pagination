@@ -139,6 +139,38 @@ void main() {
     });
 
     testWidgets(
+        'A NoItemsFoundIndicator widget is shown when the first page key is null.',
+        (tester) async {
+      final controller = PagingController<int, String>(
+        getNextPageKey: (_) => null,
+        fetchPage: (_) => [],
+      );
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: PagingListener(
+              controller: controller,
+              builder: (context, state, fetchNextPage) =>
+                  PagedListView<int, String>(
+                state: state,
+                fetchNextPage: fetchNextPage,
+                builderDelegate: PagedChildBuilderDelegate<String>(
+                  itemBuilder: (_, __, ___) => Container(),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.pump();
+      await tester.pump();
+
+      _expectOneWidgetOfType(NoItemsFoundIndicator);
+      expect(find.byType(FirstPageProgressIndicator), findsNothing);
+    });
+
+    testWidgets(
         'Uses the custom no items found indicator when one is provided.',
         (tester) async {
       // given
