@@ -24,11 +24,9 @@ class PagingController<PageKeyType, ItemType>
     extends ValueNotifier<PagingState<PageKeyType, ItemType>> {
   PagingController({
     PagingState<PageKeyType, ItemType>? value,
-    required NextPageKeyCallback<PageKeyType, ItemType> getNextPageKey,
-    required FetchPageCallback<PageKeyType, ItemType> fetchPage,
-  }) : _getNextPageKey = getNextPageKey,
-       _fetchPage = fetchPage,
-       super(value ?? PagingState<PageKeyType, ItemType>());
+    required this._getNextPageKey,
+    required this._fetchPage,
+  }) : super(value ?? PagingState<PageKeyType, ItemType>());
 
   /// The function to get the next page key.
   /// If this function returns `null`, it indicates that there are no more pages to load.

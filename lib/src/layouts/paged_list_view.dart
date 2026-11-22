@@ -57,7 +57,7 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
     required this.state,
     required this.fetchNextPage,
     required this.builderDelegate,
-    required IndexedWidgetBuilder separatorBuilder,
+    required IndexedWidgetBuilder this._separatorBuilder,
     // Matches [ScrollView.controller].
     ScrollController? scrollController,
     // Matches [ScrollView.scrollDirection].
@@ -89,7 +89,6 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
     super.key,
   }) : prototypeItem = null,
        _shrinkWrapFirstPageIndicators = shrinkWrap,
-       _separatorBuilder = separatorBuilder,
        super(controller: scrollController);
 
   /// Matches [PagedLayoutBuilder.state].

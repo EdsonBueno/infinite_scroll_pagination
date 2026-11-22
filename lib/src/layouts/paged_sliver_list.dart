@@ -36,7 +36,7 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
     required this.state,
     required this.fetchNextPage,
     required this.builderDelegate,
-    required IndexedWidgetBuilder separatorBuilder,
+    required IndexedWidgetBuilder this._separatorBuilder,
     this.addAutomaticKeepAlives = true,
     this.addRepaintBoundaries = true,
     this.addSemanticIndexes = true,
@@ -44,8 +44,7 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
     this.semanticIndexCallback,
     this.shrinkWrapFirstPageIndicators = false,
     super.key,
-  }) : prototypeItem = null,
-       _separatorBuilder = separatorBuilder;
+  }) : prototypeItem = null;
 
   /// Matches [PagedLayoutBuilder.state].
   final PagingState<PageKeyType, ItemType> state;
