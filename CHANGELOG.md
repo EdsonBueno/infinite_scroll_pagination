@@ -1,3 +1,19 @@
+## Unreleased
+### Added
+- `hitTestBehavior` in scroll views and `PagedPageView`
+- `hasFetched` extension on `PagingState`
+- `PagingState.initial` as a constant state
+
+### Changed
+- Migrated to `material_ui`
+- Minimum Flutter version is 3.44
+- `pages`, `keys` and `items` of `PagingState` are non-nullable
+- Error indicator builders receive the error as `ErrorIndicatorBuilder`
+- `cacheExtent` is now `scrollCacheExtent`
+
+### Removed
+- `semanticIndexCallback` of `PagedSliverList.separated`
+
 ## 5.2.0 - 2026-11-22
 ### Added
 - `findChildIndexCallback` in `PagedChildBuilderDelegate`
