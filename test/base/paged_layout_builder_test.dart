@@ -23,7 +23,7 @@ void main() {
         'a FirstPageProgressIndicator widget is shown.', (tester) async {
       // given
       final builderDelegate = PagedChildBuilderDelegate<int>(
-        itemBuilder: (_, __, ___) => Container(),
+        itemBuilder: (_, _, _) => Container(),
       );
 
       // when
@@ -43,7 +43,7 @@ void main() {
         // given
         final customIndicatorKey = UniqueKey();
         final builderDelegate = PagedChildBuilderDelegate<int>(
-          itemBuilder: (_, __, ___) => Container(),
+          itemBuilder: (_, _, _) => Container(),
           firstPageProgressIndicatorBuilder: (context) =>
               Container(key: customIndicatorKey),
         );
@@ -72,7 +72,7 @@ void main() {
         'a FirstPageErrorIndicator widget is shown.', (tester) async {
       // given
       final builderDelegate = PagedChildBuilderDelegate<int>(
-        itemBuilder: (_, __, ___) => Container(),
+        itemBuilder: (_, _, _) => Container(),
       );
 
       // when
@@ -92,7 +92,7 @@ void main() {
         // given
         final customIndicatorKey = UniqueKey();
         final builderDelegate = PagedChildBuilderDelegate<int>(
-          itemBuilder: (_, __, ___) => Container(),
+          itemBuilder: (_, _, _) => Container(),
           firstPageErrorIndicatorBuilder: (context) =>
               Container(key: customIndicatorKey),
         );
@@ -121,7 +121,7 @@ void main() {
         'a NoItemsFoundIndicator widget is shown.', (tester) async {
       // given
       final builderDelegate = PagedChildBuilderDelegate<int>(
-        itemBuilder: (_, __, ___) => Container(),
+        itemBuilder: (_, _, _) => Container(),
       );
 
       // when
@@ -153,7 +153,7 @@ void main() {
                       state: state,
                       fetchNextPage: fetchNextPage,
                       builderDelegate: PagedChildBuilderDelegate<String>(
-                        itemBuilder: (_, __, ___) => Container(),
+                        itemBuilder: (_, _, _) => Container(),
                       ),
                     ),
               ),
@@ -174,7 +174,7 @@ void main() {
         // given
         final customIndicatorKey = UniqueKey();
         final builderDelegate = PagedChildBuilderDelegate<int>(
-          itemBuilder: (_, __, ___) => Container(),
+          itemBuilder: (_, _, _) => Container(),
           noItemsFoundIndicatorBuilder: (context) =>
               Container(key: customIndicatorKey),
         );
@@ -203,7 +203,7 @@ void main() {
         'a NewPageErrorIndicator widget is shown.', (tester) async {
       // given
       final builderDelegate = PagedChildBuilderDelegate<int>(
-        itemBuilder: (_, __, ___) => Container(),
+        itemBuilder: (_, _, _) => Container(),
       );
 
       // when
@@ -225,7 +225,7 @@ void main() {
         // given
         final customIndicatorKey = UniqueKey();
         final builderDelegate = PagedChildBuilderDelegate<int>(
-          itemBuilder: (_, __, ___) => Container(),
+          itemBuilder: (_, _, _) => Container(),
           newPageErrorIndicatorBuilder: (context) =>
               Text('Error', key: customIndicatorKey),
         );
@@ -256,7 +256,7 @@ void main() {
         'a NewPageProgressIndicator widget is shown.', (tester) async {
       // given
       final builderDelegate = PagedChildBuilderDelegate<int>(
-        itemBuilder: (_, __, ___) => Container(),
+        itemBuilder: (_, _, _) => Container(),
       );
 
       // when
@@ -278,7 +278,7 @@ void main() {
         // given
         final customIndicatorKey = UniqueKey();
         final builderDelegate = PagedChildBuilderDelegate<int>(
-          itemBuilder: (_, __, ___) => Container(),
+          itemBuilder: (_, _, _) => Container(),
           newPageProgressIndicatorBuilder: (context) =>
               CircularProgressIndicator(key: customIndicatorKey),
         );
@@ -311,7 +311,7 @@ void main() {
         // given
         final customIndicatorKey = UniqueKey();
         final builderDelegate = PagedChildBuilderDelegate<int>(
-          itemBuilder: (_, __, ___) => Container(),
+          itemBuilder: (_, _, _) => Container(),
           noMoreItemsIndicatorBuilder: (context) =>
               Text('No more items.', key: customIndicatorKey),
         );
@@ -345,7 +345,7 @@ void main() {
       indicatorFinder = find.byKey(indicatorKey);
 
       builderDelegate = PagedChildBuilderDelegate<int>(
-        itemBuilder: (_, __, ___) => Container(),
+        itemBuilder: (_, _, _) => Container(),
         firstPageProgressIndicatorBuilder: (_) => progressIndicator,
       );
     });
@@ -404,12 +404,12 @@ Future<void> _pumpPagedLayoutBuilder({
     fetchNextPage: () => Completer<void>().future,
     builderDelegate: builderDelegate,
     shrinkWrapFirstPageIndicators: shrinkWrapFirstPageIndicators,
-    errorListingBuilder: (context, __, ___, newPageErrorIndicatorBuilder) =>
+    errorListingBuilder: (context, _, _, newPageErrorIndicatorBuilder) =>
         SliverToBoxAdapter(child: newPageErrorIndicatorBuilder(context)),
     loadingListingBuilder:
-        (context, __, ___, newPageProgressIndicatorBuilder) =>
+        (context, _, _, newPageProgressIndicatorBuilder) =>
             SliverToBoxAdapter(child: newPageProgressIndicatorBuilder(context)),
-    completedListingBuilder: (context, __, ___, noMoreItemsIndicatorBuilder) =>
+    completedListingBuilder: (context, _, _, noMoreItemsIndicatorBuilder) =>
         SliverToBoxAdapter(child: noMoreItemsIndicatorBuilder?.call(context)),
   ),
   tester: tester,

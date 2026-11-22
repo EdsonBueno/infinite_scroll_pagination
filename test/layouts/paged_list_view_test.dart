@@ -78,7 +78,7 @@ void main() {
         tester: tester,
         state: TestPagingState.ongoing(),
         fetchNextPage: () {},
-        separatorBuilder: (_, __) => const Divider(height: 1),
+        separatorBuilder: (_, _) => const Divider(height: 1),
       );
 
       final separatorFinder = find.byType(Divider);
